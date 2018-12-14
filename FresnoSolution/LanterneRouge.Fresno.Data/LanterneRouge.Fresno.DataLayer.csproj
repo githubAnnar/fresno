@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="DataAccess\Entities\Measurement.cs" />
     <Compile Include="DataAccess\Entities\StepTest.cs" />
+    <Compile Include="DataAccess\Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
