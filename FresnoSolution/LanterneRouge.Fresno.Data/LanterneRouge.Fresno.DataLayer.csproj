@@ -55,6 +55,8 @@
     <Compile Include="DataAccess\Repositories\RepositoryBase.cs" />
     <Compile Include="DataAccess\Repositories\StepTestRepository.cs" />
     <Compile Include="DataAccess\Repositories\UserRepository.cs" />
+    <Compile Include="DataAccess\UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="DataAccess\UnitOfWork\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
