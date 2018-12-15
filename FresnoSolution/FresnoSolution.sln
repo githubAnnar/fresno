@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{83D692
 		LanterneRouge.Fresno.AssemblyInfo.cs = LanterneRouge.Fresno.AssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{0040BEDE-4C4E-4E60-B856-D76D415FBE8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanternRouge.Fresno.DataLayer.Test", "LanternRouge.Fresno.DataLayer.Test\LanternRouge.Fresno.DataLayer.Test.csproj", "{04064257-A24B-48B1-B687-55F71E695BEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +30,16 @@ Global
 		{859F9463-30FA-47E5-ACD4-C2F23DBC293B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{859F9463-30FA-47E5-ACD4-C2F23DBC293B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{859F9463-30FA-47E5-ACD4-C2F23DBC293B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04064257-A24B-48B1-B687-55F71E695BEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04064257-A24B-48B1-B687-55F71E695BEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04064257-A24B-48B1-B687-55F71E695BEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04064257-A24B-48B1-B687-55F71E695BEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{04064257-A24B-48B1-B687-55F71E695BEF} = {0040BEDE-4C4E-4E60-B856-D76D415FBE8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BE261D1-9FC2-47E6-A935-A2CC52BD2349}
