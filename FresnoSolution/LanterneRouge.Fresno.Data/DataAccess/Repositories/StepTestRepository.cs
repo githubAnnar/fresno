@@ -54,7 +54,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            Connection.Execute("UPDATE StepMessage SET Sequence = @Sequence, UserId = @UserId WHERE Id = @Id", param: new { entity.Id, entity.Sequence, entity.UserId }, transaction: Transaction);
+            Connection.Execute("UPDATE StepTest SET Sequence = @Sequence, UserId = @UserId WHERE Id = @Id", param: new { entity.Id, entity.Sequence, entity.UserId }, transaction: Transaction);
         }
     }
 }

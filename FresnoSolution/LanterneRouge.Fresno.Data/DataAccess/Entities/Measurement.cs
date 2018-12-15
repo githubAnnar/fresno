@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public byte HeartRate { get; set; }
+        public int HeartRate { get; set; }
 
         public float Lactate { get; set; }
 

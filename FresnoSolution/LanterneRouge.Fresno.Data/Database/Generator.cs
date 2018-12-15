@@ -12,6 +12,8 @@ namespace LanterneRouge.Fresno.DataLayer.Database
         private const string CreateStepTestTable = @"CREATE TABLE IF NOT EXISTS `StepTest` ( `Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `Sequence` INTEGER NOT NULL, `UserId` INTEGER NOT NULL, FOREIGN KEY(`UserId`) REFERENCES `User`(`Id`) )";
         private const string CreateUserTable = @"CREATE TABLE IF NOT EXISTS `User` ( `Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `FirstName` TEXT NOT NULL, `LastName` TEXT NOT NULL, `Email` TEXT NOT NULL )";
 
+        private SQLiteConnection _connection;
+
         public Generator(string filename)
         {
             if (string.IsNullOrEmpty(filename))
@@ -31,14 +33,19 @@ namespace LanterneRouge.Fresno.DataLayer.Database
         {
             get
             {
-                var connectionString = new SQLiteConnectionStringBuilder
+                if (_connection == null)
                 {
-                    DataSource = Filename,
-                    ForeignKeys = true,
-                    Version = 3
-                };
+                    var connectionString = new SQLiteConnectionStringBuilder
+                    {
+                        DataSource = Filename,
+                        ForeignKeys = true,
+                        Version = 3
+                    };
 
-                return new SQLiteConnection(connectionString.ToString());
+                    _connection = new SQLiteConnection(connectionString.ToString());
+                }
+
+                return _connection;
             }
         }
 
@@ -48,11 +55,8 @@ namespace LanterneRouge.Fresno.DataLayer.Database
             try
             {
                 // create a new database connection:
-                using (var sqlite_conn = Connection)
-                {
-                    // open the connection:
-                    sqlite_conn.Open();
-                }
+                Connection.Open();
+                Connection.Close();
             }
 
             catch (Exception ex)
@@ -70,28 +74,44 @@ namespace LanterneRouge.Fresno.DataLayer.Database
 
             try
             {
-                using (var sqlite_conn = Connection)
-                {
-                    sqlite_conn.Open();
+                Connection.Open();
 
-                    var sqlite_command = sqlite_conn.CreateCommand();
-                    sqlite_command.CommandText = CreateUserTable;
-                    sqlite_command.ExecuteNonQuery();
+                var sqlite_command = Connection.CreateCommand();
+                sqlite_command.CommandText = CreateUserTable;
+                sqlite_command.ExecuteNonQuery();
 
-                    sqlite_command.CommandText = CreateStepTestTable;
-                    sqlite_command.ExecuteNonQuery();
+                sqlite_command.CommandText = CreateStepTestTable;
+                sqlite_command.ExecuteNonQuery();
 
-                    sqlite_command.CommandText = CreateMeasurementTable;
-                    sqlite_command.ExecuteNonQuery();
+                sqlite_command.CommandText = CreateMeasurementTable;
+                sqlite_command.ExecuteNonQuery();
+                sqlite_command.Dispose();
 
-                    sqlite_conn.Close();
-                }
+                Connection.Close();
             }
 
             catch (Exception ex)
             {
                 Logger.Error("Error creating new tables", ex);
                 response = false;
+            }
+
+            return response;
+        }
+
+        public bool RemoveDatabase()
+        {
+            var response = true;
+            if (File.Exists(Filename))
+            {
+                if (Connection.State == System.Data.ConnectionState.Open)
+                {
+                    Connection.Close();
+                }
+
+                Connection.Dispose();
+
+                File.Delete(Filename);
             }
 
             return response;
