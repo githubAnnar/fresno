@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 {
-    internal class StepTestRepository : RepositoryBase, IRepository<StepTest>
+    public class StepTestRepository : RepositoryBase, IRepository<StepTest>
     {
         public StepTestRepository(IDbTransaction transaction) : base(transaction)
         { }
@@ -17,7 +17,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO StepTest(Sequence, UserId) VALUES(@Sequence, @UserId); SELECT SCOPE_IDENTITY()", param: new { entity.Sequence, entity.UserId }, transaction: Transaction
+            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO StepTest(Sequence, UserId) VALUES(@Sequence, @UserId); SELECT last_insert_rowid()", param: new { entity.Sequence, entity.UserId }, transaction: Transaction
             );
         }
 

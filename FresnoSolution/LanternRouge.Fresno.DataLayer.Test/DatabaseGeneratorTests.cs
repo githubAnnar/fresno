@@ -11,7 +11,7 @@ namespace LanternRouge.Fresno.DataLayer.Test
         public void CreateDatabaseTest()
         {
             // Create object
-            var actual = new Generator(null);
+            var actual = new Generator(Path.GetTempFileName());
             Assert.IsTrue(!string.IsNullOrEmpty(actual.Filename));
 
             // Create database
@@ -21,6 +21,27 @@ namespace LanternRouge.Fresno.DataLayer.Test
             Assert.IsTrue(File.Exists(actual.Filename));
 
             // Delete file
+            File.Delete(actual.Filename);
+            Assert.IsFalse(File.Exists(actual.Filename));
+        }
+
+        [TestMethod]
+        public void CreateTablesTest()
+        {
+            // Create object
+            var actual = new Generator(Path.GetTempFileName());
+            Assert.IsTrue(!string.IsNullOrEmpty(actual.Filename));
+
+            // Create database
+            Assert.IsTrue(actual.CreateDatabase());
+
+            // Check File exits
+            Assert.IsTrue(File.Exists(actual.Filename));
+
+            // Create tables
+            Assert.IsTrue(actual.CreateTables());
+
+            // delete file
             File.Delete(actual.Filename);
             Assert.IsFalse(File.Exists(actual.Filename));
         }

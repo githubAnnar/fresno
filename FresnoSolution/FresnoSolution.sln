@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.DataLa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{83D692A1-A839-4A14-BFA4-ACAB9BFF4C79}"
 	ProjectSection(SolutionItems) = preProject
+		Fresno.sqlite.sqbpro = Fresno.sqlite.sqbpro
 		LanterneRouge.Fresno.AssemblyInfo.cs = LanterneRouge.Fresno.AssemblyInfo.cs
 	EndProjectSection
 EndProject

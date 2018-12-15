@@ -8,9 +8,9 @@ namespace LanterneRouge.Fresno.DataLayer.Database
     public class Generator
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Generator));
-        private const string CreateMeasurementTable = @"CREATE TABLE IF NOT EXIST `Measurement` ( `Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `HeartRate` INTEGER NOT NULL, `Lactate` NUMERIC NOT NULL, `Load` NUMERIC NOT NULL, `StepTestId` INTEGER NOT NULL, FOREIGN KEY(`StepTestId`) REFERENCES `StepTest`(`Id`) )";
-        private const string CreateStepTestTable = @"CREATE TABLE `StepTest` ( `Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `Sequence` INTEGER NOT NULL, `UserId` INTEGER NOT NULL, FOREIGN KEY(`UserId`) REFERENCES `User`(`Id`) )";
-        private const string CreateUserTable = @"CREATE TABLE `User` ( `Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `FirstName` TEXT NOT NULL, `LastName` TEXT NOT NULL, `Email` TEXT NOT NULL )";
+        private const string CreateMeasurementTable = @"CREATE TABLE IF NOT EXISTS `Measurement` ( `Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `HeartRate` INTEGER NOT NULL, `Lactate` NUMERIC NOT NULL, `Load` NUMERIC NOT NULL, `StepTestId` INTEGER NOT NULL, FOREIGN KEY(`StepTestId`) REFERENCES `StepTest`(`Id`) )";
+        private const string CreateStepTestTable = @"CREATE TABLE IF NOT EXISTS `StepTest` ( `Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `Sequence` INTEGER NOT NULL, `UserId` INTEGER NOT NULL, FOREIGN KEY(`UserId`) REFERENCES `User`(`Id`) )";
+        private const string CreateUserTable = @"CREATE TABLE IF NOT EXISTS `User` ( `Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `FirstName` TEXT NOT NULL, `LastName` TEXT NOT NULL, `Email` TEXT NOT NULL )";
 
         public Generator(string filename)
         {
@@ -27,7 +27,20 @@ namespace LanterneRouge.Fresno.DataLayer.Database
 
         public string Filename { get; }
 
-        private SQLiteConnection Connection => new SQLiteConnection($"Data Source={Filename};Version=3;");
+        private SQLiteConnection Connection
+        {
+            get
+            {
+                var connectionString = new SQLiteConnectionStringBuilder
+                {
+                    DataSource = Filename,
+                    ForeignKeys = true,
+                    Version = 3
+                };
+
+                return new SQLiteConnection(connectionString.ToString());
+            }
+        }
 
         public bool CreateDatabase()
         {
@@ -55,19 +68,30 @@ namespace LanterneRouge.Fresno.DataLayer.Database
         {
             var response = true;
 
-            using (var sqlite_conn = Connection)
+            try
             {
-                sqlite_conn.Open();
+                using (var sqlite_conn = Connection)
+                {
+                    sqlite_conn.Open();
 
-                var sqlite_command = sqlite_conn.CreateCommand();
-                sqlite_command.CommandText = CreateUserTable;
-                sqlite_command.ExecuteNonQuery();
+                    var sqlite_command = sqlite_conn.CreateCommand();
+                    sqlite_command.CommandText = CreateUserTable;
+                    sqlite_command.ExecuteNonQuery();
 
-                sqlite_command.CommandText = CreateStepTestTable;
-                sqlite_command.ExecuteNonQuery();
+                    sqlite_command.CommandText = CreateStepTestTable;
+                    sqlite_command.ExecuteNonQuery();
 
-                sqlite_command.CommandText = CreateMeasurementTable;
-                sqlite_command.ExecuteNonQuery();
+                    sqlite_command.CommandText = CreateMeasurementTable;
+                    sqlite_command.ExecuteNonQuery();
+
+                    sqlite_conn.Close();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Logger.Error("Error creating new tables", ex);
+                response = false;
             }
 
             return response;

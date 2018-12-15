@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 {
-    internal class MeasurementRepository : RepositoryBase, IRepository<Measurement>
+    public class MeasurementRepository : RepositoryBase, IRepository<Measurement>
     {
         public MeasurementRepository(IDbTransaction transaction)
             : base(transaction)
@@ -28,7 +28,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO Measurement(Lactate, Load, StepTestId) VALUES(@Lactate, @Load, @STepTestId); SELECT SCOPE_IDENTITY()", param: new { entity.Lactate, entity.Load, entity.StepTestId }, transaction: Transaction
+            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO Measurement(HeartRate, Lactate, Load, StepTestId) VALUES(@HeartRate, @Lactate, @Load, @STepTestId); SELECT last_insert_rowid()", param: new { entity.HeartRate, entity.Lactate, entity.Load, entity.StepTestId }, transaction: Transaction
             );
         }
 

@@ -2,7 +2,7 @@
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 {
-    internal abstract class RepositoryBase
+    public abstract class RepositoryBase
     {
         protected IDbTransaction Transaction { get; private set; }
         protected IDbConnection Connection { get { return Transaction.Connection; } }
