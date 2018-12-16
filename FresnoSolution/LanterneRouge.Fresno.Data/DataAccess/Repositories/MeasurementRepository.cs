@@ -28,7 +28,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO Measurement(HeartRate, Lactate, Load, StepTestId) VALUES(@HeartRate, @Lactate, @Load, @STepTestId); SELECT last_insert_rowid()", param: new { entity.HeartRate, entity.Lactate, entity.Load, entity.StepTestId }, transaction: Transaction
+            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO Measurement(HeartRate, Lactate, Load, StepTestId, Time, Date, Sequence) VALUES(@HeartRate, @Lactate, @Load, @StepTestId, @Time, @Date, @Sequence); SELECT last_insert_rowid()", param: new { entity.HeartRate, entity.Lactate, entity.Load, entity.StepTestId, entity.Time, entity.Date, entity.Sequence }, transaction: Transaction
             );
         }
 
@@ -37,7 +37,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            Connection.Execute("UPDATE Measurement SET Lactate = @Lactate, Load = @Load, StepTestId = @StepTestId WHERE Id = @Id", param: new { entity.Id, entity.Lactate, entity.Load, entity.StepTestId }, transaction: Transaction);
+            Connection.Execute("UPDATE Measurement SET HeartRate = @HeartRate, Lactate = @Lactate, Load = @Load, StepTestId = @StepTestId, Time = @Time, Date = @Date, Sequence = @Sequence WHERE Id = @Id", param: new { entity.Id, entity.HeartRate, entity.Lactate, entity.Load, entity.StepTestId, entity.Time, entity.Date, entity.Sequence }, transaction: Transaction);
         }
 
         public void Remove(Measurement entity)

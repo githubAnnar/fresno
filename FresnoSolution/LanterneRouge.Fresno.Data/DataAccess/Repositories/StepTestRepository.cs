@@ -17,7 +17,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO StepTest(Sequence, UserId) VALUES(@Sequence, @UserId); SELECT last_insert_rowid()", param: new { entity.Sequence, entity.UserId }, transaction: Transaction
+            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO StepTest(UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature) VALUES(@UserId, @TestType, @EffortUnit, @StepDuration, @LoadPreset, @Increase, @Temperature); SELECT last_insert_rowid()", param: new { entity.UserId, entity.TestType, entity.EffortUnit, entity.StepDuration, entity.LoadPreset, entity.Increase, entity.Temperature }, transaction: Transaction
             );
         }
 
@@ -54,7 +54,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            Connection.Execute("UPDATE StepTest SET Sequence = @Sequence, UserId = @UserId WHERE Id = @Id", param: new { entity.Id, entity.Sequence, entity.UserId }, transaction: Transaction);
+            Connection.Execute("UPDATE StepTest SET UserId = @UserId, TestType = @TestType, EffortUnit = @EffortUnit, StepDuration = @StepDuration, LoadPreset = @LoadPreset, Increase = @Increase, Temperature = @Temperature WHERE Id = @Id", param: new { entity.Id, entity.UserId, entity.TestType, entity.EffortUnit, entity.StepDuration, entity.LoadPreset, entity.Increase, entity.Temperature }, transaction: Transaction);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO User(FirstName, LastName, Email) VALUES(@FirstName, @LastName, @Email); SELECT last_insert_rowid()", param: new { entity.FirstName, entity.LastName, entity.Email }, transaction: Transaction
+            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO User(FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Weight, Sex) VALUES(@FirstName, @LastName, @Email, @Street, @PostCode, @PostCity, @BirthDate, @Height, @Weight, @Sex); SELECT last_insert_rowid()", param: new { entity.FirstName, entity.LastName, entity.Email, entity.Street, entity.PostCode, entity.PostCity, entity.BirthDate, entity.Height, entity.Weight, entity.Sex }, transaction: Transaction
             );
         }
 
@@ -54,7 +54,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            Connection.Execute("UPDATE User SET FirstName = @FirstName, LastName = @LastName, Email = @Email WHERE Id = @Id", param: new { entity.Id, entity.FirstName, entity.LastName, entity.Email }, transaction: Transaction);
+            Connection.Execute("UPDATE User SET FirstName = @FirstName, LastName = @LastName, Email = @Email, Street = @Street, PostCode = @PostCode, PostCity = @PostCity, BirthDate = @BirthDate, Height = @Height, Weight = @Weight, Sex = @Sex WHERE Id = @Id", param: new { entity.Id, entity.FirstName, entity.LastName, entity.Email, entity.Street, entity.PostCode, entity.PostCity, entity.BirthDate, entity.Height, entity.Weight, entity.Sex }, transaction: Transaction);
         }
     }
 }

@@ -50,7 +50,7 @@ namespace LanternRouge.Fresno.DataLayer.Test
                     var userRepo = new UserRepository(transaction);
                     userRepo.Add(user);
 
-                    var stepTest = new StepTest { Sequence = 1, UserId = user.Id };
+                    var stepTest = new StepTest { EffortUnit = "W", Increase=20f, LoadPreset=120f, StepDuration="0:4:0", TestType="Bike", UserId = user.Id };
                     var stepTestRepo = new StepTestRepository(transaction);
                     stepTestRepo.Add(stepTest);
 
@@ -71,7 +71,7 @@ namespace LanternRouge.Fresno.DataLayer.Test
                     var stepTestRepo = new StepTestRepository(transaction);
                     var allStepTests = stepTestRepo.All().ToList();
                     Assert.IsTrue(allStepTests.Count > 0);
-                    allStepTests[0].Sequence = 2;
+                    allStepTests[0].TestType = "Run";
                     stepTestRepo.Update(allStepTests[0]);
 
                     var measurementRepo = new MeasurementRepository(transaction);

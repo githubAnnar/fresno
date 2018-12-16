@@ -11,5 +11,11 @@
         public float Load { get; set; }
 
         public int StepTestId { get; set; }
+
+        public string Time { get; set; }
+
+        public string Date { get; set; }
+
+        public int Sequence { get; set; }
     }
 }
