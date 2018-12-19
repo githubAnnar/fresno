@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
 {
-    public class User
+    public class User : BaseEntity<User>
     {
-        public int Id { get; set; }
+        public User() : base()
+        {
+            StepTests = new List<StepTest>();
+            IsLoaded = false;
+        }
 
         public string FirstName { get; set; }
 
@@ -20,10 +25,21 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
 
         public int Height { get; set; }
 
-        public float Weight { get; set; }
-
         public string Sex { get; set; }
 
         public string Email { get; set; }
+
+        public List<StepTest> StepTests { get; set; }
+
+        public override bool IsValid => true;
+
+        public bool IsLoaded { get; internal set; }
+
+        public static User Create(string firstName, string lastName, string street, string postCode, string postCity, DateTime birthDate, int height, float weight, string sex, string email)
+        {
+            var newUser = new User { FirstName = firstName, LastName = lastName, Street = street, PostCode = postCode, PostCity = postCity, BirthDate = birthDate, Height = height, Sex = sex, Email = email };
+            newUser.AcceptChanges();
+            return newUser;
+        }
     }
 }

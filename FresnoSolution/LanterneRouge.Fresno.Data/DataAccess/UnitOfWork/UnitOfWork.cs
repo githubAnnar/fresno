@@ -1,8 +1,8 @@
 ﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+using LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure;
 using LanterneRouge.Fresno.DataLayer.DataAccess.Repositories;
 using System;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 {
@@ -10,23 +10,23 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
     {
         private IDbConnection _connection;
         private IDbTransaction _transaction;
-        private IRepository<Measurement> _measurementRepository;
-        private IRepository<StepTest> _stepTestRepository;
-        private IRepository<User> _userRepository;
+        private IRepository<Measurement, StepTest> _measurementRepository;
+        private IRepository<StepTest, User> _stepTestRepository;
+        private IRepository<User, object> _userRepository;
         private bool _disposed;
 
-        public UnitOfWork(string connectionString)
+        public UnitOfWork(IConnectionFactory connectionFactory)
         {
-            _connection = new SqlConnection(connectionString);
+            _connection = connectionFactory.GetConnection;
             _connection.Open();
             _transaction = _connection.BeginTransaction();
         }
 
-        public IRepository<Measurement> MeasurementRepository => _measurementRepository ?? (_measurementRepository = new MeasurementRepository(_transaction));
+        public IRepository<Measurement, StepTest> MeasurementRepository => _measurementRepository ?? (_measurementRepository = new MeasurementRepository(_transaction));
 
-        public IRepository<StepTest> StepTestRepository => _stepTestRepository ?? (_stepTestRepository = new StepTestRepository(_transaction));
+        public IRepository<StepTest, User> StepTestRepository => _stepTestRepository ?? (_stepTestRepository = new StepTestRepository(_transaction));
 
-        public IRepository<User> UserRepository => _userRepository ?? (_userRepository = new UserRepository(_transaction));
+        public IRepository<User, object> UserRepository => _userRepository ?? (_userRepository = new UserRepository(_transaction));
 
         public void Commit()
         {

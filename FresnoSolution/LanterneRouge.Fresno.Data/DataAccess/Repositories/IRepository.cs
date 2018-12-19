@@ -2,20 +2,24 @@
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<TEntity, TParentEntity> where TEntity : class where TParentEntity : class
     {
-        void Add(T entity);
+        void Add(TEntity entity);
 
-        IEnumerable<T> All();
+        IEnumerable<TEntity> All();
 
-        T Find(int id);
+        TEntity FindSingle(int id);
+        
+        TEntity FindWithParent(int id);
 
-        IEnumerable<T> FindByParentId(int parentId);
+        TEntity FindWithParentAndChilds(int id);
+
+        IEnumerable<TEntity> FindByParentId(TParentEntity parent);
 
         void Remove(int id);
 
-        void Remove(T entity);
+        void Remove(TEntity entity);
 
-        void Update(T entity);
+        void Update(TEntity entity);
     }
 }

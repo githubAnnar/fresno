@@ -6,11 +6,11 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Measurement> MeasurementRepository { get; }
+        IRepository<Measurement, StepTest> MeasurementRepository { get; }
 
-        IRepository<StepTest> StepTestRepository { get; }
+        IRepository<StepTest, User> StepTestRepository { get; }
 
-        IRepository<User> UserRepository { get; }
+        IRepository<User, object> UserRepository { get; }
 
         void Commit();
     }

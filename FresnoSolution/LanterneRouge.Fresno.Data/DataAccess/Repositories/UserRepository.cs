@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 {
-    public class UserRepository : RepositoryBase, IRepository<User>
+    public class UserRepository : RepositoryBase, IRepository<User, object>
     {
         public UserRepository(IDbTransaction transaction) : base(transaction)
         { }
@@ -17,21 +17,42 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            entity.Id = Connection.ExecuteScalar<int>("INSERT INTO User(FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Weight, Sex) VALUES(@FirstName, @LastName, @Email, @Street, @PostCode, @PostCity, @BirthDate, @Height, @Weight, @Sex); SELECT last_insert_rowid()", param: new { entity.FirstName, entity.LastName, entity.Email, entity.Street, entity.PostCode, entity.PostCity, entity.BirthDate, entity.Height, entity.Weight, entity.Sex }, transaction: Transaction
-            );
+            var newId = Connection.ExecuteScalar<int>("INSERT INTO User(FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex) VALUES(@FirstName, @LastName, @Email, @Street, @PostCode, @PostCity, @BirthDate, @Height, @Sex); SELECT last_insert_rowid()", param: new { entity.FirstName, entity.LastName, entity.Email, entity.Street, entity.PostCode, entity.PostCity, entity.BirthDate, entity.Height, entity.Sex }, transaction: Transaction);
+            var t = typeof(BaseEntity<User>);
+            t.GetProperty("Id").SetValue(entity, newId, null);
+            entity.AcceptChanges();
         }
 
         public IEnumerable<User> All()
         {
-            return Connection.Query<User>("SELECT * FROM User");
+            var allUsers = Connection.Query<User>("SELECT * FROM User").ToList();
+
+            allUsers.ForEach((User user) =>
+            {
+                user.StepTests = new StepTestRepository(Transaction).FindByParentId(user).ToList();
+            });
+
+            return allUsers;
         }
 
-        public User Find(int id)
+        public User FindSingle(int id)
         {
             return Connection.Query<User>("SELECT * FROM User WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
         }
 
-        public IEnumerable<User> FindByParentId(int parentId)
+        public User FindWithParent(int id)
+        {
+            return FindSingle(id);
+        }
+
+        public User FindWithParentAndChilds(int id)
+        {
+            var user = FindSingle(id);
+            user.StepTests = new StepTestRepository(Transaction).FindByParentId(user).ToList();
+            return user;
+        }
+
+        public IEnumerable<User> FindByParentId(object parent)
         {
             return null;
         }
@@ -54,7 +75,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            Connection.Execute("UPDATE User SET FirstName = @FirstName, LastName = @LastName, Email = @Email, Street = @Street, PostCode = @PostCode, PostCity = @PostCity, BirthDate = @BirthDate, Height = @Height, Weight = @Weight, Sex = @Sex WHERE Id = @Id", param: new { entity.Id, entity.FirstName, entity.LastName, entity.Email, entity.Street, entity.PostCode, entity.PostCity, entity.BirthDate, entity.Height, entity.Weight, entity.Sex }, transaction: Transaction);
+            Connection.Execute("UPDATE User SET FirstName = @FirstName, LastName = @LastName, Email = @Email, Street = @Street, PostCode = @PostCode, PostCity = @PostCity, BirthDate = @BirthDate, Height = @Height, Sex = @Sex WHERE Id = @Id", param: new { entity.Id, entity.FirstName, entity.LastName, entity.Email, entity.Street, entity.PostCode, entity.PostCity, entity.BirthDate, entity.Height, entity.Sex }, transaction: Transaction);
         }
     }
 }
