@@ -20,7 +20,7 @@ namespace LanterneRouge.Fresno.DataLayer.Database
         {
             if (string.IsNullOrEmpty(filename))
             {
-                Filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Fresno.sqlite");
+                Filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Fresno.sqlite");
             }
 
             else
