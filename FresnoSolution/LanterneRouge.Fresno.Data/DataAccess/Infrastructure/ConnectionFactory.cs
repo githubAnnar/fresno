@@ -1,5 +1,8 @@
-﻿using System.Data;
+﻿using LanterneRouge.Fresno.DataLayer.Database;
+using System.Data;
 using System.Data.Common;
+using System.Data.SQLite;
+using System.IO;
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure
 {
@@ -12,15 +15,36 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure
             _connectionString = connectionString;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// Remarks:
+        /// https://stackoverflow.com/questions/1117683/add-a-dbproviderfactory-without-an-app-config
+        /// https://weblog.west-wind.com/posts/2017/Nov/27/Working-around-the-lack-of-dynamic-DbProviderFactory-loading-in-NET-Core
         public IDbConnection GetConnection
         {
             get
             {
-                var factory = DbProviderFactories.GetFactory("System.Data.SqlClient");
+                CheckExistingFile();
+                //var table = DbProviderFactories.GetFactoryClasses();
+                //var factory = DbProviderFactories.GetFactory("System.Data.SQLite");
+                var factory = SQLiteFactory.Instance;
                 var conn = factory.CreateConnection();
                 conn.ConnectionString = _connectionString;
                 conn.Open();
                 return conn;
+            }
+        }
+
+        private void CheckExistingFile()
+        {
+            var builder = new SQLiteConnectionStringBuilder(_connectionString);
+
+            if (!File.Exists(builder.DataSource))
+            {
+                var generator = new Generator(builder.DataSource);
+                generator.CreateDatabase();
+                generator.CreateTables();
             }
         }
 

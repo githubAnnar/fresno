@@ -27,7 +27,6 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
         public UnitOfWork(IConnectionFactory connectionFactory)
         {
             _connection = connectionFactory.GetConnection;
-            _connection.Open();
             _transaction = _connection.BeginTransaction();
         }
 
