@@ -14,6 +14,8 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
 
         public int Sequence { get; set; }
 
+        public bool InCalculation { get; set; }
+
         public StepTest ParentStepTest { get; set; }
 
         public override bool IsValid => StepTestId > 0;

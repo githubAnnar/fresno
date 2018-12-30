@@ -8,11 +8,11 @@ namespace LanterneRouge.Fresno.DataLayer.Database
     public class Generator
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Generator));
-        private const string CreateMeasurementTable = @"CREATE TABLE `Measurement` (`Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `Sequence` INTEGER NOT NULL, `StepTestId` INTEGER NOT NULL, `HeartRate` INTEGER NOT NULL, `Lactate` NUMERIC NOT NULL, `Load` NUMERIC NOT NULL, FOREIGN KEY(`StepTestId`) REFERENCES `StepTest`(`Id`));";
+        private const string CreateMeasurementTable = @"CREATE TABLE `Measurement` (`Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `Sequence` INTEGER NOT NULL, `StepTestId` INTEGER NOT NULL, `HeartRate` INTEGER NOT NULL, `Lactate` NUMERIC NOT NULL, `Load` NUMERIC NOT NULL, `InCalculation` TEXT DEFAULT 'True' CHECK(InCalculation = ""True"" OR InCalculation = ""False""), FOREIGN KEY(`StepTestId`) REFERENCES `StepTest`(`Id`));";
 
         private const string CreateStepTestTable = @"CREATE TABLE `StepTest` (`Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `UserId` INTEGER NOT NULL, `TestType`	REAL NOT NULL DEFAULT 'Bike' CHECK(TestType = ""Bike"" OR TestType = ""Run""), `EffortUnit` TEXT NOT NULL DEFAULT 'W' CHECK(EffortUnit = ""W"" OR EffortUnit = ""m-s""), `StepDuration` TEXT NOT NULL, `LoadPreset` NUMERIC NOT NULL, `Increase`	NUMERIC NOT NULL, `Temperature`	NUMERIC, `Weight` NUMERIC, `TestDate` TEXT, FOREIGN KEY(`UserId`) REFERENCES `User`(`Id`));";
 
-        private const string CreateUserTable = @"CREATE TABLE `User` (`Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `FirstName` TEXT NOT NULL, `LastName`	TEXT NOT NULL, `Email`	TEXT NOT NULL, `Street` TEXT, `PostCode` TEXT, `PostCity` TEXT, `BirthDate` TEXT, `Height` INTEGER, `Sex` TEXT CHECK(Sex = ""M"" OR Sex = ""F""));";
+        private const string CreateUserTable = @"CREATE TABLE `User` (`Id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `FirstName` TEXT NOT NULL, `LastName`	TEXT NOT NULL, `Email`	TEXT NOT NULL, `Street` TEXT, `PostCode` TEXT, `PostCity` TEXT, `BirthDate` TEXT, `Height` INTEGER, `Sex` TEXT CHECK(Sex = ""M"" OR Sex = ""F""), `MaxHr` INTEGER );";
 
         private SQLiteConnection _connection;
 

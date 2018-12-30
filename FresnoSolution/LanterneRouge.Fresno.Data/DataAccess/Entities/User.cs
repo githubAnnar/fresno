@@ -29,6 +29,8 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
 
         public string Email { get; set; }
 
+        public int MaxHr { get; set; }
+
         public List<StepTest> StepTests { get; set; }
 
         public override bool IsValid => true;

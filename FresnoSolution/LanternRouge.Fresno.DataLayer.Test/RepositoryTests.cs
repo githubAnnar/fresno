@@ -95,6 +95,7 @@ namespace LanternRouge.Fresno.DataLayer.Test
                     var allMeasurements = measurementRepo.All().ToList();
                     Assert.IsTrue(allMeasurements.Count > 0);
                     allMeasurements[0].Load = 140f;
+                    allMeasurements[0].InCalculation = false;
                     measurementRepo.Update(allMeasurements[0]);
 
                     transaction.Commit();
