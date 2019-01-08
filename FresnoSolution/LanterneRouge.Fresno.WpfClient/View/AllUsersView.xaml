@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="LanterneRouge.Fresno.WpfClient.View.AllUsersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sf="clr-namespace:LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="Users" Source="{Binding Path=AllUsers}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="LastName" Direction="Ascending" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <ContextMenu x:Key="ItemContextMenu">
+            <MenuItem Header="Edit" Command="{Binding EditSelectedCommand}"/>
+            <Separator/>
+            <MenuItem Header="Show All StepTests" Command="{Binding ShowAllStepTestsCommand}" />
+            <Separator/>
+            <MenuItem Header="Add Step Test" Command="{Binding AddStepTestCommand}" />
+        </ContextMenu>
+
+        <Style x:Key="UserItemStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+            <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                        <Condition Property="IsSelected" Value="False" />
+                        <Condition Property="IsMouseOver" Value="False" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#EEEEEEEE" />
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+    <DockPanel>
+        <ListView AlternationCount="2" DataContext="{StaticResource Users}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource UserItemStyle}" sf:GridViewSort.AutoSort="True">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Last Name" DisplayMemberBinding="{Binding LastName}" sf:GridViewSort.PropertyName="LastName"/>
+                    <GridViewColumn Header="First Name" DisplayMemberBinding="{Binding FirstName}" sf:GridViewSort.PropertyName="FirstName"/>
+                    <GridViewColumn Header="Sex" DisplayMemberBinding="{Binding Sex}" sf:GridViewSort.PropertyName="Sex"/>
+                    <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" sf:GridViewSort.PropertyName="Email"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
+</UserControl>

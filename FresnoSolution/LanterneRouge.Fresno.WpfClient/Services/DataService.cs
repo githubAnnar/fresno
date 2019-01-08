@@ -1,16 +1,37 @@
 ﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+using LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure;
 using LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork;
+using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 
-namespace LanterneRouge.Fresno.DataLayer.DataAccess.Services
+namespace LanterneRouge.Fresno.WpfClient.Services
 {
-    public class Service : IService
+    public class DataService : IDataService
     {
         private IUnitOfWork _unitOfWork;
+        private ConnectionFactory _connectionFactory;
 
-        public Service(IUnitOfWork unitOfWork)
+        private ConnectionFactory LocalConnectionFactory => _connectionFactory ?? (_connectionFactory = new ConnectionFactory(Filename));
+
+        private string Filename { get; set; }
+
+        public bool LoadDatabase(string filename)
         {
-            _unitOfWork = unitOfWork;
+            var response = false;
+            try
+            {
+                Filename = filename;
+                _unitOfWork = new UnitOfWork(LocalConnectionFactory);
+                response = true;
+            }
+
+            catch (Exception)
+            {
+                response = false;
+            }
+
+            return response;
         }
 
         public void Commit()

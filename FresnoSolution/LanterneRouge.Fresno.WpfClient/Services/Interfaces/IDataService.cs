@@ -1,9 +1,9 @@
 ﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using System.Collections.Generic;
 
-namespace LanterneRouge.Fresno.DataLayer.DataAccess.Services
+namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
 {
-    public interface IService
+    public interface IDataService
     {
         void Commit();
 

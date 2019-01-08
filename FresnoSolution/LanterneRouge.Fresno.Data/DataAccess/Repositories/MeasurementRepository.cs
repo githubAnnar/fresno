@@ -19,6 +19,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             measurements.ForEach((Measurement measurement) =>
             {
                 measurement.ParentStepTest = new StepTestRepository(Transaction).FindWithParent(measurement.StepTestId);
+                measurement.AcceptChanges();
             });
             return measurements;
         }
@@ -58,6 +59,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
                 throw new ArgumentNullException("entity");
 
             Connection.Execute("UPDATE Measurement SET HeartRate = @HeartRate, Lactate = @Lactate, Load = @Load, StepTestId = @StepTestId, Sequence = @Sequence WHERE Id = @Id", param: new { entity.Id, entity.HeartRate, entity.Lactate, entity.Load, entity.StepTestId, entity.Sequence }, transaction: Transaction);
+            entity.AcceptChanges();
         }
 
         public void Remove(Measurement entity)
@@ -76,7 +78,11 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
         public IEnumerable<Measurement> FindByParentId(StepTest parent)
         {
             var measurements = Connection.Query<Measurement>("SELECT * FROM Measurement WHERE StepTestId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
-            measurements.ForEach(m => m.ParentStepTest = parent);
+            measurements.ForEach(m =>
+            {
+                m.ParentStepTest = parent;
+                m.AcceptChanges();
+            });
             return measurements;
         }
     }

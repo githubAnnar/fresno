@@ -52,7 +52,7 @@ namespace LanternRouge.Fresno.DataLayer.Test
                     var userRepo = new UserRepository(transaction);
                     userRepo.Add(user);
 
-                    var stepTest = new StepTest { EffortUnit = "W", Increase = 20f, LoadPreset = 120f, StepDuration = TimeSpan.FromMinutes(4), TestType = "Bike", UserId = user.Id, Temperature = 20f, Weight = 90.1f, TestDate = DateTime.Parse("11.05.2017 19:00") };
+                    var stepTest = new StepTest { EffortUnit = "W", Increase = 20f, LoadPreset = 120f, StepDuration = TimeSpan.FromMinutes(4).Ticks, TestType = "Bike", UserId = user.Id, Temperature = 20f, Weight = 90.1f, TestDate = DateTime.Parse("11.05.2017 19:00") };
                     var stepTestRepo = new StepTestRepository(transaction);
                     stepTestRepo.Add(stepTest);
 

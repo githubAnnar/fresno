@@ -30,6 +30,8 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             allUsers.ForEach((User user) =>
             {
                 user.StepTests = new StepTestRepository(Transaction).FindByParentId(user).ToList();
+                user.IsLoaded = true;
+                user.AcceptChanges();
             });
 
             return allUsers;
@@ -76,6 +78,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
                 throw new ArgumentNullException("entity");
 
             Connection.Execute("UPDATE User SET FirstName = @FirstName, LastName = @LastName, Email = @Email, Street = @Street, PostCode = @PostCode, PostCity = @PostCity, BirthDate = @BirthDate, Height = @Height, Sex = @Sex WHERE Id = @Id", param: new { entity.Id, entity.FirstName, entity.LastName, entity.Email, entity.Street, entity.PostCode, entity.PostCity, entity.BirthDate, entity.Height, entity.Sex }, transaction: Transaction);
+            entity.AcceptChanges();
         }
     }
 }

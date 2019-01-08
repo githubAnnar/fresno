@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LanterneRouge.Fresno.Data\LanterneRouge.Fresno.DataLayer.csproj" />
+    <ProjectReference Include="..\LanterneRouge.Fresno.WpfClient\LanterneRouge.Fresno.WpfClient.csproj" />
   </ItemGroup>
 
   <ItemGroup>

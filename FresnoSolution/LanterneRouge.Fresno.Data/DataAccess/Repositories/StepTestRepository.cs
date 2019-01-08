@@ -32,6 +32,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             {
                 stepTest.ParentUser = new UserRepository(Transaction).FindWithParent(stepTest.UserId);
                 stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
+                stepTest.AcceptChanges();
             });
 
             return stepTests;
@@ -39,7 +40,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 
         public StepTest FindSingle(int id)
         {
-            return Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, TIME(StepDuration), LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
+            return Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, TIME(StepDuration) AS StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
         }
 
         public StepTest FindWithParent(int id)
@@ -58,7 +59,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 
         public IEnumerable<StepTest> FindByParentId(User parent)
         {
-            var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, TIME(StepDuration), LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
+            var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
             stepTests.ForEach((StepTest stepTest) =>
             {
                 stepTest.ParentUser = parent;
@@ -86,6 +87,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
                 throw new ArgumentNullException("entity");
 
             Connection.Execute("UPDATE StepTest SET UserId = @UserId, TestType = @TestType, EffortUnit = @EffortUnit, StepDuration = @StepDuration, LoadPreset = @LoadPreset, Increase = @Increase, Temperature = @Temperature, Weight = @Weight, TestDate = @TestDate WHERE Id = @Id", param: new { entity.Id, entity.UserId, entity.TestType, entity.EffortUnit, entity.StepDuration, entity.LoadPreset, entity.Increase, entity.Temperature, entity.Weight, entity.TestDate }, transaction: Transaction);
+            entity.AcceptChanges();
         }
     }
 }

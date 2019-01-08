@@ -10,10 +10,13 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure
     {
         private readonly string _connectionString;
 
-        public ConnectionFactory(string connectionString)
+        public ConnectionFactory(SQLiteConnectionStringBuilder connectionStringBuilder)
         {
-            _connectionString = connectionString;
+            _connectionString = connectionStringBuilder.ToString();
         }
+
+        public ConnectionFactory(string filename) : this(new SQLiteConnectionStringBuilder { DataSource = filename, ForeignKeys = true, Version = 3 })
+        { }
 
         /// <summary>
         /// 

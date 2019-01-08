@@ -16,7 +16,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
 
         public string EffortUnit { get; set; }
 
-        public TimeSpan StepDuration { get; set; }
+        public long StepDuration { get; set; }
 
         public float LoadPreset { get; set; }
 
@@ -34,7 +34,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
 
         public User ParentUser { get; set; }
 
-        public static StepTest Create(int userId, string testType, string effortUnit, TimeSpan stepDuration, float loadPreset, float increase, float temperature, float weight, DateTime testDate)
+        public static StepTest Create(int userId, string testType, string effortUnit, long stepDuration, float loadPreset, float increase, float temperature, float weight, DateTime testDate)
         {
             var newStepTest = new StepTest { UserId = userId, TestType = testType, EffortUnit = effortUnit, StepDuration = stepDuration, LoadPreset = loadPreset, Increase = increase, Temperature = temperature, Weight = weight, TestDate = testDate };
             newStepTest.AcceptChanges();
