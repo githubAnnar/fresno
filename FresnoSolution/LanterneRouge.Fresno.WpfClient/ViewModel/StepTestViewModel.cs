@@ -263,7 +263,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Validation
 
-        public bool IsValid => ValidatedProperties.All(p => GetValidationError(p) != null);
+        public bool IsValid => ValidatedProperties.All(p => GetValidationError(p) == null);
 
         private static readonly string[] ValidatedProperties = { nameof(TestType), nameof(EffortUnit), nameof(StepDurationTimespan), nameof(LoadPreset), nameof(Increase) };
 
@@ -323,12 +323,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private string ValidateEffortUnit()
         {
-            return ValidateHelpers.IsStringMissing(EffortUnit) || !EffortUnit.Equals("W") || !EffortUnit.Equals("m-s") ? "Effort Unit" : null;
+            return ValidateHelpers.IsStringMissing(EffortUnit) || (!EffortUnit.Equals("W") && !EffortUnit.Equals("m-s")) ? "Effort Unit" : null;
         }
 
         private string ValidateTestType()
         {
-            return ValidateHelpers.IsStringMissing(TestType) || !TestType.Equals("Bike") || !TestType.Equals("Run") ? "Test Type" : null;
+            return ValidateHelpers.IsStringMissing(TestType) || (!TestType.Equals("Bike") && !TestType.Equals("Run")) ? "Test Type" : null;
         }
 
         #endregion

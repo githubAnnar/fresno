@@ -346,9 +346,18 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 {
                     stepTest = stvm;
                 }
+
+                else if (wvm is AllMeasurementsViewModel amvm)
+                {
+                    stepTest = amvm.ParentViewModel;
+                }
             }
 
-            var newMeasurement = Measurement.Create(1, stepTest.StepTestId, 0, 0, 0);
+            var newSequence = stepTest.Source.Measurements.Count == 0 ? 1 : stepTest.Source.Measurements.Max(m => m.Sequence) + 1;
+            var newLoad = stepTest.Source.Measurements.Count == 0 ? stepTest.Source.LoadPreset : stepTest.Source.Measurements.Last().Load + stepTest.Source.Increase;
+
+            var newMeasurement = Measurement.Create(newSequence, stepTest.StepTestId, 0, 0, newLoad);
+            newMeasurement.InCalculation = true;
             newMeasurement.ParentStepTest = stepTest.Source;
             newMeasurement.AcceptChanges();
             stepTest.Source.Measurements.Add(newMeasurement);
@@ -401,7 +410,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
                 if ((wvm = GetActiveSelectedObject()) == null)
                 {
-                    return false;
+                    if ((wvm = GetActiveWorkspace()) == null)
+                    {
+                        return false;
+                    }
+
+                    return wvm is AllMeasurementsViewModel;
                 }
 
                 return wvm is StepTestViewModel;

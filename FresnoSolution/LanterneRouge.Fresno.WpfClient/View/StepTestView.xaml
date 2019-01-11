@@ -40,49 +40,49 @@
             <!-- TestType -->
 
             <Label Grid.Row="0" Grid.Column="0" Content="Test Type:" HorizontalAlignment="Right" Target="{Binding ElementName=testTypeText}" />
-            <TextBox x:Name="testTypeText" Grid.Row="0" Grid.Column="2" Text="{Binding Path=TestType, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+            <TextBox x:Name="testTypeText" Grid.Row="0" Grid.Column="2" Text="{Binding Path=TestType, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
             <ContentPresenter Grid.Row="1" Grid.Column="2" Content="{Binding ElementName=testTypeText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- EffortUnit -->
 
             <Label Grid.Row="2" Grid.Column="0" Content="Effort Unit:" HorizontalAlignment="Right" Target="{Binding ElementName=effortUnitText}" />
-            <TextBox x:Name="effortUnitText" Grid.Row="2" Grid.Column="2" Text="{Binding Path=EffortUnit, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
-            <ContentPresenter Grid.Row="3" Grid.Column="2" Content="{Binding ElementName=testTypeText, Path=(Validation.Errors).CurrentItem}" />
+            <TextBox x:Name="effortUnitText" Grid.Row="2" Grid.Column="2" Text="{Binding Path=EffortUnit, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
+            <ContentPresenter Grid.Row="3" Grid.Column="2" Content="{Binding ElementName=effortUnitText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- StepDuration -->
 
             <Label Grid.Row="4" Grid.Column="0" Content="Step Duration:" HorizontalAlignment="Right" Target="{Binding ElementName=stepDurationText}" />
-            <TextBox x:Name="stepDurationText" Grid.Row="4" Grid.Column="2" Text="{Binding Path=StepDuration, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+            <TextBox x:Name="stepDurationText" Grid.Row="4" Grid.Column="2" Text="{Binding Path=StepDurationTimespan, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
             <ContentPresenter Grid.Row="5" Grid.Column="2" Content="{Binding ElementName=stepDurationText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- LoadPreset -->
 
             <Label Grid.Row="6" Grid.Column="0" Content="Load Preset:" HorizontalAlignment="Right" Target="{Binding ElementName=loadPresetText}" />
-            <TextBox x:Name="loadPresetText" Grid.Row="6" Grid.Column="2" Text="{Binding Path=LoadPreset, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+            <TextBox x:Name="loadPresetText" Grid.Row="6" Grid.Column="2" Text="{Binding Path=LoadPreset, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
             <ContentPresenter Grid.Row="7" Grid.Column="2" Content="{Binding ElementName=loadPresetText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Increase -->
 
             <Label Grid.Row="8" Grid.Column="0" Content="Increase Step:" HorizontalAlignment="Right" Target="{Binding ElementName=increaseText}" />
-            <TextBox x:Name="increaseText" Grid.Row="8" Grid.Column="2" Text="{Binding Path=Increase, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+            <TextBox x:Name="increaseText" Grid.Row="8" Grid.Column="2" Text="{Binding Path=Increase, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
             <ContentPresenter Grid.Row="9" Grid.Column="2" Content="{Binding ElementName=increaseText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Temperature -->
 
             <Label Grid.Row="10" Grid.Column="0" Content="Temperature:" HorizontalAlignment="Right" Target="{Binding ElementName=temperatureText}" />
-            <TextBox x:Name="temperatureText" Grid.Row="10" Grid.Column="2" Text="{Binding Path=Temperature, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+            <TextBox x:Name="temperatureText" Grid.Row="10" Grid.Column="2" Text="{Binding Path=Temperature, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
             <ContentPresenter Grid.Row="11" Grid.Column="2" Content="{Binding ElementName=temperatureText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Weight -->
 
             <Label Grid.Row="12" Grid.Column="0" Content="Weight:" HorizontalAlignment="Right" Target="{Binding ElementName=weightText}" />
-            <TextBox x:Name="weightText" Grid.Row="12" Grid.Column="2" Text="{Binding Path=Weight, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+            <TextBox x:Name="weightText" Grid.Row="12" Grid.Column="2" Text="{Binding Path=Weight, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
             <ContentPresenter Grid.Row="13" Grid.Column="2" Content="{Binding ElementName=weightText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- TestDate -->
 
             <Label Grid.Row="14" Grid.Column="0" Content="Test Date:" HorizontalAlignment="Right" Target="{Binding ElementName=testDateDate}" />
-            <DatePicker x:Name="testDateDate" Grid.Row="14" Grid.Column="2" Text="{Binding Path=TestDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+            <DatePicker x:Name="testDateDate" Grid.Row="14" Grid.Column="2" Text="{Binding Path=TestDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
             <ContentPresenter Grid.Row="15" Grid.Column="2" Content="{Binding ElementName=testDateDate, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- BUTTONS -->

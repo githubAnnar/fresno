@@ -64,6 +64,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             {
                 stepTest.ParentUser = parent;
                 stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
+                stepTest.AcceptChanges();
             });
             return stepTests;
         }

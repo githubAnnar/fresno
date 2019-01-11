@@ -34,31 +34,31 @@
         <!-- Sequence -->
 
         <Label Grid.Row="0" Grid.Column="0" Content="Sequence:" HorizontalAlignment="Right" Target="{Binding ElementName=sequenceText}" />
-        <TextBox x:Name="sequenceText" Grid.Row="0" Grid.Column="2" Text="{Binding Path=Sequence, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+        <TextBox x:Name="sequenceText" Grid.Row="0" Grid.Column="2" Text="{Binding Path=Sequence, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
         <ContentPresenter Grid.Row="1" Grid.Column="2" Content="{Binding ElementName=sequenceText, Path=(Validation.Errors).CurrentItem}" />
 
         <!-- Load -->
 
         <Label Grid.Row="2" Grid.Column="0" Content="Load:" HorizontalAlignment="Right" Target="{Binding ElementName=loadText}" />
-        <TextBox x:Name="loadText" Grid.Row="2" Grid.Column="2" Text="{Binding Path=Load, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+        <TextBox x:Name="loadText" Grid.Row="2" Grid.Column="2" Text="{Binding Path=Load, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
         <ContentPresenter Grid.Row="3" Grid.Column="2" Content="{Binding ElementName=loadText, Path=(Validation.Errors).CurrentItem}" />
 
         <!-- Lactate -->
 
         <Label Grid.Row="4" Grid.Column="0" Content="Lactate:" HorizontalAlignment="Right" Target="{Binding ElementName=lactateText}" />
-        <TextBox x:Name="lactateText" Grid.Row="4" Grid.Column="2" Text="{Binding Path=Lactate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+        <TextBox x:Name="lactateText" Grid.Row="4" Grid.Column="2" Text="{Binding Path=Lactate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
         <ContentPresenter Grid.Row="5" Grid.Column="2" Content="{Binding ElementName=lactateText, Path=(Validation.Errors).CurrentItem}" />
 
         <!-- HeartRate -->
 
         <Label Grid.Row="6" Grid.Column="0" Content="Heart Rate:" HorizontalAlignment="Right" Target="{Binding ElementName=heartRateText}" />
-        <TextBox x:Name="heartRateText" Grid.Row="6" Grid.Column="2" Text="{Binding Path=Lactate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+        <TextBox x:Name="heartRateText" Grid.Row="6" Grid.Column="2" Text="{Binding Path=HeartRate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
         <ContentPresenter Grid.Row="7" Grid.Column="2" Content="{Binding ElementName=heartRateText, Path=(Validation.Errors).CurrentItem}" />
 
         <!-- InCalculation -->
 
         <Label Grid.Row="8" Grid.Column="0" Content="In Calculation:" HorizontalAlignment="Right" Target="{Binding ElementName=inCalculationCheck}" />
-        <CheckBox x:Name="inCalculationCheck" Grid.Row="8" Grid.Column="2" IsChecked="{Binding Path=InCalculation, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown"/>
+        <CheckBox x:Name="inCalculationCheck" Grid.Row="8" Grid.Column="2" IsChecked="{Binding Path=InCalculation, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
         <ContentPresenter Grid.Row="9" Grid.Column="2" Content="{Binding ElementName=inCalculationCheck, Path=(Validation.Errors).CurrentItem}" />
 
         <!-- BUTTONS -->

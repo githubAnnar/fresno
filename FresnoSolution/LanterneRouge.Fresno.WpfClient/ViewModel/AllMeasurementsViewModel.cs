@@ -28,6 +28,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             : this(mainWorkspaceViewModel)
         {
             CreateAllMeasurements(parentStepTest);
+            ParentViewModel = parentStepTest;
         }
 
         public AllMeasurementsViewModel(UserViewModel parentUser, IWorkspaceCommands mainWorkspaceViewModel)
@@ -79,6 +80,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             get { return AllMeasurements.FirstOrDefault(item => item.IsSelected); }
         }
 
+        public StepTestViewModel ParentViewModel { get; }
+
         public static string GetIdentifierName(MeasurementViewModel measurement)
         {
             return string.Format("{0}_Category_{1}", _name, measurement.MeasurementId);
@@ -111,6 +114,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 {
                     measurementVM.PropertyChanged += OnMeasurementViewModelPropertyChanged;
                 }
+
+                OnPropertyChanged(nameof(AllMeasurements));
             }
 
             if (e.OldItems != null && !e.OldItems.Count.Equals(0))

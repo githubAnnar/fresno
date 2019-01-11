@@ -43,7 +43,7 @@
                 <GridView>
                     <GridViewColumn Header="Test Date" DisplayMemberBinding="{Binding TestDate}" sf:GridViewSort.PropertyName="TestDate"/>
                     <GridViewColumn Header="Test Type" DisplayMemberBinding="{Binding TestType}" sf:GridViewSort.PropertyName="TestType"/>
-                    <GridViewColumn Header="Step Duration" DisplayMemberBinding="{Binding StepDuration}" sf:GridViewSort.PropertyName="StepDuration"/>
+                    <GridViewColumn Header="Step Duration" DisplayMemberBinding="{Binding StepDurationTimespan}" sf:GridViewSort.PropertyName="StepDurationTimespan"/>
                     <GridViewColumn Header="Load Preset" DisplayMemberBinding="{Binding LoadPreset}" sf:GridViewSort.PropertyName="LoadPreset"/>
                     <GridViewColumn Header="Increase" DisplayMemberBinding="{Binding Increase}" sf:GridViewSort.PropertyName="Increase"/>
                 </GridView>

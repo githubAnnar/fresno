@@ -138,6 +138,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Methods
 
+        public override string ToString()
+        {
+            return $"Measurement ({Source.ParentStepTest.Id} / {Sequence})";
+        }
+
         public void Save(object param)
         {
             if (Source.IsChanged)
