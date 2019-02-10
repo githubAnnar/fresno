@@ -6,7 +6,7 @@ namespace LanterneRouge.Fresno.WpfClient.Utils
     {
         internal static bool IsStringMissing(string value)
         {
-            return string.IsNullOrEmpty(value.Trim());
+            return value == null || string.IsNullOrEmpty(value.Trim());
         }
 
         internal static bool IsDateMissing(DateTime? value)

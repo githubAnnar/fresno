@@ -28,7 +28,7 @@ namespace LanterneRouge.Fresno.Calculations
                         var lHr = Calculation.FittedHeartRateCurve(lLoad);
                         var uLoad = i == Limits.Length ? double.PositiveInfinity : Calculation.FindLoadFromLactate(Limits[i]);
                         var uHr = i == Limits.Length ? double.PositiveInfinity : Calculation.FittedHeartRateCurve(uLoad);
-                        _zones.Add(new Zone($"Zone {i}", lLoad, uLoad, lHr, uHr));
+                        _zones.Add(new Zone($"Zone {i}", lLoad, uLoad, lHr, uHr, i - 1));
                     }
                 }
 

@@ -1,4 +1,6 @@
-﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+﻿using LanterneRouge.Fresno.Calculations;
+using LanterneRouge.Fresno.Calculations.Base;
+using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
@@ -9,6 +11,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -85,6 +89,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
                 {
                     IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
+                    ShowAllUsers();
                 }
             }
         }
@@ -255,7 +260,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void ShowStepTest(StepTestViewModel stepTest)
         {
-
             if (!(Workspaces.FirstOrDefault(vm => vm is StepTestViewModel && (vm as StepTestViewModel).StepTestId.Equals(stepTest.StepTestId)) is StepTestViewModel workspace))
             {
                 workspace = stepTest;
@@ -267,7 +271,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void ShowStepTest(MeasurementViewModel measurement)
         {
-
             if (!(Workspaces.FirstOrDefault(vm => vm is StepTestViewModel && (vm as StepTestViewModel).StepTestId.Equals(measurement.Source.ParentStepTest.Id)) is StepTestViewModel workspace))
             {
                 workspace = new StepTestViewModel(measurement.Source.ParentStepTest, this);
@@ -430,9 +433,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool IsDatabaseOpen { get; set; }
 
-        public void GenerateCalculation(StepTestViewModel viewModel)
+        public void GenerateCalculation(IEnumerable<StepTestViewModel> viewModels)
         {
+            //var calculation = new FlbcCalculation(viewModel.Source.Measurements, 4.0);
+            //var zonesCalc = new LactateBasedZones(calculation, new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 });
+            //var zones = zonesCalc.Zones.ToList();
+            //var message = new StringBuilder($"LT={calculation.LactateThreshold}, HR={calculation.HeartRateThreshold}\r\n");
+            //foreach (var zone in zones)
+            //{
+            //    message.AppendLine(zone.ToString());
+            //}
+            //MessageBox.Show(message.ToString());
 
+            var workspace = new StepTestsPlotViewModel(viewModels);
+            Workspaces.Add(workspace);
+            SetActiveWorkspace(workspace);
         }
 
         #endregion

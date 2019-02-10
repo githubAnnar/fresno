@@ -7,7 +7,7 @@
     <UserControl.Resources>
         <CollectionViewSource x:Key="Measurements" Source="{Binding Path=AllMeasurements}">
             <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="Sequene" Direction="Ascending" />
+                <scm:SortDescription PropertyName="Sequence" Direction="Ascending" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 

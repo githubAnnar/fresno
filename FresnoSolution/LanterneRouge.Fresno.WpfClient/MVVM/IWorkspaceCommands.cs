@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.WpfClient.ViewModel;
+using System.Collections.Generic;
 
 namespace LanterneRouge.Fresno.WpfClient.MVVM
 {
@@ -30,6 +31,6 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
 
         bool CanCreateMeasurement { get; }
 
-        void GenerateCalculation(StepTestViewModel stepTest);
+        void GenerateCalculation(IEnumerable<StepTestViewModel> stepTests);
     }
 }

@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="LanterneRouge.Fresno.WpfClient.View.StepTestsPlotView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:LanterneRouge.Fresno.WpfClient.View"
+             xmlns:oxy="http://oxyplot.org/wpf">
+    <Grid>
+        <oxy:PlotView Model="{Binding StepTestsModel}"/>
+    </Grid>
+</UserControl>

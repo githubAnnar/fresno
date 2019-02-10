@@ -22,11 +22,11 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         public IEnumerable<Measurement> Measurements { get; }
 
-        public IEnumerable<double> Loads => Measurements.Select(m => (double)m.Load);
+        public IEnumerable<double> Loads => Measurements.Where(m => m.InCalculation).Select(m => (double)m.Load);
 
-        public IEnumerable<double> Lactates => Measurements.Select(m => (double)m.Lactate);
+        public IEnumerable<double> Lactates => Measurements.Where(m => m.InCalculation).Select(m => (double)m.Lactate);
 
-        public IEnumerable<double> HeartRates => Measurements.Select(m => (double)m.HeartRate);
+        public IEnumerable<double> HeartRates => Measurements.Where(m => m.InCalculation).Select(m => (double)m.HeartRate);
 
         public virtual float LactateThreshold { get; }
 

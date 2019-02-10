@@ -58,7 +58,7 @@
         <!-- InCalculation -->
 
         <Label Grid.Row="8" Grid.Column="0" Content="In Calculation:" HorizontalAlignment="Right" Target="{Binding ElementName=inCalculationCheck}" />
-        <CheckBox x:Name="inCalculationCheck" Grid.Row="8" Grid.Column="2" IsChecked="{Binding Path=InCalculation, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
+        <CheckBox x:Name="inCalculationCheck" Grid.Row="8" Grid.Column="2" IsChecked="{Binding Path=InCalculation, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
         <ContentPresenter Grid.Row="9" Grid.Column="2" Content="{Binding ElementName=inCalculationCheck, Path=(Validation.Errors).CurrentItem}" />
 
         <!-- BUTTONS -->

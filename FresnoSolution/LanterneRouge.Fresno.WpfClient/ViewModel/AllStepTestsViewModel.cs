@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -13,6 +14,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private static readonly string Name = typeof(AllStepTestsViewModel).Name;
         private readonly IWorkspaceCommands _wsCommands;
+        private ICommand _showDiagramCommand;
+
 
         #endregion
 
@@ -46,6 +49,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #region Public Interface
 
         public ObservableCollection<StepTestViewModel> AllStepTests { get; private set; }
+
+        #region ShowDiagram Command
+
+        public ICommand ShowDiagramCommand => _showDiagramCommand ?? (_showDiagramCommand = new RelayCommand(ShowDiagram, param => CanShowDiagram));
+
+        public bool CanShowDiagram => AllStepTests.Any(at => at.IsSelected);
+
+        private void ShowDiagram(object obj)
+        {
+            _wsCommands.GenerateCalculation(AllStepTests.Where(st => st.IsSelected));
+        }
+
+        #endregion
 
         #endregion
 

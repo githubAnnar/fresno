@@ -21,7 +21,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ICommand _editSelectedCommand;
         private ICommand _showUserCommand;
         private ICommand _showAllMeasurementsCommand;
-        private ICommand _showCalculationCommand;
         private ICommand _addMeasurementCommand;
 
         #endregion
@@ -222,10 +221,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
-        public override WorkspaceViewModel SelectedObject
-        {
-            get { return this; }
-        }
+        public override WorkspaceViewModel SelectedObject => this;
 
         public static string GetIdentifierName(StepTest stepTest)
         {
@@ -364,17 +360,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowAllMeasurements(object obj)
         {
             _wsCommands.ShowAllMeasurements(this);
-        }
-
-        #endregion
-
-        #region ShowCalculationCommand
-
-        public ICommand ShowCalculationCommand => _showCalculationCommand ?? (_showCalculationCommand = new RelayCommand(ShowCalculation));
-
-        private void ShowCalculation(object obj)
-        {
-            _wsCommands.GenerateCalculation(this);
         }
 
         #endregion

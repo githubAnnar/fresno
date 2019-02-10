@@ -74,7 +74,7 @@
             <!-- BirthDate -->
 
             <Label Grid.Row="10" Grid.Column="0" Content="Birth Date:" HorizontalAlignment="Right" Target="{Binding ElementName=birthDateDate}" />
-            <DatePicker x:Name="birthDateDate" Grid.Row="10" Grid.Column="2" Text="{Binding Path=BirthDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
+            <DatePicker x:Name="birthDateDate" Grid.Row="10" Grid.Column="2" SelectedDate="{Binding Path=BirthDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
             <ContentPresenter Grid.Row="11" Grid.Column="2" Content="{Binding ElementName=birthDateDate, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Heighth -->

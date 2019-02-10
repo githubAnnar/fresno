@@ -15,7 +15,6 @@
             <Separator/>
             <MenuItem Header="Show User" Command="{Binding ShowUserCommand}" />
             <MenuItem Header="Show All Measurements" Command="{Binding ShowAllMeasurementsCommand}" />
-            <MenuItem Header="Show Calculation" Command="{Binding ShowCalculationCommand}"/>
             <Separator/>
             <MenuItem Header="Add Measurement" Command="{Binding AddMeasurementCommand}" />
         </ContextMenu>
@@ -37,11 +36,14 @@
         </Style>
 
     </UserControl.Resources>
-    <DockPanel>
-        <ListView AlternationCount="2" DataContext="{StaticResource StepTests}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource StepTestStyle}" sf:GridViewSort.AutoSort="True">
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Height="30">
+            <Button Content="Show Diagram" Command="{Binding ShowDiagramCommand}" Height="25"/>
+        </StackPanel>
+        <ListView AlternationCount="2" DataContext="{StaticResource StepTests}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource StepTestStyle}" sf:GridViewSort.AutoSort="True" SelectionMode="Extended" DockPanel.Dock="Top">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Test Date" DisplayMemberBinding="{Binding TestDate}" sf:GridViewSort.PropertyName="TestDate"/>
+                    <GridViewColumn Header="Test Date" DisplayMemberBinding="{Binding TestDate, StringFormat=dd.MM.yyyy HH:mm}" sf:GridViewSort.PropertyName="TestDate"/>
                     <GridViewColumn Header="Test Type" DisplayMemberBinding="{Binding TestType}" sf:GridViewSort.PropertyName="TestType"/>
                     <GridViewColumn Header="Step Duration" DisplayMemberBinding="{Binding StepDurationTimespan}" sf:GridViewSort.PropertyName="StepDurationTimespan"/>
                     <GridViewColumn Header="Load Preset" DisplayMemberBinding="{Binding LoadPreset}" sf:GridViewSort.PropertyName="LoadPreset"/>

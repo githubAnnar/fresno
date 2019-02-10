@@ -30,6 +30,10 @@
         <vw:StepTestView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:StepTestsPlotViewModel}">
+        <vw:StepTestsPlotView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type vm:MeasurementViewModel}">
         <vw:MeasurementView />
     </DataTemplate>
