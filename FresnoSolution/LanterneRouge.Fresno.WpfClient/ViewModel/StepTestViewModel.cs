@@ -167,7 +167,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             get
             {
-                if (_FLBCZones == null)
+                if (_FLBCZones == null && Source.Measurements != null && Source.Measurements.Count > 0)
                 {
                     if (Source.Measurements != null && Source.Measurements.Count > 0)
                     {
@@ -186,7 +186,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             get
             {
-                if (_percentZones == null)
+                if (_percentZones == null && Source.Measurements != null && Source.Measurements.Count > 0)
                 {
                     var c = new FlbcCalculation(Source.Measurements, 4.0);
                     var z = new PercentOfLTBasedZones(c, new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 });
