@@ -1,7 +1,11 @@
-﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+﻿using LanterneRouge.Fresno.Calculations;
+using LanterneRouge.Fresno.Calculations.Base;
+using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -158,6 +162,41 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
+        private ObservableCollection<Zone> _FLBCZones = null;
+        public ObservableCollection<Zone> FLBCZones
+        {
+            get
+            {
+                if (_FLBCZones == null)
+                {
+                    if (Source.Measurements != null && Source.Measurements.Count > 0)
+                    {
+                        var calculation = new FlbcCalculation(Source.Measurements, 4.0);
+                        var z = new LactateBasedZones(calculation, new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 });
+                        _FLBCZones = new ObservableCollection<Zone>(z.Zones);
+                    }
+                }
+
+                return _FLBCZones;
+            }
+        }
+
+        private ObservableCollection<Zone> _percentZones = null;
+        public ObservableCollection<Zone> PercentZones
+        {
+            get
+            {
+                if (_percentZones == null)
+                {
+                    var c = new FlbcCalculation(Source.Measurements, 4.0);
+                    var z = new PercentOfLTBasedZones(c, new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 });
+                    _percentZones = new ObservableCollection<Zone>(z.Zones);
+                }
+
+                return _percentZones;
+            }
+        }
+
         #endregion
 
         #region Display Properties
@@ -180,14 +219,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                     _isSelected = value;
                     OnPropertyChanged();
                 }
-            }
-        }
-
-        public ICommand SaveCommand
-        {
-            get
-            {
-                return _saveCommand ?? (_saveCommand = new RelayCommand(param => Save(param), param => CanSave));
             }
         }
 
@@ -343,6 +374,15 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #endregion
 
         #region ShowUserCommand
+
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return _saveCommand ?? (_saveCommand = new RelayCommand(param => Save(param), param => CanSave));
+            }
+        }
+
 
         public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(ShowUser));
 
