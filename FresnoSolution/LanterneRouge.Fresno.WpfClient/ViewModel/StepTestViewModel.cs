@@ -181,6 +181,25 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
+        private ObservableCollection<Zone> _FRPBZones = null;
+        public ObservableCollection<Zone> FRPBZones
+        {
+            get
+            {
+                if (_FRPBZones == null && Source.Measurements != null && Source.Measurements.Count > 0)
+                {
+                    if (Source.Measurements != null && Source.Measurements.Count > 0)
+                    {
+                        var calculation = new FrpbCalculation(Source.Measurements, 1.0);
+                        var z = new PercentOfLTBasedZones(calculation, new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 });
+                        _FRPBZones = new ObservableCollection<Zone>(z.Zones);
+                    }
+                }
+
+                return _FRPBZones;
+            }
+        }
+
         private ObservableCollection<Zone> _percentZones = null;
         public ObservableCollection<Zone> PercentZones
         {

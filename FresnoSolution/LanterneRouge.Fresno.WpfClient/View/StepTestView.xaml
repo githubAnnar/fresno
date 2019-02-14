@@ -102,6 +102,17 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </TabItem>
+                    <TabItem Header="FRPB Zones">
+                        <DataGrid ItemsSource="{Binding FRPBZones}" CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserSortColumns="False" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Lower HR" IsReadOnly="True" Binding="{Binding LowerHeartRate, StringFormat={}{0:0}}"/>
+                                <DataGridTextColumn Header="Upper HR" IsReadOnly="True" Binding="{Binding UpperHeartRate, StringFormat={}{0:0}}"/>
+                                <DataGridTextColumn Header="Lower L" IsReadOnly="True" Binding="{Binding LowerLoad, StringFormat={}{0:0.#}}"/>
+                                <DataGridTextColumn Header="Upper L" IsReadOnly="True" Binding="{Binding UpperLoad, StringFormat={}{0:0.#}}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
                     <TabItem Header="Percent Zones">
                         <DataGrid ItemsSource="{Binding PercentZones}" CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserSortColumns="False" AutoGenerateColumns="False">
                             <DataGrid.Columns>
