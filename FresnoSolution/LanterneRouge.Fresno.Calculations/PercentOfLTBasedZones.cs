@@ -25,9 +25,9 @@ namespace LanterneRouge.Fresno.Calculations
                     for (int i = 1; i <= Limits.Length; i++)
                     {
 
-                        var lLoad = Calculation.LactateThreshold * Limits[i - 1];
+                        var lLoad = Calculation.LoadThreshold * Limits[i - 1];
                         var lHr = Calculation.FittedHeartRateCurve(lLoad);
-                        var uLoad = i == Limits.Length ? double.PositiveInfinity : Calculation.LactateThreshold * Limits[i];
+                        var uLoad = i == Limits.Length ? double.PositiveInfinity : Calculation.LoadThreshold * Limits[i];
                         var uHr = i == Limits.Length ? double.PositiveInfinity : Calculation.FittedHeartRateCurve(uLoad);
                         _zones.Add(new Zone($"Zone {i}", lLoad, uLoad, lHr, uHr, i - 1));
                     }

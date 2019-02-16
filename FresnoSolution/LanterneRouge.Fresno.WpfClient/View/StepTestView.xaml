@@ -91,38 +91,47 @@
             <DockPanel Grid.Row="9" Grid.ColumnSpan="6">
                 <TabControl DockPanel.Dock="Top">
                     <TabItem Header="Measurements"></TabItem>
-                    <TabItem Header="FLBH Zones">
-                        <DataGrid ItemsSource="{Binding FLBCZones}" CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserSortColumns="False" AutoGenerateColumns="False">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Lower HR" IsReadOnly="True" Binding="{Binding LowerHeartRate, StringFormat={}{0:0}}"/>
-                                <DataGridTextColumn Header="Upper HR" IsReadOnly="True" Binding="{Binding UpperHeartRate, StringFormat={}{0:0}}"/>
-                                <DataGridTextColumn Header="Lower L" IsReadOnly="True" Binding="{Binding LowerLoad, StringFormat={}{0:0.#}}"/>
-                                <DataGridTextColumn Header="Upper L" IsReadOnly="True" Binding="{Binding UpperLoad, StringFormat={}{0:0.#}}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                    <TabItem Header="FBLC Zones">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding FBLCLactateThresholdText}"/>
+                            <DataGrid ItemsSource="{Binding FBLCZones}" CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserSortColumns="False" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Lower HR" IsReadOnly="True" Binding="{Binding LowerHeartRate, StringFormat={}{0:0}}"/>
+                                    <DataGridTextColumn Header="Upper HR" IsReadOnly="True" Binding="{Binding UpperHeartRate, StringFormat={}{0:0}}"/>
+                                    <DataGridTextColumn Header="Lower L" IsReadOnly="True" Binding="{Binding LowerLoad, StringFormat={}{0:0.#}}"/>
+                                    <DataGridTextColumn Header="Upper L" IsReadOnly="True" Binding="{Binding UpperLoad, StringFormat={}{0:0.#}}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
                     </TabItem>
                     <TabItem Header="FRPB Zones">
-                        <DataGrid ItemsSource="{Binding FRPBZones}" CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserSortColumns="False" AutoGenerateColumns="False">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Lower HR" IsReadOnly="True" Binding="{Binding LowerHeartRate, StringFormat={}{0:0}}"/>
-                                <DataGridTextColumn Header="Upper HR" IsReadOnly="True" Binding="{Binding UpperHeartRate, StringFormat={}{0:0}}"/>
-                                <DataGridTextColumn Header="Lower L" IsReadOnly="True" Binding="{Binding LowerLoad, StringFormat={}{0:0.#}}"/>
-                                <DataGridTextColumn Header="Upper L" IsReadOnly="True" Binding="{Binding UpperLoad, StringFormat={}{0:0.#}}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding FRPBLactateThresholdText}"/>
+                            <DataGrid ItemsSource="{Binding FRPBZones}" CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserSortColumns="False" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Lower HR" IsReadOnly="True" Binding="{Binding LowerHeartRate, StringFormat={}{0:0}}"/>
+                                    <DataGridTextColumn Header="Upper HR" IsReadOnly="True" Binding="{Binding UpperHeartRate, StringFormat={}{0:0}}"/>
+                                    <DataGridTextColumn Header="Lower L" IsReadOnly="True" Binding="{Binding LowerLoad, StringFormat={}{0:0.#}}"/>
+                                    <DataGridTextColumn Header="Upper L" IsReadOnly="True" Binding="{Binding UpperLoad, StringFormat={}{0:0.#}}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
                     </TabItem>
                     <TabItem Header="Percent Zones">
-                        <DataGrid ItemsSource="{Binding PercentZones}" CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserSortColumns="False" AutoGenerateColumns="False">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Lower HR" IsReadOnly="True" Binding="{Binding LowerHeartRate, StringFormat={}{0:0}}"/>
-                                <DataGridTextColumn Header="Upper HR" IsReadOnly="True" Binding="{Binding UpperHeartRate, StringFormat={}{0:0}}"/>
-                                <DataGridTextColumn Header="Lower L" IsReadOnly="True" Binding="{Binding LowerLoad, StringFormat={}{0:0.#}}"/>
-                                <DataGridTextColumn Header="Upper L" IsReadOnly="True" Binding="{Binding UpperLoad, StringFormat={}{0:0.#}}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding FBLCLactateThresholdText}"/>
+                            <DataGrid ItemsSource="{Binding PercentZones}" CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserSortColumns="False" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Lower HR" IsReadOnly="True" Binding="{Binding LowerHeartRate, StringFormat={}{0:0}}"/>
+                                    <DataGridTextColumn Header="Upper HR" IsReadOnly="True" Binding="{Binding UpperHeartRate, StringFormat={}{0:0}}"/>
+                                    <DataGridTextColumn Header="Lower L" IsReadOnly="True" Binding="{Binding LowerLoad, StringFormat={}{0:0.#}}"/>
+                                    <DataGridTextColumn Header="Upper L" IsReadOnly="True" Binding="{Binding UpperLoad, StringFormat={}{0:0.#}}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
                     </TabItem>
                 </TabControl>
             </DockPanel>

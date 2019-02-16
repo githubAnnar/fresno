@@ -28,7 +28,7 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         public IEnumerable<double> HeartRates => Measurements.Where(m => m.InCalculation).Select(m => (double)m.HeartRate);
 
-        public virtual float LactateThreshold { get; }
+        public virtual float LoadThreshold { get; }
 
         public virtual float HeartRateThreshold { get; }
 

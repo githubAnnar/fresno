@@ -14,7 +14,7 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         IEnumerable<double> HeartRates { get; }
 
-        float LactateThreshold { get; }
+        float LoadThreshold { get; }
 
         float HeartRateThreshold { get; }
 

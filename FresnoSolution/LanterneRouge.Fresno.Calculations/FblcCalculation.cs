@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LanterneRouge.Fresno.Calculations
 {
-    public class FlbcCalculation : BaseCalculation
+    public class FblcCalculation : BaseCalculation
     {
         #region Fields
 
@@ -15,7 +15,7 @@ namespace LanterneRouge.Fresno.Calculations
 
         #region Constructors
 
-        public FlbcCalculation(IEnumerable<Measurement> measurements, double marker) : base(measurements)
+        public FblcCalculation(IEnumerable<Measurement> measurements, double marker) : base(measurements)
         {
             Marker = marker;
         }
@@ -26,7 +26,7 @@ namespace LanterneRouge.Fresno.Calculations
 
         public double Marker { get; }
 
-        public override float LactateThreshold
+        public override float LoadThreshold
         {
             get
             {
@@ -45,7 +45,7 @@ namespace LanterneRouge.Fresno.Calculations
             {
                 if (_heartRateThreshold == 0)
                 {
-                    _heartRateThreshold = (float)FittedHeartRateCurve(LactateThreshold);
+                    _heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold);
                 }
 
                 return _heartRateThreshold;

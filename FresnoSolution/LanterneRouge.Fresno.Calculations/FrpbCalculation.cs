@@ -27,7 +27,7 @@ namespace LanterneRouge.Fresno.Calculations
 
         public double Marker { get; }
 
-        public override float LactateThreshold
+        public override float LoadThreshold
         {
             get
             {
@@ -51,7 +51,7 @@ namespace LanterneRouge.Fresno.Calculations
             {
                 if (_heartRateThreshold == 0)
                 {
-                    _heartRateThreshold = (float)FittedHeartRateCurve(LactateThreshold);
+                    _heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold);
                 }
 
                 return _heartRateThreshold;

@@ -24,8 +24,8 @@ namespace LanterneRouge.Fresno.Calculations.Test
                 new Measurement {Sequence = 9,Load = 280f, HeartRate = 162, Lactate = 8.7f, StepTestId = 1 }
             };
 
-            var actual = new FlbcCalculation(testData, 4d);
-            var ltL = actual.LactateThreshold;
+            var actual = new FblcCalculation(testData, 4d);
+            var ltL = actual.LoadThreshold;
             var ltH = actual.HeartRateThreshold;
 
             var actualLBZones = new LactateBasedZones(actual, new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 });

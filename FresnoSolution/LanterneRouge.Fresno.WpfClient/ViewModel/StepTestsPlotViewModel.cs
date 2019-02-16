@@ -37,7 +37,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             foreach (var stepTest in StepTestData)
             {
-                var calc = new FlbcCalculation(stepTest.Source.Measurements, 4.0);
+                var calc = new FblcCalculation(stepTest.Source.Measurements, 4.0);
                 var minX = stepTest.Source.Measurements.Min(m => m.Load) - 10;
                 var maxX = stepTest.Source.Measurements.Max(m => m.Load) + 10;
                 StepTestsModel.Series.Add(new FunctionSeries(calc.FittedLactateCurve, minX, maxX, 20, $"LaF {stepTest.TestDate.ToShortDateString()}") { YAxisKey = LactateAxisKey, XAxisKey = LoadAxisKey });
