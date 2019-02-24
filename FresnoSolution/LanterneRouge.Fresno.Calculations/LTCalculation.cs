@@ -1,6 +1,7 @@
 ﻿using LanterneRouge.Fresno.Calculations.Base;
 using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using MathNet.Numerics;
+using MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +32,9 @@ namespace LanterneRouge.Fresno.Calculations
             {
                 if (Measurements != null)
                 {
-                    var baseMeasurements = Measurements.ToList();
-                    if (_lactateThreshold == 0 && baseMeasurements.Count > 2)
+                    if (_lactateThreshold == 0)
                     {
-                        var baseLine = baseMeasurements[0];
-                        _lactateThreshold = (float)FindLoadFromLactate(baseMeasurements[0].Lactate);
+                        _lactateThreshold = (float)CalculateLT();
                     }
                 }
 
@@ -58,41 +57,59 @@ namespace LanterneRouge.Fresno.Calculations
 
         #endregion
 
-        public float GetLt()
+        private double CalculateLT()
         {
-            var delta = new List<Tuple<double, double>>();
-            for (var k = Loads.Min() + 1d; k < Loads.Max() - 1d; k = k + 0.93)
+            if (Measurements.Count() < 4)
             {
-                var p = Fit.LinearCombinationFunc(
-                    Loads.ToArray(),
-                    Lactates.ToArray(),
-                    x => 1d,
-                    x => x >= k ? x : k,
-                    x => x < k ? 0 : (x - k));
-
-                var pVal = Loads.Select(l => p(l)).ToList();
-                //var results = (from load in Loads from lactate in Lactates from calc in pVal select new Result { x = load, y = lactate, Y = calc }).ToList();
-                //var results = (Loads.Zip(Lactates, (first, second) => new { x = first, y = second }).Zip(pVal, (first, second) => new { x = first.x, y = first.y, Y = second })).ToList();
-
-                //var seg1ObsYAve = results.Where(r => r.x < k).Average(r => r.Y);
-                //var seg2ObsYAve = results.Where(r => r.x > k).Average(r => r.Y);
-
-                //var teller1 = results.Where(r => r.x < k).Sum(r => Math.Pow(r.y - r.Y, 2d));
-                //var teller2 = results.Where(r => r.x >= k).Sum(r => Math.Pow(r.y - r.Y, 2d));
-                //var nevner1 = results.Where(r => r.x < k).Sum(r => Math.Pow(r.y - seg1ObsYAve, 2d));
-                //var nevner2 = results.Where(r => r.x >= k).Sum(r => Math.Pow(r.y - seg2ObsYAve, 2d));
-
-                //var r1 = 1 - (teller1 / nevner1);
-                //var r2 = 1 - (teller2 / nevner2);
-                var cod = GoodnessOfFit.CoefficientOfDetermination(pVal, Lactates);
-
-
-                delta.Add(new Tuple<double, double>(k, cod));
+                return 0d;
             }
 
+            var count = Measurements.Count();
 
+            var x = Loads.ToArray();
+            var y = Lactates.ToArray();
 
-            return (float)0;
+            var results = new List<Result>();
+
+            for (int i = 2; i < count - 2; i++)
+            {
+                var xsub1 = new double[i];
+                var ysub1 = new double[i];
+                var xsub2 = new double[count - i];
+                var ysub2 = new double[count - i];
+
+                Array.Copy(x, 0, xsub1, 0, i);
+                Array.Copy(x, i, xsub2, 0, count - i);
+                Array.Copy(y, 0, ysub1, 0, i);
+                Array.Copy(y, i, ysub2, 0, count - i);
+
+                var line1 = Fit.Line(xsub1, ysub1);
+                var line2 = Fit.Line(xsub2, ysub2);
+
+                var A = Matrix<double>.Build.DenseOfArray(new double[,] { { line1.Item2, -1 }, { line2.Item2, -1 } });
+                var b = Vector<double>.Build.Dense(new double[] { line1.Item1 * -1, line2.Item1 * -1 });
+                var xSolve = A.Solve(b);
+                var gof = GoodnessOfFit.CoefficientOfDetermination(x.Select(x1 => x1 < xSolve[0] ? line1.Item1 + (line1.Item2 * x1) : line2.Item1 + (line2.Item2 * x1)), y);
+                results.Add(new Result { LoadPoint = xSolve[0], LactatePoint = xSolve[1], CoeffOfFit = gof });
+            }
+
+            results.Sort(new ResultComparer());
+
+            return results[0].LoadPoint;
+        }
+
+        private class Result
+        {
+            public double LoadPoint { get; set; }
+
+            public double LactatePoint { get; set; }
+
+            public double CoeffOfFit { get; set; }
+        }
+
+        private class ResultComparer : IComparer<Result>
+        {
+            public int Compare(Result x, Result y) => x == null ? y == null ? 0 : 1 : y == null ? -1 : x.CoeffOfFit.CompareTo(y.CoeffOfFit) * -1;
         }
     }
 }

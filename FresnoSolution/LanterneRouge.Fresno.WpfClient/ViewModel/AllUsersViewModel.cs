@@ -27,7 +27,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void CreateAllUsers()
         {
-            var all = (from user in DataManager.GetAllUsers() select new UserViewModel(user, _wsCommands)).ToList();
+            var all = (from user in DataManager.GetAllUsers(true) select new UserViewModel(user, _wsCommands)).ToList();
 
             foreach (var rvm in all)
             {

@@ -161,15 +161,27 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
+        public double FblcValue => FblcCalculation != null ? FblcCalculation.LoadThreshold : 0d;
+
+        public double FrpbValue => FrpbCalculation != null ? FrpbCalculation.LoadThreshold : 0d;
+
+        public double LtValue => LtCalculation != null ? LtCalculation.LoadThreshold : 0d;
+
+
         public string FBLCLactateThresholdText => FblcCalculation != null ? $"Load Th.: {FblcCalculation.LoadThreshold:0.0} Heartrate Th.: {FblcCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         public string FRPBLactateThresholdText => FrpbCalculation != null ? $"Load Th.: {FrpbCalculation.LoadThreshold:0.0} Heartrate Th.: {FrpbCalculation.HeartRateThreshold:0}" : "No Calculation";
+
+        public string LTLactateThresholdText => LtCalculation != null ? $"Load Th.: {LtCalculation.LoadThreshold:0.0} Heartrate Th.: {LtCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private FblcCalculation _fblcCalculation = null;
         private FblcCalculation FblcCalculation => _fblcCalculation ?? (_fblcCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new FblcCalculation(Source.Measurements, 4.0) : null);
 
         private FrpbCalculation _frpbCalculation = null;
         private FrpbCalculation FrpbCalculation => _frpbCalculation ?? (_frpbCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new FrpbCalculation(Source.Measurements, 1.0) : null);
+
+        private LTCalculation _ltCalculation = null;
+        private LTCalculation LtCalculation => _ltCalculation ?? (_ltCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new LTCalculation(Source.Measurements) : null);
 
         private ObservableCollection<Zone> _FBLCZones = null;
         public ObservableCollection<Zone> FBLCZones
@@ -222,6 +234,24 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 }
 
                 return _percentZones;
+            }
+        }
+
+        private ObservableCollection<Zone> _ltPercentZones = null;
+        public ObservableCollection<Zone> LtPercentZones
+        {
+            get
+            {
+                if (_ltPercentZones == null)
+                {
+                    if (LtCalculation != null)
+                    {
+                        var z = new PercentOfLTBasedZones(LtCalculation, new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 });
+                        _ltPercentZones = new ObservableCollection<Zone>(z.Zones);
+                    }
+                }
+
+                return _ltPercentZones;
             }
         }
 
