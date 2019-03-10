@@ -1,6 +1,4 @@
-﻿using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
@@ -11,8 +9,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -256,6 +252,50 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             newStepTest.AcceptChanges();
             var workspace = new StepTestViewModel(newStepTest, this);
             ShowWorkspace(workspace);
+        }
+
+        public void ShowFblcCalculation(StepTestViewModel stepTestVm)
+        {
+            if (!(Workspaces.FirstOrDefault(vm => vm is FblcCalculationViewModel && (vm as FblcCalculationViewModel).StepTestId.Equals(stepTestVm.StepTestId)) is FblcCalculationViewModel workspace))
+            {
+                workspace = new FblcCalculationViewModel(stepTestVm.Source, this);
+                Workspaces.Add(workspace);
+            }
+
+            SetActiveWorkspace(workspace);
+        }
+
+        public void ShowFrpbCalculation(StepTestViewModel stepTestVm)
+        {
+            if (!(Workspaces.FirstOrDefault(vm => vm is FrpbCalculationViewModel && (vm as FrpbCalculationViewModel).StepTestId.Equals(stepTestVm.StepTestId)) is FrpbCalculationViewModel workspace))
+            {
+                workspace = new FrpbCalculationViewModel(stepTestVm.Source, this);
+                Workspaces.Add(workspace);
+            }
+
+            SetActiveWorkspace(workspace);
+        }
+
+        public void ShowLtCalculation(StepTestViewModel stepTestVm)
+        {
+            if (!(Workspaces.FirstOrDefault(vm => vm is LtCalculationViewModel && (vm as LtCalculationViewModel).StepTestId.Equals(stepTestVm.StepTestId)) is LtCalculationViewModel workspace))
+            {
+                workspace = new LtCalculationViewModel(stepTestVm.Source, this);
+                Workspaces.Add(workspace);
+            }
+
+            SetActiveWorkspace(workspace);
+        }
+
+        public void ShowLtLogCalculation(StepTestViewModel stepTestVm)
+        {
+            if (!(Workspaces.FirstOrDefault(vm => vm is LtLogCalculationViewModel && (vm as LtLogCalculationViewModel).StepTestId.Equals(stepTestVm.StepTestId)) is LtLogCalculationViewModel workspace))
+            {
+                workspace = new LtLogCalculationViewModel(stepTestVm.Source, this);
+                Workspaces.Add(workspace);
+            }
+
+            SetActiveWorkspace(workspace);
         }
 
         public void ShowStepTest(StepTestViewModel stepTest)

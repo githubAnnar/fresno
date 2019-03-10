@@ -1,10 +1,8 @@
 ﻿using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.Calculations.Base;
 using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -25,6 +23,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ICommand _showUserCommand;
         private ICommand _showAllMeasurementsCommand;
         private ICommand _addMeasurementCommand;
+        private ICommand _showFlbcCalculationCommand;
+        private ICommand _showFrpbCalculationCommand;
+        private ICommand _showLtCalculationCommand;
+        private ICommand _showLtLogCalculationCommand;
 
         #endregion
 
@@ -167,12 +169,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public double LtValue => LtCalculation != null ? LtCalculation.LoadThreshold : 0d;
 
-
-        public string FBLCLactateThresholdText => FblcCalculation != null ? $"Load Th.: {FblcCalculation.LoadThreshold:0.0} Heartrate Th.: {FblcCalculation.HeartRateThreshold:0}" : "No Calculation";
-
-        public string FRPBLactateThresholdText => FrpbCalculation != null ? $"Load Th.: {FrpbCalculation.LoadThreshold:0.0} Heartrate Th.: {FrpbCalculation.HeartRateThreshold:0}" : "No Calculation";
-
-        public string LTLactateThresholdText => LtCalculation != null ? $"Load Th.: {LtCalculation.LoadThreshold:0.0} Heartrate Th.: {LtCalculation.HeartRateThreshold:0}" : "No Calculation";
+        public double LtLogValue => LtLogCalculation != null ? LtLogCalculation.LoadThreshold : 0d;
 
         private FblcCalculation _fblcCalculation = null;
         private FblcCalculation FblcCalculation => _fblcCalculation ?? (_fblcCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new FblcCalculation(Source.Measurements, 4.0) : null);
@@ -183,89 +180,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private LTCalculation _ltCalculation = null;
         private LTCalculation LtCalculation => _ltCalculation ?? (_ltCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new LTCalculation(Source.Measurements) : null);
 
-        private ObservableCollection<Zone> _FBLCZones = null;
-        public ObservableCollection<Zone> FBLCZones
-        {
-            get
-            {
-                if (_FBLCZones == null && Source.Measurements != null && Source.Measurements.Count > 0)
-                {
-                    if (FblcCalculation != null)
-                    {
-                        var z = new LactateBasedZones(FblcCalculation, new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 });
-                        _FBLCZones = new ObservableCollection<Zone>(z.Zones);
-                    }
-                }
-
-                return _FBLCZones;
-            }
-        }
-
-        private ObservableCollection<Zone> _FRPBZones = null;
-        public ObservableCollection<Zone> FRPBZones
-        {
-            get
-            {
-                if (_FRPBZones == null && Source.Measurements != null && Source.Measurements.Count > 0)
-                {
-                    if (FrpbCalculation != null)
-                    {
-                        var z = new PercentOfLTBasedZones(FrpbCalculation, new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 });
-                        _FRPBZones = new ObservableCollection<Zone>(z.Zones);
-                    }
-                }
-
-                return _FRPBZones;
-            }
-        }
-
-        private ObservableCollection<Zone> _percentZones = null;
-        public ObservableCollection<Zone> PercentZones
-        {
-            get
-            {
-                if (_percentZones == null)
-                {
-                    if (FblcCalculation != null)
-                    {
-                        var z = new PercentOfLTBasedZones(FblcCalculation, new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 });
-                        _percentZones = new ObservableCollection<Zone>(z.Zones);
-                    }
-                }
-
-                return _percentZones;
-            }
-        }
-
-        private ObservableCollection<Zone> _ltPercentZones = null;
-        public ObservableCollection<Zone> LtPercentZones
-        {
-            get
-            {
-                if (_ltPercentZones == null)
-                {
-                    if (LtCalculation != null)
-                    {
-                        var z = new PercentOfLTBasedZones(LtCalculation, new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 });
-                        _ltPercentZones = new ObservableCollection<Zone>(z.Zones);
-                    }
-                }
-
-                return _ltPercentZones;
-            }
-        }
+        private LTLogCalculation _ltLogCalculation = null;
+        private LTLogCalculation LtLogCalculation => _ltLogCalculation ?? (_ltLogCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new LTLogCalculation(Source.Measurements) : null);
 
         #endregion
 
         #region Display Properties
 
-        public override string DisplayName
-        {
-            get
-            {
-                return Source.Id == 0 ? "New Step Test"/*KayakStrings.Category_New_Singular*/ : ToString();
-            }
-        }
+        public override string DisplayName => Source.Id == 0 ? "New Step Test"/*KayakStrings.Category_New_Singular*/ : ToString();
 
         public bool IsSelected
         {
@@ -469,6 +391,50 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void AddMeasurement(object obj)
         {
             _wsCommands.CreateNewMeasurement(this);
+        }
+
+        #endregion
+
+        #region ShowFblcCalculationCommand
+
+        public ICommand ShowFblcCalculationCommand => _showFlbcCalculationCommand ?? (_showFlbcCalculationCommand = new RelayCommand(ShowFlbcCalculation));
+
+        private void ShowFlbcCalculation(object obj)
+        {
+            _wsCommands.ShowFblcCalculation(this);
+        }
+
+        #endregion
+
+        #region ShowFrpbCalculationCommand
+
+        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ?? (_showFrpbCalculationCommand = new RelayCommand(ShowFrpbCalculation));
+
+        private void ShowFrpbCalculation(object obj)
+        {
+            _wsCommands.ShowFrpbCalculation(this);
+        }
+
+        #endregion
+
+        #region ShowLtCalculationCommand
+
+        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ?? (_showLtCalculationCommand = new RelayCommand(ShowLtCalculation));
+
+        private void ShowLtCalculation(object obj)
+        {
+            _wsCommands.ShowLtCalculation(this);
+        }
+
+        #endregion
+
+        #region ShowLtLogCalculationCommand
+
+        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ?? (_showLtLogCalculationCommand = new RelayCommand(ShowLtLogCalculation));
+
+        private void ShowLtLogCalculation(object obj)
+        {
+            _wsCommands.ShowLtLogCalculation(this);
         }
 
         #endregion

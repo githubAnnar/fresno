@@ -30,6 +30,22 @@
         <vw:StepTestView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:FblcCalculationViewModel}">
+        <vw:FblcCalculationView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:FrpbCalculationViewModel}">
+        <vw:FrpbCalculationView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LtCalculationViewModel}">
+        <vw:LtCalculationView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LtLogCalculationViewModel}">
+        <vw:LtLogCalculationView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type vm:StepTestsPlotViewModel}">
         <vw:StepTestsPlotView />
     </DataTemplate>

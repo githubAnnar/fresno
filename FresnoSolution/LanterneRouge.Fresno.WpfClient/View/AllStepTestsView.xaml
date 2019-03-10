@@ -17,6 +17,11 @@
             <MenuItem Header="Show All Measurements" Command="{Binding ShowAllMeasurementsCommand}" />
             <Separator/>
             <MenuItem Header="Add Measurement" Command="{Binding AddMeasurementCommand}" />
+            <Separator/>
+            <MenuItem Header="Flbc Calculation" Command="{Binding ShowFblcCalculationCommand}"/>
+            <MenuItem Header="Frpb Calculation" Command="{Binding ShowFrpbCalculationCommand}"/>
+            <MenuItem Header="LT Calculation" Command="{Binding ShowLtCalculationCommand}"/>
+            <MenuItem Header="LT Log Calculation" Command="{Binding ShowLtLogCalculationCommand}"/>
         </ContextMenu>
 
         <Style x:Key="StepTestStyle" TargetType="{x:Type ListViewItem}">
@@ -51,6 +56,7 @@
                     <GridViewColumn Header="FBLC" DisplayMemberBinding="{Binding FblcValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FblcValue"/>
                     <GridViewColumn Header="FRBP" DisplayMemberBinding="{Binding FrpbValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FrpbValue"/>
                     <GridViewColumn Header="LT" DisplayMemberBinding="{Binding LtValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtValue"/>
+                    <GridViewColumn Header="LT Log" DisplayMemberBinding="{Binding LtLogValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtLogValue"/>
                 </GridView>
             </ListView.View>
         </ListView>

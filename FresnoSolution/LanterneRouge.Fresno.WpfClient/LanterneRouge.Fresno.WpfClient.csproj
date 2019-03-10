@@ -155,6 +155,10 @@
     <Compile Include="ViewModel\AllStepTestsViewModel.cs" />
     <Compile Include="ViewModel\AllUsersViewModel.cs" />
     <Compile Include="ViewModel\CommandViewModel.cs" />
+    <Compile Include="ViewModel\FblcCalculationViewModel.cs" />
+    <Compile Include="ViewModel\FrpbCalculationViewModel.cs" />
+    <Compile Include="ViewModel\LtLogCalculationViewModel.cs" />
+    <Compile Include="ViewModel\LtCalculationViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MeasurementViewModel.cs" />
     <Compile Include="ViewModel\StepTestsPlotViewModel.cs" />
@@ -169,6 +173,18 @@
     </Compile>
     <Compile Include="View\AllUsersView.xaml.cs">
       <DependentUpon>AllUsersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FblcCalculationView.xaml.cs">
+      <DependentUpon>FblcCalculationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FrpbCalculationView.xaml.cs">
+      <DependentUpon>FrpbCalculationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LtLogCalculationView.xaml.cs">
+      <DependentUpon>LtLogCalculationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LtCalculationView.xaml.cs">
+      <DependentUpon>LtCalculationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MeasurementView.xaml.cs">
       <DependentUpon>MeasurementView.xaml</DependentUpon>
@@ -210,6 +226,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AllUsersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FblcCalculationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FrpbCalculationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LtLogCalculationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LtCalculationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

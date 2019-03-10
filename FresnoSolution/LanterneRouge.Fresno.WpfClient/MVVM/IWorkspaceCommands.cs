@@ -32,5 +32,13 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
         bool CanCreateMeasurement { get; }
 
         void GenerateCalculation(IEnumerable<StepTestViewModel> stepTests);
+
+        void ShowFblcCalculation(StepTestViewModel stepTestVm);
+
+        void ShowFrpbCalculation(StepTestViewModel stepTestVm);
+
+        void ShowLtCalculation(StepTestViewModel stepTestVm);
+
+        void ShowLtLogCalculation(StepTestViewModel stepTestVm);
     }
 }

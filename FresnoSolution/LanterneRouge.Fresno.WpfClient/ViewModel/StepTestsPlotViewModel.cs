@@ -23,7 +23,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             StepTestData = stepTests.ToList();
             var testPlotType = stepTests.Count() > 1 ? "Comparison" : "Plot";
-            StepTestsModel = new PlotModel { Title = $"{testPlotType} of user {string.Join(", ", stepTests.Select(st => st.Source.ParentUser.LastName).Distinct())}", LegendPosition= LegendPosition.LeftTop };
+            StepTestsModel = new PlotModel { Title = $"{testPlotType} of user {string.Join(", ", stepTests.Select(st => st.Source.ParentUser.LastName).Distinct())}", LegendPosition = LegendPosition.LeftTop };
             var minLoad = stepTests.Select(st => st.Source.Measurements.Min(m => m.Load)).Min();
             var maxLoad = stepTests.Select(st => st.Source.Measurements.Max(m => m.Load)).Max();
             var minLactate = stepTests.Select(st => st.Source.Measurements.Min(m => m.Lactate)).Min();
@@ -41,13 +41,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 var minX = stepTest.Source.Measurements.Min(m => m.Load) - 10;
                 var maxX = stepTest.Source.Measurements.Max(m => m.Load) + 10;
                 StepTestsModel.Series.Add(new FunctionSeries(calc.FittedLactateCurve, minX, maxX, 20, $"LaF {stepTest.TestDate.ToShortDateString()}") { YAxisKey = LactateAxisKey, XAxisKey = LoadAxisKey });
+                StepTestsModel.Series.Add(new FunctionSeries(calc.FittedHeartRateCurve, minX, maxX, 20, $"HrF {stepTest.TestDate.ToShortDateString()}") { YAxisKey = HeartrateAxisKey, XAxisKey = LoadAxisKey });
 
                 var lactateScatterSeries = new ScatterSeries { YAxisKey = LactateAxisKey, XAxisKey = LoadAxisKey, Title = $"LaM {stepTest.TestDate.ToShortDateString()}" };
-                var heartRateSeries = new LineSeries { YAxisKey = HeartrateAxisKey, XAxisKey = LoadAxisKey, Title = $"HR {stepTest.TestDate.ToShortDateString()}" };
+                var heartRateSeries = new ScatterSeries { YAxisKey = HeartrateAxisKey, XAxisKey = LoadAxisKey, Title = $"HRM {stepTest.TestDate.ToShortDateString()}" };
 
                 foreach (var item in stepTest.Source.Measurements)
                 {
-                    heartRateSeries.Points.Add(new DataPoint(item.Load, item.HeartRate));
+                    heartRateSeries.Points.Add(new ScatterPoint(item.Load, item.HeartRate));
                     lactateScatterSeries.Points.Add(new ScatterPoint(item.Load, item.Lactate));
                 }
 

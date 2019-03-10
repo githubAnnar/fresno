@@ -56,6 +56,7 @@
     <Compile Include="LactateBasedZones.cs" />
     <Compile Include="Base\Zone.cs" />
     <Compile Include="FblcCalculation.cs" />
+    <Compile Include="LTLogCalculation.cs" />
     <Compile Include="LTCalculation.cs" />
     <Compile Include="PercentOfLTBasedZones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
