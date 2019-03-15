@@ -1,10 +1,7 @@
-﻿using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
+﻿using System.Reflection;
 
 [assembly: AssemblyCompany("Lanterne Rouge")]
-[assembly: AssemblyProduct("LanterneRouge.Fresno.Data")]
-[assembly: AssemblyCopyright("Copyright © Lanterne Rouge 2018")]
+[assembly: AssemblyCopyright("Copyright © Lanterne Rouge 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

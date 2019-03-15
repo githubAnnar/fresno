@@ -49,6 +49,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\LanterneRouge.Fresno.AssemblyInfo.cs">
+      <Link>Properties\LanterneRouge.Fresno.AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="LactateCalculationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

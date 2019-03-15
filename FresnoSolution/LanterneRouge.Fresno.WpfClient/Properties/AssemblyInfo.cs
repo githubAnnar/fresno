@@ -9,6 +9,7 @@ using System.Windows;
 [assembly: AssemblyTitle("LanterneRouge.Fresno.WpfClient")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
+[assembly: AssemblyProduct("LanterneRouge.Fresno.WpfClient")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from

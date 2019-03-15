@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5FD857F4-ACC3-44A1-A628-D1B5AD24A3E4}</ProjectGuid>
+    <ProjectGuid>{C37D6DA3-9082-4416-A4B8-3DA83F23C1C9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LanterneRouge.Fresno.Calculations</RootNamespace>
-    <AssemblyName>LanterneRouge.Fresno.Calculations</AssemblyName>
+    <RootNamespace>LanterneRouge.Fresno.Report</RootNamespace>
+    <AssemblyName>LanterneRouge.Fresno.Report</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>false</Deterministic>
@@ -31,16 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="MathNet.Numerics, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MathNet.Numerics.4.7.0\lib\net461\MathNet.Numerics.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,28 +44,8 @@
     <Compile Include="..\LanterneRouge.Fresno.AssemblyInfo.cs">
       <Link>Properties\LanterneRouge.Fresno.AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Base\BaseCalculation.cs" />
-    <Compile Include="Base\ICalculation.cs" />
-    <Compile Include="Base\IZoneRange.cs" />
-    <Compile Include="FrpbCalculation.cs" />
-    <Compile Include="LactateBasedZones.cs" />
-    <Compile Include="Base\Zone.cs" />
-    <Compile Include="FblcCalculation.cs" />
-    <Compile Include="LTLogCalculation.cs" />
-    <Compile Include="LTCalculation.cs" />
-    <Compile Include="PercentOfLTBasedZones.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LanterneRouge.Fresno.Data\LanterneRouge.Fresno.DataLayer.csproj">
-      <Project>{859f9463-30fa-47e5-acd4-c2f23dbc293b}</Project>
-      <Name>LanterneRouge.Fresno.DataLayer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
