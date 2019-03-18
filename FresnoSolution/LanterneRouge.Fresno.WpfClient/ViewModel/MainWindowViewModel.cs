@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
@@ -8,7 +9,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -56,8 +59,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("All Users", new RelayCommand(param => ShowAllUsers(), param=>IsDatabaseOpen)),
                 new CommandViewModel($"Create New User", new RelayCommand(param => CreateNewUser(), param=>IsDatabaseOpen)),
                 new CommandViewModel("All Step Tests", new RelayCommand(param => ShowAllStepTests(param as UserViewModel), param=>CanShowAllStepTests)),
-                new CommandViewModel($"Create New Step Test", new RelayCommand(param => CreateNewStepTest(param), param =>CanCreateStepTest)),
-                new CommandViewModel("All Measurements", new RelayCommand(param=> ShowAllMeasurements(param as StepTestViewModel), param=>CanShowAllMeasurements)),
+                new CommandViewModel($"Create New Step Test", new RelayCommand(param => CreateNewStepTest(param), param => CanCreateStepTest)),
+                new CommandViewModel("Generate PDF Report", new RelayCommand(param => GenerateStepTestPdf(param as StepTestViewModel), param => CanGenerateStepTestPdf)),
+                new CommandViewModel("All Measurements", new RelayCommand(param=> ShowAllMeasurements(param as StepTestViewModel), param => CanShowAllMeasurements)),
                 new CommandViewModel($"Create New Measurement", new RelayCommand(param=>CreateNewMeasurement(param), param=>CanCreateMeasurement))
             };
         }
@@ -361,6 +365,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
+        public void GenerateStepTestPdf(StepTestViewModel stepTest)
+        {
+            if (stepTest == null)
+            {
+                stepTest = GetActiveSelectedObject() as StepTestViewModel;
+            }
+
+            var generator = new StepTestReport(stepTest.Source);
+            var pdfDocument = generator.CreateReport();
+            var filename = $"{stepTest.Source.ParentUser.FirstName} {stepTest.Source.ParentUser.LastName} ({stepTest.Source.Id}).pdf";
+            generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument);
+
+            MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         #endregion
 
         #region Measurement Helpers
@@ -459,6 +478,20 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                     }
 
                     return wvm is AllMeasurementsViewModel;
+                }
+
+                return wvm is StepTestViewModel;
+            }
+        }
+
+        public bool CanGenerateStepTestPdf
+        {
+            get
+            {
+                WorkspaceViewModel wvm;
+                if ((wvm = GetActiveSelectedObject()) == null)
+                {
+                    return false;
                 }
 
                 return wvm is StepTestViewModel;

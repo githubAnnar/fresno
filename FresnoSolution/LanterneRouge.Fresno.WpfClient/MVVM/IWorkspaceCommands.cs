@@ -23,6 +23,8 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
 
         void ShowMeasurement(MeasurementViewModel measurement);
 
+        void GenerateStepTestPdf(StepTestViewModel stepTest);
+
         void CreateNewStepTest(object userObject);
 
         bool CanCreateStepTest { get; }
