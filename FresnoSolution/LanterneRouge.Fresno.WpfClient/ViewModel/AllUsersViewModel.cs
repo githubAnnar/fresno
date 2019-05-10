@@ -23,17 +23,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             DisplayName = "All Users"; /*KayakStrings.Race_All_Races;*/
             _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException("mainWorkspaceViewModel");
             CreateAllUsers();
+            DataManager.Committed += DataManager_Committed;
+        }
+
+        private void DataManager_Committed()
+        {
+            OnDispose();
+            CreateAllUsers();
         }
 
         private void CreateAllUsers()
         {
             var all = (from user in DataManager.GetAllUsers(true) select new UserViewModel(user, _wsCommands)).ToList();
-
-            foreach (var rvm in all)
-            {
-                rvm.PropertyChanged += OnUserViewModelPropertyChanged;
-            }
-
+            all.ForEach(a => a.PropertyChanged += OnUserViewModelPropertyChanged);
             AllUsers = new ObservableCollection<UserViewModel>(all);
             AllUsers.CollectionChanged += OnCollectionChanged;
         }
@@ -97,7 +99,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             // Make sure that the property name we're referencing is valid.
             // This is a debugging technique, and does not execute in a Release build.
-            if (sender is UserViewModel raceViewModel) raceViewModel.VerifyPropertyName(isSelected);
+            if (sender is UserViewModel userViewModel) userViewModel.VerifyPropertyName(isSelected);
 
             // When a customer is selected or unselected, we must let the
             // world know that the TotalSelectedSales property has changed,

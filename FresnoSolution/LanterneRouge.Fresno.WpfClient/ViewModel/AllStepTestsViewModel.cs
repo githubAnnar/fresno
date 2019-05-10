@@ -16,7 +16,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private readonly IWorkspaceCommands _wsCommands;
         private ICommand _showDiagramCommand;
 
-
         #endregion
 
         #region Constructors
@@ -31,22 +30,38 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             DisplayName = parentUser == null ? "All Users"/*KayakStrings.Category_All_Categories*/ : $"StepTests: {parentUser.LastName}";
             CreateAllStepTests(parentUser);
+            DataManager.Committed += DataManager_Committed;
+        }
+
+        private void DataManager_Committed()
+        {
+            OnDispose();
+            CreateAllStepTests(null);
         }
 
         private void CreateAllStepTests(UserViewModel parentUser)
         {
-            if (parentUser != null)
+            if (ParentUserViewModel == null && parentUser != null)
             {
-                var all = (from stepTest in parentUser.Source.StepTests select new StepTestViewModel(stepTest, _wsCommands)).ToList();
-                all.ForEach(cvm => cvm.PropertyChanged += OnStepTestViewModelPropertyChanged);
-                AllStepTests = new ObservableCollection<StepTestViewModel>(all);
-                AllStepTests.CollectionChanged += OnCollectionChanged;
+                ParentUserViewModel = parentUser;
             }
+
+            else if (ParentUserViewModel == null && parentUser == null)
+            {
+                return;
+            }
+
+            var all = (from stepTest in ParentUserViewModel.Source.StepTests select new StepTestViewModel(stepTest, _wsCommands)).ToList();
+            all.ForEach(cvm => cvm.PropertyChanged += OnStepTestViewModelPropertyChanged);
+            AllStepTests = new ObservableCollection<StepTestViewModel>(all);
+            AllStepTests.CollectionChanged += OnCollectionChanged;
         }
 
         #endregion
 
         #region Public Interface
+
+        private UserViewModel ParentUserViewModel { get; set; }
 
         public ObservableCollection<StepTestViewModel> AllStepTests { get; private set; }
 

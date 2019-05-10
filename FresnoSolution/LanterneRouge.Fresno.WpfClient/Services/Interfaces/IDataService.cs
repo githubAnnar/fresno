@@ -3,9 +3,13 @@ using System.Collections.Generic;
 
 namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
 {
+    public delegate void CommittedHandler();
+
     public interface IDataService
     {
         void Commit();
+
+        event CommittedHandler Committed;
 
         IEnumerable<User> GetAllUsers(bool refresh = false);
 

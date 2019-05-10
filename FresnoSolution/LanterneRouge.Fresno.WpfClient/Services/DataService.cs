@@ -12,6 +12,8 @@ namespace LanterneRouge.Fresno.WpfClient.Services
         private IUnitOfWork _unitOfWork;
         private ConnectionFactory _connectionFactory;
 
+        public event CommittedHandler Committed;
+
         private ConnectionFactory LocalConnectionFactory => _connectionFactory ?? (_connectionFactory = new ConnectionFactory(Filename));
 
         private string Filename { get; set; }
@@ -37,6 +39,7 @@ namespace LanterneRouge.Fresno.WpfClient.Services
         public void Commit()
         {
             _unitOfWork.Commit();
+            Committed?.Invoke();
         }
 
         public IEnumerable<User> GetAllUsers(bool refresh = false)

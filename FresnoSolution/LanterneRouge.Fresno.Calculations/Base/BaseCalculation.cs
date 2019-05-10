@@ -42,6 +42,11 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         public double FindLoadFromLactate(double lactate)
         {
+            if (Loads == null || Loads.Count() <= 3)
+            {
+                return 0d;
+            }
+
             double func(double x) => FittedLactateCurve(x) - lactate;
             var root = FindRoots.OfFunction(func, Loads.Min(), Loads.Max());
 

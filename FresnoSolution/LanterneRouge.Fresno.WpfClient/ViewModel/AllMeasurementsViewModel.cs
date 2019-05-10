@@ -29,6 +29,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             CreateAllMeasurements(parentStepTest);
             ParentViewModel = parentStepTest;
+            DataManager.Committed += DataManager_Committed;
+        }
+
+        private void DataManager_Committed()
+        {
+            OnDispose();
+            CreateAllMeasurements(ParentViewModel);
         }
 
         public AllMeasurementsViewModel(UserViewModel parentUser, IWorkspaceCommands mainWorkspaceViewModel)
@@ -60,11 +67,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 all = (from measurement in DataManager.GetAllMeasurements() select new MeasurementViewModel(measurement, _wsCommands)).ToList();
             }
 
-            foreach (var mvm in all)
-            {
-                mvm.PropertyChanged += OnMeasurementViewModelPropertyChanged;
-            }
-
+            all.ForEach(a => a.PropertyChanged += OnMeasurementViewModelPropertyChanged);
             AllMeasurements = new ObservableCollection<MeasurementViewModel>(all);
             AllMeasurements.CollectionChanged += OnCollectionChanged;
         }

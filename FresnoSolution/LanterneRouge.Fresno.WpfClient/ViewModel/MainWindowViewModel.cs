@@ -167,9 +167,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void CreateNewUser()
         {
             var newUser = User.Create(string.Empty, string.Empty, null, null, null, DateTime.Now, 0, 0, "M", null);
+            newUser.AcceptChanges();
             var workspace = new UserViewModel(newUser, this);
-            Workspaces.Add(workspace);
-            SetActiveWorkspace(workspace);
+            ShowWorkspace(workspace);
         }
 
         public void ShowUser(UserViewModel user)

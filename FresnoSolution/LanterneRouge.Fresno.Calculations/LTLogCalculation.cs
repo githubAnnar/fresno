@@ -94,8 +94,7 @@ namespace LanterneRouge.Fresno.Calculations
             }
 
             results.Sort(new ResultComparer());
-
-            return Math.Exp(results[0].LoadPoint);
+            return results.Count == 0 ? 0d : Math.Exp(results[0].LoadPoint);
         }
 
         private class Result
