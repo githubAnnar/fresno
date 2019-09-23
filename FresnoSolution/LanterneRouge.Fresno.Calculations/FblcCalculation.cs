@@ -26,31 +26,9 @@ namespace LanterneRouge.Fresno.Calculations
 
         public double Marker { get; }
 
-        public override float LoadThreshold
-        {
-            get
-            {
-                if (_lactateThreshold == 0)
-                {
-                    _lactateThreshold = (float)FindLoadFromLactate(Marker);
-                }
+        public override float LoadThreshold => _lactateThreshold == 0 ? (_lactateThreshold = (float)FindLoadFromLactate(Marker)) : _lactateThreshold;
 
-                return _lactateThreshold;
-            }
-        }
-
-        public override float HeartRateThreshold
-        {
-            get
-            {
-                if (_heartRateThreshold == 0)
-                {
-                    _heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold);
-                }
-
-                return _heartRateThreshold;
-            }
-        }
+        public override float HeartRateThreshold => _heartRateThreshold == 0 ? (_heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold)) : _heartRateThreshold;
 
         #endregion      
     }

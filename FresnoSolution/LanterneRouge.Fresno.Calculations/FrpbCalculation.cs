@@ -45,18 +45,7 @@ namespace LanterneRouge.Fresno.Calculations
             }
         }
 
-        public override float HeartRateThreshold
-        {
-            get
-            {
-                if (_heartRateThreshold == 0)
-                {
-                    _heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold);
-                }
-
-                return _heartRateThreshold;
-            }
-        }
+        public override float HeartRateThreshold => _heartRateThreshold == 0 ? (_heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold)) : _heartRateThreshold;
 
         #endregion
     }
