@@ -2,11 +2,18 @@
 using LanterneRouge.Fresno.Calculations.Base;
 using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.Report.Helpers;
+using LanterneRouge.Fresno.Report.PlotModels;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
+using OxyPlot.Pdf;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace LanterneRouge.Fresno.Report
@@ -167,7 +174,17 @@ namespace LanterneRouge.Fresno.Report
             return document;
         }
 
-        public void PdfRender(string filename, Document document)
+        public byte[] GetStepTestPlotXImage()
+        {
+            var plotModel = StepTests.StepTestPlotModel(new[] { ReportStepTest });
+            using (var mstream = new MemoryStream())
+            {
+                PdfExporter.Export(plotModel, mstream, 841.98, 595.11);
+                return mstream.ToArray();
+            }
+        }
+
+        public void PdfRender(string filename, Document document, bool addPlot)
         {
             if (string.IsNullOrEmpty(filename))
             {
@@ -186,6 +203,24 @@ namespace LanterneRouge.Fresno.Report
             pdfRenderer.RenderDocument();
 
             pdfRenderer.Save(filename);
+
+            if (addPlot)
+            {
+                var image = GetStepTestPlotXImage();
+                using (var pdfDocument = PdfReader.Open(filename))
+
+                {
+                    using (var plotPdf = PdfReader.Open(new MemoryStream(image), PdfDocumentOpenMode.Import))
+                    {
+                        foreach (PdfPage page in plotPdf.Pages)
+                        {
+                            pdfDocument.AddPage(page);
+                        }
+                    }
+
+                    pdfDocument.Save(filename);
+                }
+            }
         }
 
         #endregion
