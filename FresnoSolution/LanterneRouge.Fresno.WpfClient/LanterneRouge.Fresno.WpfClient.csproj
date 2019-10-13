@@ -178,6 +178,7 @@
     <Compile Include="ViewModel\MeasurementViewModel.cs" />
     <Compile Include="ViewModel\StepTestsPlotViewModel.cs" />
     <Compile Include="ViewModel\StepTestViewModel.cs" />
+    <Compile Include="ViewModel\UserStepTestListViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\WorkspaceViewModel.cs" />
     <Compile Include="View\AllMeasurementsView.xaml.cs">
@@ -188,6 +189,9 @@
     </Compile>
     <Compile Include="View\AllUsersView.xaml.cs">
       <DependentUpon>AllUsersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentWindow.xaml.cs">
+      <DependentUpon>ContentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\FblcCalculationView.xaml.cs">
       <DependentUpon>FblcCalculationView.xaml</DependentUpon>
@@ -209,6 +213,9 @@
     </Compile>
     <Compile Include="View\StepTestView.xaml.cs">
       <DependentUpon>StepTestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserStepTestListView.xaml.cs">
+      <DependentUpon>UserStepTestListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
@@ -244,6 +251,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ContentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\FblcCalculationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -269,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\StepTestView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserStepTestListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

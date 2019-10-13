@@ -1,8 +1,5 @@
-﻿using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.Report.PlotModels;
+﻿using LanterneRouge.Fresno.Report.PlotModels;
 using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 using System.Collections.Generic;
 using System.Linq;
 

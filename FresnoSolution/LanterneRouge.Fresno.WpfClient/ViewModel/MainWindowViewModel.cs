@@ -3,6 +3,7 @@ using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
+using LanterneRouge.Fresno.WpfClient.View;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -372,6 +373,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 stepTest = GetActiveSelectedObject() as StepTestViewModel;
             }
 
+            ContentWindow modalWindow = null;
+            var viewModel = new UserStepTestListViewModel(stepTest, this);
+            var view = new UserStepTestListView { DataContext = viewModel };
+            modalWindow = new ContentWindow
+            {
+                Content = view
+            };
+            modalWindow.ShowDialog();
             var generator = new StepTestReport(stepTest.Source);
             var pdfDocument = generator.CreateReport();
             var filename = $"{stepTest.Source.ParentUser.FirstName} {stepTest.Source.ParentUser.LastName} ({stepTest.Source.Id}).pdf";

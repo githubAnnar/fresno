@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="LanterneRouge.Fresno.WpfClient.View.UserStepTestListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sf="clr-namespace:LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties"
+             xmlns:local="clr-namespace:LanterneRouge.Fresno.WpfClient.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <ListView Grid.Row="0" ItemsSource="{Binding AdditionalStepTestCandidates}" ItemStringFormat="Test" SelectionMode="Extended" SelectedItem="{Binding SelectedStepTests}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Test Date" DisplayMemberBinding="{Binding TestDate, StringFormat=dd.MM.yyyy HH:mm}" sf:GridViewSort.PropertyName="TestDate"/>
+                    <GridViewColumn Header="Test Type" DisplayMemberBinding="{Binding TestType}" sf:GridViewSort.PropertyName="TestType"/>
+                    <GridViewColumn Header="Step Duration" DisplayMemberBinding="{Binding StepDurationTimespan}" sf:GridViewSort.PropertyName="StepDurationTimespan"/>
+                    <GridViewColumn Header="Load Preset" DisplayMemberBinding="{Binding LoadPreset}" sf:GridViewSort.PropertyName="LoadPreset"/>
+                    <GridViewColumn Header="Increase" DisplayMemberBinding="{Binding Increase}" sf:GridViewSort.PropertyName="Increase"/>
+                    <GridViewColumn Header="FBLC" DisplayMemberBinding="{Binding FblcValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FblcValue"/>
+                    <GridViewColumn Header="FRBP" DisplayMemberBinding="{Binding FrpbValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FrpbValue"/>
+                    <GridViewColumn Header="LT" DisplayMemberBinding="{Binding LtValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtValue"/>
+                    <GridViewColumn Header="LT Log" DisplayMemberBinding="{Binding LtLogValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtLogValue"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" Width="60"/>
+            <Button Content="Cancel" Width="60"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

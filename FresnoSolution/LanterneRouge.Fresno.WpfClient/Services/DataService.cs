@@ -67,6 +67,8 @@ namespace LanterneRouge.Fresno.WpfClient.Services
             return _unitOfWork.StepTestRepository.All();
         }
 
+        public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _unitOfWork.StepTestRepository.FindByParentId(parent);
+
         public void UpdateStepTest(StepTest entity)
         {
             _unitOfWork.StepTestRepository.Update(entity);
