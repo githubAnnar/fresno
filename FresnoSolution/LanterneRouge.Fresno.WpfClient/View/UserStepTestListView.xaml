@@ -13,7 +13,7 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Row="0" ItemsSource="{Binding AdditionalStepTestCandidates}" ItemStringFormat="Test" SelectionMode="Extended" SelectedItem="{Binding SelectedStepTests}">
+        <ListView x:Name="AdditionalStepTests" Grid.Row="0" ItemsSource="{Binding AdditionalStepTestCandidates}" ItemStringFormat="Test" SelectionMode="Extended">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Test Date" DisplayMemberBinding="{Binding TestDate, StringFormat=dd.MM.yyyy HH:mm}" sf:GridViewSort.PropertyName="TestDate"/>
@@ -29,7 +29,7 @@
             </ListView.View>
         </ListView>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="OK" Width="60"/>
+            <Button Content="OK" CommandParameter="{Binding ElementName=AdditionalStepTests,Path=SelectedItems}" Command="{Binding OkCommand}" Width="60"/>
             <Button Content="Cancel" Width="60"/>
         </StackPanel>
     </Grid>

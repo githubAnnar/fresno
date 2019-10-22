@@ -174,9 +174,11 @@ namespace LanterneRouge.Fresno.Report
             return document;
         }
 
-        public byte[] GetStepTestPlotXImage()
+        public byte[] GetStepTestPlotXImage(IEnumerable<StepTest> additionalStepTests)
         {
-            var plotModel = StepTests.StepTestPlotModel(new[] { ReportStepTest });
+            var list = new List<StepTest> { ReportStepTest };
+            list.AddRange(additionalStepTests);
+            var plotModel = StepTests.StepTestPlotModel(list);
             using (var mstream = new MemoryStream())
             {
                 PdfExporter.Export(plotModel, mstream, 841.98, 595.11);
@@ -184,7 +186,7 @@ namespace LanterneRouge.Fresno.Report
             }
         }
 
-        public void PdfRender(string filename, Document document, bool addPlot)
+        public void PdfRender(string filename, Document document, bool addPlot, IEnumerable<StepTest> additionalStepTests)
         {
             if (string.IsNullOrEmpty(filename))
             {
@@ -206,7 +208,7 @@ namespace LanterneRouge.Fresno.Report
 
             if (addPlot)
             {
-                var image = GetStepTestPlotXImage();
+                var image = GetStepTestPlotXImage(additionalStepTests);
                 using (var pdfDocument = PdfReader.Open(filename))
 
                 {

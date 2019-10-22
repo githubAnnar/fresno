@@ -374,7 +374,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             ContentWindow modalWindow = null;
-            var viewModel = new UserStepTestListViewModel(stepTest, this);
+            var selectedList = new List<StepTestViewModel>();
+            var viewModel = new UserStepTestListViewModel(stepTest, this, (p) =>
+            {
+                selectedList = p.ToList();
+                modalWindow.Close();
+            });
+
             var view = new UserStepTestListView { DataContext = viewModel };
             modalWindow = new ContentWindow
             {
@@ -384,7 +390,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var generator = new StepTestReport(stepTest.Source);
             var pdfDocument = generator.CreateReport();
             var filename = $"{stepTest.Source.ParentUser.FirstName} {stepTest.Source.ParentUser.LastName} ({stepTest.Source.Id}).pdf";
-            generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument, true);
+            generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument, true, selectedList.Select(s => s.Source));
 
             MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
         }
