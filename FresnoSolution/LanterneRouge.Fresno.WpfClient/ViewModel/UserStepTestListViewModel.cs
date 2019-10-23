@@ -10,7 +10,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Constructors
 
-        public UserStepTestListViewModel(StepTestViewModel baseStepTestViewModel, IWorkspaceCommands mainWorkspaceViewModel, Action<IEnumerable<StepTestViewModel>> closeAction)
+        public UserStepTestListViewModel(StepTestViewModel baseStepTestViewModel, IWorkspaceCommands mainWorkspaceViewModel, Action<IEnumerable<StepTestViewModel>, bool> closeAction)
         {
             WsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
             BaseStepTestViewModel = baseStepTestViewModel ?? throw new ArgumentNullException(nameof(baseStepTestViewModel));
@@ -23,7 +23,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private IWorkspaceCommands WsCommands { get; }
 
-        private Action<IEnumerable<StepTestViewModel>> CloseAction { get; }
+        private Action<IEnumerable<StepTestViewModel>, bool> CloseAction { get; }
 
         public StepTestViewModel BaseStepTestViewModel { get; }
 
@@ -38,9 +38,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void Ok(object p)
         {
-            System.Collections.IList items = (System.Collections.IList)p; 
+            System.Collections.IList items = (System.Collections.IList)p;
             var selection = items?.Cast<StepTestViewModel>();
-            CloseAction(selection);
+            CloseAction(selection, true);
+        }
+
+        private void Cancel()
+        {
+            CloseAction(null, false);
         }
 
         #endregion
@@ -49,6 +54,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private ICommand _okCommand;
         public ICommand OkCommand => _okCommand ?? (_okCommand = new RelayCommand(p => Ok(p)));
+
+        private ICommand _cancelCommand;
+        public ICommand CancelCommand => _cancelCommand ?? (_cancelCommand = new RelayCommand(p => Cancel()));
 
         #endregion
     }

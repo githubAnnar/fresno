@@ -375,9 +375,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             ContentWindow modalWindow = null;
             var selectedList = new List<StepTestViewModel>();
-            var viewModel = new UserStepTestListViewModel(stepTest, this, (p) =>
+            var viewModel = new UserStepTestListViewModel(stepTest, this, (p, dr) =>
             {
-                selectedList = p.ToList();
+                if (p != null)
+                {
+                    selectedList = p.ToList();
+                }
+                modalWindow.DialogResult = dr;
                 modalWindow.Close();
             });
 
@@ -387,12 +391,15 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 Content = view
             };
             modalWindow.ShowDialog();
-            var generator = new StepTestReport(stepTest.Source);
-            var pdfDocument = generator.CreateReport();
-            var filename = $"{stepTest.Source.ParentUser.FirstName} {stepTest.Source.ParentUser.LastName} ({stepTest.Source.Id}).pdf";
-            generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument, true, selectedList.Select(s => s.Source));
+            if (modalWindow.DialogResult.HasValue && modalWindow.DialogResult.Value)
+            {
+                var generator = new StepTestReport(stepTest.Source, selectedList.Select(s => s.Source));
+                var pdfDocument = generator.CreateReport();
+                var filename = $"{stepTest.Source.ParentUser.FirstName} {stepTest.Source.ParentUser.LastName} ({stepTest.Source.Id}).pdf";
+                generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument);
 
-            MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         #endregion

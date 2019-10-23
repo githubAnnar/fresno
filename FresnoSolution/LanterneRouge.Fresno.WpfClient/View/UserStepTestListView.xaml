@@ -30,7 +30,7 @@
         </ListView>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="OK" CommandParameter="{Binding ElementName=AdditionalStepTests,Path=SelectedItems}" Command="{Binding OkCommand}" Width="60"/>
-            <Button Content="Cancel" Width="60"/>
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Width="60"/>
         </StackPanel>
     </Grid>
 </UserControl>
