@@ -25,7 +25,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 
         public IEnumerable<StepTest> All()
         {
-            var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, TIME(StepDuration,'HH:MM:SS') AS StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest").ToList();
+            var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest").ToList();
 
             // Get parent and childs
             stepTests.ForEach((StepTest stepTest) =>
@@ -40,7 +40,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 
         public StepTest FindSingle(int id)
         {
-            return Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, TIME(StepDuration) AS StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
+            return Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
         }
 
         public StepTest FindWithParent(int id)

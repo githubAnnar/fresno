@@ -23,8 +23,6 @@ namespace LanterneRouge.Fresno.Report
         private readonly int[] _metaDataTableColumnRelativeWidths = new[] { 1, 3, 1, 1 };
         private readonly int[] _measurementsTableColumnRelativeWidths = new[] { 1, 1, 1, 2 };
         private readonly int[] _resultTableColumnRelativeWidths = new[] { 1, 1, 1, 1, 1 };
-        private FblcCalculation _lactateCalculation;
-        private List<Zone> _lactateZones;
         private const double MARKER = 4d;
         private readonly double[] ZONES = new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 };
 
@@ -32,9 +30,10 @@ namespace LanterneRouge.Fresno.Report
 
         #region Constructor
 
-        public StepTestReport(StepTest stepTest)
+        public StepTestReport(StepTest stepTest, IEnumerable<StepTest> additionalStepTests)
         {
             ReportStepTest = stepTest ?? throw new ArgumentNullException(nameof(stepTest));
+            AdditionalStepTests = additionalStepTests;
         }
 
         #endregion
@@ -43,9 +42,11 @@ namespace LanterneRouge.Fresno.Report
 
         public StepTest ReportStepTest { get; }
 
-        private FblcCalculation LactateCalculation => _lactateCalculation ?? (_lactateCalculation = new FblcCalculation(ReportStepTest.Measurements, MARKER));
+        public IEnumerable<StepTest> AdditionalStepTests { get; set; }
 
-        private List<Zone> LactateZones => _lactateZones ?? (_lactateZones = new LactateBasedZones(LactateCalculation, ZONES).Zones.ToList());
+        private FblcCalculation LactateCalculation(StepTest data) => new FblcCalculation(data.Measurements, MARKER);
+
+        private List<Zone> LactateZones(StepTest data) => new LactateBasedZones(LactateCalculation(data), ZONES).Zones.ToList();
 
         #endregion
 
@@ -55,6 +56,22 @@ namespace LanterneRouge.Fresno.Report
         {
             var document = new Document();
 
+            // Main Step Test
+            CreatePage(document, ReportStepTest);
+
+            if (AdditionalStepTests != null)
+            {
+                foreach (var stepTest in AdditionalStepTests)
+                {
+                    CreatePage(document, stepTest);
+                }
+            }
+
+            return document;
+        }
+
+        private void CreatePage(Document document, StepTest data)
+        {
             var dataSection = document.AddSection();
             dataSection.PageSetup = document.DefaultPageSetup.Clone();
 
@@ -68,14 +85,14 @@ namespace LanterneRouge.Fresno.Report
             var firstMetaDataRow = metaDataTable.AddRow();
             firstMetaDataRow.Format.Font.Size = Unit.FromPoint(12d);
             firstMetaDataRow[0].AddParagraph("Navn:").Format.Font.Bold = true;
-            firstMetaDataRow[1].AddParagraph($"{ReportStepTest.ParentUser.FirstName} {ReportStepTest.ParentUser.LastName}");
+            firstMetaDataRow[1].AddParagraph($"{data.ParentUser.FirstName} {data.ParentUser.LastName}");
             firstMetaDataRow[1].MergeRight = 2;
             var secondMetatDataRow = metaDataTable.AddRow();
             secondMetatDataRow.Format.Font.Size = Unit.FromPoint(12d);
             secondMetatDataRow[0].AddParagraph("Dato:").Format.Font.Bold = true;
-            secondMetatDataRow[1].AddParagraph(ReportStepTest.TestDate.Date.ToLongDateString());
+            secondMetatDataRow[1].AddParagraph(data.TestDate.Date.ToLongDateString());
             secondMetatDataRow[2].AddParagraph("Kl:").Format.Font.Bold = true;
-            secondMetatDataRow[3].AddParagraph(ReportStepTest.TestDate.TimeOfDay.ToString(@"hh\:mm"));
+            secondMetatDataRow[3].AddParagraph(data.TestDate.TimeOfDay.ToString(@"hh\:mm"));
 
             var p = dataSection.AddParagraph(string.Empty);
             p.Format.SpaceAfter = Unit.FromMillimeter(10d);
@@ -97,12 +114,12 @@ namespace LanterneRouge.Fresno.Report
             measurementHeaderRow.VerticalAlignment = VerticalAlignment.Center;
             measurementHeaderRow.Shading = new Shading { Color = Colors.Black };
             measurementHeaderRow[0].AddParagraph("Prøve nr.");
-            measurementHeaderRow[1].AddParagraph($"Belastning [{ReportStepTest.EffortUnit}]");
+            measurementHeaderRow[1].AddParagraph($"Belastning [{data.EffortUnit}]");
             measurementHeaderRow[2].AddParagraph($"HR [BPM]");
             measurementHeaderRow[3].AddParagraph($"Laktat [mmol/L]");
 
             // Add measurements
-            foreach (var measurement in ReportStepTest.Measurements)
+            foreach (var measurement in data.Measurements)
             {
                 var dataRow = measurementsTable.AddRow();
                 dataRow.Borders = new Borders { Width = 0.1, Color = Colors.Black };
@@ -151,7 +168,7 @@ namespace LanterneRouge.Fresno.Report
             resultHeaderRow1.KeepWith = 1;
 
             // Add zones
-            foreach (var zone in LactateZones)
+            foreach (var zone in LactateZones(data))
             {
                 var dataRow = resultsTable.AddRow();
                 dataRow.Height = Unit.FromMillimeter(10d);
@@ -165,16 +182,19 @@ namespace LanterneRouge.Fresno.Report
             }
 
             // Add Threshold string
-            p = dataSection.AddParagraph($"Belastning Terskel: {LactateCalculation.LoadThreshold.ToString("0.0")} {ReportStepTest.EffortUnit}\tHjertefrekvens Terskel: {LactateCalculation.HeartRateThreshold.ToString("0")} BPM");
+            p = dataSection.AddParagraph($"Belastning Terskel: {LactateCalculation(data).LoadThreshold.ToString("0.0")} {data.EffortUnit}\tHjertefrekvens Terskel: {LactateCalculation(data).HeartRateThreshold.ToString("0")} BPM");
             p.Format.SpaceAfter = Unit.FromMillimeter(10d);
             p.Format.SpaceBefore = Unit.FromMillimeter(10d);
-
-            return document;
         }
 
-        public byte[] GetStepTestPlotXImage()
+        public byte[] GetStepTestPlotXImage(IEnumerable<StepTest> additionalStepTests)
         {
-            var plotModel = StepTests.StepTestPlotModel(new[] { ReportStepTest });
+            var list = new List<StepTest> { ReportStepTest };
+            if (additionalStepTests != null && additionalStepTests.Count() > 0)
+            {
+                list.AddRange(additionalStepTests);
+            }
+            var plotModel = StepTests.StepTestPlotModel(list);
             using (var mstream = new MemoryStream())
             {
                 PdfExporter.Export(plotModel, mstream, 841.98, 595.11);
@@ -182,7 +202,7 @@ namespace LanterneRouge.Fresno.Report
             }
         }
 
-        public void PdfRender(string filename, Document document, bool addPlot)
+        public void PdfRender(string filename, Document document)
         {
             if (string.IsNullOrEmpty(filename))
             {
@@ -202,11 +222,10 @@ namespace LanterneRouge.Fresno.Report
 
             pdfRenderer.Save(filename);
 
-            if (addPlot)
+            var image = GetStepTestPlotXImage(AdditionalStepTests);
+            if (image != null)
             {
-                var image = GetStepTestPlotXImage();
                 using (var pdfDocument = PdfReader.Open(filename))
-
                 {
                     using (var plotPdf = PdfReader.Open(new MemoryStream(image), PdfDocumentOpenMode.Import))
                     {

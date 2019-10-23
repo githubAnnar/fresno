@@ -21,6 +21,8 @@ namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
 
         IEnumerable<StepTest> GetAllStepTests();
 
+        IEnumerable<StepTest> GetAllStepTestsByUser(User entity);
+
         void UpdateStepTest(StepTest entity);
 
         void RemoveStepTest(StepTest entity);

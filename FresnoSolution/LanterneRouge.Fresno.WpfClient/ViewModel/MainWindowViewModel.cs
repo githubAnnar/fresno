@@ -3,6 +3,7 @@ using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
+using LanterneRouge.Fresno.WpfClient.View;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -372,12 +373,33 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 stepTest = GetActiveSelectedObject() as StepTestViewModel;
             }
 
-            var generator = new StepTestReport(stepTest.Source);
-            var pdfDocument = generator.CreateReport();
-            var filename = $"{stepTest.Source.ParentUser.FirstName} {stepTest.Source.ParentUser.LastName} ({stepTest.Source.Id}).pdf";
-            generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument, true);
+            ContentWindow modalWindow = null;
+            var selectedList = new List<StepTestViewModel>();
+            var viewModel = new UserStepTestListViewModel(stepTest, this, (p, dr) =>
+            {
+                if (p != null)
+                {
+                    selectedList = p.ToList();
+                }
+                modalWindow.DialogResult = dr;
+                modalWindow.Close();
+            });
 
-            MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
+            var view = new UserStepTestListView { DataContext = viewModel };
+            modalWindow = new ContentWindow
+            {
+                Content = view
+            };
+            modalWindow.ShowDialog();
+            if (modalWindow.DialogResult.HasValue && modalWindow.DialogResult.Value)
+            {
+                var generator = new StepTestReport(stepTest.Source, selectedList.Select(s => s.Source));
+                var pdfDocument = generator.CreateReport();
+                var filename = $"{stepTest.Source.ParentUser.FirstName} {stepTest.Source.ParentUser.LastName} ({stepTest.Source.Id}).pdf";
+                generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument);
+
+                MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         #endregion
