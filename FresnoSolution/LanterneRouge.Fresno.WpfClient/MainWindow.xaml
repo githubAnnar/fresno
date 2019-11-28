@@ -1,21 +1,49 @@
 ﻿<Window x:Class="LanterneRouge.Fresno.WpfClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"        
+        xmlns:ctrl="clr-namespace:MRULib.Controls;assembly=MRULib"
+        xmlns:converters="clr-namespace:MRULib.Converters;assembly=MRULib"
         ResizeMode="CanResize"
         FontSize="13"
         FontFamily="Verdana"
         Title="{Binding DisplayName}" Height="600" Width="800"
+        Closing="Window_Closing"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary Source="MainWindowResources.xaml" />
     </Window.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" KeyboardNavigation.TabNavigation="None">
-            <Menu KeyboardNavigation.TabNavigation="Cycle">
+            <Menu KeyboardNavigation.TabNavigation="Cycle" x:Name="FileMenu">
+                <!-- https://www.codeproject.com/script/Articles/ViewDownloads.aspx?aid=1202738 -->
+                <Menu.Resources>
+                    <converters:ZeroToVisibilityConverter x:Key="zeroToVisibilityConverter" />
+                    <ctrl:BindingProxy  x:Key="AppDataContextProxy"  Data="{Binding}" />
+                    <CollectionViewSource Source="{Binding  MRUFileList.Entries}" x:Key="LastUpdateViewEntries" IsLiveGroupingRequested="True">
+                        <CollectionViewSource.SortDescriptions>
+                            <!--This will sort items-->
+                            <scm:SortDescription PropertyName="Value.LastUpdate" Direction="Descending"/>
+                        </CollectionViewSource.SortDescriptions>
+                    </CollectionViewSource>
+                </Menu.Resources>
                 <MenuItem Header="_File">
                     <MenuItem Header="_New" Command="{Binding NewFileCommand}"/>
                     <Separator/>
                     <MenuItem Header="_Open" Command="{Binding OpenFileCommand}"/>
+                    <Separator/>
+                    <MenuItem ItemsSource="{Binding Source={StaticResource LastUpdateViewEntries}}" Header="Recent Files" Visibility="{Binding Path=MRUFileList.Entries.Count, Mode=OneWay, Converter={StaticResource zeroToVisibilityConverter}}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                <Setter Property="Header" Value="{Binding Value.DisplayPathFileName, Mode=OneWay}" />
+                                <Setter Property="Command" Value="{Binding Path=Data.NavigateUriCommand, Source={StaticResource AppDataContextProxy}}" />
+                                <Setter Property="CommandParameter" Value="{Binding Value.PathFileName, Mode=OneWay}" />
+                                <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+                                <Setter Property="ToolTip" Value="{Binding Value.PathFileName}" />
+                                <!-- Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}" / -->
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
         </DockPanel>

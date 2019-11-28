@@ -1,4 +1,7 @@
-﻿namespace LanterneRouge.Fresno.WpfClient
+﻿using LanterneRouge.Fresno.WpfClient.ViewModel;
+using System.ComponentModel;
+
+namespace LanterneRouge.Fresno.WpfClient
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -8,6 +11,14 @@
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel vm)
+            {
+                vm.SaveMru();
+            }
         }
     }
 }

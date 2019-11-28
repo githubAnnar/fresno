@@ -5,6 +5,9 @@ using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using LanterneRouge.Fresno.WpfClient.View;
 using Microsoft.Win32;
+using MRULib;
+using MRULib.MRU.Interfaces;
+using MRULib.MRU.Models.Persist;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,8 +27,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private ReadOnlyCollection<CommandViewModel> _commands;
         private ObservableCollection<WorkspaceViewModel> _workspaces;
-        private ICommand _openFileCommand = null;
-        private ICommand _newFileCommand = null;
+        private ICommand _openFileCommand;
+        private ICommand _newFileCommand;
+        private ICommand _navigateUriCommand;
+        private readonly string _mruPersistPath;
+        private bool _isProcessingMru;
+
+        private const string AppDirecory = "LanterneRouge";
+        private const string MruFilename = "FresnoMru.xml";
 
         #endregion // Fields
 
@@ -37,9 +46,45 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public MainWindowViewModel()
         {
             DisplayName = $"Step Test Viewer";
+
+            if (!Directory.Exists($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{AppDirecory}"))
+            {
+                Directory.CreateDirectory($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{AppDirecory}");
+            }
+
+            _mruPersistPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{AppDirecory}\\{MruFilename}";
+            if (!File.Exists(_mruPersistPath))
+            {
+                MRUFileList = MRU_Service.Create_List();
+            }
+
+            else
+            {
+                LoadMru(_mruPersistPath);
+            }
         }
 
         #endregion // Constructor
+
+        #region Properties
+
+        public IMRUListViewModel MRUFileList { get; private set; }
+
+        public bool IsProcessingMru
+        {
+            get => _isProcessingMru;
+
+            private set
+            {
+                if (_isProcessingMru != value)
+                {
+                    _isProcessingMru = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        #endregion
 
         #region Commands
 
@@ -90,6 +135,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
                 {
                     IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
+                    MRUFileList.UpdateEntry(CurrentDatabaseFilename);
                     ShowAllUsers();
                 }
             }
@@ -105,6 +151,25 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
+        #region NavigateUriCommand
+
+        public ICommand NavigateUriCommand => _navigateUriCommand ?? (_navigateUriCommand = new RelayCommand((object param) =>
+        {
+            if (!(param is string path))
+            {
+                return;
+            }
+
+            if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
+            {
+                IsDatabaseOpen = service.LoadDatabase(path);
+                MRUFileList.UpdateEntry(path);
+                ShowAllUsers();
+            }
+        }));
 
         #endregion
 
@@ -585,6 +650,70 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             WorkspaceViewModel currentViewModel;
             return (currentViewModel = GetActiveWorkspace()) != null ? currentViewModel.SelectedObject : null;
+        }
+
+        private async void SaveMru(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("Path is null or empty!", nameof(path));
+            }
+
+            try
+            {
+                IsProcessingMru = true;
+                var t = await MRUEntrySerializer.SaveAsync(path, MRUFileList);
+            }
+
+            catch (Exception exp)
+            {
+                MessageBox.Show(exp.StackTrace, exp.Message);
+            }
+
+            finally
+            {
+                IsProcessingMru = false;
+            }
+        }
+
+        public void SaveMru()
+        {
+            SaveMru(_mruPersistPath);
+        }
+
+        private async void LoadMru(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("Path is null or empty!", nameof(path));
+            }
+
+            try
+            {
+                IsProcessingMru = true;
+                SetMruList(await MRUEntrySerializer.LoadAsync(path));
+            }
+
+            catch (Exception exp)
+            {
+                MessageBox.Show(exp.StackTrace, exp.Message);
+            }
+
+            finally
+            {
+                IsProcessingMru = false;
+            }
+        }
+
+        private void SetMruList(IMRUListViewModel mruFilelist)
+        {
+            if (mruFilelist == null)
+            {
+                return;
+            }
+
+            MRUFileList = mruFilelist;
+            OnPropertyChanged(nameof(MRUFileList));
         }
 
         #endregion // Private Helpers
