@@ -149,7 +149,27 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void NewFile()
         {
-            throw new NotImplementedException();
+            var openFileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                AddExtension = true,
+                CheckFileExists = false,
+                CheckPathExists = true,
+                DefaultExt = "sqlite",
+                Filter = "SqLite database files (*.sqlite)|*.sqlite|All files (*.*)|*.*",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            };
+            var openFileResult = openFileDialog.ShowDialog();
+            if (openFileResult.HasValue && openFileResult.Value)
+            {
+                CurrentDatabaseFilename = openFileDialog.FileName;
+                if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
+                {
+                    IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
+                    MRUFileList.UpdateEntry(CurrentDatabaseFilename);
+                    ShowAllUsers();
+                }
+            }
         }
 
         #endregion
@@ -160,6 +180,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (!(param is string path))
             {
+                return;
+            }
+
+            // If file does not exist, end here
+            if (!File.Exists(path))
+            {
+                MessageBox.Show($"The file '{path}' does not exist anymore, please create a new database!", "File not found", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MRUFileList.RemoveEntry(path);
                 return;
             }
 
