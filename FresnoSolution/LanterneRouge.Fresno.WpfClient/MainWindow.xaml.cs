@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.WpfClient.ViewModel;
+using log4net;
 using System.ComponentModel;
 
 namespace LanterneRouge.Fresno.WpfClient
@@ -8,6 +9,7 @@ namespace LanterneRouge.Fresno.WpfClient
     /// </summary>
     public partial class MainWindow
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(MainWindow));
         public MainWindow()
         {
             InitializeComponent();
@@ -18,6 +20,8 @@ namespace LanterneRouge.Fresno.WpfClient
             if (DataContext is MainWindowViewModel vm)
             {
                 vm.SaveMru();
+                Logger.Info("MRU Saved!");
+                Logger.Info("Closing application");
             }
         }
     }

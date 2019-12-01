@@ -147,6 +147,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
                 {
                     IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
+                    Logger.Debug($"Opened database '{CurrentDatabaseFilename}'");
                     MRUFileList.UpdateEntry(CurrentDatabaseFilename);
                     ShowAllUsers();
                 }
@@ -178,6 +179,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
                 {
                     IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
+                    Logger.Debug($"Created new database '{CurrentDatabaseFilename}'");
                     MRUFileList.UpdateEntry(CurrentDatabaseFilename);
                     ShowAllUsers();
                 }
@@ -206,6 +208,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
             {
                 IsDatabaseOpen = service.LoadDatabase(path);
+                Logger.Debug($"Opened database from MRU '{path}'");
                 MRUFileList.UpdateEntry(path);
                 ShowAllUsers();
             }
@@ -274,6 +277,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             var newUser = User.Create(string.Empty, string.Empty, null, null, null, DateTime.Now, 0, 0, "M", null);
             newUser.AcceptChanges();
+            Logger.Info("Created new Empty user");
             var workspace = new UserViewModel(newUser, this);
             ShowWorkspace(workspace);
         }
@@ -287,6 +291,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Show user {workspace.LastName}, {workspace.FirstName} ({workspace.UserId})");
         }
 
         public void ShowUser(StepTestViewModel stepTest)
@@ -298,6 +303,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Show user from steptest ({stepTest.StepTestId}): {workspace.LastName}, {workspace.FirstName} ({workspace.UserId})");
         }
 
         public void ShowUser(MeasurementViewModel measurement)
@@ -309,6 +315,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Show user from measurement ({measurement.MeasurementId}): {workspace.LastName}, {workspace.FirstName} ({workspace.UserId})");
         }
 
         private void ShowAllUsers()
@@ -320,6 +327,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug("All users shown");
         }
 
         #endregion
@@ -360,6 +368,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             newStepTest.ParentUser = user.Source;
             user.Source.StepTests.Add(newStepTest);
             newStepTest.AcceptChanges();
+            Logger.Info("Created new empty step test");
             var workspace = new StepTestViewModel(newStepTest, this);
             ShowWorkspace(workspace);
         }
@@ -373,6 +382,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Shown FBLC Calculation from steptest {stepTestVm.StepTestId}");
         }
 
         public void ShowFrpbCalculation(StepTestViewModel stepTestVm)
@@ -384,6 +394,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Shown FRBP Calculation from steptest {stepTestVm.StepTestId}");
         }
 
         public void ShowLtCalculation(StepTestViewModel stepTestVm)
@@ -395,6 +406,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Shown LT Calculation from steptest {stepTestVm.StepTestId}");
         }
 
         public void ShowLtLogCalculation(StepTestViewModel stepTestVm)
@@ -406,6 +418,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Shown LTLOG Calculation from steptest {stepTestVm.StepTestId}");
         }
 
         public void ShowStepTest(StepTestViewModel stepTest)
@@ -417,6 +430,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Shown steptest {stepTest.StepTestId}");
         }
 
         public void ShowStepTest(MeasurementViewModel measurement)
@@ -428,6 +442,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Shown steptest from measurement ({measurement.MeasurementId}) {workspace.StepTestId}");
         }
 
         public void ShowAllStepTests(UserViewModel user)
@@ -439,6 +454,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             var workspace = new AllStepTestsViewModel(user, this);
             ShowWorkspace(workspace);
+            Logger.Debug("Shown all step tests");
         }
 
         public bool CanShowAllStepTests
@@ -550,6 +566,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             newMeasurement.ParentStepTest = stepTest.Source;
             newMeasurement.AcceptChanges();
             stepTest.Source.Measurements.Add(newMeasurement);
+            Logger.Info("New empty measurement created");
             var workspace = new MeasurementViewModel(newMeasurement, this);
             ShowWorkspace(workspace);
         }
@@ -563,6 +580,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
+            Logger.Debug($"Showing measurement {measurement.MeasurementId}");
         }
 
         public void ShowAllMeasurements(StepTestViewModel stepTest)
@@ -574,6 +592,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             var workspace = new AllMeasurementsViewModel(stepTest, this);
             ShowWorkspace(workspace);
+            Logger.Debug("Shown all measurements");
         }
 
         public bool CanShowAllMeasurements
@@ -664,6 +683,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (collectionView != null)
             {
                 collectionView.MoveCurrentTo(workspace);
+                Logger.Debug("Changed workspace");
             }
         }
 
@@ -696,6 +716,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (string.IsNullOrEmpty(path))
             {
+                Logger.Error("save MRU path is null or empty!");
                 throw new ArgumentException("Path is null or empty!", nameof(path));
             }
 
@@ -703,11 +724,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             {
                 IsProcessingMru = true;
                 var t = await MRUEntrySerializer.SaveAsync(path, MRUFileList);
+                Logger.Info($"MRU is saved to '{path}'");
             }
 
             catch (Exception exp)
             {
                 MessageBox.Show(exp.StackTrace, exp.Message);
+                Logger.Error($"Error saving MRU to '{path}'", exp);
             }
 
             finally
@@ -725,6 +748,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (string.IsNullOrEmpty(path))
             {
+                Logger.Error($"Load MRU path is null or empty!");
                 throw new ArgumentException("Path is null or empty!", nameof(path));
             }
 
@@ -732,11 +756,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             {
                 IsProcessingMru = true;
                 SetMruList(await MRUEntrySerializer.LoadAsync(path));
+                Logger.Info($"MRU is loaded from '{path}'");
             }
 
             catch (Exception exp)
             {
                 MessageBox.Show(exp.StackTrace, exp.Message);
+                Logger.Error($"Error loading MRU from '{path}'", exp);
             }
 
             finally
@@ -749,10 +775,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (mruFilelist == null)
             {
+                Logger.Debug("mruFileList is null");
                 return;
             }
 
             MRUFileList = mruFilelist;
+            Logger.Info("mruFileList is set!");
             OnPropertyChanged(nameof(MRUFileList));
         }
 
