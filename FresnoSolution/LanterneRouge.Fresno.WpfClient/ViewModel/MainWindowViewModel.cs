@@ -4,6 +4,7 @@ using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using LanterneRouge.Fresno.WpfClient.View;
+using log4net;
 using Microsoft.Win32;
 using MRULib;
 using MRULib.MRU.Interfaces;
@@ -24,6 +25,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     public class MainWindowViewModel : WorkspaceViewModel, IWorkspaceCommands
     {
         #region Fields
+
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(MainWindowViewModel));
 
         private ReadOnlyCollection<CommandViewModel> _commands;
         private ObservableCollection<WorkspaceViewModel> _workspaces;
@@ -46,21 +49,30 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public MainWindowViewModel()
         {
             DisplayName = $"Step Test Viewer";
-
-            if (!Directory.Exists($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{AppDirecory}"))
+            Logger.Debug("Checking MRU file");
+            var mruDriectory = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{AppDirecory}";
+            if (!Directory.Exists(mruDriectory))
             {
-                Directory.CreateDirectory($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{AppDirecory}");
+                Directory.CreateDirectory(mruDriectory);
+                Logger.Debug($"Created MRU file directory: {mruDriectory}");
+            }
+
+            else
+            {
+                Logger.Debug($"MRU directory '{mruDriectory}' already exists");
             }
 
             _mruPersistPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{AppDirecory}\\{MruFilename}";
             if (!File.Exists(_mruPersistPath))
             {
                 MRUFileList = MRU_Service.Create_List();
+                Logger.Debug("Created new MRU List because none is found");
             }
 
             else
             {
                 LoadMru(_mruPersistPath);
+                Logger.Debug($"Loaded MRU File '{_mruPersistPath}'");
             }
         }
 
