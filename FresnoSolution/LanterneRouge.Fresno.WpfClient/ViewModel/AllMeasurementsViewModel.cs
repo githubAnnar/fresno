@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +13,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(AllMeasurementsViewModel));
         private static readonly string _name = typeof(AllMeasurementsViewModel).Name;
         private readonly IWorkspaceCommands _wsCommands;
 
@@ -70,6 +72,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             all.ForEach(a => a.PropertyChanged += OnMeasurementViewModelPropertyChanged);
             AllMeasurements = new ObservableCollection<MeasurementViewModel>(all);
             AllMeasurements.CollectionChanged += OnCollectionChanged;
+            Logger.Debug("AllMeasurements created");
         }
 
         #endregion
@@ -85,10 +88,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public StepTestViewModel ParentViewModel { get; }
 
-        public static string GetIdentifierName(MeasurementViewModel measurement)
-        {
-            return string.Format("{0}_Category_{1}", _name, measurement.MeasurementId);
-        }
+        public static string GetIdentifierName(MeasurementViewModel measurement) => $"{_name}_Measurement_{measurement.MeasurementId}";
 
         #endregion
 

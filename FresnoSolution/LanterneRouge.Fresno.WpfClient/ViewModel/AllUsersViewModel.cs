@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using log4net;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -11,6 +12,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(AllUsersViewModel));
         private static readonly string _name = typeof(AllUsersViewModel).Name;
         private readonly IWorkspaceCommands _wsCommands;
 
@@ -24,6 +26,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException("mainWorkspaceViewModel");
             CreateAllUsers();
             DataManager.Committed += DataManager_Committed;
+            Logger.Debug($"AllUsers loaded");
         }
 
         private void DataManager_Committed()
@@ -81,6 +84,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 foreach (UserViewModel userVM in e.NewItems)
                 {
                     userVM.PropertyChanged += OnUserViewModelPropertyChanged;
+                    Logger.Debug($"New UserViewModel {userVM.DisplayName}");
                 }
             }
 
@@ -89,6 +93,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 foreach (UserViewModel userVM in e.OldItems)
                 {
                     userVM.PropertyChanged -= OnUserViewModelPropertyChanged;
+                    Logger.Debug($"Old UserViewModel {userVM.DisplayName}");
                 }
             }
         }

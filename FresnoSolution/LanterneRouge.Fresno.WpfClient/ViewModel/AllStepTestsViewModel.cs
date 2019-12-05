@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using log4net;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -12,6 +13,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(AllStepTestsViewModel));
         private static readonly string Name = typeof(AllStepTestsViewModel).Name;
         private readonly IWorkspaceCommands _wsCommands;
         private ICommand _showDiagramCommand;
@@ -31,6 +33,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             DisplayName = parentUser == null ? "All Users"/*KayakStrings.Category_All_Categories*/ : $"StepTests: {parentUser.LastName}";
             CreateAllStepTests(parentUser);
             DataManager.Committed += DataManager_Committed;
+            Logger.Debug($"AllStepests for user {parentUser.LastName} loaded");
         }
 
         private void DataManager_Committed()
@@ -71,10 +74,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool CanShowDiagram => AllStepTests.Any(at => at.IsSelected);
 
-        private void ShowDiagram(object obj)
-        {
-            _wsCommands.GenerateCalculation(AllStepTests.Where(st => st.IsSelected));
-        }
+        private void ShowDiagram(object obj) => _wsCommands.GenerateCalculation(AllStepTests.Where(st => st.IsSelected));
 
         #endregion
 
@@ -90,6 +90,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             foreach (var stepTestVM in AllStepTests)
             {
+                Logger.Debug($"Disposing {stepTestVM.DisplayName}");
                 stepTestVM.Dispose();
             }
 
@@ -110,9 +111,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (e.NewItems != null && !e.NewItems.Count.Equals(0))
             {
-                foreach (StepTestViewModel categoryVM in e.NewItems)
+                foreach (StepTestViewModel stepTestVM in e.NewItems)
                 {
-                    categoryVM.PropertyChanged += OnStepTestViewModelPropertyChanged;
+                    stepTestVM.PropertyChanged += OnStepTestViewModelPropertyChanged;
+                    Logger.Debug($"New StepTestViewModel {stepTestVM.DisplayName}");
                 }
             }
 
@@ -121,6 +123,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 foreach (StepTestViewModel stepTestVM in e.OldItems)
                 {
                     stepTestVM.PropertyChanged -= OnStepTestViewModelPropertyChanged;
+                    Logger.Debug($"Old StepTestViewModel {stepTestVM.DisplayName}");
                 }
             }
         }
@@ -142,9 +145,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// </summary>
         public override WorkspaceViewModel SelectedObject => AllStepTests.FirstOrDefault(item => item.IsSelected);
 
-        public static string GetIdentifierName(StepTestViewModel stepTest)
-        {
-            return string.Format("{0}_Race_{1}", Name, stepTest.StepTestId);
-        }
+        public static string GetIdentifierName(StepTestViewModel stepTest) => $"{Name}_StepTest_{stepTest.StepTestId}";
     }
 }

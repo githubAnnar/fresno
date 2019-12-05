@@ -19,9 +19,9 @@ namespace LanterneRouge.Fresno.WpfClient
         {
             if (DataContext is MainWindowViewModel vm)
             {
+                Logger.Info("Saving MRU");
                 vm.SaveMru();
-                Logger.Info("MRU Saved!");
-                Logger.Info("Closing application");
+                Logger.Info("MRU Saved, Closing application");
             }
         }
     }

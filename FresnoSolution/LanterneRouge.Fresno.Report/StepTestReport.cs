@@ -3,6 +3,7 @@ using LanterneRouge.Fresno.Calculations.Base;
 using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.Report.Helpers;
 using LanterneRouge.Fresno.Report.PlotModels;
+using log4net;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
@@ -20,6 +21,7 @@ namespace LanterneRouge.Fresno.Report
     {
         #region Fields
 
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(StepTestReport));
         private readonly int[] _metaDataTableColumnRelativeWidths = new[] { 1, 3, 1, 1 };
         private readonly int[] _measurementsTableColumnRelativeWidths = new[] { 1, 1, 1, 2 };
         private readonly int[] _resultTableColumnRelativeWidths = new[] { 1, 1, 1, 1, 1 };
@@ -67,6 +69,7 @@ namespace LanterneRouge.Fresno.Report
                 }
             }
 
+            Logger.Info($"Report for Steptest {ReportStepTest.ParentUser.LastName} / {ReportStepTest.Id} is created");
             return document;
         }
 
@@ -185,6 +188,8 @@ namespace LanterneRouge.Fresno.Report
             p = dataSection.AddParagraph($"Belastning Terskel: {LactateCalculation(data).LoadThreshold.ToString("0.0")} {data.EffortUnit}\tHjertefrekvens Terskel: {LactateCalculation(data).HeartRateThreshold.ToString("0")} BPM");
             p.Format.SpaceAfter = Unit.FromMillimeter(10d);
             p.Format.SpaceBefore = Unit.FromMillimeter(10d);
+
+            Logger.Debug("Data page created");
         }
 
         public byte[] GetStepTestPlotXImage(IEnumerable<StepTest> additionalStepTests)
@@ -195,6 +200,8 @@ namespace LanterneRouge.Fresno.Report
                 list.AddRange(additionalStepTests);
             }
             var plotModel = StepTests.StepTestPlotModel(list);
+
+            Logger.Debug("Plot of image created");
             using (var mstream = new MemoryStream())
             {
                 PdfExporter.Export(plotModel, mstream, 841.98, 595.11);
@@ -238,6 +245,8 @@ namespace LanterneRouge.Fresno.Report
                     pdfDocument.Save(filename);
                 }
             }
+
+            Logger.Info($"Pdf rendered to file {filename}");
         }
 
         #endregion

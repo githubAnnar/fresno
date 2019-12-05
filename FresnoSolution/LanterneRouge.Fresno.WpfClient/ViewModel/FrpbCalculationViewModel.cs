@@ -88,10 +88,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Methods
 
-        public override string ToString()
-        {
-            return $"FRPB Calculation for Step Test ({StepTestId})";
-        }
+        public override string ToString() => $"FRPB Calculation for Step Test ({StepTestId})";
 
         #endregion
     }

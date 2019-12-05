@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +10,8 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 {
     public class StepTestRepository : RepositoryBase, IRepository<StepTest, User>
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(StepTestRepository));
+
         public StepTestRepository(IDbTransaction transaction) : base(transaction)
         { }
 
@@ -21,6 +24,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             var t = typeof(BaseEntity<StepTest>);
             t.GetProperty("Id").SetValue(entity, newId, null);
             entity.AcceptChanges();
+            Logger.Info($"Added {entity.Id}");
         }
 
         public IEnumerable<StepTest> All()
@@ -35,16 +39,19 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
                 stepTest.AcceptChanges();
             });
 
+            Logger.Debug("Returning All");
             return stepTests;
         }
 
         public StepTest FindSingle(int id)
         {
+            Logger.Debug($"FindSingle({id})");
             return Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
         }
 
         public StepTest FindWithParent(int id)
         {
+            Logger.Debug($"FindWithParent({id})");
             var stepTest = FindSingle(id);
             stepTest.ParentUser = new UserRepository(Transaction).FindWithParent(stepTest.UserId);
             return stepTest;
@@ -52,6 +59,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 
         public StepTest FindWithParentAndChilds(int id)
         {
+            Logger.Debug($"FindWithParentAndChilds({id})");
             var stepTest = FindWithParent(id);
             stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
             return stepTest;
@@ -59,6 +67,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 
         public IEnumerable<StepTest> FindByParentId(User parent)
         {
+            Logger.Debug($"FindByParentId {parent.Id}");
             var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
             stepTests.ForEach((StepTest stepTest) =>
             {
@@ -72,12 +81,15 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
         public void Remove(int id)
         {
             Connection.Execute("DELETE FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction);
+            Logger.Info($"Removed {id}");
         }
 
         public void Remove(StepTest entity)
         {
             if (entity == null)
+            {
                 throw new ArgumentNullException("entity");
+            }
 
             Remove(entity.Id);
         }
@@ -89,6 +101,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 
             Connection.Execute("UPDATE StepTest SET UserId = @UserId, TestType = @TestType, EffortUnit = @EffortUnit, StepDuration = @StepDuration, LoadPreset = @LoadPreset, Increase = @Increase, Temperature = @Temperature, Weight = @Weight, TestDate = @TestDate WHERE Id = @Id", param: new { entity.Id, entity.UserId, entity.TestType, entity.EffortUnit, entity.StepDuration, entity.LoadPreset, entity.Increase, entity.Temperature, entity.Weight, entity.TestDate }, transaction: Transaction);
             entity.AcceptChanges();
+            Logger.Info($"Updated {entity.Id}");
         }
     }
 }

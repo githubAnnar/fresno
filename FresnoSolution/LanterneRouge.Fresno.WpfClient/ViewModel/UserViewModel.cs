@@ -1,6 +1,7 @@
 ﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
+using log4net;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -14,6 +15,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
+        private ILog Logger = LogManager.GetLogger(typeof(UserViewModel));
         private static readonly string _name = typeof(UserViewModel).Name;
         private ICommand _saveCommand = null;
         private bool _isSelected = false;
@@ -175,13 +177,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Display Properties
 
-        public override string DisplayName
-        {
-            get
-            {
-                return Source.Id == 0 ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
-            }
-        }
+        public override string DisplayName => Source.Id == 0 ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
 
         public bool IsSelected
         {
@@ -202,10 +198,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Methods
 
-        public override string ToString()
-        {
-            return $"{LastName ?? "User" /*KayakStrings.Race_Singular*/} ({UserId})";
-        }
+        public override string ToString() => $"{LastName ?? "User" /*KayakStrings.Race_Singular*/} ({UserId})";
 
         public void Save(object param)
         {
@@ -226,18 +219,17 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 OnPropertyChanged(nameof(DisplayName));
 
                 MessageBox.Show($"User: {LastName} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
+                Logger.Info($"User: {LastName} saved OK");
             }
 
             if (param is string stringParam && stringParam.Equals("CLOSE", StringComparison.InvariantCultureIgnoreCase))
             {
+                Logger.Debug($"Closing {nameof(UserViewModel)} for {DisplayName}");
                 CloseCommand.Execute(null);
             }
         }
 
-        public override WorkspaceViewModel SelectedObject
-        {
-            get { return this; }
-        }
+        public override WorkspaceViewModel SelectedObject => this;
 
         public static string GetIdentifierName(User user)
         {
@@ -249,7 +241,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave { get { return Source.IsValid && Source.IsChanged; } }
+        private bool CanSave => Source.IsValid && Source.IsChanged;
 
         #endregion
 
@@ -270,13 +262,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Validation
 
-        public bool IsValid
-        {
-            get
-            {
-                return !ValidatedProperties.Any(vp => GetValidationError(vp) != null);
-            }
-        }
+        public bool IsValid => !ValidatedProperties.Any(vp => GetValidationError(vp) != null);
 
         private static readonly string[] ValidatedProperties =
         {
@@ -319,34 +305,27 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                     break;
 
                 default:
-                    Debug.Fail($"Unexpected property being validated on User: { propertyName}");
+                    Logger.Warn($"Unexpected property being validated on User: { propertyName}");
                     break;
+            }
+
+            if (!string.IsNullOrEmpty(error))
+            {
+                Logger.Warn($"{propertyName} give '{error}'");
             }
 
             return error;
         }
 
-        private string ValidateFirstName()
-        {
-            return ValidateHelpers.IsStringMissing(FirstName) ? "Missing First Name"/*KayakStrings.Race_Error_MissingName*/ : null;
-        }
+        private string ValidateFirstName() => ValidateHelpers.IsStringMissing(FirstName) ? "Missing First Name"/*KayakStrings.Race_Error_MissingName*/ : null;
 
-        private string ValidateLastName()
-        {
-            return ValidateHelpers.IsStringMissing(LastName) ? "Missing Last Name"/*KayakStrings.Race_Error_MissingName*/ : null;
-        }
+        private string ValidateLastName() => ValidateHelpers.IsStringMissing(LastName) ? "Missing Last Name"/*KayakStrings.Race_Error_MissingName*/ : null;
 
-        private string ValidateEmail()
-        {
-            return ValidateHelpers.IsStringMissing(Email) ? "Missing Email"/*KayakStrings.Race_Error_MissingName*/ : null;
-        }
+        private string ValidateEmail() => ValidateHelpers.IsStringMissing(Email) ? "Missing Email"/*KayakStrings.Race_Error_MissingName*/ : null;
 
         private string ValidateSex()
         {
-            string error = null;
-
-            error = ValidateHelpers.IsStringMissing(Sex) ? "Missing Sex"/*KayakStrings.Race_Error_MissingName*/ : null;
-
+            string error = ValidateHelpers.IsStringMissing(Sex) ? "Missing Sex"/*KayakStrings.Race_Error_MissingName*/ : null;
             error = !Sex.Equals("M") && !Sex.Equals("F") ? "Wrong Sex" : null;
 
             return error;
@@ -362,6 +341,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void EditSelected(object obj)
         {
+            Logger.Debug($"Editing {DisplayName}");
             _wsCommands.ShowWorkspace(this);
         }
 
@@ -369,16 +349,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowAllStepTestsCommand
 
-        public ICommand ShowAllStepTestsCommand
-        {
-            get
-            {
-                return _showAllStepTestsCommand ?? (_showAllStepTestsCommand = new RelayCommand(ShowAllStepTests));
-            }
-        }
+        public ICommand ShowAllStepTestsCommand => _showAllStepTestsCommand ?? (_showAllStepTestsCommand = new RelayCommand(ShowAllStepTests));
 
         private void ShowAllStepTests(object obj)
         {
+            Logger.Debug($"Show All SteTests for {DisplayName}");
             _wsCommands.ShowAllStepTests(this);
         }
 
@@ -386,16 +361,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region AddStepTestCommand
 
-        public ICommand AddStepTestCommand
-        {
-            get
-            {
-                return _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(AddStepTest, param => _wsCommands.CanCreateStepTest));
-            }
-        }
+        public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(AddStepTest, param => _wsCommands.CanCreateStepTest));
 
         private void AddStepTest(object obj)
         {
+            Logger.Debug($"Add StepTest on {DisplayName}");
             _wsCommands.CreateNewStepTest(this);
         }
 

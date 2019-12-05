@@ -1,6 +1,6 @@
 ﻿using LanterneRouge.Fresno.DataLayer.Database;
+using log4net;
 using System.Data;
-using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
 
@@ -8,11 +8,13 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure
 {
     public class ConnectionFactory : IConnectionFactory
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ConnectionFactory));
         private readonly string _connectionString;
 
         public ConnectionFactory(SQLiteConnectionStringBuilder connectionStringBuilder)
         {
             _connectionString = connectionStringBuilder.ToString();
+            Logger.Debug($"Connectionstring: {_connectionString}");
         }
 
         public ConnectionFactory(string filename) : this(new SQLiteConnectionStringBuilder { DataSource = filename, ForeignKeys = true, Version = 3 })
@@ -35,6 +37,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure
                 var conn = factory.CreateConnection();
                 conn.ConnectionString = _connectionString;
                 conn.Open();
+                Logger.Debug($"Connection '{_connectionString}' is open!");
                 return conn;
             }
         }
@@ -45,6 +48,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure
 
             if (!File.Exists(builder.DataSource))
             {
+                Logger.Debug($"{builder.DataSource} is not open, creating new and creating database and tables!");
                 var generator = new Generator(builder.DataSource);
                 generator.CreateDatabase();
                 generator.CreateTables();

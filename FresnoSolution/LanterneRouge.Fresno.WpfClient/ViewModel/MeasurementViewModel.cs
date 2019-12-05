@@ -1,9 +1,9 @@
 ﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
+using log4net;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -14,6 +14,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
+        private static ILog Logger = LogManager.GetLogger(typeof(MeasurementViewModel));
         private static readonly string _name = typeof(MeasurementViewModel).Name;
         private bool _isSelected = false;
         private ICommand _saveCommand = null;
@@ -109,13 +110,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Presentation Properties
 
-        public override string DisplayName
-        {
-            get
-            {
-                return Source.Id == 0 ? "New Measurement" /*KayakStrings.Person_New_Singular*/ : ToString();
-            }
-        }
+        public override string DisplayName => Source.Id == 0 ? "New Measurement" /*KayakStrings.Person_New_Singular*/ : ToString();
 
         public bool IsSelected
         {
@@ -150,30 +145,26 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 DataManager.Commit();
                 OnPropertyChanged(nameof(DisplayName));
 
-                MessageBox.Show(string.Format("Measurement: {0} saved", Sequence), "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Measurement: {Sequence} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
+                Logger.Info($"Measurement: {Sequence} saved OK");
             }
 
             if (param is string stringParam && stringParam.Equals("CLOSE", StringComparison.InvariantCultureIgnoreCase))
             {
+                Logger.Debug($"Closing MeasurementViewModel for {DisplayName}");
                 CloseCommand.Execute(null);
             }
         }
 
-        public static string GetIdentifierName(Measurement measurement)
-        {
-            return string.Format("{0}_Measurement_{1}", _name, measurement.Id.Equals(0) ? Guid.NewGuid().ToString() : measurement.Id.ToString());
-        }
+        public static string GetIdentifierName(Measurement measurement) => string.Format("{0}_Measurement_{1}", _name, measurement.Id.Equals(0) ? Guid.NewGuid().ToString() : measurement.Id.ToString());
 
         #endregion // Public Methods
 
         #region Private Helpers
 
-        private bool CanSave
-        {
-            get { return IsValid && Source.IsChanged; }
-        }
+        private bool CanSave => IsValid && Source.IsChanged;
 
-        #endregion 
+        #endregion
 
         #region IDataErrorInfo Members
 
@@ -230,32 +221,25 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                     break;
 
                 default:
-                    Debug.Fail($"Unexpected property being validated on Measurement: {propertyName}");
+                    Logger.Error($"Unexpected property being validated on Measurement: {propertyName}");
                     break;
+            }
+
+            if (!string.IsNullOrEmpty(error))
+            {
+                Logger.Warn($"{propertyName} give '{error}'");
             }
 
             return error;
         }
 
-        private string ValidateSequence()
-        {
-            return ValidateHelpers.IsIntLTZero(Sequence) ? "Sequence"/*KayakStrings.Person_Error_MissingFirstName*/ : null;
-        }
+        private string ValidateSequence() => ValidateHelpers.IsIntLTZero(Sequence) ? "Sequence"/*KayakStrings.Person_Error_MissingFirstName*/ : null;
 
-        private string ValidateHeartRate()
-        {
-            return ValidateHelpers.IsIntLTZero(HeartRate) ? "Heart Rate" : null;
-        }
+        private string ValidateHeartRate() => ValidateHelpers.IsIntLTZero(HeartRate) ? "Heart Rate" : null;
 
-        private string ValidateLactate()
-        {
-            return ValidateHelpers.IsFloatLTZero(Lactate) ? "Lactate" : null;
-        }
+        private string ValidateLactate() => ValidateHelpers.IsFloatLTZero(Lactate) ? "Lactate" : null;
 
-        private string ValidateLoad()
-        {
-            return ValidateHelpers.IsFloatLTZero(Load) ? "Load" : null;
-        }
+        private string ValidateLoad() => ValidateHelpers.IsFloatLTZero(Load) ? "Load" : null;
 
         #endregion
 
@@ -267,6 +251,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void EditSelected(object obj)
         {
+            Logger.Debug($"Editing {DisplayName}");
             _wsCommands.ShowWorkspace(this);
         }
 
@@ -278,6 +263,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowStepTest(object obj)
         {
+            Logger.Debug($"Show {DisplayName}");
             _wsCommands.ShowStepTest(this);
         }
 
@@ -289,6 +275,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowUser(object obj)
         {
+            Logger.Debug($"Show user for {DisplayName}");
             _wsCommands.ShowUser(this);
         }
 

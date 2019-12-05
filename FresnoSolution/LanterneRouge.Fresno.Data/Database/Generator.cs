@@ -27,6 +27,8 @@ namespace LanterneRouge.Fresno.DataLayer.Database
             {
                 Filename = filename;
             }
+
+            Logger.Debug($"Filename set to '{Filename}'");
         }
 
         public string Filename { get; }
@@ -59,6 +61,7 @@ namespace LanterneRouge.Fresno.DataLayer.Database
                 // create a new database connection:
                 Connection.Open();
                 Connection.Close();
+                Logger.Info("New database created");
             }
 
             catch (Exception ex)
@@ -81,12 +84,15 @@ namespace LanterneRouge.Fresno.DataLayer.Database
                 var sqlite_command = Connection.CreateCommand();
                 sqlite_command.CommandText = CreateUserTable;
                 sqlite_command.ExecuteNonQuery();
+                Logger.Info("User table created");
 
                 sqlite_command.CommandText = CreateStepTestTable;
                 sqlite_command.ExecuteNonQuery();
+                Logger.Info("StepTest table created");
 
                 sqlite_command.CommandText = CreateMeasurementTable;
                 sqlite_command.ExecuteNonQuery();
+                Logger.Info("Measurement table created");
                 sqlite_command.Dispose();
 
                 Connection.Close();
@@ -114,6 +120,7 @@ namespace LanterneRouge.Fresno.DataLayer.Database
                 Connection.Dispose();
 
                 File.Delete(Filename);
+                Logger.Info($"Database {Filename} deleted!");
             }
 
             return response;

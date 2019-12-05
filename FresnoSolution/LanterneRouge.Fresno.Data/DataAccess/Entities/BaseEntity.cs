@@ -72,9 +72,6 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
             }
         }
 
-        private bool ExcludeName(string propertyName)
-        {
-            return PropertyNameSkipArray.Any(p => p.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase));
-        }
+        private bool ExcludeName(string propertyName) => PropertyNameSkipArray.Any(p => p.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase));
     }
 }

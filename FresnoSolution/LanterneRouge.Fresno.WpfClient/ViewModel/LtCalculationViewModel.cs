@@ -70,10 +70,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Methods
 
-        public override string ToString()
-        {
-            return $"LT Calculation for Step Test ({StepTestId})";
-        }
+        public override string ToString() => $"LT Calculation for Step Test ({StepTestId})";
 
         #endregion
     }

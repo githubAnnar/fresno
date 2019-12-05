@@ -1,6 +1,7 @@
 ﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure;
 using LanterneRouge.Fresno.DataLayer.DataAccess.Repositories;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +13,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
     {
         #region Fields
 
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(UnitOfWork));
         private IDbConnection _connection;
         private IDbTransaction _transaction;
         private IRepository<Measurement, StepTest> _measurementRepository;
@@ -27,6 +29,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
         public UnitOfWork(IConnectionFactory connectionFactory)
         {
             _connection = connectionFactory.GetConnection;
+            Logger.Debug($"Connection set: {_connection.ConnectionString}");
             _transaction = _connection.BeginTransaction();
         }
 
@@ -61,43 +64,53 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 
             foreach (var item in newUsers)
             {
+                Logger.Info($"Adding new user: {item.LastName}, {item.FirstName}");
                 UserRepository.Add(item);
             }
 
             foreach (var item in newStepTests)
             {
+                Logger.Info($"Adding new steptest for user: {item.ParentUser.LastName}, {item.ParentUser.FirstName}");
                 StepTestRepository.Add(item);
             }
 
             foreach (var item in newMeasurements)
             {
+                Logger.Info($"Adding new measurement: {item.ParentStepTest.ParentUser.LastName}, {item.ParentStepTest.ParentUser.FirstName}, Steptest: {item.ParentStepTest.Id}");
                 MeasurementRepository.Add(item);
             }
 
             foreach (var item in updatedUsers)
             {
+                Logger.Info($"Update user: {item.LastName}, {item.FirstName}");
                 UserRepository.Update(item);
             }
 
             foreach (var item in updatedStepTests)
             {
+                Logger.Info($"Update steptest for user: {item.ParentUser.LastName}, {item.ParentUser.FirstName}");
                 StepTestRepository.Update(item);
             }
 
             foreach (var item in updatedMeasurements)
             {
+                Logger.Info($"Update measurement: {item.ParentStepTest.ParentUser.LastName}, {item.ParentStepTest.ParentUser.FirstName}, Steptest: {item.ParentStepTest.Id}");
                 MeasurementRepository.Update(item);
             }
 
             try
             {
                 _transaction.Commit();
+                Logger.Debug("Transaction Committed");
             }
-            catch
+
+            catch (Exception e)
             {
                 _transaction.Rollback();
+                Logger.Error("Error in commit, transaction is rolled back!", e);
                 throw;
             }
+
             finally
             {
                 _transaction.Dispose();
@@ -131,6 +144,7 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
             _measurementRepository = null;
             _stepTestRepository = null;
             _userRepository = null;
+            Logger.Debug("Repositories is resetted");
         }
 
         private void Dispose(bool disposing)

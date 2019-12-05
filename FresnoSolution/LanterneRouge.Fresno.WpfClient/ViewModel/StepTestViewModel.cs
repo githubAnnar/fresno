@@ -2,9 +2,9 @@
 using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
+using log4net;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -15,6 +15,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(StepTestViewModel));
         private static readonly string _name = typeof(StepTestViewModel).Name;
         private ICommand _saveCommand;
         private bool _isSelected = false;
@@ -206,10 +207,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Methods
 
-        public override string ToString()
-        {
-            return $"Step Test ({StepTestId})";
-        }
+        public override string ToString() => $"StepTest ({StepTestId})";
 
         public void Save(object param)
         {
@@ -219,7 +217,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
                 OnPropertyChanged("DisplayName");
 
-                MessageBox.Show(string.Format("Step Test: {0} saved", StepTestId), "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Step Test: {StepTestId} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
+                Logger.Info($"Step Test: {StepTestId} saved OK");
             }
 
             if (param is string)
@@ -227,6 +226,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 var stringParam = param as string;
                 if (stringParam.Equals("CLOSE", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    Logger.Debug($"Closing {nameof(StepTestViewModel)} for {DisplayName}");
                     CloseCommand.Execute(null);
                 }
             }
@@ -234,28 +234,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public override WorkspaceViewModel SelectedObject => this;
 
-        public static string GetIdentifierName(StepTest stepTest)
-        {
-            return string.Format("{0}_StepTest_{1}", _name, stepTest.Id.Equals(-1) ? Guid.NewGuid().ToString() : stepTest.Id.ToString());
-        }
+        public static string GetIdentifierName(StepTest stepTest) => string.Format("{0}_StepTest_{1}", _name, stepTest.Id.Equals(-1) ? Guid.NewGuid().ToString() : stepTest.Id.ToString());
 
         #endregion
 
         #region Private Helpers
 
-        private bool CanSave
-        {
-            get { return IsValid && Source.IsChanged; }
-        }
+        private bool CanSave => IsValid && Source.IsChanged;
 
         #endregion
 
         #region IDataErrorInfo Interface
 
-        public string Error
-        {
-            get { return null; }
-        }
+        public string Error => null;
 
         public string this[string columnName]
         {
@@ -306,37 +297,27 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                     break;
 
                 default:
-                    Debug.Fail($"Unexpected property being validated on StepTest: {propertyName}");
+                    Logger.Error($"Unexpected property being validated on StepTest: {propertyName}");
                     break;
+            }
+
+            if (!string.IsNullOrEmpty(error))
+            {
+                Logger.Warn($"{propertyName} give '{error}'");
             }
 
             return error;
         }
 
-        private string ValidateIncrease()
-        {
-            return ValidateHelpers.IsFloatLTZero(Increase) ? "Increase" : null;
-        }
+        private string ValidateIncrease() => ValidateHelpers.IsFloatLTZero(Increase) ? "Increase" : null;
 
-        private string ValidateLoadPreset()
-        {
-            return ValidateHelpers.IsFloatLTZero(LoadPreset) ? "Load Preset" : null;
-        }
+        private string ValidateLoadPreset() => ValidateHelpers.IsFloatLTZero(LoadPreset) ? "Load Preset" : null;
 
-        private string ValidateStepDuration()
-        {
-            return ValidateHelpers.IsTimeSpanLTZero(StepDurationTimespan) ? "Step Duration" : null;
-        }
+        private string ValidateStepDuration() => ValidateHelpers.IsTimeSpanLTZero(StepDurationTimespan) ? "Step Duration" : null;
 
-        private string ValidateEffortUnit()
-        {
-            return ValidateHelpers.IsStringMissing(EffortUnit) || (!EffortUnit.Equals("W") && !EffortUnit.Equals("m-s")) ? "Effort Unit" : null;
-        }
+        private string ValidateEffortUnit() => ValidateHelpers.IsStringMissing(EffortUnit) || (!EffortUnit.Equals("W") && !EffortUnit.Equals("m-s")) ? "Effort Unit" : null;
 
-        private string ValidateTestType()
-        {
-            return ValidateHelpers.IsStringMissing(TestType) || (!TestType.Equals("Bike") && !TestType.Equals("Run")) ? "Test Type" : null;
-        }
+        private string ValidateTestType() => ValidateHelpers.IsStringMissing(TestType) || (!TestType.Equals("Bike") && !TestType.Equals("Run")) ? "Test Type" : null;
 
         #endregion
 
@@ -348,6 +329,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void EditSelected(object obj)
         {
+            Logger.Debug($"Editing {DisplayName}");
             _wsCommands.ShowWorkspace(this);
         }
 
@@ -355,19 +337,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowUserCommand
 
-        public ICommand SaveCommand
-        {
-            get
-            {
-                return _saveCommand ?? (_saveCommand = new RelayCommand(param => Save(param), param => CanSave));
-            }
-        }
-
+        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(param => Save(param), param => CanSave));
 
         public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(ShowUser));
 
         private void ShowUser(object obj)
         {
+            Logger.Debug($"Show {DisplayName}");
             _wsCommands.ShowUser(this);
         }
 
@@ -379,6 +355,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowAllMeasurements(object obj)
         {
+            Logger.Debug($"Show All Measurements for {DisplayName}");
             _wsCommands.ShowAllMeasurements(this);
         }
 
@@ -390,6 +367,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void AddMeasurement(object obj)
         {
+            Logger.Debug($"Add Measurement on {DisplayName}");
             _wsCommands.CreateNewMeasurement(this);
         }
 
@@ -401,6 +379,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowFlbcCalculation(object obj)
         {
+            Logger.Debug($"Show FLBC Calculation for {DisplayName}");
             _wsCommands.ShowFblcCalculation(this);
         }
 
@@ -412,6 +391,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowFrpbCalculation(object obj)
         {
+            Logger.Debug($"Show FRPB Calculation for {DisplayName}");
             _wsCommands.ShowFrpbCalculation(this);
         }
 
@@ -423,6 +403,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowLtCalculation(object obj)
         {
+            Logger.Debug($"Show LT Calculation for {DisplayName}");
             _wsCommands.ShowLtCalculation(this);
         }
 
@@ -434,6 +415,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowLtLogCalculation(object obj)
         {
+            Logger.Debug($"Show LTLog Calculation for {DisplayName}");
             _wsCommands.ShowLtLogCalculation(this);
         }
 

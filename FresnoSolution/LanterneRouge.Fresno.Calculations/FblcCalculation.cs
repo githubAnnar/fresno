@@ -30,6 +30,6 @@ namespace LanterneRouge.Fresno.Calculations
 
         public override float HeartRateThreshold => _heartRateThreshold == 0 ? (_heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold)) : _heartRateThreshold;
 
-        #endregion      
+        #endregion
     }
 }
