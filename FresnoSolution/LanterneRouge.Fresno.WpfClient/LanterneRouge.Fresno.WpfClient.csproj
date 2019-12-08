@@ -362,7 +362,7 @@
     <None Include="Resources\icons8-diabetes-96.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-diabetes-96.png" />
+    <Resource Include="Resources\icons8-diabetes-96.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-glucometer-16.ico" />
@@ -383,7 +383,7 @@
     <None Include="Resources\icons8-glucometer-100.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-glucometer-100.png" />
+    <Resource Include="Resources\icons8-glucometer-100.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-report-card-16.ico" />
@@ -404,7 +404,7 @@
     <None Include="Resources\icons8-report-card-100.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-report-card-100.png" />
+    <Resource Include="Resources\icons8-report-card-100.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-user-16.ico" />
@@ -425,7 +425,7 @@
     <None Include="Resources\icons8-user-100.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-user-100.png" />
+    <Resource Include="Resources\icons8-user-100.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-diabetes-16.ico" />

@@ -3,6 +3,7 @@ using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using System;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -59,6 +60,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private DataService _manager;
         public DataService DataManager { get => _manager ?? (_manager = ServiceLocator.Instance.GetService(typeof(IDataService)) as DataService); }
+
+        public BitmapImage ItemIcon { get; protected set; }
 
         /// <summary>
         /// Gets or sets the parent.

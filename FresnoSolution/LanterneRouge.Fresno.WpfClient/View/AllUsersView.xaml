@@ -39,6 +39,13 @@
         <ListView AlternationCount="2" DataContext="{StaticResource Users}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource UserItemStyle}" sf:GridViewSort.AutoSort="True">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Path=ItemIcon}" Height="24" Width="24"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Last Name" DisplayMemberBinding="{Binding LastName}" sf:GridViewSort.PropertyName="LastName"/>
                     <GridViewColumn Header="First Name" DisplayMemberBinding="{Binding FirstName}" sf:GridViewSort.PropertyName="FirstName"/>
                     <GridViewColumn Header="Sex" DisplayMemberBinding="{Binding Sex}" sf:GridViewSort.PropertyName="Sex"/>

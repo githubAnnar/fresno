@@ -39,6 +39,13 @@
         <ListView AlternationCount="2" DataContext="{StaticResource Measurements}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource MeasurementItemStyle}" sf:GridViewSort.AutoSort="True">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Path=ItemIcon}" Height="24" Width="24"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Sequence" DisplayMemberBinding="{Binding Sequence}" sf:GridViewSort.PropertyName="Sequence"/>
                     <GridViewColumn Header="Load" DisplayMemberBinding="{Binding Load}" sf:GridViewSort.PropertyName="Load"/>
                     <GridViewColumn Header="Lactate" DisplayMemberBinding="{Binding Lactate}" sf:GridViewSort.PropertyName="Lactate"/>

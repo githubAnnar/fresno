@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -37,6 +38,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             Source = category ?? throw new ArgumentNullException(nameof(category));
             _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
+            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png"));
         }
 
         #endregion

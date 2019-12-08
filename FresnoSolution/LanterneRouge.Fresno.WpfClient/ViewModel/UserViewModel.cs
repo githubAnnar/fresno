@@ -4,10 +4,10 @@ using LanterneRouge.Fresno.WpfClient.Utils;
 using log4net;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -33,6 +33,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             Source = user ?? throw new ArgumentNullException(nameof(user));
             _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
+            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png"));
         }
 
         #endregion

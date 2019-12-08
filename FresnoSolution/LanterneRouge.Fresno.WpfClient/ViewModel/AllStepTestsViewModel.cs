@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -25,6 +26,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         protected AllStepTestsViewModel(IWorkspaceCommands mainWorkspaceViewModel)
         {
             _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException("mainWorkspaceViewModel");
+            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png"));
         }
 
         public AllStepTestsViewModel(UserViewModel parentUser, IWorkspaceCommands mainWorkspaceViewModel)

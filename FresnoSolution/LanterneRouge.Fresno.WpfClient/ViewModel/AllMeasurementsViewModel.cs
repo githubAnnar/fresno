@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -24,6 +25,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         protected AllMeasurementsViewModel(IWorkspaceCommands mainWorkspaceViewModel)
         {
             _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException("mainWorkspaceViewModel");
+            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-report-card-100.png"));
         }
 
         public AllMeasurementsViewModel(StepTestViewModel parentStepTest, IWorkspaceCommands mainWorkspaceViewModel)

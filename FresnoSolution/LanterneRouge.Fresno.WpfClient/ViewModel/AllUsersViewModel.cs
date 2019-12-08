@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -24,6 +25,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             DisplayName = "All Users"; /*KayakStrings.Race_All_Races;*/
             _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException("mainWorkspaceViewModel");
+            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png"));
             CreateAllUsers();
             DataManager.Committed += DataManager_Committed;
             Logger.Debug($"AllUsers loaded");

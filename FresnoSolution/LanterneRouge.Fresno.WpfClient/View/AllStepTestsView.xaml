@@ -48,6 +48,13 @@
         <ListView AlternationCount="2" DataContext="{StaticResource StepTests}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource StepTestStyle}" sf:GridViewSort.AutoSort="True" SelectionMode="Extended" DockPanel.Dock="Top">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Path=ItemIcon}" Height="24" Width="24"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Test Date" DisplayMemberBinding="{Binding TestDate, StringFormat=dd.MM.yyyy HH:mm}" sf:GridViewSort.PropertyName="TestDate"/>
                     <GridViewColumn Header="Test Type" DisplayMemberBinding="{Binding TestType}" sf:GridViewSort.PropertyName="TestType"/>
                     <GridViewColumn Header="Step Duration" DisplayMemberBinding="{Binding StepDurationTimespan}" sf:GridViewSort.PropertyName="StepDurationTimespan"/>
