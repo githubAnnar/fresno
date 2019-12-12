@@ -147,8 +147,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 DataManager.Commit();
                 OnPropertyChanged(nameof(DisplayName));
 
-                MessageBox.Show($"Measurement: {Sequence} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
-                Logger.Info($"Measurement: {Sequence} saved OK");
+                MessageBox.Show($"{ToString()} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
+                Logger.Info($"{ToString()} saved OK");
             }
 
             if (param is string stringParam && stringParam.Equals("CLOSE", StringComparison.InvariantCultureIgnoreCase))

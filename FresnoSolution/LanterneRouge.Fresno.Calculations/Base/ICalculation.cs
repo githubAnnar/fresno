@@ -6,13 +6,13 @@ namespace LanterneRouge.Fresno.Calculations.Base
 {
     public interface ICalculation
     {
-        IEnumerable<Measurement> Measurements { get; }
+        List<Measurement> Measurements { get; }
 
-        IEnumerable<double> Loads { get; }
+        List<double> Loads { get; }
 
-        IEnumerable<double> Lactates { get; }
+        List<double> Lactates { get; }
 
-        IEnumerable<double> HeartRates { get; }
+        List<double> HeartRates { get; }
 
         float LoadThreshold { get; }
 

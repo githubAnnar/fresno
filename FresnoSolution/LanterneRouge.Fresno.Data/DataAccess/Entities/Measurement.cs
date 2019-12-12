@@ -2,7 +2,7 @@
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
 {
-    public class Measurement : BaseEntity<Measurement>
+    public class Measurement : BaseEntity<Measurement>, IComparable<Measurement>
     {
         public int HeartRate { get; set; }
 
@@ -26,5 +26,9 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
             newMeasurement.AcceptChanges();
             return newMeasurement;
         }
+
+        public int CompareTo(Measurement other) => other == null
+                ? 1
+                : StepTestId > other.StepTestId ? 1 : StepTestId < other.StepTestId ? -1 : Sequence.CompareTo(other.Sequence);
     }
 }

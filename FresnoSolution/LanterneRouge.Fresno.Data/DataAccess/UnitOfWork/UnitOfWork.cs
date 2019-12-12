@@ -45,9 +45,9 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 
         public List<User> CachedUsers => _cachedUsers ?? (_cachedUsers = new List<User>());
 
-        public IEnumerable<StepTest> CachedStepTests => CachedUsers.SelectMany(u => u.StepTests);
+        public List<StepTest> CachedStepTests => CachedUsers.SelectMany(u => u.StepTests).ToList();
 
-        public IEnumerable<Measurement> CachedMeasurements => CachedUsers.SelectMany(u => u.StepTests.SelectMany(s => s.Measurements));
+        public List<Measurement> CachedMeasurements => CachedUsers.SelectMany(u => u.StepTests.SelectMany(s => s.Measurements)).ToList();
 
         #endregion
 

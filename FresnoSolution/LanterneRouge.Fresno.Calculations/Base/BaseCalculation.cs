@@ -13,20 +13,21 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         public BaseCalculation(IEnumerable<Measurement> measurements)
         {
-            Measurements = measurements;
+            Measurements = measurements.Where(m => m.InCalculation).ToList();
+            Measurements.Sort();
         }
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<Measurement> Measurements { get; }
+        public List<Measurement> Measurements { get; }
 
-        public IEnumerable<double> Loads => Measurements.Where(m => m.InCalculation).Select(m => (double)m.Load);
+        public List<double> Loads => Measurements.Select(m => (double)m.Load).ToList();
 
-        public IEnumerable<double> Lactates => Measurements.Where(m => m.InCalculation).Select(m => (double)m.Lactate);
+        public List<double> Lactates => Measurements.Select(m => (double)m.Lactate).ToList();
 
-        public IEnumerable<double> HeartRates => Measurements.Where(m => m.InCalculation).Select(m => (double)m.HeartRate);
+        public List<double> HeartRates => Measurements.Select(m => (double)m.HeartRate).ToList();
 
         public virtual float LoadThreshold { get; }
 
