@@ -129,6 +129,56 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
             return CachedUsers;
         }
 
+        public User GetUserById(int id, bool refresh = false)
+        {
+            if (refresh || CachedUsers.Count == 0)
+            {
+                _cachedUsers = UserRepository.All().ToList();
+            }
+
+            return _cachedUsers.FirstOrDefault(u => u.Id == id);
+        }
+
+        public List<StepTest> GetAllStepTests(bool refresh = false)
+        {
+            if (refresh || CachedUsers.Count == 0)
+            {
+                _cachedUsers = UserRepository.All().ToList();
+            }
+
+            return CachedStepTests;
+        }
+
+        public StepTest GetStepTestById(int id, bool refresh = false)
+        {
+            if (refresh || CachedUsers.Count == 0)
+            {
+                _cachedUsers = UserRepository.All().ToList();
+            }
+
+            return CachedStepTests.FirstOrDefault(s => s.Id == id);
+        }
+
+        public List<Measurement> GetAllMeasurements(bool refresh = false)
+        {
+            if (refresh || CachedUsers.Count == 0)
+            {
+                _cachedUsers = UserRepository.All().ToList();
+            }
+
+            return CachedMeasurements;
+        }
+
+        public Measurement GetMeasurementById(int id, bool refresh = false)
+        {
+            if (refresh || CachedUsers.Count == 0)
+            {
+                _cachedUsers = UserRepository.All().ToList();
+            }
+
+            return CachedMeasurements.FirstOrDefault(m => m.Id == id);
+        }
+
         #endregion
 
         #region IDisposable Support
