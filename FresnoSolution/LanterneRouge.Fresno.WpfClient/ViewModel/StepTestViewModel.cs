@@ -215,6 +215,16 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (Source.IsChanged)
             {
+                if (Source.State == EntityState.New)
+                {
+                    DataManager.AddStepTest(Source);
+                }
+
+                else
+                {
+                    DataManager.UpdateStepTest(Source);
+                }
+
                 DataManager.Commit();
 
                 OnPropertyChanged("DisplayName");

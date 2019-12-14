@@ -31,10 +31,10 @@ namespace LanternRouge.Fresno.DataLayer.Test
             var actual = new UnitOfWork(connectionFactory);
 
             var user = new User { FirstName = "Annar", LastName = "Gaustad", Email = "annar.gaustad@gmail.com", BirthDate = new DateTime(1968, 3, 10), Height = 183, PostCity = "Lillesand", PostCode = "4790", Sex = "M", Street = "Noan Christian Gauslaasgate 1A" };
-            actual.UserRepository.Add(user);
+            actual.UpsertUser(user);
 
             var stepTest = new StepTest { EffortUnit = "W", Increase = 20f, LoadPreset = 120f, StepDuration = TimeSpan.FromMinutes(4).Ticks, TestType = "Bike", UserId = user.Id, Temperature = 20f, Weight = 90.1f, TestDate = DateTime.Parse("11.05.2017 19:00") };
-            actual.StepTestRepository.Add(stepTest);
+            actual.UpsertStepTest(stepTest);
 
             var measurement = new List<Measurement> {
                         new Measurement {Sequence = 1,Load = 120f, HeartRate = 104, Lactate = 1.4f, StepTestId = stepTest.Id },
@@ -50,7 +50,7 @@ namespace LanternRouge.Fresno.DataLayer.Test
 
             foreach (var item in measurement)
             {
-                actual.MeasurementRepository.Add(item);
+                actual.UpsertMeasurement(item);
             }
 
             actual.Commit();
@@ -58,38 +58,38 @@ namespace LanternRouge.Fresno.DataLayer.Test
             var allUsers = actual.GetAllUsers().ToList();
             Assert.IsTrue(allUsers.Count > 0);
             allUsers[0].FirstName = "Annar Test";
-            actual.UserRepository.Update(allUsers[0]);
+            actual.UpsertUser(allUsers[0]);
 
-            var allStepTests = actual.StepTestRepository.All().ToList();
+            var allStepTests = actual.GetAllStepTests();
             Assert.IsTrue(allStepTests.Count > 0);
             allStepTests[0].TestType = "Run";
-            actual.StepTestRepository.Update(allStepTests[0]);
+            actual.UpsertStepTest(allStepTests[0]);
 
-            var allMeasurements = actual.MeasurementRepository.All().ToList();
+            var allMeasurements = actual.GetAllMeasurements();
             Assert.IsTrue(allMeasurements.Count > 0);
             allMeasurements[0].Load = 140f;
-            actual.MeasurementRepository.Update(allMeasurements[0]);
+            actual.UpsertMeasurement(allMeasurements[0]);
 
             actual.Commit();
 
-            var allMeasurments = actual.MeasurementRepository.All().ToList();
-            allMeasurments.ForEach(m => actual.MeasurementRepository.Remove(m));
+            var allMeasurments = actual.GetAllMeasurements();
+            allMeasurments.ForEach(m => actual.RemoveMeasurement(m));
 
-            allStepTests = actual.StepTestRepository.All().ToList();
-            allStepTests.ForEach(m => actual.StepTestRepository.Remove(m));
+            allStepTests = actual.GetAllStepTests();
+            allStepTests.ForEach(m => actual.RemoveStepTest(m));
 
-            allUsers = actual.UserRepository.All().ToList();
-            allUsers.ForEach(m => actual.UserRepository.Remove(m));
+            allUsers = actual.GetAllUsers();
+            allUsers.ForEach(m => actual.RemoveUser(m));
 
             actual.Commit();
 
-            allMeasurments = actual.MeasurementRepository.All().ToList();
+            allMeasurments = actual.GetAllMeasurements();
             Assert.IsTrue(allMeasurments.Count == 0);
 
-            allStepTests = actual.StepTestRepository.All().ToList();
+            allStepTests = actual.GetAllStepTests();
             Assert.IsTrue(allStepTests.Count == 0);
 
-            allUsers = actual.UserRepository.All().ToList();
+            allUsers = actual.GetAllUsers();
             Assert.IsTrue(allUsers.Count == 0);
 
             actual.Dispose();

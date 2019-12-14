@@ -42,66 +42,30 @@ namespace LanterneRouge.Fresno.WpfClient.Services
             Committed?.Invoke();
         }
 
-        public IEnumerable<User> GetAllUsers(bool refresh = false)
-        {
-            return _unitOfWork.GetAllUsers(refresh);
-        }
+        public IEnumerable<User> GetAllUsers(bool refresh = false) => _unitOfWork.GetAllUsers(refresh);
 
-        public void UpdateUser(User entity)
-        {
-            _unitOfWork.UserRepository.Update(entity);
-        }
+        public void UpdateUser(User entity) => _unitOfWork.UpsertUser(entity);
 
-        public void RemoveUser(User entity)
-        {
-            _unitOfWork.UserRepository.Remove(entity);
-        }
+        public void RemoveUser(User entity) => _unitOfWork.RemoveUser(entity);
 
-        public void AddUser(User entity)
-        {
-            _unitOfWork.UserRepository.Add(entity);
-        }
+        public void AddUser(User entity) => _unitOfWork.UpsertUser(entity);
 
-        public IEnumerable<StepTest> GetAllStepTests()
-        {
-            return _unitOfWork.StepTestRepository.All();
-        }
+        public IEnumerable<StepTest> GetAllStepTests() => _unitOfWork.GetAllStepTests();
 
-        public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _unitOfWork.StepTestRepository.FindByParentId(parent);
+        public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _unitOfWork.GetUserById(parent.Id).StepTests;
 
-        public void UpdateStepTest(StepTest entity)
-        {
-            _unitOfWork.StepTestRepository.Update(entity);
-        }
+        public void UpdateStepTest(StepTest entity) => _unitOfWork.UpsertStepTest(entity);
 
-        public void RemoveStepTest(StepTest entity)
-        {
-            _unitOfWork.StepTestRepository.Remove(entity);
-        }
+        public void RemoveStepTest(StepTest entity) => _unitOfWork.RemoveStepTest(entity);
 
-        public void AddStepTest(StepTest entity)
-        {
-            _unitOfWork.StepTestRepository.Add(entity);
-        }
+        public void AddStepTest(StepTest entity) => _unitOfWork.UpsertStepTest(entity);
 
-        public IEnumerable<Measurement> GetAllMeasurements()
-        {
-            return _unitOfWork.MeasurementRepository.All();
-        }
+        public IEnumerable<Measurement> GetAllMeasurements() => _unitOfWork.GetAllMeasurements();
 
-        public void UpdateMeasurement(Measurement entity)
-        {
-            _unitOfWork.MeasurementRepository.Update(entity);
-        }
+        public void UpdateMeasurement(Measurement entity) => _unitOfWork.UpsertMeasurement(entity);
 
-        public void RemoveMeasurement(Measurement entity)
-        {
-            _unitOfWork.MeasurementRepository.Remove(entity);
-        }
+        public void RemoveMeasurement(Measurement entity) => _unitOfWork.RemoveMeasurement(entity);
 
-        public void AddMeasurement(Measurement entity)
-        {
-            _unitOfWork.MeasurementRepository.Add(entity);
-        }
+        public void AddMeasurement(Measurement entity) => _unitOfWork.UpsertMeasurement(entity);
     }
 }

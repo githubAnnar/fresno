@@ -7,14 +7,30 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Measurement, StepTest> MeasurementRepository { get; }
-
-        IRepository<StepTest, User> StepTestRepository { get; }
-
-        IRepository<User, object> UserRepository { get; }
-
         void Commit();
 
-        IEnumerable<User> GetAllUsers(bool refresh = false);
+        List<User> GetAllUsers(bool refresh = false);
+
+        User GetUserById(int id, bool refresh = false);
+
+        void UpsertUser(User entity);
+
+        void RemoveUser(User entity);
+
+        List<StepTest> GetAllStepTests(bool refresh = false);
+
+        StepTest GetStepTestById(int id, bool refresh = false);
+
+        void UpsertStepTest(StepTest entity);
+
+        void RemoveStepTest(StepTest entity);
+
+        List<Measurement> GetAllMeasurements(bool refresh = false);
+
+        Measurement GetMeasurementById(int id, bool refresh = false);
+
+        void UpsertMeasurement(Measurement entity);
+
+        void RemoveMeasurement(Measurement entity);
     }
 }

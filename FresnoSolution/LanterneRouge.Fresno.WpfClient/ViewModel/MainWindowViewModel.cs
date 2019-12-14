@@ -565,8 +565,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             newMeasurement.InCalculation = true;
             newMeasurement.ParentStepTest = stepTest.Source;
             newMeasurement.AcceptChanges();
-            //stepTest.Source.Measurements.Add(newMeasurement);
-            DataManager.AddMeasurement(newMeasurement);
+            stepTest.Source.Measurements.Add(newMeasurement);
             Logger.Info("New empty measurement created");
             var workspace = new MeasurementViewModel(newMeasurement, this);
             ShowWorkspace(workspace);

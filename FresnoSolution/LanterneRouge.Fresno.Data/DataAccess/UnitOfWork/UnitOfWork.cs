@@ -37,17 +37,17 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 
         #region Properties
 
-        public IRepository<Measurement, StepTest> MeasurementRepository => _measurementRepository ?? (_measurementRepository = new MeasurementRepository(_transaction));
+        private IRepository<Measurement, StepTest> MeasurementRepository => _measurementRepository ?? (_measurementRepository = new MeasurementRepository(_transaction));
 
-        public IRepository<StepTest, User> StepTestRepository => _stepTestRepository ?? (_stepTestRepository = new StepTestRepository(_transaction));
+        private IRepository<StepTest, User> StepTestRepository => _stepTestRepository ?? (_stepTestRepository = new StepTestRepository(_transaction));
 
-        public IRepository<User, object> UserRepository => _userRepository ?? (_userRepository = new UserRepository(_transaction));
+        private IRepository<User, object> UserRepository => _userRepository ?? (_userRepository = new UserRepository(_transaction));
 
-        public List<User> CachedUsers => _cachedUsers ?? (_cachedUsers = new List<User>());
+        private List<User> CachedUsers => _cachedUsers ?? (_cachedUsers = new List<User>());
 
-        public List<StepTest> CachedStepTests => CachedUsers.SelectMany(u => u.StepTests).ToList();
+        private List<StepTest> CachedStepTests => CachedUsers.SelectMany(u => u.StepTests).ToList();
 
-        public List<Measurement> CachedMeasurements => CachedUsers.SelectMany(u => u.StepTests.SelectMany(s => s.Measurements)).ToList();
+        private List<Measurement> CachedMeasurements => CachedUsers.SelectMany(u => u.StepTests.SelectMany(s => s.Measurements)).ToList();
 
         #endregion
 
@@ -119,7 +119,9 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
             }
         }
 
-        public IEnumerable<User> GetAllUsers(bool refresh = false)
+        #region User Methods
+
+        public List<User> GetAllUsers(bool refresh = false)
         {
             if (refresh || CachedUsers.Count == 0)
             {
@@ -138,6 +140,25 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 
             return _cachedUsers.FirstOrDefault(u => u.Id == id);
         }
+
+        public void UpsertUser(User entity)
+        {
+            if (entity.State == EntityState.New)
+            {
+                UserRepository.Add(entity);
+            }
+
+            else
+            {
+                UserRepository.Update(entity);
+            }
+        }
+
+        public void RemoveUser(User entity) => UserRepository.Remove(entity);
+
+        #endregion
+
+        #region Step Test Methods
 
         public List<StepTest> GetAllStepTests(bool refresh = false)
         {
@@ -159,6 +180,25 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
             return CachedStepTests.FirstOrDefault(s => s.Id == id);
         }
 
+        public void UpsertStepTest(StepTest entity)
+        {
+            if (entity.State == EntityState.New)
+            {
+                StepTestRepository.Add(entity);
+            }
+
+            else
+            {
+                StepTestRepository.Update(entity);
+            }
+        }
+
+        public void RemoveStepTest(StepTest entity) => StepTestRepository.Remove(entity);
+
+        #endregion
+
+        #region Measurements Methods
+
         public List<Measurement> GetAllMeasurements(bool refresh = false)
         {
             if (refresh || CachedUsers.Count == 0)
@@ -178,6 +218,23 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 
             return CachedMeasurements.FirstOrDefault(m => m.Id == id);
         }
+
+        public void UpsertMeasurement(Measurement entity)
+        {
+            if (entity.State == EntityState.New)
+            {
+                MeasurementRepository.Add(entity);
+            }
+
+            else
+            {
+                MeasurementRepository.Update(entity);
+            }
+        }
+
+        public void RemoveMeasurement(Measurement entity) => MeasurementRepository.Remove(entity);
+
+        #endregion
 
         #endregion
 
