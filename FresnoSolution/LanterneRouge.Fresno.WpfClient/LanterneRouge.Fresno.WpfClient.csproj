@@ -365,6 +365,7 @@
     <Resource Include="Resources\icons8-diabetes-96.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\icons8-glucometer-100.xcf" />
     <None Include="Resources\icons8-glucometer-16.ico" />
   </ItemGroup>
   <ItemGroup>
