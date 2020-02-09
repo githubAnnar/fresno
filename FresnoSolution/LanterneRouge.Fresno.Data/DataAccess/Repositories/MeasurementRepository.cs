@@ -67,9 +67,13 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
         public void Update(Measurement entity)
         {
             if (entity == null)
+            {
                 throw new ArgumentNullException("entity");
+            }
 
-            Connection.Execute("UPDATE Measurement SET HeartRate = @HeartRate, Lactate = @Lactate, Load = @Load, StepTestId = @StepTestId, Sequence = @Sequence WHERE Id = @Id", param: new { entity.Id, entity.HeartRate, entity.Lactate, entity.Load, entity.StepTestId, entity.Sequence }, transaction: Transaction);
+            var tempText = entity.InCalculation.ToString();
+
+            Connection.Execute("UPDATE Measurement SET HeartRate = @HeartRate, Lactate = @Lactate, Load = @Load, StepTestId = @StepTestId, Sequence = @Sequence, InCalculation = @InCalculation WHERE Id = @Id", param: new { entity.Id, entity.HeartRate, entity.Lactate, entity.Load, entity.StepTestId, entity.Sequence, @InCalculation = tempText }, transaction: Transaction);
             entity.AcceptChanges();
             Logger.Info($"Updated {entity.Id}");
         }
