@@ -88,7 +88,7 @@
                 <Button Command="{Binding SaveCommand}" Content="_Save" HorizontalAlignment="Right" Margin="4,2" MinWidth="60" />
                 <Button Command="{Binding SaveCommand}" CommandParameter="Close" Content="Save &amp; Close" HorizontalAlignment="Right" Margin="4,2" MinWidth="60" />
             </StackPanel>
-            <DockPanel Grid.Row="9" Grid.ColumnSpan="6">
+            <!--<DockPanel Grid.Row="9" Grid.ColumnSpan="6">
                 <TabControl DockPanel.Dock="Top">
                     <TabItem Header="Measurements"></TabItem>
                     <TabItem Header="FBLC Zones">
@@ -148,7 +148,7 @@
                         </StackPanel>
                     </TabItem>
                 </TabControl>
-            </DockPanel>
+            </DockPanel>-->
 
         </Grid>
     </ScrollViewer>

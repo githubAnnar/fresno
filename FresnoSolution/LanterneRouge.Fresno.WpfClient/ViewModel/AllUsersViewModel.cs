@@ -53,10 +53,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public UserViewModel Selected => SelectedObject as UserViewModel;
 
-        public static string GetIdentifierName()
-        {
-            return _name;
-        }
+        public static string GetIdentifierName() => _name;
 
         #endregion
 

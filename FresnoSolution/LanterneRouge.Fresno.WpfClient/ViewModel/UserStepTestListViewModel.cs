@@ -43,10 +43,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             CloseAction(selection, true);
         }
 
-        private void Cancel()
-        {
-            CloseAction(null, false);
-        }
+        private void Cancel() => CloseAction(null, false);
 
         #endregion
 

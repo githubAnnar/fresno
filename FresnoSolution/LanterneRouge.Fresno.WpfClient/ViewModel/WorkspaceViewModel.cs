@@ -35,10 +35,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// <summary>
         /// Called when [request close].
         /// </summary>
-        private void OnRequestClose()
-        {
-            RequestClose?.Invoke(this, EventArgs.Empty);
-        }
+        private void OnRequestClose() => RequestClose?.Invoke(this, EventArgs.Empty);
 
         #endregion // RequestClose [event]
 
@@ -59,7 +56,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #region Public Properties
 
         private DataService _manager;
-        public DataService DataManager { get => _manager ?? (_manager = ServiceLocator.Instance.GetService(typeof(IDataService)) as DataService); }
+        public DataService DataManager => _manager ?? (_manager = ServiceLocator.Instance.GetService(typeof(IDataService)) as DataService);
 
         public BitmapImage ItemIcon { get; protected set; }
 

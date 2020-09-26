@@ -600,13 +600,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             get
             {
                 WorkspaceViewModel wvm;
-
-                if ((wvm = GetActiveSelectedObject()) == null)
-                {
-                    return false;
-                }
-
-                return wvm is StepTestViewModel;
+                return (wvm = GetActiveSelectedObject()) != null && wvm is StepTestViewModel;
             }
         }
 
@@ -616,17 +610,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             {
                 WorkspaceViewModel wvm;
 
-                if ((wvm = GetActiveSelectedObject()) == null)
-                {
-                    if ((wvm = GetActiveWorkspace()) == null)
-                    {
-                        return false;
-                    }
-
-                    return wvm is AllMeasurementsViewModel;
-                }
-
-                return wvm is StepTestViewModel;
+                return (wvm = GetActiveSelectedObject()) == null
+                    ? (wvm = GetActiveWorkspace()) != null && wvm is AllMeasurementsViewModel
+                    : wvm is StepTestViewModel;
             }
         }
 
@@ -635,12 +621,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             get
             {
                 WorkspaceViewModel wvm;
-                if ((wvm = GetActiveSelectedObject()) == null)
-                {
-                    return false;
-                }
-
-                return wvm is StepTestViewModel;
+                return (wvm = GetActiveSelectedObject()) != null && wvm is StepTestViewModel;
             }
         }
 
@@ -694,12 +675,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private WorkspaceViewModel GetActiveWorkspace()
         {
             var collectionView = CollectionViewSource.GetDefaultView(Workspaces);
-            if (collectionView != null)
-            {
-                return collectionView.CurrentItem as WorkspaceViewModel;
-            }
-
-            return null;
+            return collectionView != null ? collectionView.CurrentItem as WorkspaceViewModel : null;
         }
 
         /// <summary>

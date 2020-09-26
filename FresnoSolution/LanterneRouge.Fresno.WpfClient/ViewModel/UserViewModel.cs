@@ -40,7 +40,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
-        internal User Source { get => _source.IsLoaded ? _source : DataManager.GetAllUsers().Where(u => u.Id == _source.Id).FirstOrDefault(); private set => _source = value; }
+        internal User Source
+        {
+            get => _source.IsLoaded ? _source : DataManager.GetAllUsers().Where(u => u.Id == _source.Id).FirstOrDefault();
+            private set => _source = value;
+        }
 
         public int UserId => Source.Id;
 
