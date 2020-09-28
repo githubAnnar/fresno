@@ -16,24 +16,16 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(AllStepTestsViewModel));
         private static readonly string Name = typeof(AllStepTestsViewModel).Name;
-        private readonly IWorkspaceCommands _wsCommands;
         private ICommand _showDiagramCommand;
 
         #endregion
 
         #region Constructors
 
-        protected AllStepTestsViewModel(IWorkspaceCommands mainWorkspaceViewModel)
-        {
-            _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException("mainWorkspaceViewModel");
-            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png"));
-        }
-
-        public AllStepTestsViewModel(UserViewModel parentUser, IWorkspaceCommands mainWorkspaceViewModel)
-           : this(mainWorkspaceViewModel)
+        public AllStepTestsViewModel(UserViewModel parentUser, Action<WorkspaceViewModel> showWorkspace) : base(parentUser, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
         {
             DisplayName = parentUser == null ? "All Users"/*KayakStrings.Category_All_Categories*/ : $"StepTests: {parentUser.LastName}";
-            CreateAllStepTests(parentUser);
+            CreateAllStepTests();
             DataManager.Committed += DataManager_Committed;
             Logger.Debug($"AllStepests for user {parentUser.LastName} loaded");
         }
@@ -41,32 +33,23 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void DataManager_Committed()
         {
             OnDispose();
-            CreateAllStepTests(null);
+            CreateAllStepTests();
         }
 
-        private void CreateAllStepTests(UserViewModel parentUser)
+        private void CreateAllStepTests()
         {
-            if (ParentUserViewModel == null && parentUser != null)
+            if (Parent is UserViewModel parent)
             {
-                ParentUserViewModel = parentUser;
+                var all = (from stepTest in parent.Source.StepTests select new StepTestViewModel(stepTest, parent, ShowWorkspace)).ToList();
+                all.ForEach(cvm => cvm.PropertyChanged += OnStepTestViewModelPropertyChanged);
+                AllStepTests = new ObservableCollection<StepTestViewModel>(all);
+                AllStepTests.CollectionChanged += OnCollectionChanged;
             }
-
-            else if (ParentUserViewModel == null && parentUser == null)
-            {
-                return;
-            }
-
-            var all = (from stepTest in ParentUserViewModel.Source.StepTests select new StepTestViewModel(stepTest, _wsCommands)).ToList();
-            all.ForEach(cvm => cvm.PropertyChanged += OnStepTestViewModelPropertyChanged);
-            AllStepTests = new ObservableCollection<StepTestViewModel>(all);
-            AllStepTests.CollectionChanged += OnCollectionChanged;
         }
 
         #endregion
 
         #region Public Interface
-
-        private UserViewModel ParentUserViewModel { get; set; }
 
         public ObservableCollection<StepTestViewModel> AllStepTests { get; private set; }
 

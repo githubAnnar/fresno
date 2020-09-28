@@ -1,7 +1,5 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
-using LanterneRouge.Fresno.WpfClient.MVVM;
 using System;
 using System.Collections.ObjectModel;
 
@@ -11,26 +9,22 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
-        private readonly IWorkspaceCommands _wsCommands;
         private double _frpbCalculationThreshold = 1d;
 
         #endregion
 
         #region Constructors
 
-        public FrpbCalculationViewModel(StepTest category, IWorkspaceCommands mainWorkspaceViewModel)
-        {
-            Source = category ?? throw new ArgumentNullException(nameof(category));
-            _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
-        }
+        public FrpbCalculationViewModel(StepTestViewModel parentStepTest, Action<WorkspaceViewModel> showWorkspace) : base(parentStepTest, showWorkspace, null)
+        { }
 
         #endregion
 
         #region Properties
 
-        internal StepTest Source { get; private set; }
+        private StepTestViewModel StepTestParent => Parent as StepTestViewModel;
 
-        public int StepTestId => Source.Id;
+        public int StepTestId => StepTestParent.Source.Id;
 
         public double FrpbCalculationThreshold
         {
@@ -52,14 +46,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public string FRPBLactateThresholdText => FrpbCalculation != null ? $"Load Th.: {FrpbCalculation.LoadThreshold:0.0} Heartrate Th.: {FrpbCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private FrpbCalculation _frpbCalculation = null;
-        private FrpbCalculation FrpbCalculation => _frpbCalculation ?? (_frpbCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new FrpbCalculation(Source.Measurements, FrpbCalculationThreshold) : null);
+        private FrpbCalculation FrpbCalculation => _frpbCalculation ?? (_frpbCalculation = StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0 ? new FrpbCalculation(StepTestParent.Source.Measurements, FrpbCalculationThreshold) : null);
 
         private ObservableCollection<Zone> _FRPBZones = null;
         public ObservableCollection<Zone> FRPBZones
         {
             get
             {
-                if (_FRPBZones == null && Source.Measurements != null && Source.Measurements.Count > 0)
+                if (_FRPBZones == null && StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0)
                 {
                     if (FrpbCalculation != null)
                     {

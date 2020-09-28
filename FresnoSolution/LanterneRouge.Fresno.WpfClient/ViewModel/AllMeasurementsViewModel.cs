@@ -1,7 +1,5 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
-using log4net;
+﻿using log4net;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -16,65 +14,35 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(AllMeasurementsViewModel));
         private static readonly string _name = typeof(AllMeasurementsViewModel).Name;
-        private readonly IWorkspaceCommands _wsCommands;
 
         #endregion
 
         #region Constructors
 
-        protected AllMeasurementsViewModel(IWorkspaceCommands mainWorkspaceViewModel)
+        public AllMeasurementsViewModel(StepTestViewModel parentStepTest, Action<WorkspaceViewModel> showWorkspace)
+            : base(parentStepTest, showWorkspace, null)
         {
-            _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException("mainWorkspaceViewModel");
-            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-report-card-100.png"));
-        }
-
-        public AllMeasurementsViewModel(StepTestViewModel parentStepTest, IWorkspaceCommands mainWorkspaceViewModel)
-            : this(mainWorkspaceViewModel)
-        {
-            CreateAllMeasurements(parentStepTest);
-            ParentViewModel = parentStepTest;
+            CreateAllMeasurements();
             DataManager.Committed += DataManager_Committed;
         }
 
         private void DataManager_Committed()
         {
             OnDispose();
-            CreateAllMeasurements(ParentViewModel);
+            CreateAllMeasurements();
         }
 
-        public AllMeasurementsViewModel(UserViewModel parentUser, IWorkspaceCommands mainWorkspaceViewModel)
-            : this(mainWorkspaceViewModel)
+        private void CreateAllMeasurements()
         {
-            CreateAllMeasurements(parentUser);
-        }
-
-        private void CreateAllMeasurements(object parent)
-        {
-            List<MeasurementViewModel> all;
-            if (parent != null)
+            if (Parent is StepTestViewModel parent)
             {
-                if (parent is StepTestViewModel)
-                {
-                    var stepTest = parent as StepTestViewModel;
-                    DisplayName = stepTest == null ? "All Measurements"/*KayakStrings.Craft_All_Crafts*/ : $"Measurements: {stepTest.DisplayName}";
-                    all = (from measurement in stepTest.Source.Measurements select new MeasurementViewModel(measurement, _wsCommands)).ToList();
-                }
-
-                else
-                {
-                    all = new List<MeasurementViewModel>();
-                }
+                DisplayName = $"Measurements: {parent.DisplayName}";
+                var all = (from measurement in parent.Source.Measurements select new MeasurementViewModel(measurement, parent, ShowWorkspace)).ToList();
+                all.ForEach(a => a.PropertyChanged += OnMeasurementViewModelPropertyChanged);
+                AllMeasurements = new ObservableCollection<MeasurementViewModel>(all);
+                AllMeasurements.CollectionChanged += OnCollectionChanged;
+                Logger.Debug("AllMeasurements created");
             }
-
-            else
-            {
-                all = (from measurement in DataManager.GetAllMeasurements() select new MeasurementViewModel(measurement, _wsCommands)).ToList();
-            }
-
-            all.ForEach(a => a.PropertyChanged += OnMeasurementViewModelPropertyChanged);
-            AllMeasurements = new ObservableCollection<MeasurementViewModel>(all);
-            AllMeasurements.CollectionChanged += OnCollectionChanged;
-            Logger.Debug("AllMeasurements created");
         }
 
         #endregion
@@ -83,12 +51,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ObservableCollection<MeasurementViewModel> AllMeasurements { get; private set; }
 
-        public override WorkspaceViewModel SelectedObject
-        {
-            get { return AllMeasurements.FirstOrDefault(item => item.IsSelected); }
-        }
-
-        public StepTestViewModel ParentViewModel { get; }
+        public override WorkspaceViewModel SelectedObject => AllMeasurements.FirstOrDefault(item => item.IsSelected);
 
         public static string GetIdentifierName(MeasurementViewModel measurement) => $"{_name}_Measurement_{measurement.MeasurementId}";
 

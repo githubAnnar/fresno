@@ -3,6 +3,7 @@ using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
 using log4net;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -15,25 +16,23 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
-        private ILog Logger = LogManager.GetLogger(typeof(UserViewModel));
+        private readonly ILog Logger = LogManager.GetLogger(typeof(UserViewModel));
         private static readonly string _name = typeof(UserViewModel).Name;
         private ICommand _saveCommand = null;
         private bool _isSelected = false;
-        private readonly IWorkspaceCommands _wsCommands;
         private User _source;
         private ICommand _editSelectedCommand;
         private ICommand _showAllStepTestsCommand;
         private ICommand _addStepTestCommand;
+        private ObservableCollection<CommandViewModel> _subCommands;
 
         #endregion
 
         #region Constructors
 
-        public UserViewModel(User user, IWorkspaceCommands mainWorkspaceViewModel)
+        public UserViewModel(User user, Action<WorkspaceViewModel> showWorkspace) : base(null, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             Source = user ?? throw new ArgumentNullException(nameof(user));
-            _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
-            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png"));
         }
 
         #endregion
@@ -340,6 +339,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Commands
 
+        public override ObservableCollection<CommandViewModel> SubCommands
+        {
+            get => _subCommands ?? (_subCommands = new ObservableCollection<CommandViewModel>());
+            set => _subCommands = value;
+        }
+
         #region EditSelectedCommand
 
         public ICommand EditSelectedCommand => _editSelectedCommand ?? (_editSelectedCommand = new RelayCommand(EditSelected));
@@ -347,31 +352,55 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void EditSelected(object obj)
         {
             Logger.Debug($"Editing {DisplayName}");
-            _wsCommands.ShowWorkspace(this);
+            ShowWorkspace(this);
         }
 
         #endregion
 
         #region ShowAllStepTestsCommand
 
-        public ICommand ShowAllStepTestsCommand => _showAllStepTestsCommand ?? (_showAllStepTestsCommand = new RelayCommand(ShowAllStepTests));
+        public ICommand ShowAllStepTestsCommand => _showAllStepTestsCommand ?? (_showAllStepTestsCommand = new RelayCommand(param => ShowAllStepTests()));
 
-        private void ShowAllStepTests(object obj)
+        public void ShowAllStepTests()
         {
-            Logger.Debug($"Show All SteTests for {DisplayName}");
-            _wsCommands.ShowAllStepTests(this);
+            var workspace = new AllStepTestsViewModel(this, ShowWorkspace);
+            ShowWorkspace(workspace);
+            Logger.Debug($"Show All StepTests for {DisplayName}");
         }
 
         #endregion
 
         #region AddStepTestCommand
 
-        public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(AddStepTest, param => _wsCommands.CanCreateStepTest));
+        public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(param => CreateNewStepTest()));
 
-        private void AddStepTest(object obj)
+        /// <summary>
+        /// Creates the new step test.
+        /// </summary>
+        /// <param name="stepTest">The race object.</param>
+        public void CreateNewStepTest()
         {
-            Logger.Debug($"Add StepTest on {DisplayName}");
-            _wsCommands.CreateNewStepTest(this);
+            var newStepTest = StepTest.Create(UserId, "Bike", "W", TimeSpan.FromMinutes(4d).Ticks, 0, 0, 0, 0, DateTime.Now);
+            newStepTest.ParentUser = Source;
+            Source.StepTests.Add(newStepTest);
+            newStepTest.AcceptChanges();
+            Logger.Info("Created new empty step test entity");
+            var workspace = new StepTestViewModel(newStepTest, this, ShowWorkspace);
+            ShowWorkspace(workspace);
+            Logger.Debug($"Created new StepTest on {DisplayName}");
+        }
+
+        #endregion
+
+        #region Create
+
+        public override void Create(WorkspaceViewModel viewModel)
+        {
+            var newUser = User.Create(string.Empty, string.Empty, null, null, null, DateTime.Now, 0, 0, "M", null);
+            newUser.AcceptChanges();
+            Logger.Info("Created new Empty user");
+            var workspace = new UserViewModel(newUser, ShowWorkspace);
+            ShowWorkspace(workspace);
         }
 
         #endregion

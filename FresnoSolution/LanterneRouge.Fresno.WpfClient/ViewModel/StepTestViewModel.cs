@@ -20,7 +20,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private static readonly string _name = typeof(StepTestViewModel).Name;
         private ICommand _saveCommand;
         private bool _isSelected = false;
-        private readonly IWorkspaceCommands _wsCommands;
+        //private readonly IWorkspaceCommands _wsCommands;
         private ICommand _editSelectedCommand;
         private ICommand _showUserCommand;
         private ICommand _showAllMeasurementsCommand;
@@ -34,11 +34,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public StepTestViewModel(StepTest category, IWorkspaceCommands mainWorkspaceViewModel)
+        public StepTestViewModel(StepTest category, UserViewModel parentUser, Action<WorkspaceViewModel> showWorkspace) : base(parentUser, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
         {
             Source = category ?? throw new ArgumentNullException(nameof(category));
-            _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
-            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png"));
         }
 
         #endregion
@@ -342,7 +340,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void EditSelected(object obj)
         {
             Logger.Debug($"Editing {DisplayName}");
-            _wsCommands.ShowWorkspace(this);
+            ShowWorkspace(this);
         }
 
         #endregion
@@ -356,7 +354,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowUser(object obj)
         {
             Logger.Debug($"Show {DisplayName}");
-            _wsCommands.ShowUser(this);
+            Parent.Show();
         }
 
         #endregion
@@ -375,12 +373,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region AddMeasurementCommand
 
-        public ICommand AddMeasurementCommand => _addMeasurementCommand ?? (_addMeasurementCommand = new RelayCommand(AddMeasurement, param => _wsCommands.CanCreateMeasurement));
+        public ICommand AddMeasurementCommand => _addMeasurementCommand ?? (_addMeasurementCommand = new RelayCommand(AddMeasurement, param => CanCreate));
 
         private void AddMeasurement(object obj)
         {
             Logger.Debug($"Add Measurement on {DisplayName}");
-            _wsCommands.CreateNewMeasurement(this);
+            Create(this);
         }
 
         #endregion

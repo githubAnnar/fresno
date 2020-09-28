@@ -15,11 +15,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
-        private static ILog Logger = LogManager.GetLogger(typeof(MeasurementViewModel));
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(MeasurementViewModel));
         private static readonly string _name = typeof(MeasurementViewModel).Name;
         private bool _isSelected = false;
         private ICommand _saveCommand = null;
-        private readonly IWorkspaceCommands _wsCommands;
         private ICommand _editSelectedCommand;
         private ICommand _showStepTestCommand;
         private ICommand _showUserCommand;
@@ -28,11 +27,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public MeasurementViewModel(Measurement measurement, IWorkspaceCommands mainWorkspaceViewModel)
+        public MeasurementViewModel(Measurement measurement, StepTestViewModel parentStepTest, Action<WorkspaceViewModel> showWorkspace) : base(parentStepTest, showWorkspace, null)
         {
             Source = measurement ?? throw new ArgumentNullException(nameof(measurement));
-            _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
-            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-report-card-100.png"));
         }
 
         #endregion
@@ -173,7 +170,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private bool CanSave => IsValid && Source.IsChanged;
 
-        #endregion
+        #endregion        
 
         #region IDataErrorInfo Members
 
@@ -261,7 +258,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void EditSelected(object obj)
         {
             Logger.Debug($"Editing {DisplayName}");
-            _wsCommands.ShowWorkspace(this);
+            Show();
         }
 
         #endregion
@@ -273,7 +270,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowStepTest(object obj)
         {
             Logger.Debug($"Show {DisplayName}");
-            _wsCommands.ShowStepTest(this);
+            Parent.Show();
         }
 
         #endregion
@@ -285,7 +282,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowUser(object obj)
         {
             Logger.Debug($"Show user for {DisplayName}");
-            _wsCommands.ShowUser(this);
+            Parent.Parent.Show();
         }
 
         #endregion

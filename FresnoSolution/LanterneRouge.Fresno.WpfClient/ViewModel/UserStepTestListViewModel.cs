@@ -10,9 +10,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Constructors
 
-        public UserStepTestListViewModel(StepTestViewModel baseStepTestViewModel, IWorkspaceCommands mainWorkspaceViewModel, Action<IEnumerable<StepTestViewModel>, bool> closeAction)
+        public UserStepTestListViewModel(UserViewModel user, StepTestViewModel baseStepTestViewModel, Action<IEnumerable<StepTestViewModel>, bool> closeAction, Action<WorkspaceViewModel> showWorkspace) : base(user, showWorkspace, null)
         {
-            WsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
             BaseStepTestViewModel = baseStepTestViewModel ?? throw new ArgumentNullException(nameof(baseStepTestViewModel));
             CloseAction = closeAction ?? throw new ArgumentNullException(nameof(closeAction));
         }
@@ -21,13 +20,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
-        private IWorkspaceCommands WsCommands { get; }
+        private UserViewModel UserParent => Parent as UserViewModel;
 
         private Action<IEnumerable<StepTestViewModel>, bool> CloseAction { get; }
 
         public StepTestViewModel BaseStepTestViewModel { get; }
 
-        public List<StepTestViewModel> AdditionalStepTestCandidates => (from st in DataManager.GetAllStepTestsByUser(BaseStepTestViewModel.Source.ParentUser).Where(st => st.Id != BaseStepTestViewModel.Source.Id) select new StepTestViewModel(st, WsCommands)).ToList();
+        public List<StepTestViewModel> AdditionalStepTestCandidates => (from st in DataManager.GetAllStepTestsByUser(BaseStepTestViewModel.Source.ParentUser).Where(st => st.Id != BaseStepTestViewModel.Source.Id) select new StepTestViewModel(st, UserParent, ShowWorkspace)).ToList();
 
         public List<StepTestViewModel> SelectedStepTests { get; set; }
         public override WorkspaceViewModel SelectedObject => this;

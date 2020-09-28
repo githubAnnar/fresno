@@ -22,13 +22,13 @@ using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class MainWindowViewModel : WorkspaceViewModel, IWorkspaceCommands
+    public class MainWindowViewModel : ViewModelBase /* : WorkspaceViewModel, IWorkspaceCommands */
     {
         #region Fields
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(MainWindowViewModel));
 
-        private ReadOnlyCollection<CommandViewModel> _commands;
+        private ObservableCollection<CommandViewModel> _commands;
         private ObservableCollection<WorkspaceViewModel> _workspaces;
         private ICommand _openFileCommand;
         private ICommand _newFileCommand;
@@ -104,7 +104,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// Returns a read-only list of commands 
         /// that the UI can display and execute.
         /// </summary>
-        public ReadOnlyCollection<CommandViewModel> Commands => _commands ?? (_commands = new ReadOnlyCollection<CommandViewModel>(CreateCommands()));
+        public ObservableCollection<CommandViewModel> Commands
+        {
+            get
+            {
+                return _commands ?? (_commands = new ObservableCollection<CommandViewModel>(CreateCommands()));
+            }
+
+            set
+            {
+                _commands = value;
+            }
+        }
+
 
         /// <summary>
         /// Creates the commands.
@@ -278,7 +290,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var newUser = User.Create(string.Empty, string.Empty, null, null, null, DateTime.Now, 0, 0, "M", null);
             newUser.AcceptChanges();
             Logger.Info("Created new Empty user");
-            var workspace = new UserViewModel(newUser, this);
+            var workspace = new UserViewModel(newUser, ShowWorkspace);
             ShowWorkspace(workspace);
         }
 
@@ -333,46 +345,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #endregion
 
         #region StepTest Helpers
-
-        /// <summary>
-        /// Creates the new step test.
-        /// </summary>
-        /// <param name="stepTest">The race object.</param>
-        public void CreateNewStepTest(object userObject)
-        {
-            // First we must have a race view model object
-            UserViewModel user = null;
-
-            // Check parameter
-            if (userObject is UserViewModel)
-            {
-                user = userObject as UserViewModel;
-            }
-
-            // Try to get it from current workspace
-            else
-            {
-                var wvm = GetActiveWorkspace();
-                if (wvm is AllUsersViewModel avm)
-                {
-                    user = avm.AllUsers.FirstOrDefault(item => item.IsSelected);
-                }
-
-                else if (wvm is UserViewModel uvm)
-                {
-                    user = uvm;
-                }
-            }
-
-            var newStepTest = StepTest.Create(user.UserId, "Bike", "W", TimeSpan.FromMinutes(4d).Ticks, 0, 0, 0, 0, DateTime.Now);
-            newStepTest.ParentUser = user.Source;
-            user.Source.StepTests.Add(newStepTest);
-            newStepTest.AcceptChanges();
-            Logger.Info("Created new empty step test");
-            var workspace = new StepTestViewModel(newStepTest, this);
-            ShowWorkspace(workspace);
-        }
-
+        
         public void ShowFblcCalculation(StepTestViewModel stepTestVm)
         {
             if (!(Workspaces.FirstOrDefault(vm => vm is FblcCalculationViewModel && (vm as FblcCalculationViewModel).StepTestId.Equals(stepTestVm.StepTestId)) is FblcCalculationViewModel workspace))
@@ -445,17 +418,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             Logger.Debug($"Shown steptest from measurement ({measurement.MeasurementId}) {workspace.StepTestId}");
         }
 
-        public void ShowAllStepTests(UserViewModel user)
-        {
-            if (user == null)
-            {
-                user = GetActiveSelectedObject() as UserViewModel;
-            }
-
-            var workspace = new AllStepTestsViewModel(user, this);
-            ShowWorkspace(workspace);
-            Logger.Debug("Shown all step tests");
-        }
+        
 
         public bool CanShowAllStepTests
         {
@@ -567,7 +530,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             newMeasurement.AcceptChanges();
             stepTest.Source.Measurements.Add(newMeasurement);
             Logger.Info("New empty measurement created");
-            var workspace = new MeasurementViewModel(newMeasurement, this);
+            var workspace = new MeasurementViewModel(newMeasurement, stepTest, ShowWorkspace);
             ShowWorkspace(workspace);
         }
 
@@ -763,14 +726,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #endregion // Private Helpers
 
         #region Public Methods
-
-        /// <summary>
-        /// Gets the selected object.
-        /// </summary>
-        public override WorkspaceViewModel SelectedObject
-        {
-            get { return this; }
-        }
 
         /// <summary>
         /// Shows the workspace.

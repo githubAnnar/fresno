@@ -1,7 +1,5 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
-using LanterneRouge.Fresno.WpfClient.MVVM;
 using System;
 using System.Collections.ObjectModel;
 
@@ -11,37 +9,32 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
-        private readonly IWorkspaceCommands _wsCommands;
-
         #endregion
 
         #region Constructors
 
-        public LtLogCalculationViewModel(StepTest category, IWorkspaceCommands mainWorkspaceViewModel)
-        {
-            Source = category ?? throw new ArgumentNullException(nameof(category));
-            _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
-        }
+        public LtLogCalculationViewModel(StepTestViewModel parentStepTest, Action<WorkspaceViewModel> showWorkspace) : base(parentStepTest, showWorkspace, null)
+        { }
 
         #endregion
 
         #region Properties
 
-        internal StepTest Source { get; private set; }
+        private StepTestViewModel StepTestParent => Parent as StepTestViewModel;
 
-        public int StepTestId => Source.Id;
+        public int StepTestId => StepTestParent.Source.Id;
 
         public string LTLogLactateThresholdText => LtLogCalculation != null ? $"Load Th.: {LtLogCalculation.LoadThreshold:0.0} Heartrate Th.: {LtLogCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private LTLogCalculation _ltLogCalculation = null;
-        private LTLogCalculation LtLogCalculation => _ltLogCalculation ?? (_ltLogCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new LTLogCalculation(Source.Measurements) : null);
+        private LTLogCalculation LtLogCalculation => _ltLogCalculation ?? (_ltLogCalculation = StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0 ? new LTLogCalculation(StepTestParent.Source.Measurements) : null);
 
         private ObservableCollection<Zone> _LTLogZones = null;
         public ObservableCollection<Zone> LTLogZones
         {
             get
             {
-                if (_LTLogZones == null && Source.Measurements != null && Source.Measurements.Count > 0)
+                if (_LTLogZones == null && StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0)
                 {
                     if (LtLogCalculation != null)
                     {

@@ -1,5 +1,4 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
-using log4net;
+﻿using log4net;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -15,17 +14,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(AllUsersViewModel));
         private static readonly string _name = typeof(AllUsersViewModel).Name;
-        private readonly IWorkspaceCommands _wsCommands;
 
         #endregion
 
         #region Constructors
 
-        public AllUsersViewModel(IWorkspaceCommands mainWorkspaceViewModel)
+        public AllUsersViewModel(Action<WorkspaceViewModel> showWorkspace) : base(null, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             DisplayName = "All Users"; /*KayakStrings.Race_All_Races;*/
-            _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException("mainWorkspaceViewModel");
-            ItemIcon = new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png"));
             CreateAllUsers();
             DataManager.Committed += DataManager_Committed;
             Logger.Debug($"AllUsers loaded");
@@ -39,7 +35,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void CreateAllUsers()
         {
-            var all = (from user in DataManager.GetAllUsers(true) select new UserViewModel(user, _wsCommands)).ToList();
+            var all = (from user in DataManager.GetAllUsers(true) select new UserViewModel(user, ShowWorkspace)).ToList();
             all.ForEach(a => a.PropertyChanged += OnUserViewModelPropertyChanged);
             AllUsers = new ObservableCollection<UserViewModel>(all);
             AllUsers.CollectionChanged += OnCollectionChanged;
@@ -103,7 +99,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             // Make sure that the property name we're referencing is valid.
             // This is a debugging technique, and does not execute in a Release build.
-            if (sender is UserViewModel userViewModel) userViewModel.VerifyPropertyName(isSelected);
+            if (sender is UserViewModel userViewModel)
+            {
+                userViewModel.VerifyPropertyName(isSelected);
+            }
 
             // When a customer is selected or unselected, we must let the
             // world know that the TotalSelectedSales property has changed,

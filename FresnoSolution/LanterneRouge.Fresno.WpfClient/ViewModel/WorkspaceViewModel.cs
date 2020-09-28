@@ -2,18 +2,30 @@
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public abstract class WorkspaceViewModel : ViewModelBase
+    public abstract class WorkspaceViewModel : ViewModelBase, IWorkspaceCommands2
     {
         #region Fields
 
         private ICommand _closeCommand;
 
         #endregion // Fields
+
+        #region Constructors
+
+        public WorkspaceViewModel(WorkspaceViewModel parent, Action<WorkspaceViewModel> showWorkspace, BitmapImage icon)
+        {
+            Parent = parent;
+            ShowWorkspace = showWorkspace ?? throw new ArgumentNullException(nameof(showWorkspace));
+            ItemIcon = icon ?? new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-report-card-100.png"));
+        }
+
+        #endregion
 
         #region CloseCommand
 
@@ -60,13 +72,37 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public BitmapImage ItemIcon { get; protected set; }
 
-        /// <summary>
-        /// Gets or sets the parent.
-        /// </summary>
-        /// <value>
-        /// The parent.
-        /// </value>
-        //public WorkspaceViewModel Parent { get; set; }
+        public WorkspaceViewModel Parent { get; }
+
+        public Action<WorkspaceViewModel> ShowWorkspace { get; }
+
+        #endregion
+
+        #region IWorkspaceCommands2 Methods
+
+        public abstract ObservableCollection<CommandViewModel> SubCommands { get; set; }
+
+        public void Show()
+        {
+            ShowWorkspace(this);
+        }
+
+        public void Show(WorkspaceViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CanShow(WorkspaceViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public abstract void Create(WorkspaceViewModel viewModel);
+
+        public bool CanCreate(WorkspaceViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

@@ -1,6 +1,5 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using System;
 using System.Collections.ObjectModel;
@@ -18,19 +17,16 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public FblcCalculationViewModel(StepTest category, IWorkspaceCommands mainWorkspaceViewModel)
-        {
-            Source = category ?? throw new ArgumentNullException(nameof(category));
-            _wsCommands = mainWorkspaceViewModel ?? throw new ArgumentNullException(nameof(mainWorkspaceViewModel));
-        }
+        public FblcCalculationViewModel(StepTestViewModel parentStepTest, Action<WorkspaceViewModel> showWorkspace) : base(parentStepTest, showWorkspace, null)
+        { }
 
         #endregion
 
         #region Properties
 
-        internal StepTest Source { get; private set; }
+        public StepTestViewModel StepTestParent => Parent as StepTestViewModel;
 
-        public int StepTestId => Source.Id;
+        public int StepTestId => StepTestParent.Source.Id;
 
         public double FblcCalculationThreshold
         {
@@ -51,14 +47,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public string FBLCLactateThresholdText => FblcCalculation != null ? $"Load Th.: {FblcCalculation.LoadThreshold:0.0} Heartrate Th.: {FblcCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private FblcCalculation _fblcCalculation = null;
-        private FblcCalculation FblcCalculation => _fblcCalculation ?? (_fblcCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new FblcCalculation(Source.Measurements, FblcCalculationThreshold) : null);
+        private FblcCalculation FblcCalculation => _fblcCalculation ?? (_fblcCalculation = StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0 ? new FblcCalculation(StepTestParent.Source.Measurements, FblcCalculationThreshold) : null);
 
         private ObservableCollection<Zone> _FBLCZones = null;
         public ObservableCollection<Zone> FBLCZones
         {
             get
             {
-                if (_FBLCZones == null && Source.Measurements != null && Source.Measurements.Count > 0)
+                if (_FBLCZones == null && StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0)
                 {
                     if (FblcCalculation != null)
                     {
