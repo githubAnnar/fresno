@@ -1,6 +1,7 @@
 ﻿using LanterneRouge.Fresno.WpfClient.MVVM;
 using log4net;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -17,6 +18,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private static readonly ILog Logger = LogManager.GetLogger(typeof(AllStepTestsViewModel));
         private static readonly string Name = typeof(AllStepTestsViewModel).Name;
         private ICommand _showDiagramCommand;
+        private ICommand _addStepTestCommand;
+        private ICommand _showUserCommand;
+        private ICommand _showAllMeasurementsCommand;
 
         #endregion
 
@@ -28,6 +32,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             CreateAllStepTests();
             DataManager.Committed += DataManager_Committed;
             Logger.Debug($"AllStepests for user {parentUser.LastName} loaded");
+
+            // Set up sub commands
+            SubCommands = new ObservableCollection<CommandViewModel>
+            {
+                new CommandViewModel("Add Steptest", AddStepTestCommand),
+                new CommandViewModel("Show User", ShowUserCommand),
+                new CommandViewModel("Show all Measurements", ShowAllMeasurementsCommand)
+            };
         }
 
         private void DataManager_Committed()
@@ -51,6 +63,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Interface
 
+        public StepTestViewModel Selected => SelectedObject as StepTestViewModel;
+
         public ObservableCollection<StepTestViewModel> AllStepTests { get; private set; }
 
         #region ShowDiagram Command
@@ -59,7 +73,23 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool CanShowDiagram => AllStepTests.Any(at => at.IsSelected);
 
-        private void ShowDiagram(object obj) => _wsCommands.GenerateCalculation(AllStepTests.Where(st => st.IsSelected));
+        private void ShowDiagram(object obj) => GenerateCalculation(AllStepTests.Where(st => st.IsSelected));
+
+        public void GenerateCalculation(IEnumerable<StepTestViewModel> viewModels)
+        {
+            //var calculation = new FlbcCalculation(viewModel.Source.Measurements, 4.0);
+            //var zonesCalc = new LactateBasedZones(calculation, new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 });
+            //var zones = zonesCalc.Zones.ToList();
+            //var message = new StringBuilder($"LT={calculation.LactateThreshold}, HR={calculation.HeartRateThreshold}\r\n");
+            //foreach (var zone in zones)
+            //{
+            //    message.AppendLine(zone.ToString());
+            //}
+            //MessageBox.Show(message.ToString());
+
+            var workspace = new StepTestsPlotViewModel(viewModels, ShowWorkspace);
+            workspace.Show();
+        }
 
         #endregion
 
@@ -131,5 +161,23 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public override WorkspaceViewModel SelectedObject => AllStepTests.FirstOrDefault(item => item.IsSelected);
 
         public static string GetIdentifierName(StepTestViewModel stepTest) => $"{Name}_StepTest_{stepTest.StepTestId}";
+
+        public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(param => CreateChild()));
+
+        public override void CreateChild()
+        {
+            StepTestViewModel.Create(Parent as UserViewModel, ShowWorkspace);
+        }
+
+        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => Selected.Parent.Show(), param => Selected != null && Selected.IsValid));
+
+
+        public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ?? (_showAllMeasurementsCommand = new RelayCommand(param => ShowAllMeasurements(), param => Selected != null && Selected.IsValid));
+
+        private void ShowAllMeasurements()
+        {
+            var workspace = new AllMeasurementsViewModel(Selected, ShowWorkspace);
+            workspace.Show();
+        }
     }
 }

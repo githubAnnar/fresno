@@ -1,9 +1,11 @@
-﻿using log4net;
+﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using log4net;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
@@ -14,6 +16,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(AllUsersViewModel));
         private static readonly string _name = typeof(AllUsersViewModel).Name;
+        private ICommand _addUserCommand;
+        private ICommand _addSteptestCommand;
+        private ICommand _showUserCommand;
+        private ICommand _showAllStepTestCommand;
 
         #endregion
 
@@ -25,6 +31,15 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             CreateAllUsers();
             DataManager.Committed += DataManager_Committed;
             Logger.Debug($"AllUsers loaded");
+
+            // Set up commands
+            SubCommands = new ObservableCollection<CommandViewModel>
+            {
+                new CommandViewModel("Edit User", ShowUserCommand),
+                new CommandViewModel("Show all Steptests", ShowAllStepTestsCommand),
+                new CommandViewModel("Add User", AddUserCommand),
+                new CommandViewModel("Add Steptest", AddStepTestCommand)
+            };
         }
 
         private void DataManager_Committed()
@@ -67,6 +82,41 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         }
 
         public override WorkspaceViewModel SelectedObject => AllUsers.FirstOrDefault(item => item.IsSelected);
+
+        public override void CreateChild()
+        {
+            UserViewModel.Create(ShowWorkspace);
+        }
+
+        public ICommand AddUserCommand => _addUserCommand ?? (_addUserCommand = new RelayCommand(param => CreateChild()));
+
+        public void CreateStepTest()
+        {
+            StepTestViewModel.Create(Selected, ShowWorkspace);
+        }
+
+        public bool CanCreateStepTest => Selected != null && Selected.IsValid;
+
+        public ICommand AddStepTestCommand => _addSteptestCommand ?? (_addSteptestCommand = new RelayCommand(param => CreateStepTest(), param => CanCreateStepTest));
+
+        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => ShowUser(), param => CanShowUser));
+
+        private void ShowUser()
+        {
+            Selected.Show();
+        }
+
+        public bool CanShowUser => Selected != null && Selected.IsValid;
+
+        public ICommand ShowAllStepTestsCommand => _showAllStepTestCommand ?? (_showAllStepTestCommand = new RelayCommand(param => ShowAllStepTests(), param => CanShowAllStepTests));
+
+        private void ShowAllStepTests()
+        {
+            var workspace = new AllStepTestsViewModel(Selected, ShowWorkspace);
+            workspace.Show();
+        }
+
+        public bool CanShowAllStepTests => Selected != null && Selected.IsValid;
 
         #endregion
 

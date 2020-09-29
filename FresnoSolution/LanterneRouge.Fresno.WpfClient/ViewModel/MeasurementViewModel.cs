@@ -3,11 +3,11 @@ using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
 using log4net;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -30,6 +30,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public MeasurementViewModel(Measurement measurement, StepTestViewModel parentStepTest, Action<WorkspaceViewModel> showWorkspace) : base(parentStepTest, showWorkspace, null)
         {
             Source = measurement ?? throw new ArgumentNullException(nameof(measurement));
+
+            // Set up commands
+            SubCommands = new ObservableCollection<CommandViewModel>
+            {
+                new CommandViewModel("Show User", ShowUserCommand),
+                new CommandViewModel("Show Steptest", ShowStepTestCommand)
+            };
         }
 
         #endregion
@@ -170,7 +177,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private bool CanSave => IsValid && Source.IsChanged;
 
-        #endregion        
+        #endregion
 
         #region IDataErrorInfo Members
 
@@ -288,5 +295,26 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #endregion
 
         #endregion
+
+        public static void Create(StepTestViewModel parentStepTest, Action<WorkspaceViewModel> showWorkspace)
+        {
+            var newSequence = parentStepTest.Source.Measurements.Count == 0 ? 1 : parentStepTest.Source.Measurements.Max(m => m.Sequence) + 1;
+            var newLoad = parentStepTest.Source.Measurements.Count == 0 ? parentStepTest.Source.LoadPreset : parentStepTest.Source.Measurements.Last().Load + parentStepTest.Source.Increase;
+
+            var newMeasurement = Measurement.Create(newSequence, parentStepTest.StepTestId, 0, 0, newLoad);
+            newMeasurement.InCalculation = true;
+            newMeasurement.ParentStepTest = parentStepTest.Source;
+            newMeasurement.AcceptChanges();
+            parentStepTest.Source.Measurements.Add(newMeasurement);
+            Logger.Info("New empty measurement created");
+            var workspace = new MeasurementViewModel(newMeasurement, parentStepTest, showWorkspace);
+            workspace.Show();
+        }
+
+        public override void CreateChild()
+        {
+            Logger.Error("CreateChild is not implemnted!");
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,10 +1,15 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
+using LanterneRouge.Fresno.WpfClient.View;
 using log4net;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -20,23 +25,36 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private static readonly string _name = typeof(StepTestViewModel).Name;
         private ICommand _saveCommand;
         private bool _isSelected = false;
-        //private readonly IWorkspaceCommands _wsCommands;
         private ICommand _editSelectedCommand;
         private ICommand _showUserCommand;
         private ICommand _showAllMeasurementsCommand;
         private ICommand _addMeasurementCommand;
-        private ICommand _showFlbcCalculationCommand;
+        private ICommand _showFblcCalculationCommand;
         private ICommand _showFrpbCalculationCommand;
         private ICommand _showLtCalculationCommand;
         private ICommand _showLtLogCalculationCommand;
+        private ICommand _createStepTestPdfCommand;
 
         #endregion
 
         #region Constructors
 
-        public StepTestViewModel(StepTest category, UserViewModel parentUser, Action<WorkspaceViewModel> showWorkspace) : base(parentUser, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
+        public StepTestViewModel(StepTest stepTest, UserViewModel parentUser, Action<WorkspaceViewModel> showWorkspace) : base(parentUser, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
         {
-            Source = category ?? throw new ArgumentNullException(nameof(category));
+            Source = stepTest ?? throw new ArgumentNullException(nameof(stepTest));
+
+            // Set up commands
+            SubCommands = new ObservableCollection<CommandViewModel>
+            {
+                new CommandViewModel("Show User", ShowUserCommand),
+                new CommandViewModel("Add Measurement", AddMeasurementCommand),
+                new CommandViewModel("Show all Measurements", ShowAllMeasurementsCommand),
+                new CommandViewModel("Generate PDF", CreateStepTestPdfCommand),
+                new CommandViewModel("FBLC Calculation", ShowFblcCalculationCommand),
+                new CommandViewModel("FRPB Calculation", ShowFrpbCalculationCommand),
+                new CommandViewModel("LT Calculation", ShowLtCalculationCommand),
+                new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand)
+            };
         }
 
         #endregion
@@ -182,6 +200,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private LTCalculation LtCalculation => _ltCalculation ?? (_ltCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new LTCalculation(Source.Measurements) : null);
 
         private LTLogCalculation _ltLogCalculation = null;
+
         private LTLogCalculation LtLogCalculation => _ltLogCalculation ?? (_ltLogCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new LTLogCalculation(Source.Measurements) : null);
 
         #endregion
@@ -361,48 +380,51 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowAllMeasurementsCommand
 
-        public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ?? (_showAllMeasurementsCommand = new RelayCommand(ShowAllMeasurements));
+        public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ?? (_showAllMeasurementsCommand = new RelayCommand(param => ShowAllMeasurements()));
 
-        private void ShowAllMeasurements(object obj)
+        private void ShowAllMeasurements()
         {
-            Logger.Debug($"Show All Measurements for {DisplayName}");
-            _wsCommands.ShowAllMeasurements(this);
+            var workspace = new AllMeasurementsViewModel(this, ShowWorkspace);
+            workspace.Show();
+            Logger.Debug("Shown all measurements");
         }
 
         #endregion
 
         #region AddMeasurementCommand
 
-        public ICommand AddMeasurementCommand => _addMeasurementCommand ?? (_addMeasurementCommand = new RelayCommand(AddMeasurement, param => CanCreate));
+        public ICommand AddMeasurementCommand => _addMeasurementCommand ?? (_addMeasurementCommand = new RelayCommand(param => CreateChild(), param => IsValid));
 
-        private void AddMeasurement(object obj)
+        public override void CreateChild()
         {
             Logger.Debug($"Add Measurement on {DisplayName}");
-            Create(this);
+            MeasurementViewModel.Create(this, ShowWorkspace);
         }
 
         #endregion
 
         #region ShowFblcCalculationCommand
 
-        public ICommand ShowFblcCalculationCommand => _showFlbcCalculationCommand ?? (_showFlbcCalculationCommand = new RelayCommand(ShowFlbcCalculation));
+        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ?? (_showFblcCalculationCommand = new RelayCommand(param => ShowFblcCalculation()));
 
-        private void ShowFlbcCalculation(object obj)
+        private void ShowFblcCalculation()
         {
-            Logger.Debug($"Show FLBC Calculation for {DisplayName}");
-            _wsCommands.ShowFblcCalculation(this);
+            Logger.Debug($"Show FBLC Calculation for {DisplayName}");
+            var workspace = new FblcCalculationViewModel(this, ShowWorkspace);
+            workspace.Show();
         }
 
         #endregion
 
         #region ShowFrpbCalculationCommand
 
-        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ?? (_showFrpbCalculationCommand = new RelayCommand(ShowFrpbCalculation));
+        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ?? (_showFrpbCalculationCommand = new RelayCommand(param => ShowFrpbCalculation()));
 
-        private void ShowFrpbCalculation(object obj)
+        private void ShowFrpbCalculation()
         {
             Logger.Debug($"Show FRPB Calculation for {DisplayName}");
-            _wsCommands.ShowFrpbCalculation(this);
+            var workspace = new FrpbCalculationViewModel(this, ShowWorkspace);
+            workspace.Show();
         }
 
         #endregion
@@ -414,7 +436,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowLtCalculation(object obj)
         {
             Logger.Debug($"Show LT Calculation for {DisplayName}");
-            _wsCommands.ShowLtCalculation(this);
+            var workspace = new LtCalculationViewModel(this, ShowWorkspace);
+            workspace.Show();
         }
 
         #endregion
@@ -426,11 +449,62 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowLtLogCalculation(object obj)
         {
             Logger.Debug($"Show LTLog Calculation for {DisplayName}");
-            _wsCommands.ShowLtLogCalculation(this);
+            var workspace = new LtLogCalculationViewModel(this, ShowWorkspace);
+            workspace.Show();
+        }
+
+        #endregion
+
+        #region ShowPdfCommand
+
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ?? (_createStepTestPdfCommand = new RelayCommand(param => GenerateStepTestPdf(), param => Source.IsValid));
+
+        public void GenerateStepTestPdf()
+        {
+            ContentWindow modalWindow = null;
+            var parentUser = Parent as UserViewModel;
+            var selectedList = new List<StepTestViewModel>();
+            var viewModel = new UserStepTestListViewModel(parentUser, this, (p, dr) =>
+             {
+                 if (p != null)
+                 {
+                     selectedList = p.ToList();
+                 }
+                 modalWindow.DialogResult = dr;
+                 modalWindow.Close();
+             }, ShowWorkspace);
+
+            var view = new UserStepTestListView { DataContext = viewModel };
+            modalWindow = new ContentWindow
+            {
+                Content = view
+            };
+            modalWindow.ShowDialog();
+            if (modalWindow.DialogResult.HasValue && modalWindow.DialogResult.Value)
+            {
+                var generator = new StepTestReport(Source, selectedList.Select(s => s.Source));
+                var pdfDocument = generator.CreateReport();
+                var filename = $"{parentUser.FirstName} {parentUser.LastName} ({Source.Id}).pdf";
+                generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument);
+
+                MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         #endregion
 
         #endregion
+
+        public static void Create(UserViewModel parentUser, Action<WorkspaceViewModel> showWorkspace)
+        {
+            var newStepTest = StepTest.Create(parentUser.UserId, "Bike", "W", TimeSpan.FromMinutes(4d).Ticks, 0, 0, 0, 0, DateTime.Now);
+            newStepTest.ParentUser = parentUser.Source;
+            parentUser.Source.StepTests.Add(newStepTest);
+            newStepTest.AcceptChanges();
+            Logger.Info("Created new empty step test entity");
+            var workspace = new StepTestViewModel(newStepTest, parentUser, showWorkspace);
+            workspace.Show();
+            Logger.Debug($"Created new StepTest on {workspace.DisplayName}");
+        }
     }
 }

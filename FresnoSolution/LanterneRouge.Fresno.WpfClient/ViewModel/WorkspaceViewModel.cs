@@ -13,6 +13,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #region Fields
 
         private ICommand _closeCommand;
+        private ObservableCollection<CommandViewModel> _subCommands;
 
         #endregion // Fields
 
@@ -80,7 +81,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region IWorkspaceCommands2 Methods
 
-        public abstract ObservableCollection<CommandViewModel> SubCommands { get; set; }
+        public ObservableCollection<CommandViewModel> SubCommands
+        {
+            get => _subCommands ?? (_subCommands = new ObservableCollection<CommandViewModel>());
+            set => _subCommands = value;
+        }
 
         public void Show()
         {
@@ -97,11 +102,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             throw new NotImplementedException();
         }
 
-        public abstract void Create(WorkspaceViewModel viewModel);
+        public abstract void CreateChild();
 
-        public bool CanCreate(WorkspaceViewModel viewModel)
+        public bool CanCreateChild(WorkspaceViewModel viewModel)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         #endregion

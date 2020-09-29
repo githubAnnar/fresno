@@ -16,7 +16,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
-        private readonly ILog Logger = LogManager.GetLogger(typeof(UserViewModel));
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(UserViewModel));
         private static readonly string _name = typeof(UserViewModel).Name;
         private ICommand _saveCommand = null;
         private bool _isSelected = false;
@@ -24,7 +24,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ICommand _editSelectedCommand;
         private ICommand _showAllStepTestsCommand;
         private ICommand _addStepTestCommand;
-        private ObservableCollection<CommandViewModel> _subCommands;
 
         #endregion
 
@@ -33,6 +32,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public UserViewModel(User user, Action<WorkspaceViewModel> showWorkspace) : base(null, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             Source = user ?? throw new ArgumentNullException(nameof(user));
+
+            // Set up commands for this viewmodel
+            SubCommands = new ObservableCollection<CommandViewModel>
+            {
+                new CommandViewModel("Add Steptest", AddStepTestCommand),
+                new CommandViewModel("Show all Steptests", ShowAllStepTestsCommand)
+            };
         }
 
         #endregion
@@ -339,12 +345,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Commands
 
-        public override ObservableCollection<CommandViewModel> SubCommands
-        {
-            get => _subCommands ?? (_subCommands = new ObservableCollection<CommandViewModel>());
-            set => _subCommands = value;
-        }
-
         #region EditSelectedCommand
 
         public ICommand EditSelectedCommand => _editSelectedCommand ?? (_editSelectedCommand = new RelayCommand(EditSelected));
@@ -372,35 +372,24 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region AddStepTestCommand
 
-        public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(param => CreateNewStepTest()));
+        public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(param => CreateChild()));
 
-        /// <summary>
-        /// Creates the new step test.
-        /// </summary>
-        /// <param name="stepTest">The race object.</param>
-        public void CreateNewStepTest()
+        public override void CreateChild()
         {
-            var newStepTest = StepTest.Create(UserId, "Bike", "W", TimeSpan.FromMinutes(4d).Ticks, 0, 0, 0, 0, DateTime.Now);
-            newStepTest.ParentUser = Source;
-            Source.StepTests.Add(newStepTest);
-            newStepTest.AcceptChanges();
-            Logger.Info("Created new empty step test entity");
-            var workspace = new StepTestViewModel(newStepTest, this, ShowWorkspace);
-            ShowWorkspace(workspace);
-            Logger.Debug($"Created new StepTest on {DisplayName}");
+            StepTestViewModel.Create(this, ShowWorkspace);
         }
 
         #endregion
 
         #region Create
 
-        public override void Create(WorkspaceViewModel viewModel)
+        public static void Create(Action<WorkspaceViewModel> showWorkspace)
         {
             var newUser = User.Create(string.Empty, string.Empty, null, null, null, DateTime.Now, 0, 0, "M", null);
             newUser.AcceptChanges();
             Logger.Info("Created new Empty user");
-            var workspace = new UserViewModel(newUser, ShowWorkspace);
-            ShowWorkspace(workspace);
+            var workspace = new UserViewModel(newUser, showWorkspace);
+            workspace.Show();
         }
 
         #endregion

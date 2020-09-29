@@ -1,6 +1,7 @@
 ﻿using OxyPlot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -16,8 +17,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public StepTestsPlotViewModel(StepTestViewModel parentStepTest, Action<WorkspaceViewModel> showWorkspace) : base(parentStepTest, showWorkspace, null)
-        { }
+        public StepTestsPlotViewModel(IEnumerable<StepTestViewModel> parentStepTests, Action<WorkspaceViewModel> showWorkspace) : base(null, showWorkspace, null)
+        {
+            StepTestData = parentStepTests.ToList();
+        }
 
         #endregion
 
@@ -38,6 +41,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #region Display Properties
 
         public override string DisplayName => $"Step Test plot";
+
+        public override void CreateChild()
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

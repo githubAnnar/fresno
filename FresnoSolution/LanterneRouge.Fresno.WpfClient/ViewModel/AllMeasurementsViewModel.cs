@@ -1,10 +1,11 @@
-﻿using log4net;
+﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using log4net;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -14,6 +15,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(AllMeasurementsViewModel));
         private static readonly string _name = typeof(AllMeasurementsViewModel).Name;
+        private ICommand _addMeasurementCommand;
+        private ICommand _showMeasurementCommand;
+        private ICommand _showStepTestCommand;
+        private ICommand _showUserCommand;
 
         #endregion
 
@@ -24,6 +29,15 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             CreateAllMeasurements();
             DataManager.Committed += DataManager_Committed;
+
+            // Set up subcommands
+            SubCommands = new ObservableCollection<CommandViewModel>
+            {
+                new CommandViewModel("Edit Measurement", ShowMeasurementCommand),
+                new CommandViewModel("Add Measurement", AddMeasurementCommand),
+                new CommandViewModel("Show Steptest", ShowStepTestCommand),
+                new CommandViewModel("Show User", ShowUserCommand)
+            };
         }
 
         private void DataManager_Committed()
@@ -48,6 +62,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #endregion
 
         #region Public Interface
+
+        public MeasurementViewModel Selected => SelectedObject as MeasurementViewModel;
 
         public ObservableCollection<MeasurementViewModel> AllMeasurements { get; private set; }
 
@@ -135,6 +151,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             return x.Sequence.CompareTo(y.Sequence);
         }
+
+        public ICommand AddMeasurementCommand => _addMeasurementCommand ?? (_addMeasurementCommand = new RelayCommand(param => CreateChild()));
+
+        public override void CreateChild()
+        {
+            MeasurementViewModel.Create(Parent as StepTestViewModel, ShowWorkspace);
+        }
+
+        public ICommand ShowStepTestCommand => _showStepTestCommand ?? (_showStepTestCommand = new RelayCommand(param => Selected.Parent.Show(), param => Selected != null && Selected.IsValid));
+
+        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => Selected.Parent.Parent.Show(), param => Selected != null && Selected.IsValid));
+
+        public ICommand ShowMeasurementCommand => _showMeasurementCommand ?? (_showMeasurementCommand = new RelayCommand(param => Selected.Show(), param => Selected != null && Selected.IsValid));
     }
 
     #endregion

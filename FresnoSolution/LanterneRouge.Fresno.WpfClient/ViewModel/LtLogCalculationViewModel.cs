@@ -65,6 +65,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public override string ToString() => $"LT Log Calculation for Step Test ({StepTestId})";
 
+        public override void CreateChild()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

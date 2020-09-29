@@ -1,6 +1,5 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.WpfClient.MVVM;
 using System;
 using System.Collections.ObjectModel;
 
@@ -10,7 +9,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
-        private readonly IWorkspaceCommands _wsCommands;
         private double _fblcCalculationThreshold = 4d;
 
         #endregion
@@ -84,6 +82,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #region Public Methods
 
         public override string ToString() => $"Flbc Calculation for Step Test ({StepTestId})";
+
+        public override void CreateChild()
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

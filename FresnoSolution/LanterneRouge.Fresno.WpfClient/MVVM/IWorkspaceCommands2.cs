@@ -11,9 +11,7 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
 
         bool CanShow(WorkspaceViewModel viewModel);
 
-        void Create(WorkspaceViewModel viewModel);
-
-        bool CanCreate(WorkspaceViewModel viewModel);
+        void CreateChild();
 
         ObservableCollection<CommandViewModel> SubCommands { get; set; }
     }
