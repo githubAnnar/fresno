@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class AllStepTestsViewModel : WorkspaceViewModel
+    public class AllStepTestsViewModel : WorkspaceViewModel, IEquatable<AllStepTestsViewModel>
     {
         #region Fields
 
@@ -21,6 +21,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ICommand _addStepTestCommand;
         private ICommand _showUserCommand;
         private ICommand _showAllMeasurementsCommand;
+        private ICommand _createStepTestPdfCommand;
+        private ICommand _showFblcCalculationCommand;
+        private ICommand _showFrpbCalculationCommand;
+        private ICommand _showLtCalculationCommand;
+        private ICommand _showLtLogCalculationCommand;
 
         #endregion
 
@@ -38,7 +43,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             {
                 new CommandViewModel("Add Steptest", AddStepTestCommand),
                 new CommandViewModel("Show User", ShowUserCommand),
-                new CommandViewModel("Show all Measurements", ShowAllMeasurementsCommand)
+                new CommandViewModel("Show all Measurements", ShowAllMeasurementsCommand),
+                new CommandViewModel("Generate PDF", CreateStepTestPdfCommand),
+                new CommandViewModel("FBLC Calculation", ShowFblcCalculationCommand),
+                new CommandViewModel("FRPB Calculation", ShowFrpbCalculationCommand),
+                new CommandViewModel("LT Calculation", ShowLtCalculationCommand),
+                new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand)
             };
         }
 
@@ -75,21 +85,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowDiagram(object obj) => GenerateCalculation(AllStepTests.Where(st => st.IsSelected));
 
-        public void GenerateCalculation(IEnumerable<StepTestViewModel> viewModels)
-        {
-            //var calculation = new FlbcCalculation(viewModel.Source.Measurements, 4.0);
-            //var zonesCalc = new LactateBasedZones(calculation, new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 });
-            //var zones = zonesCalc.Zones.ToList();
-            //var message = new StringBuilder($"LT={calculation.LactateThreshold}, HR={calculation.HeartRateThreshold}\r\n");
-            //foreach (var zone in zones)
-            //{
-            //    message.AppendLine(zone.ToString());
-            //}
-            //MessageBox.Show(message.ToString());
-
-            var workspace = new StepTestsPlotViewModel(viewModels, ShowWorkspace);
-            workspace.Show();
-        }
+        public void GenerateCalculation(IEnumerable<StepTestViewModel> viewModels) => new StepTestsPlotViewModel(viewModels, ShowWorkspace).Show();
 
         #endregion
 
@@ -164,20 +160,32 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(param => CreateChild()));
 
-        public override void CreateChild()
-        {
-            StepTestViewModel.Create(Parent as UserViewModel, ShowWorkspace);
-        }
+        public override void CreateChild() => StepTestViewModel.Create(Parent as UserViewModel, ShowWorkspace);
 
-        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => Selected.Parent.Show(), param => Selected != null && Selected.IsValid));
-
+        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => Parent.Show(), param => Parent != null));
 
         public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ?? (_showAllMeasurementsCommand = new RelayCommand(param => ShowAllMeasurements(), param => Selected != null && Selected.IsValid));
+
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ?? (_createStepTestPdfCommand = new RelayCommand((object obj) => { Selected.CreateStepTestPdfCommand.Execute(obj); }, param => Selected != null));
+
+        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ?? (_showFblcCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFblcCalculationCommand.Execute(obj); }, param => Selected != null));
+
+        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ?? (_showFrpbCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFrpbCalculationCommand.Execute(obj); }, param => Selected != null));
+
+        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ?? (_showLtCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtCalculationCommand.Execute(obj); }, param => Selected != null));
+
+        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ?? (_showLtLogCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtLogCalculationCommand.Execute(obj); }, param => Selected != null));
 
         private void ShowAllMeasurements()
         {
             var workspace = new AllMeasurementsViewModel(Selected, ShowWorkspace);
             workspace.Show();
         }
+
+        public bool Equals(AllStepTestsViewModel other) => Equals((object)other);
+
+        public override bool Equals(object obj) => obj is AllStepTestsViewModel viewModel && GetHashCode().Equals(viewModel.GetHashCode());
+
+        public override int GetHashCode() => ((UserViewModel)Parent).GetHashCode();
     }
 }

@@ -73,5 +73,9 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
         }
 
         private bool ExcludeName(string propertyName) => PropertyNameSkipArray.Any(p => p.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase));
+
+        public override int GetHashCode() => Id.GetHashCode();
+
+        public override bool Equals(object obj) => obj is TEntity entity && GetHashCode().Equals(entity.GetHashCode());
     }
 }

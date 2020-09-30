@@ -18,7 +18,7 @@
             <Separator/>
             <MenuItem Header="Add Measurement" Command="{Binding AddMeasurementCommand}" />
             <Separator/>
-            <MenuItem Header="Flbc Calculation" Command="{Binding ShowFblcCalculationCommand}"/>
+            <MenuItem Header="Fblc Calculation" Command="{Binding ShowFblcCalculationCommand}"/>
             <MenuItem Header="Frpb Calculation" Command="{Binding ShowFrpbCalculationCommand}"/>
             <MenuItem Header="LT Calculation" Command="{Binding ShowLtCalculationCommand}"/>
             <MenuItem Header="LT Log Calculation" Command="{Binding ShowLtLogCalculationCommand}"/>

@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class StepTestViewModel : WorkspaceViewModel, IDataErrorInfo
+    public class StepTestViewModel : WorkspaceViewModel, IDataErrorInfo, IEquatable<StepTestViewModel>
     {
         #region Fields
 
@@ -506,5 +506,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             workspace.Show();
             Logger.Debug($"Created new StepTest on {workspace.DisplayName}");
         }
+
+        public bool Equals(StepTestViewModel other) => Equals((object)other);
+
+        public override bool Equals(object obj) => obj is StepTestViewModel viewModel && Source.Equals(viewModel.Source);
+
+        public override int GetHashCode() => Source.GetHashCode();
     }
 }

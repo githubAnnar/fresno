@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class UserViewModel : WorkspaceViewModel, IDataErrorInfo
+    public class UserViewModel : WorkspaceViewModel, IDataErrorInfo, IEquatable<UserViewModel>
     {
         #region Fields
 
@@ -395,5 +395,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #endregion
 
         #endregion
+
+        public bool Equals(UserViewModel other) => Equals((object)other);
+
+        public override bool Equals(object obj) => obj is UserViewModel viewModel && GetHashCode().Equals(viewModel.GetHashCode());
+
+        public override int GetHashCode() => Source.GetHashCode();
     }
 }

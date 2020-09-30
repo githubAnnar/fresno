@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class LtLogCalculationViewModel : WorkspaceViewModel
+    public class LtLogCalculationViewModel : WorkspaceViewModel, IEquatable<LtLogCalculationViewModel>
     {
         #region Fields
 
@@ -71,5 +71,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         }
 
         #endregion
+
+        public bool Equals(LtLogCalculationViewModel other) => Equals((object)other);
+
+        public override bool Equals(object obj) => obj is LtLogCalculationViewModel viewModel && GetHashCode().Equals(viewModel.GetHashCode());
+
+        public override int GetHashCode() => ((StepTestViewModel)Parent).GetHashCode();
     }
 }

@@ -61,7 +61,8 @@
             <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch"/>
 
             <Border Grid.Column="2" Style="{StaticResource MainBorderStyle}">
-                <HeaderedContentControl Content="{Binding Path=Workspaces}" ContentTemplate="{StaticResource WorkspacesTemplate}" Header="Data" Style="{StaticResource MainHCCStyle}"/>
+                <!--<HeaderedContentControl Content="{Binding Path=Workspaces}" ContentTemplate="{StaticResource WorkspacesTemplate}" Header="Data" Style="{StaticResource MainHCCStyle}"/>-->
+                <HeaderedContentControl Content="{Binding}" ContentTemplate="{StaticResource WorkspacesTemplate}" Header="Data" Style="{StaticResource MainHCCStyle}"/>
             </Border>
         </Grid>
     </DockPanel>

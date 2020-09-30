@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class MeasurementViewModel : WorkspaceViewModel, IDataErrorInfo
+    public class MeasurementViewModel : WorkspaceViewModel, IDataErrorInfo, IEquatable<MeasurementViewModel>
     {
         #region Fields
 
@@ -316,5 +316,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             Logger.Error("CreateChild is not implemnted!");
             throw new NotImplementedException();
         }
+
+        public bool Equals(MeasurementViewModel other) => Equals((object)other);
+
+        public override bool Equals(object obj) => obj is MeasurementViewModel viewModel && Source.Equals(viewModel.Source);
+
+        public override int GetHashCode() => Source.GetHashCode();
     }
 }

@@ -83,40 +83,25 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public override WorkspaceViewModel SelectedObject => AllUsers.FirstOrDefault(item => item.IsSelected);
 
-        public override void CreateChild()
-        {
-            UserViewModel.Create(ShowWorkspace);
-        }
-
         public ICommand AddUserCommand => _addUserCommand ?? (_addUserCommand = new RelayCommand(param => CreateChild()));
 
-        public void CreateStepTest()
-        {
-            StepTestViewModel.Create(Selected, ShowWorkspace);
-        }
+        public override void CreateChild() => UserViewModel.Create(ShowWorkspace);
 
-        public bool CanCreateStepTest => Selected != null && Selected.IsValid;
+        public ICommand AddStepTestCommand => _addSteptestCommand ?? (_addSteptestCommand = new RelayCommand(param => CreateStepTest(), param => Selected != null && Selected.IsValid));
 
-        public ICommand AddStepTestCommand => _addSteptestCommand ?? (_addSteptestCommand = new RelayCommand(param => CreateStepTest(), param => CanCreateStepTest));
+        public void CreateStepTest() => StepTestViewModel.Create(Selected, ShowWorkspace);
 
-        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => ShowUser(), param => CanShowUser));
+        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => ShowUser(), param => Selected != null && Selected.IsValid));
 
-        private void ShowUser()
-        {
-            Selected.Show();
-        }
+        private void ShowUser() => Selected.Show();
 
-        public bool CanShowUser => Selected != null && Selected.IsValid;
-
-        public ICommand ShowAllStepTestsCommand => _showAllStepTestCommand ?? (_showAllStepTestCommand = new RelayCommand(param => ShowAllStepTests(), param => CanShowAllStepTests));
+        public ICommand ShowAllStepTestsCommand => _showAllStepTestCommand ?? (_showAllStepTestCommand = new RelayCommand(param => ShowAllStepTests(), param => Selected != null && Selected.IsValid));
 
         private void ShowAllStepTests()
         {
             var workspace = new AllStepTestsViewModel(Selected, ShowWorkspace);
             workspace.Show();
         }
-
-        public bool CanShowAllStepTests => Selected != null && Selected.IsValid;
 
         #endregion
 

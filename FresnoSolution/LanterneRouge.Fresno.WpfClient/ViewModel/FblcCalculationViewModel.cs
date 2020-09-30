@@ -5,7 +5,10 @@ using System.Collections.ObjectModel;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class FblcCalculationViewModel : WorkspaceViewModel
+    /// <summary>
+    /// Fixed Blood Lactate Consentration calculation
+    /// </summary>
+    public class FblcCalculationViewModel : WorkspaceViewModel, IEquatable<FblcCalculationViewModel>
     {
         #region Fields
 
@@ -81,7 +84,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Methods
 
-        public override string ToString() => $"Flbc Calculation for Step Test ({StepTestId})";
+        public override string ToString() => $"FBLC Calculation for Step Test ({StepTestId})";
 
         public override void CreateChild()
         {
@@ -89,5 +92,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         }
 
         #endregion
+
+        public bool Equals(FblcCalculationViewModel other) => Equals((object)other);
+
+        public override bool Equals(object obj) => obj is FblcCalculationViewModel viewModel && GetHashCode().Equals(viewModel.GetHashCode());
+
+        public override int GetHashCode() => ((StepTestViewModel)Parent).GetHashCode();
     }
 }

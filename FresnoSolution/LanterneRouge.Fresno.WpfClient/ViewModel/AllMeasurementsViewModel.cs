@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class AllMeasurementsViewModel : WorkspaceViewModel
+    public class AllMeasurementsViewModel : WorkspaceViewModel, IEquatable<AllMeasurementsViewModel>
     {
         #region Fields
 
@@ -164,7 +164,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => Selected.Parent.Parent.Show(), param => Selected != null && Selected.IsValid));
 
         public ICommand ShowMeasurementCommand => _showMeasurementCommand ?? (_showMeasurementCommand = new RelayCommand(param => Selected.Show(), param => Selected != null && Selected.IsValid));
-    }
 
-    #endregion
+        #endregion
+
+        public bool Equals(AllMeasurementsViewModel other) => Equals((object)other);
+
+        public override bool Equals(object obj) => obj is AllMeasurementsViewModel viewModel && GetHashCode().Equals(viewModel.GetHashCode());
+
+        public override int GetHashCode() => ((StepTestViewModel)Parent).GetHashCode();
+    }
 }

@@ -167,7 +167,6 @@
     <Compile Include="MVVM\IWorkspaceCommands.cs" />
     <Compile Include="MVVM\IWorkspaceCommands2.cs" />
     <Compile Include="MVVM\RelayCommand.cs" />
-    <Compile Include="MVVM\TabControlBehavior.cs" />
     <Compile Include="MVVM\ViewModelBase.cs" />
     <Compile Include="Services\Interfaces\IDataService.cs" />
     <Compile Include="Services\DataService.cs" />

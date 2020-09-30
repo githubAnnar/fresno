@@ -76,6 +76,17 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #endregion // Constructor
 
         #region Properties
+        private WorkspaceViewModel _selectedItem;
+        public WorkspaceViewModel SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                _selectedItem = value;
+                OnPropertyChanged();
+                Commands = _selectedItem?.SubCommands;
+            }
+        }
 
         public IMRUListViewModel MRUFileList { get; private set; }
 
@@ -103,7 +114,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// </summary>
         public ObservableCollection<CommandViewModel> Commands
         {
-            get => _commands ?? (_commands = new ObservableCollection<CommandViewModel>(CreateCommands()));
+            get => _commands ?? (_commands = new ObservableCollection<CommandViewModel>(GetInitialCommands()));
             set
             {
                 _commands = value;
@@ -111,18 +122,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
-
         /// <summary>
         /// Creates the commands.
         /// </summary>
         /// <returns></returns>
-        private List<CommandViewModel> CreateCommands()
-        {
-            return new List<CommandViewModel>
+        private List<CommandViewModel> GetInitialCommands() => new List<CommandViewModel>
             {
                 new CommandViewModel("All Users", new RelayCommand(param => ShowAllUsers(), param=>IsDatabaseOpen))
             };
-        }
 
         #region CloseCommand
 
@@ -133,10 +140,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public ICommand CloseCommand => _closeCommand ?? (_closeCommand = new RelayCommand(param => OnRequestClose()));
 
         #endregion // CloseCommand
-
-        #endregion
-
-        #region RequestClose [event]
 
         #region OpenFileCommand
 
@@ -305,7 +308,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(workspace);
-            Logger.Debug("All users shown");
+            Logger.Debug("\"All users\" workspace is shown");
+
+            SetActiveCommands(workspace);
         }
 
         #endregion
@@ -324,18 +329,31 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// <param name="workspace">The workspace.</param>
         private void SetActiveWorkspace(WorkspaceViewModel workspace)
         {
-            Debug.Assert(Workspaces.Contains(workspace));
+            if (!Workspaces.Contains(workspace))
+            {
+                Logger.Warn($"Workspace \"{workspace}\" is not found in collection!");
+            }
 
             var collectionView = CollectionViewSource.GetDefaultView(Workspaces);
             if (collectionView != null)
             {
                 collectionView.MoveCurrentTo(workspace);
-                Logger.Debug($"Changed workspace to {workspace}");
-
-                Commands = workspace.SubCommands;
-                Logger.Debug("Changed commands");
+                Logger.Debug($"Changed workspace to \"{workspace}\"");
             }
         }
+
+        public void SetActiveCommands(WorkspaceViewModel workspace)
+        {
+            Commands = workspace.SubCommands;
+            Logger.Debug($"Changed commands for workspace \"{workspace}\"");
+
+            if (!ContainsWorkspace(typeof(AllUsersViewModel)))
+            {
+                Commands.Insert(0, new CommandViewModel("All Users", new RelayCommand(param => ShowAllUsers(), param => IsDatabaseOpen)));
+            }
+        }
+
+        private bool ContainsWorkspace(Type workspaceType) => Workspaces.Any(w => w.GetType().Equals(workspaceType));
 
         /// <summary>
         /// Gets the active workspace.
@@ -384,10 +402,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
-        public void SaveMru()
-        {
-            SaveMru(_mruPersistPath);
-        }
+        public void SaveMru() => SaveMru(_mruPersistPath);
 
         private async void LoadMru(string path)
         {
@@ -445,6 +460,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
 
             SetActiveWorkspace(view);
+            SetActiveCommands(view);
         }
 
         #endregion
