@@ -1,11 +1,14 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+﻿using LanterneRouge.Fresno.Report;
+using LanterneRouge.Fresno.WpfClient.MVVM;
 using log4net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -156,6 +159,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// </summary>
         public override WorkspaceViewModel SelectedObject => AllStepTests.FirstOrDefault(item => item.IsSelected);
 
+        public IEnumerable<WorkspaceViewModel> AllSelected => AllStepTests.Where(item => item.IsSelected);
+
         public static string GetIdentifierName(StepTestViewModel stepTest) => $"{Name}_StepTest_{stepTest.StepTestId}";
 
         public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(param => CreateChild()));
@@ -166,15 +171,34 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ?? (_showAllMeasurementsCommand = new RelayCommand(param => ShowAllMeasurements(), param => Selected != null && Selected.IsValid));
 
-        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ?? (_createStepTestPdfCommand = new RelayCommand((object obj) => { Selected.CreateStepTestPdfCommand.Execute(obj); }, param => Selected != null));
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ?? (_createStepTestPdfCommand = new RelayCommand(param => CreateStepTestPdf(), param => AllSelected.Count() >= 1));
 
-        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ?? (_showFblcCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFblcCalculationCommand.Execute(obj); }, param => Selected != null));
+        private void CreateStepTestPdf()
+        {
+            var allSelectedStepTests = AllSelected.Cast<StepTestViewModel>();
 
-        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ?? (_showFrpbCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFrpbCalculationCommand.Execute(obj); }, param => Selected != null));
+            // Find newest steptest
+            var newestDate = allSelectedStepTests.Select(item => item.Source.TestDate).Max();
+            var main = allSelectedStepTests.First(item => item.Source.TestDate.Equals(newestDate));
 
-        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ?? (_showLtCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtCalculationCommand.Execute(obj); }, param => Selected != null));
+            // Find the rest selected ones
+            var rest = AllSelected.Cast<StepTestViewModel>().Where(item => !item.Source.TestDate.Equals(newestDate)).ToList();
+            var parent = Parent as UserViewModel;
+            var generator = new StepTestReport(main.Source, rest.Select(item => item.Source));
+            var pdfDocument = generator.CreateReport();
+            var filename = $"{parent.FirstName} {parent.LastName} ({main.Source.Id}).pdf";
+            generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument);
 
-        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ?? (_showLtLogCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtLogCalculationCommand.Execute(obj); }, param => Selected != null));
+            MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ?? (_showFblcCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFblcCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
+
+        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ?? (_showFrpbCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFrpbCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
+
+        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ?? (_showLtCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
+
+        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ?? (_showLtLogCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtLogCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
 
         private void ShowAllMeasurements()
         {
