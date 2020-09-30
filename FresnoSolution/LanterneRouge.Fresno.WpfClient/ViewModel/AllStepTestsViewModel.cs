@@ -47,6 +47,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("Add Steptest", AddStepTestCommand),
                 new CommandViewModel("Show User", ShowUserCommand),
                 new CommandViewModel("Show all Measurements", ShowAllMeasurementsCommand),
+                new CommandViewModel("Show Diagram", ShowDiagramCommand),
                 new CommandViewModel("Generate PDF", CreateStepTestPdfCommand),
                 new CommandViewModel("FBLC Calculation", ShowFblcCalculationCommand),
                 new CommandViewModel("FRPB Calculation", ShowFrpbCalculationCommand),
@@ -82,13 +83,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowDiagram Command
 
-        public ICommand ShowDiagramCommand => _showDiagramCommand ?? (_showDiagramCommand = new RelayCommand(ShowDiagram, param => CanShowDiagram));
+        public ICommand ShowDiagramCommand => _showDiagramCommand ?? (_showDiagramCommand = new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected)));
 
-        public bool CanShowDiagram => AllStepTests.Any(at => at.IsSelected);
-
-        private void ShowDiagram(object obj) => GenerateCalculation(AllStepTests.Where(st => st.IsSelected));
-
-        public void GenerateCalculation(IEnumerable<StepTestViewModel> viewModels) => new StepTestsPlotViewModel(viewModels, ShowWorkspace).Show();
+        private void ShowDiagram(object obj) => new StepTestsPlotViewModel(AllStepTests.Where(st => st.IsSelected), ShowWorkspace).Show();
 
         #endregion
 

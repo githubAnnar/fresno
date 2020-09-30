@@ -42,9 +42,6 @@
 
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Height="30">
-            <Button Content="Show Diagram" Command="{Binding ShowDiagramCommand}" Height="25"/>
-        </StackPanel>
         <ListView AlternationCount="2" DataContext="{StaticResource StepTests}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource StepTestStyle}" sf:GridViewSort.AutoSort="True" SelectionMode="Extended" DockPanel.Dock="Top">
             <ListView.View>
                 <GridView>

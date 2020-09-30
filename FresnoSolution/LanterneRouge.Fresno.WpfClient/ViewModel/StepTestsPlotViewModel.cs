@@ -1,17 +1,15 @@
-﻿using OxyPlot;
+﻿using LanterneRouge.Fresno.Report.PlotModels;
+using LanterneRouge.Fresno.WpfClient.Utils;
+using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class StepTestsPlotViewModel : WorkspaceViewModel
+    public class StepTestsPlotViewModel : WorkspaceViewModel, IEquatable<StepTestsPlotViewModel>
     {
         #region Fields
-
-        private const string LoadAxisKey = "Load";
-        private const string LactateAxisKey = "Lactate";
-        private const string HeartrateAxisKey = "Heartrate";
 
         #endregion
 
@@ -20,6 +18,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public StepTestsPlotViewModel(IEnumerable<StepTestViewModel> parentStepTests, Action<WorkspaceViewModel> showWorkspace) : base(null, showWorkspace, null)
         {
             StepTestData = parentStepTests.ToList();
+            StepTestsModel = StepTests.StepTestPlotModel(StepTestData.Select(st => st.Source));
         }
 
         #endregion
@@ -48,5 +47,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         }
 
         #endregion
+
+        public bool Equals(StepTestsPlotViewModel other) => Equals((object)other);
+
+        public override bool Equals(object obj) => obj is StepTestsPlotViewModel viewModel && GetHashCode().Equals(viewModel.GetHashCode());
+
+        public override int GetHashCode() => StepTestData.Select(item => item.GetHashCode()).GetSequenceHashCode();
     }
 }
