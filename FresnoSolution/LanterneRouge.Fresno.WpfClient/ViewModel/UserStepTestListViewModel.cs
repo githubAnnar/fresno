@@ -44,10 +44,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void Cancel() => CloseAction(null, false);
 
-        public override void CreateChild()
-        {
-            throw new NotImplementedException();
-        }
+        public override void CreateChild() => throw new NotImplementedException();
 
         #endregion
 

@@ -23,9 +23,7 @@ namespace LanterneRouge.Fresno.WpfClient
             //uiVisualizerService.Register(typeof(MeasurementViewModel), typeof(MeasurementView));
 
             base.OnStartup(e);
-
             var window = new MainWindow();
-
             var viewModel = new MainWindowViewModel();
 
             void handler(object sender, EventArgs ea)
@@ -35,9 +33,7 @@ namespace LanterneRouge.Fresno.WpfClient
             }
 
             viewModel.RequestClose += handler;
-
             window.DataContext = viewModel;
-
             window.Show();
         }
 

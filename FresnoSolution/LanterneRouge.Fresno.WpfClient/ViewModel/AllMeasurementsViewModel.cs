@@ -154,10 +154,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddMeasurementCommand => _addMeasurementCommand ?? (_addMeasurementCommand = new RelayCommand(param => CreateChild()));
 
-        public override void CreateChild()
-        {
-            MeasurementViewModel.Create(Parent as StepTestViewModel, ShowWorkspace);
-        }
+        public override void CreateChild() => MeasurementViewModel.Create(Parent as StepTestViewModel, ShowWorkspace);
 
         public ICommand ShowStepTestCommand => _showStepTestCommand ?? (_showStepTestCommand = new RelayCommand(param => Selected.Parent.Show(), param => Selected != null && Selected.IsValid));
 

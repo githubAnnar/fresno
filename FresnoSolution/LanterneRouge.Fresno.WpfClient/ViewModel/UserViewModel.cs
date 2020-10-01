@@ -333,13 +333,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private string ValidateEmail() => ValidateHelpers.IsStringMissing(Email) ? "Missing Email"/*KayakStrings.Race_Error_MissingName*/ : null;
 
-        private string ValidateSex()
-        {
-            string error = ValidateHelpers.IsStringMissing(Sex) ? "Missing Sex"/*KayakStrings.Race_Error_MissingName*/ : null;
-            error = !Sex.Equals("M") && !Sex.Equals("F") ? "Wrong Sex" : null;
-
-            return error;
-        }
+        private string ValidateSex() => ValidateHelpers.IsStringMissing(Sex) ? "Missing Sex"/*KayakStrings.Race_Error_MissingName*/ : !Sex.Equals("M") && !Sex.Equals("F") ? "Wrong Sex" : null;
 
         #endregion
 

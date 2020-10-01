@@ -104,19 +104,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
-        //public long StepDuration
-        //{
-        //    get { return Source.StepDuration; }
-        //    set
-        //    {
-        //        if (!value.Equals(Source.StepDuration))
-        //        {
-        //            Source.StepDuration = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
-
         public float LoadPreset
         {
             get { return Source.LoadPreset; }

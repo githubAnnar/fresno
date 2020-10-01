@@ -102,18 +102,14 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
         /// Invoked when this object is being removed from the application
         /// and will be subject to garbage collection.
         /// </summary>
-        public void Dispose()
-        {
-            OnDispose();
-        }
+        public void Dispose() => OnDispose();
 
         /// <summary>
         /// Child classes can override this method to perform 
         /// clean-up logic, such as removing event handlers.
         /// </summary>
         protected virtual void OnDispose()
-        {
-        }
+        { }
 
 #if DEBUG
         /// <summary>
@@ -121,7 +117,7 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
         /// </summary>
         ~ViewModelBase()
         {
-            string msg = string.Format("{0} ({1}) ({2}) Finalized", GetType().Name, DisplayName, GetHashCode());
+            var msg = $"{GetType().Name} ({DisplayName}) ({GetHashCode()}) Finalized";
             Debug.WriteLine(msg);
         }
 #endif

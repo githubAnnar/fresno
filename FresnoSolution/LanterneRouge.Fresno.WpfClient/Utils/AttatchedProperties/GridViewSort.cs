@@ -16,20 +16,14 @@ namespace LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static ICommand GetCommand(DependencyObject obj)
-        {
-            return (ICommand)obj.GetValue(CommandProperty);
-        }
+        public static ICommand GetCommand(DependencyObject obj) => (ICommand)obj.GetValue(CommandProperty);
 
         /// <summary>
         /// Sets the command.
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <param name="value">The value.</param>
-        public static void SetCommand(DependencyObject obj, ICommand value)
-        {
-            obj.SetValue(CommandProperty, value);
-        }
+        public static void SetCommand(DependencyObject obj, ICommand value) => obj.SetValue(CommandProperty, value);
 
         // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CommandProperty =
@@ -65,20 +59,14 @@ namespace LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static bool GetAutoSort(DependencyObject obj)
-        {
-            return (bool)obj.GetValue(AutoSortProperty);
-        }
+        public static bool GetAutoSort(DependencyObject obj) => (bool)obj.GetValue(AutoSortProperty);
 
         /// <summary>
         /// Sets the auto sort.
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <param name="value">if set to <c>true</c> [value].</param>
-        public static void SetAutoSort(DependencyObject obj, bool value)
-        {
-            obj.SetValue(AutoSortProperty, value);
-        }
+        public static void SetAutoSort(DependencyObject obj, bool value) => obj.SetValue(AutoSortProperty, value);
 
         // Using a DependencyProperty as the backing store for AutoSort.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AutoSortProperty =
@@ -116,20 +104,14 @@ namespace LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static string GetPropertyName(DependencyObject obj)
-        {
-            return (string)obj.GetValue(PropertyNameProperty);
-        }
+        public static string GetPropertyName(DependencyObject obj) => (string)obj.GetValue(PropertyNameProperty);
 
         /// <summary>
         /// Sets the name of the property.
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <param name="value">The value.</param>
-        public static void SetPropertyName(DependencyObject obj, string value)
-        {
-            obj.SetValue(PropertyNameProperty, value);
-        }
+        public static void SetPropertyName(DependencyObject obj, string value) => obj.SetValue(PropertyNameProperty, value);
 
         // Using a DependencyProperty as the backing store for PropertyName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PropertyNameProperty =
@@ -145,20 +127,14 @@ namespace LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static bool GetShowSortGlyph(DependencyObject obj)
-        {
-            return (bool)obj.GetValue(ShowSortGlyphProperty);
-        }
+        public static bool GetShowSortGlyph(DependencyObject obj) => (bool)obj.GetValue(ShowSortGlyphProperty);
 
         /// <summary>
         /// Sets the show sort glyph.
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <param name="value">if set to <c>true</c> [value].</param>
-        public static void SetShowSortGlyph(DependencyObject obj, bool value)
-        {
-            obj.SetValue(ShowSortGlyphProperty, value);
-        }
+        public static void SetShowSortGlyph(DependencyObject obj, bool value) => obj.SetValue(ShowSortGlyphProperty, value);
 
         // Using a DependencyProperty as the backing store for ShowSortGlyph.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowSortGlyphProperty =
@@ -169,20 +145,14 @@ namespace LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static ImageSource GetSortGlyphAscending(DependencyObject obj)
-        {
-            return (ImageSource)obj.GetValue(SortGlyphAscendingProperty);
-        }
+        public static ImageSource GetSortGlyphAscending(DependencyObject obj) => (ImageSource)obj.GetValue(SortGlyphAscendingProperty);
 
         /// <summary>
         /// Sets the sort glyph ascending.
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <param name="value">The value.</param>
-        public static void SetSortGlyphAscending(DependencyObject obj, ImageSource value)
-        {
-            obj.SetValue(SortGlyphAscendingProperty, value);
-        }
+        public static void SetSortGlyphAscending(DependencyObject obj, ImageSource value) => obj.SetValue(SortGlyphAscendingProperty, value);
 
         // Using a DependencyProperty as the backing store for SortGlyphAscending.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SortGlyphAscendingProperty =
@@ -193,20 +163,14 @@ namespace LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static ImageSource GetSortGlyphDescending(DependencyObject obj)
-        {
-            return (ImageSource)obj.GetValue(SortGlyphDescendingProperty);
-        }
+        public static ImageSource GetSortGlyphDescending(DependencyObject obj) => (ImageSource)obj.GetValue(SortGlyphDescendingProperty);
 
         /// <summary>
         /// Sets the sort glyph descending.
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <param name="value">The value.</param>
-        public static void SetSortGlyphDescending(DependencyObject obj, ImageSource value)
-        {
-            obj.SetValue(SortGlyphDescendingProperty, value);
-        }
+        public static void SetSortGlyphDescending(DependencyObject obj, ImageSource value) => obj.SetValue(SortGlyphDescendingProperty, value);
 
         // Using a DependencyProperty as the backing store for SortGlyphDescending.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SortGlyphDescendingProperty =
@@ -221,20 +185,14 @@ namespace LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        private static GridViewColumnHeader GetSortedColumnHeader(DependencyObject obj)
-        {
-            return (GridViewColumnHeader)obj.GetValue(SortedColumnHeaderProperty);
-        }
+        private static GridViewColumnHeader GetSortedColumnHeader(DependencyObject obj) => (GridViewColumnHeader)obj.GetValue(SortedColumnHeaderProperty);
 
         /// <summary>
         /// Sets the sorted column header.
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <param name="value">The value.</param>
-        private static void SetSortedColumnHeader(DependencyObject obj, GridViewColumnHeader value)
-        {
-            obj.SetValue(SortedColumnHeaderProperty, value);
-        }
+        private static void SetSortedColumnHeader(DependencyObject obj, GridViewColumnHeader value) => obj.SetValue(SortedColumnHeaderProperty, value);
 
         // Using a DependencyProperty as the backing store for SortedColumn.  This enables animation, styling, binding, etc...
         private static readonly DependencyProperty SortedColumnHeaderProperty =
@@ -295,10 +253,7 @@ namespace LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties
                 parent = VisualTreeHelper.GetParent(parent);
             }
 
-            if (parent != null)
-                return (T)parent;
-            else
-                return null;
+            return parent != null ? (T)parent : null;
         }
 
         /// <summary>

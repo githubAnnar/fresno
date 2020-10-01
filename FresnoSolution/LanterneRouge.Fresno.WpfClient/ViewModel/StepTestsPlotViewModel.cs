@@ -41,10 +41,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public override string DisplayName => $"Step Test plot";
 
-        public override void CreateChild()
-        {
-            throw new NotImplementedException();
-        }
+        public override void CreateChild() => throw new NotImplementedException();
 
         #endregion
 
