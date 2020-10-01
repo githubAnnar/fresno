@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public abstract class WorkspaceViewModel : ViewModelBase, IWorkspaceCommands2
+    public abstract class WorkspaceViewModel : ViewModelBase, IWorkspaceCommands
     {
         #region Fields
 
@@ -87,27 +87,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             set => _subCommands = value;
         }
 
-        public void Show()
-        {
-            ShowWorkspace(this);
-        }
-
-        public void Show(WorkspaceViewModel viewModel)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool CanShow(WorkspaceViewModel viewModel)
-        {
-            throw new NotImplementedException();
-        }
+        public void Show() => ShowWorkspace(this);
 
         public abstract void CreateChild();
-
-        public bool CanCreateChild(WorkspaceViewModel viewModel)
-        {
-            return true;
-        }
 
         #endregion
     }
