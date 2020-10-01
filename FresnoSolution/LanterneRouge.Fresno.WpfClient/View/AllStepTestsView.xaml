@@ -28,6 +28,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
             <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
+            <Setter Property="Padding" Value="5,5,5,5"/>
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
