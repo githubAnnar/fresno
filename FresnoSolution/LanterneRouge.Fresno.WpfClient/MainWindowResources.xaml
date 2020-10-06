@@ -59,6 +59,11 @@
   This style configures both of the main content areas in the main window.
   -->
 
+    <LinearGradientBrush x:Key="Brush_HeaderBackground" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#66FF0000" Offset="0" />
+        <GradientStop Color="#BBFF0000" Offset="1" />
+    </LinearGradientBrush>
+
     <Style x:Key="MainHCCStyle" TargetType="{x:Type HeaderedContentControl}">
         <Setter Property="HeaderTemplate">
             <Setter.Value>
