@@ -1,10 +1,9 @@
 ﻿<UserControl x:Class="LanterneRouge.Fresno.WpfClient.View.LtLogCalculationView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:LanterneRouge.Fresno.WpfClient.View">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -12,8 +11,8 @@
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Vertical">
-            <TextBlock Text="{Binding LTLogLactateThresholdText}"/>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Vertical" Margin="0 5 0 5">
+            <TextBlock Text="{Binding LTLogLactateThresholdText}" Margin="0 10 0 10"/>
             <DataGrid ItemsSource="{Binding LTLogZones}" CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserSortColumns="False" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name}"/>

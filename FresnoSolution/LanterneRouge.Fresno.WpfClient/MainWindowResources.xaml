@@ -131,6 +131,7 @@
         <TabControl IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Workspaces}" ItemTemplate="{StaticResource ClosableTabItemTemplate}" Margin="4" SelectedItem="{Binding SelectedItem}"/>
     </DataTemplate>
 
+    <!-- Style for All... listview items -->
     <Style TargetType="{x:Type ListViewItem}">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
