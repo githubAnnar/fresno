@@ -9,41 +9,10 @@
                 <scm:SortDescription PropertyName="TestDate" Direction="Descending" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-
-        <ContextMenu x:Key="ItemContextMenu">
-            <MenuItem Header="Edit" Command="{Binding EditSelectedCommand}"/>
-            <Separator/>
-            <MenuItem Header="Show User" Command="{Binding ShowUserCommand}" />
-            <MenuItem Header="Show All Measurements" Command="{Binding ShowAllMeasurementsCommand}" />
-            <Separator/>
-            <MenuItem Header="Add Measurement" Command="{Binding AddMeasurementCommand}" />
-            <Separator/>
-            <MenuItem Header="Fblc Calculation" Command="{Binding ShowFblcCalculationCommand}"/>
-            <MenuItem Header="Frpb Calculation" Command="{Binding ShowFrpbCalculationCommand}"/>
-            <MenuItem Header="LT Calculation" Command="{Binding ShowLtCalculationCommand}"/>
-            <MenuItem Header="LT Log Calculation" Command="{Binding ShowLtLogCalculationCommand}"/>
-        </ContextMenu>
-
-        <Style x:Key="StepTestStyle" TargetType="{x:Type ListViewItem}">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
-            <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
-            <Setter Property="Padding" Value="5,5,5,5"/>
-            <Style.Triggers>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="ItemsControl.AlternationIndex" Value="1" />
-                        <Condition Property="IsSelected" Value="False" />
-                        <Condition Property="IsMouseOver" Value="False" />
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Background" Value="#EEEEEEEE" />
-                </MultiTrigger>
-            </Style.Triggers>
-        </Style>
-
     </UserControl.Resources>
+
     <DockPanel LastChildFill="True">
-        <ListView AlternationCount="2" DataContext="{StaticResource StepTests}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource StepTestStyle}" sf:GridViewSort.AutoSort="True" SelectionMode="Extended" DockPanel.Dock="Top">
+        <ListView AlternationCount="2" DataContext="{StaticResource StepTests}" ItemsSource="{Binding}" sf:GridViewSort.AutoSort="True" SelectionMode="Extended" DockPanel.Dock="Top">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="">

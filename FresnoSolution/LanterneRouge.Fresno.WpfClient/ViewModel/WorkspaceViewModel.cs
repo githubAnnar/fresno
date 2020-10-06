@@ -14,6 +14,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private ICommand _closeCommand;
         private ObservableCollection<CommandViewModel> _subCommands;
+        private ObservableCollection<CommandViewModel> _contextMenuItemCommands;
 
         #endregion // Fields
 
@@ -85,6 +86,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             get => _subCommands ?? (_subCommands = new ObservableCollection<CommandViewModel>());
             set => _subCommands = value;
+        }
+
+        public ObservableCollection<CommandViewModel> ContextMenuItemCommands
+        {
+            get => _contextMenuItemCommands;
+            set => _contextMenuItemCommands = value;
         }
 
         public void Show() => ShowWorkspace(this);

@@ -1,9 +1,8 @@
 ﻿<UserControl x:Class="LanterneRouge.Fresno.WpfClient.View.AllMeasurementsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:local="clr-namespace:LanterneRouge.Fresno.WpfClient.View"
-             xmlns:sf="clr-namespace:LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties">
+             xmlns:sf="clr-namespace:LanterneRouge.Fresno.WpfClient.Utils.AttatchedProperties"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase">
     <UserControl.Resources>
         <CollectionViewSource x:Key="Measurements" Source="{Binding Path=AllMeasurements}">
             <CollectionViewSource.SortDescriptions>
@@ -11,33 +10,9 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        <ContextMenu x:Key="ItemContextMenu">
-            <MenuItem Header="Edit" Command="{Binding EditSelectedCommand}"/>
-            <Separator/>
-            <MenuItem Header="Show Step Test" Command="{Binding ShowStepTestCommand}" />
-            <MenuItem Header="Show User" Command="{Binding ShowUserCommand}" />
-        </ContextMenu>
-
-        <Style x:Key="MeasurementItemStyle" TargetType="{x:Type ListViewItem}">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
-            <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
-            <Setter Property="Padding" Value="5,5,5,5"/>
-            <Style.Triggers>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="ItemsControl.AlternationIndex" Value="1" />
-                        <Condition Property="IsSelected" Value="False" />
-                        <Condition Property="IsMouseOver" Value="False" />
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Background" Value="#EEEEEEEE" />
-                </MultiTrigger>
-            </Style.Triggers>
-        </Style>
-
     </UserControl.Resources>
     <DockPanel>
-        <ListView AlternationCount="2" DataContext="{StaticResource Measurements}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource MeasurementItemStyle}" sf:GridViewSort.AutoSort="True">
+        <ListView AlternationCount="2" DataContext="{StaticResource Measurements}" ItemsSource="{Binding}" sf:GridViewSort.AutoSort="True">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="">

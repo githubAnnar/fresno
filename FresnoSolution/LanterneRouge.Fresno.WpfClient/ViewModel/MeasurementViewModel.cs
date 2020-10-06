@@ -37,6 +37,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("Show User", ShowUserCommand),
                 new CommandViewModel("Show Steptest", ShowStepTestCommand)
             };
+
+            ContextMenuItemCommands = new ObservableCollection<CommandViewModel>
+            {
+                new CommandViewModel("Edit Measurement", EditSelectedCommand),
+                new CommandViewModel("Show User",ShowUserCommand),
+                new CommandViewModel("Show Steptest" ,ShowStepTestCommand)
+            };
         }
 
         #endregion

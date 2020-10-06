@@ -10,34 +10,9 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        <ContextMenu x:Key="ItemContextMenu">
-            <MenuItem Header="Edit" Command="{Binding EditSelectedCommand}"/>
-            <Separator/>
-            <MenuItem Header="Show All StepTests" Command="{Binding ShowAllStepTestsCommand}" />
-            <Separator/>
-            <MenuItem Header="Add Step Test" Command="{Binding AddStepTestCommand}" />
-        </ContextMenu>
-
-        <Style x:Key="UserItemStyle" TargetType="{x:Type ListViewItem}">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
-            <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
-            <Setter Property="Padding" Value="5,5,5,5"/>
-            <Style.Triggers>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="ItemsControl.AlternationIndex" Value="1" />
-                        <Condition Property="IsSelected" Value="False" />
-                        <Condition Property="IsMouseOver" Value="False" />
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Background" Value="#EEEEEEEE" />
-                </MultiTrigger>
-            </Style.Triggers>
-        </Style>
-
     </UserControl.Resources>
     <DockPanel>
-        <ListView AlternationCount="2" DataContext="{StaticResource Users}" ItemsSource="{Binding}" ItemContainerStyle="{StaticResource UserItemStyle}" sf:GridViewSort.AutoSort="True">
+        <ListView AlternationCount="2" DataContext="{StaticResource Users}" ItemsSource="{Binding}" sf:GridViewSort.AutoSort="True">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="">

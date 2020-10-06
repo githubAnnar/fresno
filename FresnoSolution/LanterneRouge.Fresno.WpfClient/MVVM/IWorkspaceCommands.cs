@@ -10,5 +10,7 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
         void CreateChild();
 
         ObservableCollection<CommandViewModel> SubCommands { get; set; }
+
+        ObservableCollection<CommandViewModel> ContextMenuItemCommands { get; set; }
     }
 }

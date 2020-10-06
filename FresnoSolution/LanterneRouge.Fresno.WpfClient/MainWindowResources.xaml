@@ -130,4 +130,34 @@
     <DataTemplate x:Key="WorkspacesTemplate">
         <TabControl IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Workspaces}" ItemTemplate="{StaticResource ClosableTabItemTemplate}" Margin="4" SelectedItem="{Binding SelectedItem}"/>
     </DataTemplate>
+
+    <Style TargetType="{x:Type ListViewItem}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+        <Setter Property="Tag" Value="{Binding DataContext.ContextMenuItemCommands, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}" ItemsSource="{Binding}">
+                    <ContextMenu.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header" Value="{Binding DisplayName}"/>
+                            <Setter Property="Command" Value="{Binding Command}"/>
+                        </Style>
+                    </ContextMenu.ItemContainerStyle>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="5,5,5,5"/>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                    <Condition Property="IsSelected" Value="False" />
+                    <Condition Property="IsMouseOver" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="#EEEEEEEE" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>
