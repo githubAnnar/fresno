@@ -1,0 +1,35 @@
+using LanterneRouge.Fresno.netcore.Calculations.Base;
+using LanterneRouge.Fresno.netcore.DataLayer.DataAccess.Entities;
+using System.Collections.Generic;
+
+namespace LanterneRouge.Fresno.netcore.Calculations
+{
+    public class FblcCalculation : BaseCalculation
+    {
+        #region Fields
+
+        private float _lactateThreshold = 0;
+        private float _heartRateThreshold = 0;
+
+        #endregion
+
+        #region Constructors
+
+        public FblcCalculation(IEnumerable<Measurement> measurements, double marker) : base(measurements)
+        {
+            Marker = marker;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public double Marker { get; }
+
+        public override float LoadThreshold => _lactateThreshold == 0 ? (_lactateThreshold = (float)FindLoadFromLactate(Marker)) : _lactateThreshold;
+
+        public override float HeartRateThreshold => _heartRateThreshold == 0 ? (_heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold)) : _heartRateThreshold;
+
+        #endregion
+    }
+}
