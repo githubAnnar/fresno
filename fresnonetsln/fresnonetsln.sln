@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.netcor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanternRouge.Fresno.netcore.DataLayer.Test", "LanternRouge.Fresno.netcore.DataLayer.Test\LanternRouge.Fresno.netcore.DataLayer.Test.csproj", "{94C3DCD0-8E87-480F-9334-69E8071067D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.netcore.AvaloniaClient", "LanterneRouge.Fresno.netcore.AvaloniaClient\LanterneRouge.Fresno.netcore.AvaloniaClient.csproj", "{352B4D2E-1342-42AA-B441-4DDFE5146528}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,17 @@ Global
 		{94C3DCD0-8E87-480F-9334-69E8071067D8}.Release|x64.Build.0 = Release|Any CPU
 		{94C3DCD0-8E87-480F-9334-69E8071067D8}.Release|x86.ActiveCfg = Release|Any CPU
 		{94C3DCD0-8E87-480F-9334-69E8071067D8}.Release|x86.Build.0 = Release|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|x64.Build.0 = Debug|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|x86.Build.0 = Debug|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Release|Any CPU.Build.0 = Release|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Release|x64.ActiveCfg = Release|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Release|x64.Build.0 = Release|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Release|x86.ActiveCfg = Release|Any CPU
+		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

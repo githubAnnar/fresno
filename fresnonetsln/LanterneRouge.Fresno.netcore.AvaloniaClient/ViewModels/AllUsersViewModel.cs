@@ -1,0 +1,148 @@
+using log4net;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+
+namespace LanterneRouge.Fresno.netcore.AvaloniaClient.ViewModels
+{
+    public class AllUsersViewModel:ViewModelBase
+    {
+        #region Fields
+
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(AllUsersViewModel));
+        private static readonly string _name = typeof(AllUsersViewModel).Name;
+        private ICommand _addUserCommand;
+        private ICommand _addSteptestCommand;
+        private ICommand _showUserCommand;
+        private ICommand _showAllStepTestCommand;
+
+        #endregion
+
+        #region Constructors
+
+        public AllUsersViewModel(Action<WorkspaceViewModel> showWorkspace) : base(null, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Assets/icons8-user-100.png")))
+        {
+            DisplayName = "All Users"; /*KayakStrings.Race_All_Races;*/
+            CreateAllUsers();
+            DataManager.Committed += DataManager_Committed;
+            Logger.Debug($"AllUsers loaded");
+
+            // Set up commands
+            SubCommands = new ObservableCollection<CommandViewModel>
+            {
+                new CommandViewModel("Edit User", ShowUserCommand),
+                new CommandViewModel("Show all Steptests", ShowAllStepTestsCommand),
+                new CommandViewModel("Add User", AddUserCommand),
+                new CommandViewModel("Add Steptest", AddStepTestCommand)
+            };
+        }
+
+        private void DataManager_Committed()
+        {
+            OnDispose();
+            CreateAllUsers();
+        }
+
+        private void CreateAllUsers()
+        {
+            var all = (from user in DataManager.GetAllUsers(true) select new UserViewModel(user, ShowWorkspace)).ToList();
+            all.ForEach(a => a.PropertyChanged += OnUserViewModelPropertyChanged);
+            AllUsers = new ObservableCollection<UserViewModel>(all);
+            AllUsers.CollectionChanged += OnCollectionChanged;
+        }
+
+        #endregion
+
+        #region Public Interface
+
+        public ObservableCollection<UserViewModel> AllUsers { get; private set; }
+
+        public UserViewModel Selected => SelectedObject as UserViewModel;
+
+        public static string GetIdentifierName() => _name;
+
+        #endregion
+
+        #region Base Class Overrides
+
+        protected override void OnDispose()
+        {
+            foreach (UserViewModel userVM in AllUsers)
+            {
+                userVM.Dispose();
+            }
+
+            AllUsers.Clear();
+            AllUsers.CollectionChanged -= OnCollectionChanged;
+        }
+
+        public override WorkspaceViewModel SelectedObject => AllUsers.FirstOrDefault(item => item.IsSelected);
+
+        public ICommand AddUserCommand => _addUserCommand ?? (_addUserCommand = new RelayCommand(param => CreateChild()));
+
+        public override void CreateChild() => UserViewModel.Create(ShowWorkspace);
+
+        public ICommand AddStepTestCommand => _addSteptestCommand ?? (_addSteptestCommand = new RelayCommand(param => CreateStepTest(), param => Selected != null && Selected.IsValid));
+
+        public void CreateStepTest() => StepTestViewModel.Create(Selected, ShowWorkspace);
+
+        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => ShowUser(), param => Selected != null && Selected.IsValid));
+
+        private void ShowUser() => Selected.Show();
+
+        public ICommand ShowAllStepTestsCommand => _showAllStepTestCommand ?? (_showAllStepTestCommand = new RelayCommand(param => ShowAllStepTests(), param => Selected != null && Selected.IsValid));
+
+        private void ShowAllStepTests()
+        {
+            var workspace = new AllStepTestsViewModel(Selected, ShowWorkspace);
+            workspace.Show();
+        }
+
+        #endregion
+
+        #region Event Handling Methods
+
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null && !e.NewItems.Count.Equals(0))
+            {
+                foreach (UserViewModel userVM in e.NewItems)
+                {
+                    userVM.PropertyChanged += OnUserViewModelPropertyChanged;
+                    Logger.Debug($"New UserViewModel {userVM.DisplayName}");
+                }
+            }
+
+            if (e.OldItems != null && !e.OldItems.Count.Equals(0))
+            {
+                foreach (UserViewModel userVM in e.OldItems)
+                {
+                    userVM.PropertyChanged -= OnUserViewModelPropertyChanged;
+                    Logger.Debug($"Old UserViewModel {userVM.DisplayName}");
+                }
+            }
+        }
+
+        private void OnUserViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            const string isSelected = "IsSelected";
+
+            // Make sure that the property name we're referencing is valid.
+            // This is a debugging technique, and does not execute in a Release build.
+            if (sender is UserViewModel userViewModel)
+            {
+                userViewModel.VerifyPropertyName(isSelected);
+            }
+
+            // When a customer is selected or unselected, we must let the
+            // world know that the TotalSelectedSales property has changed,
+            // so that it will be queried again for a new value.
+            //if (e.PropertyName.Equals(isSelected))
+            //{
+            //    this.OnPropertyChanged("TotalSelectedSales");
+            //}
+        }
+
+        #endregion
+    }
+}
