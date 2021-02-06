@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.netcore.DataLayer", "LanterneRouge.Fresno.netcore.DataLayer\LanterneRouge.Fresno.netcore.DataLayer.csproj", "{89F03D5E-4BAD-4783-9D68-7010B7348221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.netcore.DataLayer", "LanterneRouge.Fresno.netcore.DataLayer\LanterneRouge.Fresno.netcore.DataLayer.csproj", "{89F03D5E-4BAD-4783-9D68-7010B7348221}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.netcore.Calculations", "LanterneRouge.Fresno.netcore.Calculations\LanterneRouge.Fresno.netcore.Calculations.csproj", "{124C67AA-18DB-499E-8E09-8F38EABC496F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.netcore.Calculations", "LanterneRouge.Fresno.netcore.Calculations\LanterneRouge.Fresno.netcore.Calculations.csproj", "{124C67AA-18DB-499E-8E09-8F38EABC496F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.netcore.Report", "LanterneRouge.Fresno.netcore.Report\LanterneRouge.Fresno.netcore.Report.csproj", "{133A2A73-F302-439B-898E-0CE5EAEA27D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.netcore.Report", "LanterneRouge.Fresno.netcore.Report\LanterneRouge.Fresno.netcore.Report.csproj", "{133A2A73-F302-439B-898E-0CE5EAEA27D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanternRouge.Fresno.netcore.DataLayer.Test", "LanternRouge.Fresno.netcore.DataLayer.Test\LanternRouge.Fresno.netcore.DataLayer.Test.csproj", "{94C3DCD0-8E87-480F-9334-69E8071067D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanternRouge.Fresno.netcore.DataLayer.Test", "LanternRouge.Fresno.netcore.DataLayer.Test\LanternRouge.Fresno.netcore.DataLayer.Test.csproj", "{94C3DCD0-8E87-480F-9334-69E8071067D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.netcore.AvaloniaClient", "LanterneRouge.Fresno.netcore.AvaloniaClient\LanterneRouge.Fresno.netcore.AvaloniaClient.csproj", "{352B4D2E-1342-42AA-B441-4DDFE5146528}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.netcore.AvaloniaClient", "LanterneRouge.Fresno.netcore.AvaloniaClient\LanterneRouge.Fresno.netcore.AvaloniaClient.csproj", "{352B4D2E-1342-42AA-B441-4DDFE5146528}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{89F03D5E-4BAD-4783-9D68-7010B7348221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -75,7 +72,6 @@ Global
 		{94C3DCD0-8E87-480F-9334-69E8071067D8}.Release|x86.ActiveCfg = Release|Any CPU
 		{94C3DCD0-8E87-480F-9334-69E8071067D8}.Release|x86.Build.0 = Release|Any CPU
 		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|x64.Build.0 = Debug|Any CPU
 		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -86,5 +82,11 @@ Global
 		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Release|x64.Build.0 = Release|Any CPU
 		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Release|x86.ActiveCfg = Release|Any CPU
 		{352B4D2E-1342-42AA-B441-4DDFE5146528}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5920DCF1-6807-46E5-A503-B8D98120CA29}
 	EndGlobalSection
 EndGlobal

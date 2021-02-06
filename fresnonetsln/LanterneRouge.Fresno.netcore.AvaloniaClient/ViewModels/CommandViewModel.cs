@@ -1,9 +1,10 @@
 using System;
+using System.Windows.Input;
 using LanterneRouge.Fresno.netcore.AvaloniaClient.MVVM;
 
 namespace LanterneRouge.Fresno.netcore.AvaloniaClient.ViewModels
 {
-    public class CommandViewModel:ViewModelBase
+    public class CommandViewModel : ViewModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandViewModel"/> class.
