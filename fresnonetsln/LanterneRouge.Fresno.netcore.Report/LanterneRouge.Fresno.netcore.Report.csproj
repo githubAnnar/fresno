@@ -8,6 +8,12 @@
     <PackageReference Include="log4net" Version="2.0.12" />
     <PackageReference Include="MigraDoc.Rendering.Core" Version="1.0.0" />
     <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
+    <PackageReference Include="OxyPlot.Pdf" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LanterneRouge.Fresno.netcore.Calculations\LanterneRouge.Fresno.netcore.Calculations.csproj" />
+    <ProjectReference Include="..\LanterneRouge.Fresno.netcore.DataLayer\LanterneRouge.Fresno.netcore.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>
