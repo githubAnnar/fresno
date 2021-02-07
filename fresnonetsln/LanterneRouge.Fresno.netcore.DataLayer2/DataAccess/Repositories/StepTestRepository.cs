@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Repositories
 {
-    public class StepTestRepository : RepositoryBase, IRepository<IStepTest, IUser, IMeasurement>
+    public class StepTestRepository : RepositoryBase, IRepository<IStepTest, IUser, IStepTest, IMeasurement>
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(StepTestRepository));
 
@@ -27,55 +27,55 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Repositories
             Logger.Info($"Added {entity.Id}");
         }
 
-        public IEnumerable<T> All<T>() where T : IStepTest
+        public IEnumerable<IStepTest> All<TUser, TStepTest, TMeasurement>() where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
-            var stepTests = Connection.Query<T>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest").ToList();
+            var stepTests = Connection.Query<TStepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest").ToList();
 
             // Get parent and childs
-            stepTests.ForEach((T stepTest) =>
+            stepTests.ForEach((TStepTest stepTest) =>
             {
-                stepTest.ParentUser = new UserRepository(Transaction).FindWithParent<IUser>(stepTest.UserId);
-                stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId<IMeasurement>(stepTest).ToList();
+                stepTest.ParentUser = new UserRepository(Transaction).FindWithParent<TUser, TStepTest, TMeasurement>(stepTest.UserId);
+                stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId<TUser, TStepTest, TMeasurement>(stepTest).Cast<IMeasurement>().ToList();
                 stepTest.AcceptChanges();
             });
 
             Logger.Debug("Returning All");
-            return stepTests;
+            return stepTests.Cast<IStepTest>();
         }
 
-        public T FindSingle<T>(int id) where T : IStepTest
+        public IStepTest FindSingle<TStepTest>(int id) where TStepTest : IStepTest
         {
             Logger.Debug($"FindSingle({id})");
-            return Connection.Query<T>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
+            return Connection.Query<TStepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
         }
 
-        public T FindWithParent<T>(int id) where T : IStepTest
+        public IStepTest FindWithParent<TUser, TStepTest, TMeasurement>(int id) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindWithParent({id})");
-            var stepTest = FindSingle<T>(id);
-            stepTest.ParentUser = new UserRepository(Transaction).FindWithParent<IUser>(stepTest.UserId);
+            var stepTest = FindSingle<TStepTest>(id);
+            stepTest.ParentUser = new UserRepository(Transaction).FindWithParent<TUser, TStepTest, TMeasurement>(stepTest.UserId);
             return stepTest;
         }
 
-        public TParent FindWithParentAndChilds<TParent, TChild>(int id) where TParent : IStepTest where TChild : IMeasurement
+        public IStepTest FindWithParentAndChilds<TUser, TStepTest, TMeasurement>(int id) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindWithParentAndChilds({id})");
-            var stepTest = FindWithParent<TParent>(id);
-            stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId<TChild>(stepTest).Cast<IMeasurement>().ToList();
+            var stepTest = FindWithParent<TUser, TStepTest, TMeasurement>(id);
+            stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId<TUser, TStepTest, TMeasurement>(stepTest).Cast<IMeasurement>().ToList();
             return stepTest;
         }
 
-        public IEnumerable<T> FindByParentId<T>(IUser parent) where T : IStepTest
+        public IEnumerable<IStepTest> FindByParentId<TUser, TStepTest, TMeasurement>(IBaseEntity parent) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindByParentId {parent.Id}");
-            var stepTests = Connection.Query<T>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
-            stepTests.ForEach((T stepTest) =>
+            var stepTests = Connection.Query<TStepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
+            stepTests.ForEach((TStepTest stepTest) =>
             {
-                stepTest.ParentUser = parent;
-                stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId<IMeasurement>(stepTest).ToList();
+                stepTest.ParentUser = (IUser)parent;
+                stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId<TUser, TStepTest, TMeasurement>(stepTest).Cast<IMeasurement>().ToList();
                 stepTest.AcceptChanges();
             });
-            return stepTests;
+            return stepTests.Cast<IStepTest>();
         }
 
         public void Remove(int id)

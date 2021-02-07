@@ -79,19 +79,19 @@ namespace LanternRouge.Fresno.netcore.DataLayer.Test
                 using (var transaction = sqlite_connection.BeginTransaction())
                 {
                     var userRepo = new UserRepository(transaction);
-                    var allUsers = userRepo.All<TestUserImpl>().ToList();
+                    var allUsers = userRepo.All<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
                     Assert.True(allUsers.Count > 0);
                     allUsers[0].FirstName = "Annar Test";
                     userRepo.Update(allUsers[0]);
 
                     var stepTestRepo = new StepTestRepository(transaction);
-                    var allStepTests = stepTestRepo.All<TestStepTestImpl>().ToList();
+                    var allStepTests = stepTestRepo.All<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
                     Assert.True(allStepTests.Count > 0);
                     allStepTests[0].TestType = "Run";
                     stepTestRepo.Update(allStepTests[0]);
 
                     var measurementRepo = new MeasurementRepository(transaction);
-                    var allMeasurements = measurementRepo.All<TestMeasurementImpl>().ToList();
+                    var allMeasurements = measurementRepo.All<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
                     Assert.True(allMeasurements.Count > 0);
                     allMeasurements[0].Load = 140f;
                     allMeasurements[0].InCalculation = false;
@@ -103,15 +103,15 @@ namespace LanternRouge.Fresno.netcore.DataLayer.Test
                 using (var transaction = sqlite_connection.BeginTransaction())
                 {
                     var measurementRepo = new MeasurementRepository(transaction);
-                    var allMeasurments = measurementRepo.All<TestMeasurementImpl>().ToList();
+                    var allMeasurments = measurementRepo.All<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
                     allMeasurments.ForEach(m => measurementRepo.Remove(m));
 
                     var stepTestRepo = new StepTestRepository(transaction);
-                    var allStepTests = stepTestRepo.All<TestStepTestImpl>().ToList();
+                    var allStepTests = stepTestRepo.All<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
                     allStepTests.ForEach(m => stepTestRepo.Remove(m));
 
                     var usertRepo = new UserRepository(transaction);
-                    var allUsers = usertRepo.All<TestUserImpl>().ToList();
+                    var allUsers = usertRepo.All<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
                     allUsers.ForEach(m => usertRepo.Remove(m));
 
                     transaction.Commit();
@@ -120,15 +120,15 @@ namespace LanternRouge.Fresno.netcore.DataLayer.Test
                 using (var transaction = sqlite_connection.BeginTransaction())
                 {
                     var measurementRepo = new MeasurementRepository(transaction);
-                    var allMeasurments = measurementRepo.All<TestMeasurementImpl>().ToList();
+                    var allMeasurments = measurementRepo.All<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
                     Assert.True(allMeasurments.Count == 0);
 
                     var stepTestRepo = new StepTestRepository(transaction);
-                    var allStepTests = stepTestRepo.All<TestStepTestImpl>().ToList();
+                    var allStepTests = stepTestRepo.All<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
                     Assert.True(allStepTests.Count == 0);
 
                     var usertRepo = new UserRepository(transaction);
-                    var allUsers = usertRepo.All<TestUserImpl>().ToList();
+                    var allUsers = usertRepo.All<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
                     Assert.True(allUsers.Count == 0);
                 }
 

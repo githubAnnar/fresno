@@ -3,24 +3,24 @@ using System.Collections.Generic;
 
 namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Repositories
 {
-    public interface IRepository<TEntity, TParentEntity, TChildEntity> where TEntity : IBaseEntity where TParentEntity : IBaseEntity where TChildEntity : IBaseEntity
+    public interface IRepository<TBaseInterface, TUserInterface, TStepTestInterface, TMeasurementInterface> where TBaseInterface : IBaseEntity where TUserInterface : IUser where TStepTestInterface : IStepTest where TMeasurementInterface : IMeasurement
     {
-        void Add(TEntity entity);
+        void Add(TBaseInterface entity);
 
-        IEnumerable<TBase> All<TBase>() where TBase : TEntity;
+        IEnumerable<TBaseInterface> All<TUser, TStepTest, TMeasurement>() where TUser : TUserInterface where TStepTest : TStepTestInterface where TMeasurement : TMeasurementInterface;
 
-        TBase FindSingle<TBase>(int id) where TBase : TEntity;
+        TBaseInterface FindSingle<TBase>(int id) where TBase : TBaseInterface;
 
-        TBase FindWithParent<TBase>(int id) where TBase : TEntity;
+        TBaseInterface FindWithParent<TUser, TStepTest, TMeasurement>(int id) where TUser : TUserInterface where TStepTest : TStepTestInterface where TMeasurement : TMeasurementInterface;
 
-        TParent FindWithParentAndChilds<TParent, TChild>(int id) where TParent : TEntity where TChild : TChildEntity;
+        TBaseInterface FindWithParentAndChilds<TUser, TStepTest, TMeasurement>(int id) where TUser : TUserInterface where TStepTest : TStepTestInterface where TMeasurement : TMeasurementInterface;
 
-        IEnumerable<TBase> FindByParentId<TBase>(TParentEntity parent) where TBase : TEntity;
+        IEnumerable<TBaseInterface> FindByParentId<TUser, TStepTest, TMeasurement>(IBaseEntity parent) where TUser : TUserInterface where TStepTest : TStepTestInterface where TMeasurement : TMeasurementInterface;
 
         void Remove(int id);
 
-        void Remove(TEntity entity);
+        void Remove(TBaseInterface entity);
 
-        void Update(TEntity entity);
+        void Update(TBaseInterface entity);
     }
 }

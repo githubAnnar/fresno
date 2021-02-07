@@ -16,9 +16,9 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UnitOfWork));
         private IDbConnection _connection;
         private IDbTransaction _transaction;
-        private IRepository<IMeasurement, IStepTest, IMeasurement> _measurementRepository;
-        private IRepository<IStepTest, IUser, IMeasurement> _stepTestRepository;
-        private IRepository<IUser, IUser, IStepTest> _userRepository;
+        private IRepository<IMeasurement, IUser, IStepTest, IMeasurement> _measurementRepository;
+        private IRepository<IStepTest, IUser, IStepTest, IMeasurement> _stepTestRepository;
+        private IRepository<IUser, IUser, IStepTest, IMeasurement> _userRepository;
         private bool _disposed;
         private IList<IUser> _cachedUsers;
 
@@ -37,11 +37,11 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
 
         #region Properties
 
-        private IRepository<IMeasurement, IStepTest, IMeasurement> MeasurementRepository => _measurementRepository ??= new MeasurementRepository(_transaction);
+        private IRepository<IMeasurement, IUser, IStepTest, IMeasurement> MeasurementRepository => _measurementRepository ??= new MeasurementRepository(_transaction);
 
-        private IRepository<IStepTest, IUser, IMeasurement> StepTestRepository => _stepTestRepository ??= new StepTestRepository(_transaction);
+        private IRepository<IStepTest, IUser, IStepTest, IMeasurement> StepTestRepository => _stepTestRepository ??= new StepTestRepository(_transaction);
 
-        private IRepository<IUser, IUser, IStepTest> UserRepository => _userRepository ??= new UserRepository(_transaction);
+        private IRepository<IUser, IUser, IStepTest, IMeasurement> UserRepository => _userRepository ??= new UserRepository(_transaction);
 
         private IList<IUser> CachedUsers => _cachedUsers ??= new List<IUser>();
 
@@ -121,21 +121,21 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
 
         #region User Methods
 
-        public IList<IUser> GetAllUsers<T>(bool refresh = false) where T : IUser
+        public IList<IUser> GetAllUsers<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
-                _cachedUsers = UserRepository.All<T>().Cast<IUser>().ToList();
+                _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
             return CachedUsers;
         }
 
-        public IUser GetUserById<T>(int id, bool refresh = false) where T : IUser
+        public IUser GetUserById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
-                _cachedUsers = UserRepository.All<T>().Cast<IUser>().ToList();
+                _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
             return _cachedUsers.FirstOrDefault(u => u.Id == id);
@@ -160,21 +160,21 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
 
         #region Step Test Methods
 
-        public IList<IStepTest> GetAllStepTests<T>(bool refresh = false) where T : IUser
+        public IList<IStepTest> GetAllStepTests<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
-                _cachedUsers = UserRepository.All<T>().Cast<IUser>().ToList();
+                _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
             return CachedStepTests;
         }
 
-        public IStepTest GetStepTestById<T>(int id, bool refresh = false) where T : IUser
+        public IStepTest GetStepTestById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
-                _cachedUsers = UserRepository.All<T>().Cast<IUser>().ToList();
+                _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
             return CachedStepTests.FirstOrDefault(s => s.Id == id);
@@ -199,21 +199,21 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
 
         #region Measurements Methods
 
-        public IList<IMeasurement> GetAllMeasurements<T>(bool refresh = false) where T : IUser
+        public IList<IMeasurement> GetAllMeasurements<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
-                _cachedUsers = UserRepository.All<T>().Cast<IUser>().ToList();
+                _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
             return CachedMeasurements;
         }
 
-        public IMeasurement GetMeasurementById<T>(int id, bool refresh = false) where T : IUser
+        public IMeasurement GetMeasurementById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
-                _cachedUsers = UserRepository.All<T>().Cast<IUser>().ToList();
+                _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
             return CachedMeasurements.FirstOrDefault(m => m.Id == id);

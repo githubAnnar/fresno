@@ -8,25 +8,25 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
     {
         void Commit();
 
-        IList<IUser> GetAllUsers<T>(bool refresh = false) where T : IUser;
+        IList<IUser> GetAllUsers<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
-        IUser GetUserById<T>(int id, bool refresh = false) where T : IUser;
+        IUser GetUserById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
         void UpsertUser(IUser entity);
 
         void RemoveUser(IUser entity);
 
-        IList<IStepTest> GetAllStepTests<T>(bool refresh = false) where T : IUser;
+        IList<IStepTest> GetAllStepTests<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
-        IStepTest GetStepTestById<T>(int id, bool refresh = false) where T : IUser;
+        IStepTest GetStepTestById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
         void UpsertStepTest(IStepTest entity);
 
         void RemoveStepTest(IStepTest entity);
 
-        IList<IMeasurement> GetAllMeasurements<T>(bool refresh = false) where T : IUser;
+        IList<IMeasurement> GetAllMeasurements<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
-        IMeasurement GetMeasurementById<T>(int id, bool refresh = false) where T : IUser;
+        IMeasurement GetMeasurementById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
         void UpsertMeasurement(IMeasurement entity);
 

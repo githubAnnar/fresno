@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Repositories
 {
-    public class UserRepository : RepositoryBase, IRepository<IUser, IUser, IStepTest>
+    public class UserRepository : RepositoryBase, IRepository<IUser, IUser, IStepTest, IMeasurement>
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UserRepository));
 
@@ -29,43 +29,43 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Repositories
             Logger.Info($"Added {entity.Id}");
         }
 
-        public IEnumerable<T> All<T>() where T : IUser
+        public IEnumerable<IUser> All<TUser, TStepTest, TMeasurement>() where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
-            var allUsers = Connection.Query<T>("SELECT * FROM User").ToList();
+            var allUsers = Connection.Query<TUser>("SELECT * FROM User").ToList();
 
-            allUsers.ForEach((T user) =>
+            allUsers.ForEach((TUser user) =>
             {
-                user.StepTests = new StepTestRepository(Transaction).FindByParentId<IStepTest>(user).ToList();
+                user.StepTests = new StepTestRepository(Transaction).FindByParentId<TUser, TStepTest, TMeasurement>(user).Cast<IStepTest>().ToList();
                 user.IsLoaded = true;
                 user.AcceptChanges();
             });
 
             Logger.Debug("Returning All");
-            return allUsers;
+            return allUsers.Cast<IUser>();
         }
 
-        public T FindSingle<T>(int id) where T : IUser
+        public IUser FindSingle<TUser>(int id) where TUser : IUser
         {
             Logger.Debug($"FindSingle({id})");
-            return Connection.Query<T>("SELECT * FROM User WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
+            return Connection.Query<TUser>("SELECT * FROM User WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
         }
 
-        public T FindWithParent<T>(int id) where T : IUser
+        public IUser FindWithParent<TUser, TStepTest, TMeasurement>(int id) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindWithParent({id})");
-            return FindSingle<T>(id);
+            return FindSingle<TUser>(id);
         }
 
-        public TUserImpl FindWithParentAndChilds<TUserImpl, TStepTestImpl>(int id) where TUserImpl : IUser where TStepTestImpl : IStepTest
+        public IUser FindWithParentAndChilds<TUser, TStepTest, TMeasurement>(int id) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindWithParentAndChilds({id})");
-            var user = FindSingle<TUserImpl>(id);
-            user.StepTests = new StepTestRepository(Transaction).FindByParentId<TStepTestImpl>(user).Cast<IStepTest>().ToList();
+            var user = FindSingle<TUser>(id);
+            user.StepTests = new StepTestRepository(Transaction).FindByParentId<TUser, TStepTest, TMeasurement>(user).Cast<IStepTest>().ToList();
 
             return user;
         }
 
-        public IEnumerable<T> FindByParentId<T>(IUser user) where T : IUser
+        public IEnumerable<IUser> FindByParentId<TUser, TStepTest, TMeasurement>(IBaseEntity user) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindByParentId NULL");
             return null;

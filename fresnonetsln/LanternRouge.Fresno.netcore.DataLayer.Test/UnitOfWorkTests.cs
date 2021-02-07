@@ -55,41 +55,41 @@ namespace LanternRouge.Fresno.DataLayer.Test
 
             actual.Commit();
 
-            var allUsers = actual.GetAllUsers<TestUserImpl>().ToList();
+            var allUsers = actual.GetAllUsers<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
             Assert.True(allUsers.Count > 0);
             allUsers[0].FirstName = "Annar Test";
             actual.UpsertUser(allUsers[0]);
 
-            var allStepTests = actual.GetAllStepTests<TestUserImpl>().ToList();
+            var allStepTests = actual.GetAllStepTests<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
             Assert.True(allStepTests.Count > 0);
             allStepTests[0].TestType = "Run";
             actual.UpsertStepTest(allStepTests[0]);
 
-            var allMeasurements = actual.GetAllMeasurements<TestUserImpl>();
+            var allMeasurements = actual.GetAllMeasurements<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>();
             Assert.True(allMeasurements.Count > 0);
             allMeasurements[0].Load = 140f;
             actual.UpsertMeasurement(allMeasurements[0]);
 
             actual.Commit();
 
-            var allMeasurments = actual.GetAllMeasurements<TestUserImpl>().ToList();
+            var allMeasurments = actual.GetAllMeasurements<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
             allMeasurments.ForEach(m => actual.RemoveMeasurement(m));
 
-            allStepTests = actual.GetAllStepTests<TestUserImpl>().ToList();
+            allStepTests = actual.GetAllStepTests<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
             allStepTests.ForEach(m => actual.RemoveStepTest(m));
 
-            allUsers = actual.GetAllUsers<TestUserImpl>().ToList();
+            allUsers = actual.GetAllUsers<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
             allUsers.ForEach(m => actual.RemoveUser(m));
 
             actual.Commit();
 
-            allMeasurments = actual.GetAllMeasurements<TestUserImpl>().ToList();
+            allMeasurments = actual.GetAllMeasurements<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
             Assert.True(allMeasurments.Count == 0);
 
-            allStepTests = actual.GetAllStepTests<TestUserImpl>().ToList();
+            allStepTests = actual.GetAllStepTests<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
             Assert.True(allStepTests.Count == 0);
 
-            allUsers = actual.GetAllUsers<TestUserImpl>().ToList();
+            allUsers = actual.GetAllUsers<TestUserImpl, TestStepTestImpl, TestMeasurementImpl>().ToList();
             Assert.True(allUsers.Count == 0);
 
             actual.Dispose();

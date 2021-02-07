@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Repositories
 {
-    public class MeasurementRepository : RepositoryBase, IRepository<IMeasurement, IStepTest, IMeasurement>
+    public class MeasurementRepository : RepositoryBase, IRepository<IMeasurement, IUser, IStepTest, IMeasurement>
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(MeasurementRepository));
 
@@ -16,37 +16,37 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Repositories
             : base(transaction)
         { }
 
-        public IEnumerable<T> All<T>() where T : IMeasurement
+        public IEnumerable<IMeasurement> All<TUser, TStepTest, TMeasurement>() where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
-            var measurements = Connection.Query<T>("SELECT * FROM Measurement").ToList();
-            measurements.ForEach((T measurement) =>
+            var measurements = Connection.Query<TMeasurement>("SELECT * FROM Measurement").ToList();
+            measurements.ForEach((TMeasurement measurement) =>
             {
-                measurement.ParentStepTest = new StepTestRepository(Transaction).FindWithParent<IStepTest>(measurement.StepTestId);
+                measurement.ParentStepTest = new StepTestRepository(Transaction).FindWithParent<TUser, TStepTest, TMeasurement>(measurement.StepTestId);
                 measurement.AcceptChanges();
             });
 
             Logger.Debug("Returning All");
-            return measurements;
+            return measurements.Cast<IMeasurement>();
         }
 
-        public T FindSingle<T>(int id) where T : IMeasurement
+        public IMeasurement FindSingle<TMeasurement>(int id) where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindSingle({id})");
-            return Connection.Query<T>("SELECT * FROM Measurement WHERE Id = @MeasurementId", param: new { MeasurementId = id }, transaction: Transaction).FirstOrDefault();
+            return Connection.Query<TMeasurement>("SELECT * FROM Measurement WHERE Id = @MeasurementId", param: new { MeasurementId = id }, transaction: Transaction).FirstOrDefault();
         }
 
-        public T FindWithParent<T>(int id) where T : IMeasurement
+        public IMeasurement FindWithParent<TUser, TStepTest, TMeasurement>(int id) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindWithParent({id})");
-            var measurement = FindSingle<T>(id);
-            measurement.ParentStepTest = new StepTestRepository(Transaction).FindWithParent<IStepTest>(measurement.StepTestId);
+            var measurement = FindSingle<TMeasurement>(id);
+            measurement.ParentStepTest = new StepTestRepository(Transaction).FindWithParent<TUser, TStepTest, TMeasurement>(measurement.StepTestId);
             return measurement;
         }
 
-        public TParent FindWithParentAndChilds<TParent, TChild>(int id) where TParent : IMeasurement where TChild : IMeasurement
+        public IMeasurement FindWithParentAndChilds<TUser, TStepTest, TMeasurement>(int id) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindWithParentAndChilds({id})");
-            var measurement = FindWithParent<TParent>(id);
+            var measurement = FindWithParent<TUser, TStepTest, TMeasurement>(id);
             return measurement;
         }
 
@@ -94,16 +94,16 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Repositories
             Logger.Info($"Removed {id}");
         }
 
-        public IEnumerable<T> FindByParentId<T>(IStepTest parent) where T : IMeasurement
+        public IEnumerable<IMeasurement> FindByParentId<TUser, TStepTest, TMeasurement>(IBaseEntity parent) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             Logger.Debug($"FindByParentId {parent.Id}");
-            var measurements = Connection.Query<T>("SELECT * FROM Measurement WHERE StepTestId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
+            var measurements = Connection.Query<TMeasurement>("SELECT * FROM Measurement WHERE StepTestId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
             measurements.ForEach(m =>
             {
-                m.ParentStepTest = parent;
+                m.ParentStepTest = (IStepTest)parent;
                 m.AcceptChanges();
             });
-            return measurements;
+            return measurements.Cast<IMeasurement>();
         }
     }
 }
