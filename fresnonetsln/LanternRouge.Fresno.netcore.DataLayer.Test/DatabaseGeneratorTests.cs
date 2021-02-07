@@ -1,4 +1,4 @@
-using LanterneRouge.Fresno.netcore.DataLayer.Database;
+using LanterneRouge.Fresno.netcore.DataLayer2.Database;
 using System.IO;
 using Xunit;
 

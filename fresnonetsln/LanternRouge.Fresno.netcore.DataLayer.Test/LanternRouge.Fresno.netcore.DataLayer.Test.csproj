@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LanterneRouge.Fresno.netcore.DataLayer\LanterneRouge.Fresno.netcore.DataLayer.csproj" />
+    <ProjectReference Include="..\LanterneRouge.Fresno.netcore.DataLayer2\LanterneRouge.Fresno.netcore.DataLayer2.csproj" />
   </ItemGroup>
 
 </Project>

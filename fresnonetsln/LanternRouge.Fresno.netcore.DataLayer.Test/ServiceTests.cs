@@ -1,6 +1,6 @@
-using LanterneRouge.Fresno.netcore.DataLayer.DataAccess.Entities;
+using LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Entities;
 //using LanterneRouge.Fresno.DataLayer.DataAccess.Services;
-using LanterneRouge.Fresno.netcore.DataLayer.Database;
+using LanterneRouge.Fresno.netcore.DataLayer2.Database;
 //using LanterneRouge.Fresno.netcore.WpfClient.Services.Interfaces;
 using System;
 using System.Collections.Generic;
