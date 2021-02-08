@@ -13,6 +13,4 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <views:AllUsersView/>
-
 </Window>

@@ -2,7 +2,7 @@
 
 namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.Entities
 {
-    public interface IMeasurement : IBaseEntity, IComparable<IMeasurement>
+    public interface IMeasurement : IBaseEntity
     {
         int HeartRate { get; set; }
 
