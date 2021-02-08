@@ -12,8 +12,8 @@ namespace LanterneRouge.Fresno.netcore.AvaloniaClient.Models
         }
 
         public int UserId { get; set; }
-        public string TestType { get; set; }
-        public string EffortUnit { get; set; }
+        public string TestType { get; set; } = string.Empty;
+        public string EffortUnit { get; set; } = string.Empty;
         public long StepDuration { get; set; }
         public float LoadPreset { get; set; }
         public float Increase { get; set; }
@@ -21,7 +21,7 @@ namespace LanterneRouge.Fresno.netcore.AvaloniaClient.Models
         public float Weight { get; set; }
         public DateTime TestDate { get; set; }
         public IList<IMeasurement> Measurements { get; set; }
-        public IUser ParentUser { get; set; }
+        public IUser? ParentUser { get; set; }
 
         public static StepTest Create(int userId, string testType, string effortUnit, long stepDuration, float loadPreset, float increase, float temperature, float weight, DateTime testDate)
         {

@@ -11,15 +11,15 @@ namespace LanterneRouge.Fresno.netcore.AvaloniaClient.Models
             StepTests = new List<IStepTest>();
         }
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Street { get; set; }
-        public string PostCode { get; set; }
-        public string PostCity { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Street { get; set; } = string.Empty;
+        public string PostCode { get; set; } = string.Empty;
+        public string PostCity { get; set; } = string.Empty;
         public DateTime BirthDate { get; set; }
         public int Height { get; set; }
-        public string Sex { get; set; }
-        public string Email { get; set; }
+        public string Sex { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public int MaxHr { get; set; }
         public IList<IStepTest> StepTests { get; set; }
         public bool IsLoaded { get; set; } = false;

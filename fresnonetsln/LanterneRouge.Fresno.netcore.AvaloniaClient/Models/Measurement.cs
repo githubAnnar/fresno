@@ -11,7 +11,7 @@ namespace LanterneRouge.Fresno.netcore.AvaloniaClient.Models
         public int StepTestId { get; set; }
         public int Sequence { get; set; }
         public bool InCalculation { get; set; }
-        public IStepTest ParentStepTest { get; set; }
+        public IStepTest? ParentStepTest { get; set; }
 
         public override bool IsValid => StepTestId > 0;
 
@@ -22,6 +22,6 @@ namespace LanterneRouge.Fresno.netcore.AvaloniaClient.Models
             return newMeasurement;
         }
 
-        public int CompareTo(Measurement other) => other == null ? 1 : StepTestId > other.StepTestId ? 1 : StepTestId < other.StepTestId ? -1 : Sequence.CompareTo(other.Sequence);
+        public int CompareTo(Measurement? other) => other == null ? 1 : StepTestId > other.StepTestId ? 1 : StepTestId < other.StepTestId ? -1 : Sequence.CompareTo(other.Sequence);
     }
 }
