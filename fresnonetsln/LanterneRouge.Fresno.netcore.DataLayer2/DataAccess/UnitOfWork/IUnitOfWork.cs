@@ -8,25 +8,25 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
     {
         void Commit();
 
-        IList<IUser> GetAllUsers<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
+        IList<TUser> GetAllUsers<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
-        IUser GetUserById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
+        TUser GetUserById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : class, IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
         void UpsertUser(IUser entity);
 
         void RemoveUser(IUser entity);
 
-        IList<IStepTest> GetAllStepTests<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
+        IList<TStepTest> GetAllStepTests<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
-        IStepTest GetStepTestById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
+        TStepTest GetStepTestById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : class, IStepTest where TMeasurement : IMeasurement;
 
         void UpsertStepTest(IStepTest entity);
 
         void RemoveStepTest(IStepTest entity);
 
-        IList<IMeasurement> GetAllMeasurements<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
+        IList<TMeasurement> GetAllMeasurements<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
 
-        IMeasurement GetMeasurementById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement;
+        TMeasurement GetMeasurementById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : class, IMeasurement;
 
         void UpsertMeasurement(IMeasurement entity);
 

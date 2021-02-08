@@ -121,24 +121,24 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
 
         #region User Methods
 
-        public IList<IUser> GetAllUsers<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
+        public IList<TUser> GetAllUsers<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
                 _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
-            return CachedUsers;
+            return CachedUsers.Cast<TUser>().ToList();
         }
 
-        public IUser GetUserById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
+        public TUser GetUserById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : class, IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
                 _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
-            return _cachedUsers.FirstOrDefault(u => u.Id == id);
+            return _cachedUsers.FirstOrDefault(u => u.Id == id) as TUser;
         }
 
         public void UpsertUser(IUser entity)
@@ -160,24 +160,24 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
 
         #region Step Test Methods
 
-        public IList<IStepTest> GetAllStepTests<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
+        public IList<TStepTest> GetAllStepTests<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
                 _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
-            return CachedStepTests;
+            return CachedStepTests.Cast<TStepTest>().ToList();
         }
 
-        public IStepTest GetStepTestById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
+        public TStepTest GetStepTestById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : class, IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
                 _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
-            return CachedStepTests.FirstOrDefault(s => s.Id == id);
+            return CachedStepTests.FirstOrDefault(s => s.Id == id) as TStepTest;
         }
 
         public void UpsertStepTest(IStepTest entity)
@@ -199,24 +199,24 @@ namespace LanterneRouge.Fresno.netcore.DataLayer2.DataAccess.UnitOfWork
 
         #region Measurements Methods
 
-        public IList<IMeasurement> GetAllMeasurements<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
+        public IList<TMeasurement> GetAllMeasurements<TUser, TStepTest, TMeasurement>(bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
                 _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
-            return CachedMeasurements;
+            return CachedMeasurements.Cast<TMeasurement>().ToList();
         }
 
-        public IMeasurement GetMeasurementById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : IMeasurement
+        public TMeasurement GetMeasurementById<TUser, TStepTest, TMeasurement>(int id, bool refresh = false) where TUser : IUser where TStepTest : IStepTest where TMeasurement : class, IMeasurement
         {
             if (refresh || CachedUsers.Count == 0)
             {
                 _cachedUsers = UserRepository.All<TUser, TStepTest, TMeasurement>().ToList();
             }
 
-            return CachedMeasurements.FirstOrDefault(m => m.Id == id);
+            return CachedMeasurements.FirstOrDefault(m => m.Id == id) as TMeasurement;
         }
 
         public void UpsertMeasurement(IMeasurement entity)
