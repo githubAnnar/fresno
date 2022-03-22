@@ -10,7 +10,7 @@ if (process.argv[2] === "dev") {
 
 else if (process.argv[2] === "prodw") {
     // DBSOURCE = "C:/Users/annar/Google Drive/Sykkel/BCK Drakt/OrderDB.sqlite";
-    DBSOURCE = "";
+    DBSOURCE = "../database/lactate.sqlite";
 }
 
 else if (process.argv[2] === "prodl") {
