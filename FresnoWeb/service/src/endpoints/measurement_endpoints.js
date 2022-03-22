@@ -16,6 +16,7 @@ class MeasurementEndpoints {
         console.log(`${Helpers.getDateNowString()} Starting enpoints for measurement`);
         const MODULE = "measurement";
         const ALL_MEASUREMENTS = "getallmeasurements";
+        const ALL_MEASUREMENTS_BY_STEPTEST = "getallmeasurementsbysteptestid";
         const ONE_MEASUREMENT = "getmeasurementbyid";
         const POST_MEASUREMENT = "postnewmeasurement";
         const UPDATE_MEASUREMENT = "updatemeasurementbyid";
@@ -24,6 +25,11 @@ class MeasurementEndpoints {
         this.app.get(`/${this.rootPath}/${MODULE}/${ALL_MEASUREMENTS}`, (req, res, next) => {
             this.repository.getAllMeasurements(res);
             console.log(`${Helpers.getDateNowString()} request: GET ${ALL_MEASUREMENTS}. req:${JSON.stringify(req.params)}`);
+        });
+
+        this.app.get(`/${this.rootPath}/${MODULE}/${ALL_MEASUREMENTS_BY_STEPTEST}/:id`, (req, res, next) => {
+            this.repository.getAllMeasurementsByStepTestId(res, req.params.id);
+            console.log(`${Helpers.getDateNowString()} request: GET ${ALL_MEASUREMENTS_BY_STEPTEST}. req:${JSON.stringify(req.params)}`);
         });
 
         this.app.get(`/${this.rootPath}/${MODULE}/${ONE_MEASUREMENT}/:id`, (req, res, next) => {

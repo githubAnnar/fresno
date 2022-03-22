@@ -8,7 +8,7 @@ class MeasurementRepository {
 
     // Get All Measurements
     getAllMeasurements(res) {
-        var sql = 'SELECT Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation';
+        var sql = 'SELECT Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation FROM Measurement';
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -24,7 +24,7 @@ class MeasurementRepository {
 
     // Get all measurements by steptest id
     getAllMeasurementsByStepTestId(res, id) {
-        var sql = 'SELECT Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation WHERE StepTestId = ?';
+        var sql = 'SELECT Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation FROM Measurement WHERE StepTestId = ?';
         var params = [id];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -40,7 +40,7 @@ class MeasurementRepository {
 
     // Get Measurement By Id
     getMeasurementById(res, id) {
-        var sql = 'SELECT Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation WHERE Id = ?';
+        var sql = 'SELECT Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation FROM Measurement WHERE Id = ?';
         var params = [id];
         this.db.get(sql, params, (err, row) => {
             if (err) {

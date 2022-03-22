@@ -8,7 +8,7 @@ class UserRepository {
 
     // Get all users
     getAllUsers(res) {
-        var sql = 'SELECT Id, FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr';
+        var sql = 'SELECT Id, FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr FROM "User"';
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -24,7 +24,7 @@ class UserRepository {
 
     // Get user by id
     getUserById(res, id) {
-        var sql = 'SELECT Id, FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr WHERE Id = ?';
+        var sql = 'SELECT Id, FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr FROM "User" WHERE Id = ?';
         var params = [id];
         this.db.get(sql, params, (err, row) => {
             if (err) {

@@ -8,7 +8,7 @@ class StepTestRepository {
 
     // Get All Step Tests
     getAllStepTests(res) {
-        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate';
+        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTEst';
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -24,7 +24,7 @@ class StepTestRepository {
 
     // Get all step tests by user id
     getAllStepTestsByUserId(res, id) {
-        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate WHERE UserId = ?';
+        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = ?';
         var params = [id];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -59,7 +59,7 @@ class StepTestRepository {
 
     // Get StepTest By Id
     getStepTestById(res, id) {
-        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate WHERE Id = ?';
+        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = ?';
         var params = [id];
         this.db.get(sql, params, (err, row) => {
             if (err) {

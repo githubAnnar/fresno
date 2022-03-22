@@ -17,7 +17,7 @@ class UserEndpoints {
         const MODULE = "user";
         const ALL_USERS = "getallusers";
         const ONE_USER = "getuserbyid";
-        const ONE_USER_BY_STEPTEST = "getUserByStepTestId";
+        const ONE_USER_BY_STEPTEST = "getuserbysteptestid";
         const POST_USER = "postnewuser";
         const UPDATE_USER = "updateuserbyid";
         const DELETE_USER = "deleteuserbyid";
