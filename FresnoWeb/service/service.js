@@ -3,7 +3,9 @@ var express = require("express");
 var cors = require("cors");
 var Helpers = require('./src/helpers/helpers');
 
-const UserEndpoints = require("./src/endpoints/user_endpoints");
+const UserEndpoints = require('./src/endpoints/user_endpoints');
+const StepTestEndpoints = require('./src/endpoints/steptest_endpoints');
+const MeasurementEndpoints = require('./src/endpoints/measurement_endpoints');
 
 console.log(`${Helpers.getDateNowString()} Count of args: ${process.argv.length}`);
 
@@ -31,6 +33,8 @@ app.use(express.json());
 app.use(cors());
 
 const userEndpoints = new UserEndpoints("api", app, db);
+const stepTestEndpoints = new StepTestEndpoints("api", app, db);
+const measurementEndpoints = new MeasurementEndpoints("api", app, db);
 
 // Server port
 var HTTP_PORT = 8000
@@ -44,3 +48,7 @@ app.get("/", (req, res, next) => {
     res.json({ "message": "Ok" });
     console.log(`${Helpers.getDateNowString()} request on root`);
 });
+
+userEndpoints.endpoints();
+stepTestEndpoints.endpoints();
+measurementEndpoints.endpoints();

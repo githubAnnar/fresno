@@ -1,4 +1,4 @@
-const Helpers = require("./../helpers/helpers.js");
+const Helpers = require('./../helpers/helpers');
 
 class UserRepository {
     constructor(db) {
@@ -37,6 +37,25 @@ class UserRepository {
                 "data": row
             });
             console.log(`${Helpers.getDateNowString()} getUserById returns Id ${row.Id}`);
+
+        });
+    };
+
+    // Get user by steptest id
+    getUserByStepTestId(res, id) {
+        var sql = 'SELECT u.Id, u.FirstName, u.LastName, u.Email, u.Street, u.PostCode, u.PostCity, u.BirthDate, u.Height, u.Sex, u.MaxHr FROM "User" u JOIN StepTest st ON st.UserId = u.Id WHERE st.Id = ?';
+        var params = [id];
+        this.db.get(sql, params, (err, row) => {
+            if (err) {
+                console.error(`${Helpers.getDateNowString()} getUserByStepTestId ERROR: ${err.message}`);
+                res.status(400).json({ "error": err.message });
+                return;
+            }
+            res.json({
+                "message": "success",
+                "data": row
+            });
+            console.log(`${Helpers.getDateNowString()} getUserByStepTestId returns Id ${row.Id}`);
 
         });
     };
