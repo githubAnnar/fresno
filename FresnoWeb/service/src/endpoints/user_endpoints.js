@@ -19,7 +19,7 @@ class UserEndpoints {
         const ONE_USER = "getuserbyid";
         const ONE_USER_BY_STEPTEST = "getuserbysteptestid";
         const POST_USER = "postnewuser";
-        const UPDATE_USER = "updateuserbyid";
+        const UPDATE_USER = "updateuser";
         const DELETE_USER = "deleteuserbyid";
 
         this.app.get(`/${this.rootPath}/${MODULE}/${ALL_USERS}`, (req, res, next) => {
