@@ -5,8 +5,6 @@ import { UserDataService } from './user-data.service';
 import { StepTestDataService } from './step-test-data.service';
 import { MeasurementDataService } from './measurement-data.service';
 
-
-
 @NgModule({
   declarations: [],
   imports: [
