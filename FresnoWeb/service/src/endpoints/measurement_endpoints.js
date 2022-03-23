@@ -19,7 +19,7 @@ class MeasurementEndpoints {
         const ALL_MEASUREMENTS_BY_STEPTEST = "getallmeasurementsbysteptestid";
         const ONE_MEASUREMENT = "getmeasurementbyid";
         const POST_MEASUREMENT = "postnewmeasurement";
-        const UPDATE_MEASUREMENT = "updatemeasurementbyid";
+        const UPDATE_MEASUREMENT = "updatemeasurement";
         const DELETE_MEASUREMENT = "deletemeasurementbyid";
 
         this.app.get(`/${this.rootPath}/${MODULE}/${ALL_MEASUREMENTS}`, (req, res, next) => {

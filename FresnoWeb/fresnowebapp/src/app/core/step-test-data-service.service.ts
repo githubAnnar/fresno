@@ -57,7 +57,7 @@ export class StepTestDataServiceService {
   }
 
   deleteStepTestById(id: number): Observable<IDeleteStepTestMessage> {
-    return this.http.delete<IDeleteStepTestMessage>(`${this.baseUrl}updatesteptest/${id}`)
+    return this.http.delete<IDeleteStepTestMessage>(`${this.baseUrl}deletesteptestbyid/${id}`)
       .pipe(catchError(this.helpers.handleError));
   }
 }
