@@ -1,0 +1,7 @@
+CREATE TABLE "Role" (
+	"Id"	INTEGER NOT NULL,
+	"Name"	TEXT,
+	"CreatedAt"	TEXT NOT NULL,
+	"UpdatedAt"	TEXT,
+	PRIMARY KEY("Id" AUTOINCREMENT)
+)

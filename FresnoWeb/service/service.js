@@ -26,7 +26,8 @@ else {
 
 // Create express app
 var app = express();
-var db = require("./src/controllers/database.js");
+var db = require('./src/controllers/database');
+const AuthEndpoints = require('./src/endpoints/auth_endpoints');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -35,6 +36,7 @@ app.use(cors());
 const userEndpoints = new UserEndpoints("api", app, db);
 const stepTestEndpoints = new StepTestEndpoints("api", app, db);
 const measurementEndpoints = new MeasurementEndpoints("api", app, db);
+const authEndpoints = new AuthEndpoints("api", app, db);
 
 // Server port
 var HTTP_PORT = 8000
@@ -52,3 +54,4 @@ app.get("/", (req, res, next) => {
 userEndpoints.endpoints();
 stepTestEndpoints.endpoints();
 measurementEndpoints.endpoints();
+authEndpoints.endpoints();
