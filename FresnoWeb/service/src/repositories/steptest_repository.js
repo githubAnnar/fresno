@@ -8,7 +8,7 @@ class StepTestRepository {
 
     // Get All Step Tests
     getAllStepTests(res) {
-        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTEst';
+        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest';
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {

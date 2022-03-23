@@ -18,9 +18,9 @@ class StepTestEndpoints {
         const ALL_STEPTESTS = "getallsteptests";
         const ALL_STEPTESTS_BY_USER = "getsteptestsbyuserid";
         const ONE_STEPTEST = "getsteptestbyid";
-        const ONE_STEPTEST_BY_MEASUREMENT = "getsteptestbymeasureId";
+        const ONE_STEPTEST_BY_MEASUREMENT = "getsteptestbymeasureid";
         const POST_STEPTEST = "postnewsteptest";
-        const UPDATE_STEPTEST = "updatesteptestbyid";
+        const UPDATE_STEPTEST = "updatesteptest";
         const DELETE_STEPTEST = "deletesteptestbyid";
 
         this.app.get(`/${this.rootPath}/${MODULE}/${ALL_STEPTESTS}`, (req, res, next) => {
