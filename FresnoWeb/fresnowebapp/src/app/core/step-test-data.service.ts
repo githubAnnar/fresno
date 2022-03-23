@@ -6,7 +6,7 @@ import { HelpersModule, IDeleteStepTestMessage, IGetStepTestMessage, IGetStepTes
 @Injectable({
   providedIn: 'root'
 })
-export class StepTestDataServiceService {
+export class StepTestDataService {
 
   // local server
   baseUrl: string = 'http://localhost:8000/api/steptest/'

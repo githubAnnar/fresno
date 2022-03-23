@@ -6,7 +6,7 @@ import { HelpersModule, IDeleteUserMessage, IGetUserMessage, IGetUsersMessage, I
 @Injectable({
   providedIn: 'root'
 })
-export class UserDataServiceService {
+export class UserDataService {
 
   // local server
   baseUrl: string = 'http://localhost:8000/api/user/'
@@ -47,12 +47,12 @@ export class UserDataServiceService {
   }
 
   deleteUser(user: IUser): Observable<IDeleteUserMessage> {
-    return this.http.delete(`${this.baseUrl}deleteuserbyid/${user.Id}`)
+    return this.http.delete<IDeleteUserMessage>(`${this.baseUrl}deleteuserbyid/${user.Id}`)
       .pipe(catchError(this.helpers.handleError));
   }
 
   deleteUserById(id: number): Observable<IDeleteUserMessage> {
-    return this.http.delete(`${this.baseUrl}deleteuserbyid/${id}`)
+    return this.http.delete<IDeleteUserMessage>(`${this.baseUrl}deleteuserbyid/${id}`)
       .pipe(catchError(this.helpers.handleError));
   }
 }

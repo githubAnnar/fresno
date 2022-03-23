@@ -6,7 +6,7 @@ import { HelpersModule, IDeleteMeasurementMessage, IGetMeasurementMessage, IGetM
 @Injectable({
   providedIn: 'root'
 })
-export class MeasurementDataServiceService {
+export class MeasurementDataService {
 
   // local server
   baseUrl: string = 'http://localhost:8000/api/measurement/'
