@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserDataService } from './user-data.service';
 import { StepTestDataService } from './step-test-data.service';
 import { MeasurementDataService } from './measurement-data.service';
+import { SorterService } from './sorter.service';
 
 @NgModule({
   declarations: [],
@@ -14,7 +15,8 @@ import { MeasurementDataService } from './measurement-data.service';
   providers: [
     UserDataService,
     StepTestDataService,
-    MeasurementDataService
+    MeasurementDataService,
+    SorterService
   ]
 })
 export class CoreModule { }
