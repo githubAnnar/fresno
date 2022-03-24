@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { UsersModule } from './users/users.module';
+import { PersonsModule } from './persons/persons.module';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
@@ -30,7 +30,7 @@ import { RegisterComponent } from './register/register.component';
     AppRoutingModule,
     ReactiveFormsModule,
     NgbModule,
-    UsersModule,
+    PersonsModule,
     HttpClientModule,
     FormsModule,
     CoreModule,

@@ -2,10 +2,10 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { CanModerate } from "../core/can-moderate.model";
 import { CanOpen } from "../core/can-open.model";
-import { UsersComponent } from "./users.component";
+import { PersonsComponent } from "./persons.component";
 
 const routes: Routes = [
-    { path: 'users', component: UsersComponent, canActivate: [CanOpen] }
+    { path: 'persons', component: PersonsComponent, canActivate: [CanOpen] }
 ];
 
 @NgModule({
@@ -13,4 +13,4 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [CanModerate, CanOpen]
 })
-export class UsersRoutingModule { }
+export class PersonsRoutingModule { }
