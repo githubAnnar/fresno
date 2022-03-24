@@ -9,11 +9,11 @@ class SiteUserRoleRepository {
     // Get all SiteUserRoles
     async findAll() {
         return new Promise(resolve => {
-            var sql = 'SELECT RoleId, UserId, CreatedAt, UpdatedAt FROMSiteUserRole';
+            var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROMSiteUserRole';
             var params = [];
             this.db.all(sql, params, (err, rows) => {
                 if (err) {
-                    return console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                    return console.error(`${Helpers.getDateNowString()} findAll ERROR: ${err.message}`);
                 }
 
                 console.log(`${Helpers.getDateNowString()} findAll returns ${rows.length} rows`);
@@ -23,11 +23,11 @@ class SiteUserRoleRepository {
     }
 
     getAllUserRoles(res) {
-        var sql = 'SELECT RoleId, UserId, CreatedAt, UpdatedAt FROM SiteUserRole';
+        var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole';
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                console.error(`${Helpers.getDateNowString()} getAllUserRoles ERROR: ${err.message}`);
                 res.status(400).json({ "error": err.message });
                 return;
             }
@@ -42,11 +42,11 @@ class SiteUserRoleRepository {
     // Get SiteUserRole by RoleId
     async findByRoleId(roleId) {
         return new Promise(resolve => {
-            var sql = 'SELECT RoleId, UserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ?';
+            var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ?';
             var params = [roleId];
             this.db.all(sql, params, (err, rows) => {
                 if (err) {
-                    return console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                    return console.error(`${Helpers.getDateNowString()} findByRoleId ERROR: ${err.message}`);
                 }
 
                 console.log(`${Helpers.getDateNowString()} findByRoleId returns ${rows.length} rows`);
@@ -56,11 +56,11 @@ class SiteUserRoleRepository {
     }
 
     getUserRoleByRoleId(res, roleId) {
-        var sql = 'SELECT RoleId, UserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ?';
+        var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ?';
         var params = [roleId];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                console.error(`${Helpers.getDateNowString()} getUserRoleByRoleId ERROR: ${err.message}`);
                 res.status(400).json({ "error": err.message });
                 return;
             }
@@ -75,11 +75,11 @@ class SiteUserRoleRepository {
     // Get SiteUserRole by UserId
     async findByUserId(userId) {
         return new Promise(resolve => {
-            var sql = 'SELECT RoleId, UserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE UserId = ?';
+            var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE SiteUserId = ?';
             var params = [userId];
             this.db.all(sql, params, (err, rows) => {
                 if (err) {
-                    return console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                    return console.error(`${Helpers.getDateNowString()} findByUserId ERROR: ${err.message}`);
                 }
 
                 console.log(`${Helpers.getDateNowString()} findByUserId returns ${rows.length} rows`);
@@ -89,11 +89,11 @@ class SiteUserRoleRepository {
     }
 
     getUserRoleByUserId(res, userId) {
-        var sql = 'SELECT RoleId, UserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE UserId = ?';
+        var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE UserId = ?';
         var params = [userId];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                console.error(`${Helpers.getDateNowString()} getUserRoleByUserId ERROR: ${err.message}`);
                 res.status(400).json({ "error": err.message });
                 return;
             }
@@ -109,11 +109,11 @@ class SiteUserRoleRepository {
     // Get SiteUserRole by RoleId & UserId
     async findByRoleIdAndUserId(roleId, userId) {
         return new Promise(resolve => {
-            var sql = 'SELECT RoleId, UserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ? AND UserId = ?';
+            var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ? AND UserId = ?';
             var params = [roleId, userId];
             this.db.get(sql, params, (err, row) => {
                 if (err) {
-                    return console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                    return console.error(`${Helpers.getDateNowString()} findByRoleIdAndUserId ERROR: ${err.message}`);
                 }
 
                 console.log(`${Helpers.getDateNowString()} findByRoleIdAndUserId returns Id ${row.RoleId}-${row.UserId}`);
@@ -123,11 +123,11 @@ class SiteUserRoleRepository {
     }
 
     getUserRoleByRoleIdAndUserId(res, roleId, userId) {
-        var sql = 'SELECT RoleId, UserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ? AND UserId = ?';
+        var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ? AND UserId = ?';
         var params = [roleId, userId];
         this.db.get(sql, params, (err, row) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                console.error(`${Helpers.getDateNowString()} getUserRoleByRoleIdAndUserId ERROR: ${err.message}`);
                 res.status(400).json({ "error": err.message });
                 return;
             }
@@ -153,7 +153,7 @@ class SiteUserRoleRepository {
             }
 
             if (errors.length) {
-                console.error(`${Helpers.getDateNowString()} ERROR: ${errors.join(", ")}`);
+                console.error(`${Helpers.getDateNowString()} insertNewUserRole ERROR: ${errors.join(", ")}`);
                 res.status(400).json({ "error": errors.join(", ") });
                 return;
             }
@@ -166,18 +166,18 @@ class SiteUserRoleRepository {
 
             var params = [data.RoleId, data.UserId, data.CreatedAt, data.CreatedAt];
 
-            var sql = 'INSERT INTO SiteUserRole (RoleId, UserId, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?)';
+            var sql = 'INSERT INTO SiteUserRole (RoleId, SiteUserId, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?)';
             this.db.serialize(() => {
                 this.db.run(sql, params, (err) => {
                     if (err) {
-                        console.error(`${Helpers.getDateNowString()} INSERT ERROR: ${err.message}`);
+                        console.error(`${Helpers.getDateNowString()} insertNewUserRole INSERT ERROR: ${err.message}`);
                         res.status(400).json({ "error": err.message });
                         return;
                     }
                 });
-                this.db.get("SELECT RoleId, UserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ? AND UserId = ?", [data.RoleId, data.UserId], (err, row) => {
+                this.db.get("SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ? AND SiteUserId = ?", [data.RoleId, data.UserId], (err, row) => {
                     if (err) {
-                        console.error(`${Helpers.getDateNowString()} GET ERROR: ${err.message}`);
+                        console.error(`${Helpers.getDateNowString()} insertNewUserRole GET ERROR: ${err.message}`);
                         res.status(400).json({ "error": err.message });
                         return;
                     }
@@ -195,7 +195,7 @@ class SiteUserRoleRepository {
         var params = [roleId, userId];
         await this.db.run(sql, params, (err, result) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                console.error(`${Helpers.getDateNowString()} deleteUserRole ERROR: ${err.message}`);
                 res.status(400).json({ "error": res.message })
                 return;
             }

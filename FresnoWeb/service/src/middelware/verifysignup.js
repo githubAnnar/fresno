@@ -2,19 +2,19 @@ const Helpers = require('../helpers/helpers');
 
 // Database repositories
 var RoleRepository = require('../repositories/role_repository');
-var UserRepository = require('../repositories/user_repository');
+var SiteUserRepository = require('../repositories/siteuser_repository');
 
 class VerifySignUpMW {
     constructor(db) {
         this.db = db;
         this.roleRepository = new RoleRepository(db);
-        this.userRepository = new UserRepository(db);
+        this.siteUserRepository = new SiteUserRepository(db);
         console.log(`${Helpers.getDateNowString()} HELLO from VerifySignUpMW constructor`);
     }
 
     checkDuplicateUsernameOrEmail(req, res, next) {
         // Username
-        this.userRepository.findByUsername(req.body.username)
+        this.siteUserRepository.findByUsername(req.body.username)
             .then(user => {
                 if (user) {
                     console.log(`${Helpers.getDateNowString()} Username: ${user.Username} is already existing`);
@@ -25,7 +25,7 @@ class VerifySignUpMW {
                 }
 
                 // Email
-                this.userRepository.findByEmail(req.body.email)
+                this.siteUserRepository.findByEmail(req.body.email)
                     .then(user => {
                         if (user) {
                             console.log(`${Helpers.getDateNowString()} Email: ${user.Email} is already existing`);

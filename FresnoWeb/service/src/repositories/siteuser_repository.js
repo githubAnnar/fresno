@@ -165,14 +165,14 @@ class SiteUserRepository {
 
             var params = [data.Username, data.Email, data.Password, data.CreatedAt, data.CreatedAt];
 
-            var sql = 'INSERT INTO User (Username, Email, Password, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?, ?)';
+            var sql = 'INSERT INTO SiteUser (Username, Email, Password, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?, ?)';
             this.db.serialize(() => {
                 this.db.run(sql, params, (err) => {
                     if (err) {
                         return console.error(`${Helpers.getDateNowString()} INSERT ERROR: ${err.message}`);
                     }
                 });
-                this.db.get("SELECT Id, Username, Email, Password, CreatedAt, UpdatedAt FROM SiteUser WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = 'User')", [], (err, row) => {
+                this.db.get("SELECT Id, Username, Email, Password, CreatedAt, UpdatedAt FROM SiteUser WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = 'SiteUser')", [], (err, row) => {
                     if (err) {
                         return console.error(`${Helpers.getDateNowString()} GET ERROR: ${err.message}`);
                     }
@@ -205,7 +205,7 @@ class SiteUserRepository {
 
         var params = [data.Username, data.Email, data.Password, data.CreatedAt, data.CreatedAt];
 
-        var sql = 'INSERT INTO User (Username, Email, Password, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?, ?)';
+        var sql = 'INSERT INTO SiteUser (Username, Email, Password, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?, ?)';
         this.db.serialize(() => {
             this.db.run(sql, params, (err) => {
                 if (err) {
@@ -214,7 +214,7 @@ class SiteUserRepository {
                     return;
                 }
             });
-            this.db.get("SELECT Id FROM SiteUser WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = 'User')", [], (err, row) => {
+            this.db.get("SELECT Id FROM SiteUser WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = 'SiteUser')", [], (err, row) => {
                 if (err) {
                     console.error(`${Helpers.getDateNowString()} GET ERROR: ${err.message}`);
                     res.status(400).json({ "error": err.message });
@@ -240,7 +240,7 @@ class SiteUserRepository {
             UpdatedAt: new Date().getUTCDate()
         };
 
-        var sql = 'UPDATE User SET Username = COALESCE(?, Username), Email = COALESCE(?, Email), Password = COALESCE(?, Password), UpdatedAt = ? WHERE Id = ?'
+        var sql = 'UPDATE SiteUser SET Username = COALESCE(?, Username), Email = COALESCE(?, Email), Password = COALESCE(?, Password), UpdatedAt = ? WHERE Id = ?'
         var params = [data.Username, data.Email, data.Password, data.UpdatedAt, data.Id];
         this.db.run(sql, params, (err, result) => {
             if (err) {
