@@ -1,6 +1,6 @@
 export interface IStepTest {
     Id: number;
-    UserId: number;
+    PersonId: number;
     TestType: string;
     EffortUnit: string;
     StepDuration: number;

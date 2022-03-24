@@ -1,15 +1,18 @@
-const Helpers = require('./../helpers/helpers');
+const Helpers = require('../helpers/helpers');
+const DB_TABLE = 'UserRole';
+const INSERT_COLUMNS = 'RoleId, UserId, CreatedAt, UpdatedAt';
+const FULL_COLUMNS = `RoleId, UserId, CreatedAt, UpdatedAt`;
 
-class SiteUserRoleRepository {
+class UserRoleRepository {
     constructor(db) {
         this.db = db;
-        console.log(`${Helpers.getDateNowString()} HELLO from SiteUserRoleRepository constructor`);
+        console.log(`${Helpers.getDateNowString()} HELLO from UserRoleRepository constructor`);
     }
 
     // Get all SiteUserRoles
     async findAll() {
         return new Promise(resolve => {
-            var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROMSiteUserRole';
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE}`;
             var params = [];
             this.db.all(sql, params, (err, rows) => {
                 if (err) {
@@ -23,7 +26,7 @@ class SiteUserRoleRepository {
     }
 
     getAllUserRoles(res) {
-        var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE}`;
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -42,7 +45,7 @@ class SiteUserRoleRepository {
     // Get SiteUserRole by RoleId
     async findByRoleId(roleId) {
         return new Promise(resolve => {
-            var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ?';
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE RoleId = ?`;
             var params = [roleId];
             this.db.all(sql, params, (err, rows) => {
                 if (err) {
@@ -56,7 +59,7 @@ class SiteUserRoleRepository {
     }
 
     getUserRoleByRoleId(res, roleId) {
-        var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ?';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE RoleId = ?`;
         var params = [roleId];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -75,7 +78,7 @@ class SiteUserRoleRepository {
     // Get SiteUserRole by UserId
     async findByUserId(userId) {
         return new Promise(resolve => {
-            var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE SiteUserId = ?';
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE UserId = ?`;
             var params = [userId];
             this.db.all(sql, params, (err, rows) => {
                 if (err) {
@@ -89,7 +92,7 @@ class SiteUserRoleRepository {
     }
 
     getUserRoleByUserId(res, userId) {
-        var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE UserId = ?';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE UserId = ?`;
         var params = [userId];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -109,7 +112,7 @@ class SiteUserRoleRepository {
     // Get SiteUserRole by RoleId & UserId
     async findByRoleIdAndUserId(roleId, userId) {
         return new Promise(resolve => {
-            var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ? AND UserId = ?';
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE RoleId = ? AND UserId = ?`;
             var params = [roleId, userId];
             this.db.get(sql, params, (err, row) => {
                 if (err) {
@@ -123,7 +126,7 @@ class SiteUserRoleRepository {
     }
 
     getUserRoleByRoleIdAndUserId(res, roleId, userId) {
-        var sql = 'SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ? AND UserId = ?';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE RoleId = ? AND UserId = ?`;
         var params = [roleId, userId];
         this.db.get(sql, params, (err, row) => {
             if (err) {
@@ -166,7 +169,7 @@ class SiteUserRoleRepository {
 
             var params = [data.RoleId, data.UserId, data.CreatedAt, data.CreatedAt];
 
-            var sql = 'INSERT INTO SiteUserRole (RoleId, SiteUserId, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?)';
+            var sql = `INSERT INTO ${DB_TABLE} (${INSERT_COLUMNS}) VALUES (?, ?, ?, ?)`;
             this.db.serialize(() => {
                 this.db.run(sql, params, (err) => {
                     if (err) {
@@ -175,7 +178,7 @@ class SiteUserRoleRepository {
                         return;
                     }
                 });
-                this.db.get("SELECT RoleId, SiteUserId, CreatedAt, UpdatedAt FROM SiteUserRole WHERE RoleId = ? AND SiteUserId = ?", [data.RoleId, data.UserId], (err, row) => {
+                this.db.get(`SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE RoleId = ? AND UserId = ?`, [data.RoleId, data.UserId], (err, row) => {
                     if (err) {
                         console.error(`${Helpers.getDateNowString()} insertNewUserRole GET ERROR: ${err.message}`);
                         res.status(400).json({ "error": err.message });
@@ -191,7 +194,7 @@ class SiteUserRoleRepository {
 
     // Delete SiteUserRole
     async deleteUserRole(res, roleId, userId) {
-        var sql = 'DELETE FROM SiteUserRole WHERE RoleId = ? AND UserId = ?';
+        var sql = `DELETE FROM ${DB_TABLE} WHERE RoleId = ? AND UserId = ?`;
         var params = [roleId, userId];
         await this.db.run(sql, params, (err, result) => {
             if (err) {
@@ -208,4 +211,4 @@ class SiteUserRoleRepository {
     }
 }
 
-module.exports = SiteUserRoleRepository;
+module.exports = UserRoleRepository;

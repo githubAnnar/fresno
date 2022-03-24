@@ -1,18 +1,38 @@
-const Helpers = require('./../helpers/helpers');
+const Helpers = require('../helpers/helpers');
+const DB_TABLE = 'User';
+const INSERT_COLUMNS = 'Username, Email, Password, CreatedAt, UpdatedAt';
+const FULL_COLUMNS = `Id, ${INSERT_COLUMNS}`;
 
 class UserRepository {
+
     constructor(db) {
         this.db = db;
         console.log(`${Helpers.getDateNowString()} HELLO from UserRepository constructor`);
     }
 
-    // Get all users
+    async findAll() {
+        return new Promise(resolve => {
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE}`;
+            var params = [];
+            this.db.all(sql, params, (err, rows) => {
+                if (err) {
+                    return console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                }
+
+                console.log(`${Helpers.getDateNowString()} findAll returns ${rows.length} rows`);
+                resolve(rows);
+            });
+        });
+    }
+
     getAllUsers(res) {
-        var sql = 'SELECT Id, FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr FROM "User"';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE}`;
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} getAllUsers ERROR: ${err.message}`)
+                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                res.status(400).json({ "error": err.message });
+                return;
             }
             res.json({
                 "message": "success",
@@ -20,15 +40,32 @@ class UserRepository {
             });
             console.log(`${Helpers.getDateNowString()} getAllUsers returns ${rows.length} rows`);
         });
-    };
+    }
 
-    // Get user by id
+    async findById(id) {
+        return new Promise(resolve => {
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = ?`;
+            var params = [id];
+            this.db.get(sql, params, (err, row) => {
+                if (err) {
+                    return console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                }
+
+                if (row != undefined) {
+                    console.log(`${Helpers.getDateNowString()} findById returns Id ${row.Id}`);
+                }
+
+                resolve(row);
+            });
+        });
+    }
+
     getUserById(res, id) {
-        var sql = 'SELECT Id, FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr FROM "User" WHERE Id = ?';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = ?`;
         var params = [id];
         this.db.get(sql, params, (err, row) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} getUserById ERROR: ${err.message}`);
+                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
                 res.status(400).json({ "error": err.message });
                 return;
             }
@@ -37,17 +74,32 @@ class UserRepository {
                 "data": row
             });
             console.log(`${Helpers.getDateNowString()} getUserById returns Id ${row.Id}`);
-
         });
-    };
+    }
 
-    // Get user by steptest id
-    getUserByStepTestId(res, id) {
-        var sql = 'SELECT u.Id, u.FirstName, u.LastName, u.Email, u.Street, u.PostCode, u.PostCity, u.BirthDate, u.Height, u.Sex, u.MaxHr FROM "User" u JOIN StepTest st ON st.UserId = u.Id WHERE st.Id = ?';
-        var params = [id];
+    async findByUsername(username) {
+        return new Promise(resolve => {
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Username = ?`;
+            var params = [username];
+            this.db.get(sql, params, (err, row) => {
+                if (err) {
+                    return console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                }
+
+                if (row != undefined) {
+                    console.log(`${Helpers.getDateNowString()} findByUsername returns row with id: ${row.Id}`);
+                }
+                resolve(row);
+            });
+        });
+    }
+
+    getUserByUsername(res, username) {
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Username = ?`;
+        var params = [username];
         this.db.get(sql, params, (err, row) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} getUserByStepTestId ERROR: ${err.message}`);
+                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
                 res.status(400).json({ "error": err.message });
                 return;
             }
@@ -55,21 +107,90 @@ class UserRepository {
                 "message": "success",
                 "data": row
             });
-            console.log(`${Helpers.getDateNowString()} getUserByStepTestId returns Id ${row.Id}`);
-
+            console.log(`${Helpers.getDateNowString()} getUserByUsername returns Id ${row.Id}`);
         });
-    };
+    }
 
-    // New User
-    postNewUser(res, firstname, lastname, email, street, postcode, postcity, birthdate, height, sex, maxhr) {
+    async findByEmail(email) {
+        return new Promise(resolve => {
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Email = ?`;
+            var params = [email];
+            this.db.get(sql, params, (err, row) => {
+                if (err) {
+                    return console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                }
+
+                if (row != undefined) {
+                    console.log(`${Helpers.getDateNowString()} findByEmail returns ${JSON.stringify(row)}`);
+                }
+
+                resolve(row);
+            });
+        });
+    }
+
+    getUserByEmail(res, email) {
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Email = ?`;
+        var params = [email];
+        this.db.get(sql, params, (err, row) => {
+            if (err) {
+                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
+                res.status(400).json({ "error": err.message });
+                return;
+            }
+            res.json({
+                "message": "success",
+                "data": row
+            });
+            console.log(`${Helpers.getDateNowString()} getUserByEmail returns Id ${row.Id}`);
+        });
+    }
+
+    // Insert new user
+    async create(username, email, password) {
+        return new Promise(resolve => {
+            var errors = [];
+
+            if (!password) {
+                errors.push("No Password is specified!");
+            }
+
+            if (errors.length) {
+                return console.error(`${Helpers.getDateNowString()} ERROR: ${errors.join(", ")}`);
+            }
+
+            var data = {
+                Username: username,
+                Email: email,
+                Password: password,
+                CreatedAt: new Date()
+            };
+
+            var params = [data.Username, data.Email, data.Password, data.CreatedAt, data.CreatedAt];
+
+            var sql = `INSERT INTO ${DB_TABLE} (${INSERT_COLUMNS}) VALUES (?, ?, ?, ?, ?)`;
+            this.db.serialize(() => {
+                this.db.run(sql, params, (err) => {
+                    if (err) {
+                        return console.error(`${Helpers.getDateNowString()} INSERT ERROR: ${err.message}`);
+                    }
+                });
+                this.db.get(`SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = '${DB_TABLE}')`, [], (err, row) => {
+                    if (err) {
+                        return console.error(`${Helpers.getDateNowString()} GET ERROR: ${err.message}`);
+                    }
+
+                    resolve(row);
+                });
+            });
+        });
+    }
+
+    insertNewUser(res, username, email, password) {
         var errors = [];
 
-        if (!firstname) {
-            errors.push('No firstname specified');
-        }
-
-        if (!lastname) {
-            errors.push('No lastname specified');
+        if (!created) {
+            errors.push("No Created is specified!");
         }
 
         if (errors.length) {
@@ -78,45 +199,55 @@ class UserRepository {
             return;
         }
 
-        var data = { FirstName: firstname, LastName: lastname, Email: email, Street: street, PostCode: postcode, PostCity: postcity, Height: height, BirthDate: birthdate, Sex: sex, MaxHr: maxhr };
+        var data = {
+            Username: username,
+            Email: email,
+            Password: password,
+            CreatedAt: new Date().getUTCDate()
+        };
 
-        var sql = 'INSERT INTO User (FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        var params = [data.FirstName, data.LastName, data.Email, data.Street, data.PostCode, data.PostCity, data.BirthDate, data.Height, data.Sex, data.MaxHr];
+        var params = [data.Username, data.Email, data.Password, data.CreatedAt, data.CreatedAt];
 
+        var sql = `INSERT INTO ${DB_TABLE} (${INSERT_COLUMNS}) VALUES (?, ?, ?, ?, ?)`;
         this.db.serialize(() => {
             this.db.run(sql, params, (err) => {
                 if (err) {
-                    console.error(`${Helpers.getDateNowString()} postNewUser ERROR: ${err.message}`);
+                    console.error(`${Helpers.getDateNowString()} INSERT ERROR: ${err.message}`);
                     res.status(400).json({ "error": err.message });
                     return;
                 }
             });
-
-            this.db.get("SELECT Id, FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr FROM User WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = 'User')", [], (err, row) => {
+            this.db.get(`SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = '${DB_TABLE}')`, [], (err, row) => {
                 if (err) {
-                    console.error(`${Helpers.getDateNowString()} postNewUser ERROR: ${err.message}`);
-                    res.status(400).json({ "error": err.message })
+                    console.error(`${Helpers.getDateNowString()} GET ERROR: ${err.message}`);
+                    res.status(400).json({ "error": err.message });
                     return;
                 }
 
+                console.log(`${Helpers.getDateNowString()} insertNewUser inserted row: ${JSON.stringify(row)}`);
                 res.json({
                     "message": "success",
-                    "data": row,
-                    "id": row.Id
+                    "data": row
                 });
             });
         });
-    };
+    }
 
-    // Update user
-    updateUserById(res, id, firstname, lastname, email, street, postcode, postcity, birthdate, height, sex, maxhr) {
-        var data = { Id: id, FirstName: firstname, LastName: lastname, Email: email, Street: street, PostCode: postcode, PostCity: postcity, Height: height, BirthDate: birthdate, Sex: sex, MaxHr: maxhr };
+    // Update User
+    updateUserById(res, id, username, email, password) {
+        var data = {
+            Id: id,
+            Username: username,
+            Email: email,
+            Password: password,
+            UpdatedAt: new Date().getUTCDate()
+        };
 
-        var sql = 'UPDATE User SET FirstName = COALESCE(?, FirstName), LastName = COALESCE(?, LastName), Email = COALESCE(?, Email), Street = COALESCE(?, Street), PostCode = COALESCE(?, PostCode), PostCity = COALESCE(?, PostCity), BirthDate = COALESCE(?, BirthDate), Height = COALESCE(?, Height), Sex = COALESCE(?, Sex), MaxHr = COALESCE(?, MaxHr) WHERE Id = ?';
-        var params = [data.FirstName, data.LastName, data.Email, data.Street, data.PostCode, data.PostCity, data.BirthDate, data.Height, data.Sex, data.MaxHr, data.Id];
+        var sql = `UPDATE ${DB_TABLE} SET Username = COALESCE(?, Username), Email = COALESCE(?, Email), Password = COALESCE(?, Password), UpdatedAt = ? WHERE Id = ?`
+        var params = [data.Username, data.Email, data.Password, data.UpdatedAt, data.Id];
         this.db.run(sql, params, (err, result) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} updateUserById ERROR: ${err.message}`);
+                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
                 res.status(400).json({ "error": res.message })
                 return;
             }
@@ -127,15 +258,15 @@ class UserRepository {
             });
             console.log(`${Helpers.getDateNowString()} updateUserById: Id: ${data.Id} => Update: ${JSON.stringify(data)}`);
         });
-    };
+    }
 
     // Delete User
-    deleteUserById(res, id) {
-        var sql = 'DELETE FROM User WHERE Id = ?';
+    deleteUser(res, id) {
+        var sql = `DELETE FROM ${DB_TABLE} WHERE Id = ?`;
         var params = [id];
         this.db.run(sql, params, (err, result) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} deleteUser ERROR: ${err.message}`);
+                console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);
                 res.status(400).json({ "error": res.message })
                 return;
             }
@@ -143,9 +274,9 @@ class UserRepository {
                 "message": "deleted",
                 "id": id
             });
-            console.log(`${Helpers.getDateNowString()} deleteUser: ${id}`);
+            console.log(`${Helpers.getDateNowString()} deleteUserId: ${id}`);
         });
-    };
+    }
 }
 
 module.exports = UserRepository;

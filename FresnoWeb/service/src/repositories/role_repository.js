@@ -1,4 +1,7 @@
 const Helpers = require('./../helpers/helpers');
+const DB_TABLE = 'Role';
+const INSERT_COLUMNS = 'Name, CreatedAt, UpdatedAt';
+const FULL_COLUMNS = `Id, ${INSERT_COLUMNS}`;
 
 class RoleRepository {
     constructor(db) {
@@ -9,7 +12,7 @@ class RoleRepository {
     // Get all roles
     async findAll() {
         return new Promise(resolve => {
-            var sql = 'SELECT Id, Name, CreatedAt, UpdatedAt FROM Role';
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE}`;
             var params = [];
             this.db.all(sql, params, (err, rows) => {
                 if (err) {
@@ -23,7 +26,7 @@ class RoleRepository {
     }
 
     getAllRoles(res) {
-        var sql = 'SELECT Id, Name, CreatedAt, UpdatedAt FROM Role';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE}`;
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -42,7 +45,7 @@ class RoleRepository {
     // Get role by Id
     async findById(id) {
         return new Promise(resolve => {
-            var sql = 'SELECT Id, Name, CreatedAt, UpdatedAt FROM Role WHERE Id = ?'
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = ?`;
             var params = [id];
             this.db.get(sql, params, (err, row) => {
                 if (err) {
@@ -56,7 +59,7 @@ class RoleRepository {
     }
 
     getRoleById(res, id) {
-        var sql = 'SELECT Id, Name, CreatedAt, UpdatedAt FROM Role WHERE Id = ?'
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = ?`;
         var params = [id];
         this.db.get(sql, params, (err, row) => {
             if (err) {
@@ -75,7 +78,7 @@ class RoleRepository {
     // Get role by name
     async findByName(name) {
         return new Promise(resolve => {
-            var sql = 'SELECT Id, Name, CreatedAt, UpdatedAt FROM Role WHERE Name = ?'
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Name = ?`;
             var params = [id];
             this.db.get(sql, params, (err, row) => {
                 if (err) {
@@ -92,7 +95,7 @@ class RoleRepository {
         console.log(`${Helpers.getDateNowString()} names=`, names);
         let data = [];
         return new Promise(resolve => {
-            var sql = `SELECT Id, Name, CreatedAt, UpdatedAt FROM Role WHERE Name IN (${names.map(n => { return '?' }).join(',')})`;
+            var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Name IN (${names.map(n => { return '?' }).join(',')})`;
             this.db.all(sql, names, (err, rows) => {
                 if (err) {
                     return console.error(`${Helpers.getDateNowString()} ERROR: ${err.message}`);

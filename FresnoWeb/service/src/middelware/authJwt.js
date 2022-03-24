@@ -2,16 +2,16 @@ const Helpers = require('../helpers/helpers');
 
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
-const SiteUserRepository = require('../repositories/siteuser_repository');
+const UserRepository = require('../repositories/user_repository');
 const RoleRepository = require('../repositories/role_repository');
-const SiteUserRoleRepository = require('../repositories/siteuserrole_repository');
+const UserRoleRepository = require('../repositories/userrole_repository');
 
 class AuthJwtMW {
     constructor(db) {
         this.db = db;
-        this.userRepository = new SiteUserRepository(db);
+        this.userRepository = new UserRepository(db);
         this.roleRepository = new RoleRepository(db);
-        this.userRoleRepository = new SiteUserRoleRepository(db);
+        this.userRoleRepository = new UserRoleRepository(db);
         console.log(`${Helpers.getDateNowString()} HELLO from AuthJwtMW constructor`);
     }
 

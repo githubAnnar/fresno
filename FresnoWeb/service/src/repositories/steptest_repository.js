@@ -1,4 +1,7 @@
 const Helpers = require('./../helpers/helpers');
+const DB_TABLE = 'StepTest';
+const INSERT_COLUMNS = 'PersonId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate';
+const FULL_COLUMNS = `Id, ${INSERT_COLUMNS}`;
 
 class StepTestRepository {
     constructor(db) {
@@ -8,7 +11,7 @@ class StepTestRepository {
 
     // Get All Step Tests
     getAllStepTests(res) {
-        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE}`;
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -22,25 +25,25 @@ class StepTestRepository {
         });
     };
 
-    // Get all step tests by user id
-    getAllStepTestsByUserId(res, id) {
-        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = ?';
+    // Get all step tests by person id
+    getAllStepTestsByPersonId(res, id) {
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE PersonId = ?`;
         var params = [id];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
-                console.error(`${Helpers.getDateNowString()} getAllStepTestsByUserId ERROR: ${err.message}`)
+                console.error(`${Helpers.getDateNowString()} getAllStepTestsByPersonId ERROR: ${err.message}`)
             }
             res.json({
                 "message": "success",
                 "data": rows
             });
-            console.log(`${Helpers.getDateNowString()} getAllStepTestsByUserId returns ${rows.length} rows`);
+            console.log(`${Helpers.getDateNowString()} getAllStepTestsByPersonId returns ${rows.length} rows`);
         });
     };
 
     // Get Step Test by Measurement id
     getStepTestByMeasurementIdId(res, id) {
-        var sql = 'SELECT st.Id, st.UserId, st.TestType, st.EffortUnit, st.StepDuration, st.LoadPreset, st.Increase, st.Temperature, st.Weight, st.TestDate FROM StepTest st JOIN Measurement m ON m.StepTestId = st.Id WHERE m.Id = ?';
+        var sql = `SELECT st.Id, st.UserId, st.TestType, st.EffortUnit, st.StepDuration, st.LoadPreset, st.Increase, st.Temperature, st.Weight, st.TestDate FROM ${DB_TABLE} st JOIN Measurement m ON m.StepTestId = st.Id WHERE m.Id = ?`;
         var params = [id];
         this.db.get(sql, params, (err, row) => {
             if (err) {
@@ -59,7 +62,7 @@ class StepTestRepository {
 
     // Get StepTest By Id
     getStepTestById(res, id) {
-        var sql = 'SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = ?';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = ?`;
         var params = [id];
         this.db.get(sql, params, (err, row) => {
             if (err) {
@@ -112,7 +115,7 @@ class StepTestRepository {
 
         var data = { UserId: userid, TestType: testtype, EffortUnit: effortunit, StepDuration: stepduration, LoadPreset: loadpreset, Increase: increase, Temperature: temperature, Weight: weight, TestDate: testdate };
 
-        var sql = 'INSERT INTO StepTest (UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        var sql = `INSERT INTO ${DB_TABLE} (${INSERT_COLUMNS}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         var params = [data.UserId, data.TestType, data.EffortUnit, data.StepDuration, data.LoadPreset, data.Increase, data.Temperature, data.Weight, data.TestDate];
 
         this.db.serialize(() => {
@@ -124,7 +127,7 @@ class StepTestRepository {
                 }
             });
 
-            this.db.get("Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = 'StepTest')", [], (err, row) => {
+            this.db.get(`SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = '${DB_TABLE}')`, [], (err, row) => {
                 if (err) {
                     console.error(`${Helpers.getDateNowString()} postNewStepTest ERROR: ${err.message}`);
                     res.status(400).json({ "error": err.message })
@@ -144,7 +147,7 @@ class StepTestRepository {
     updateStepTestById(res, id, userid, testtype, effortunit, stepduration, loadpreset, increase, temperature, weight, testdate) {
         var data = { Id: id, UserId: userid, TestType: testtype, EffortUnit: effortunit, StepDuration: stepduration, LoadPreset: loadpreset, Increase: increase, Temperature: temperature, Weight: weight, TestDate: testdate };
 
-        var sql = 'UPDATE StepTest SET UserId = COALESCE(?, UserId), TestType = COALESCE(?, TestType), EffortUnit = COALESCE(?, EffortUnit), StepDuration = COALESCE(?, StepDuration), LoadPreset = COALESCE(?, LoadPreset), Increase = COALESCE(?, Increase), Temperature = COALESCE(?, Temperature), Weight = COALESCE(?, Weight), TestDate = COALESCE(?, TestDate) WHERE Id = ?';
+        var sql = `UPDATE ${DB_TABLE} SET UserId = COALESCE(?, UserId), TestType = COALESCE(?, TestType), EffortUnit = COALESCE(?, EffortUnit), StepDuration = COALESCE(?, StepDuration), LoadPreset = COALESCE(?, LoadPreset), Increase = COALESCE(?, Increase), Temperature = COALESCE(?, Temperature), Weight = COALESCE(?, Weight), TestDate = COALESCE(?, TestDate) WHERE Id = ?`;
         var params = [data.UserId, data.TestType, data.EffortUnit, data.StepDuration, data.LoadPreset, data.Increase, data.Temperature, data.Weight, data.TestDate, data.Id];
         this.db.run(sql, params, (err, result) => {
             if (err) {
@@ -163,7 +166,7 @@ class StepTestRepository {
 
     // Delete StepTest
     deleteStepTestById(res, id) {
-        var sql = 'DELETE FROM StepTest WHERE Id = ?';
+        var sql = `DELETE FROM ${DB_TABLE} WHERE Id = ?`;
         var params = [id];
         this.db.run(sql, params, (err, result) => {
             if (err) {

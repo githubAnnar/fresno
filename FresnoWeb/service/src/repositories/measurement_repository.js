@@ -1,4 +1,7 @@
 const Helpers = require('./../helpers/helpers');
+const DB_TABLE = 'Measurement';
+const INSERT_COLUMNS = 'Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation';
+const FULL_COLUMNS = `Id, ${INSERT_COLUMNS}`;
 
 class MeasurementRepository {
     constructor(db) {
@@ -8,7 +11,7 @@ class MeasurementRepository {
 
     // Get All Measurements
     getAllMeasurements(res) {
-        var sql = 'SELECT Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation FROM Measurement';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE}`;
         var params = [];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -24,7 +27,7 @@ class MeasurementRepository {
 
     // Get all measurements by steptest id
     getAllMeasurementsByStepTestId(res, id) {
-        var sql = 'SELECT Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation FROM Measurement WHERE StepTestId = ?';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE StepTestId = ?`;
         var params = [id];
         this.db.all(sql, params, (err, rows) => {
             if (err) {
@@ -40,7 +43,7 @@ class MeasurementRepository {
 
     // Get Measurement By Id
     getMeasurementById(res, id) {
-        var sql = 'SELECT Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation FROM Measurement WHERE Id = ?';
+        var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = ?`;
         var params = [id];
         this.db.get(sql, params, (err, row) => {
             if (err) {
@@ -89,7 +92,7 @@ class MeasurementRepository {
 
         var data = { Sequence: sequence, StepTestId: steptestid, HeartRate: heartrate, Lactate: lactate, Load: load, InCalculation: incalculation };
 
-        var sql = 'INSERT INTO Measurement (Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation) VALUES (?, ?, ?, ?, ?, ?)';
+        var sql = `INSERT INTO ${DB_TABLE} (${INSERT_COLUMNS}) VALUES (?, ?, ?, ?, ?, ?)`;
         var params = [data.Sequence, data.StepTestId, data.HeartRate, data.Lactate, data.Load, data.InCalculation];
 
         this.db.serialize(() => {
@@ -101,7 +104,7 @@ class MeasurementRepository {
                 }
             });
 
-            this.db.get("Id, Sequence, StepTestId, HeartRate, Lactate, Load, InCalculation FROM Measurement WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = 'Measurement')", [], (err, row) => {
+            this.db.get(`SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE Id = (SELECT seq FROM sqlite_sequence WHERE name = '${DB_TABLE}')`, [], (err, row) => {
                 if (err) {
                     console.error(`${Helpers.getDateNowString()} postNewMeasurement ERROR: ${err.message}`);
                     res.status(400).json({ "error": err.message })
@@ -121,7 +124,7 @@ class MeasurementRepository {
     updateMeasurementById(res, id, sequence, steptestid, heartrate, lactate, load, incalculation) {
         var data = { Id: id, Sequence: sequence, StepTestId: steptestid, HeartRate: heartrate, Lactate: lactate, Load: load, InCalculation: incalculation };
 
-        var sql = 'UPDATE Measurement SET Sequence = COALESCE(?, Sequence), StepTestId = COALESCE(?, StepTestId), HeartRate = COALESCE(?, HeartRate), Lactate = COALESCE(?, Lactate), Load = COALESCE(?, Load), InCalculation = COALESCE(?, InCalculation) WHERE Id = ?';
+        var sql = `UPDATE ${DB_TABLE} SET Sequence = COALESCE(?, Sequence), StepTestId = COALESCE(?, StepTestId), HeartRate = COALESCE(?, HeartRate), Lactate = COALESCE(?, Lactate), Load = COALESCE(?, Load), InCalculation = COALESCE(?, InCalculation) WHERE Id = ?`;
         var params = [data.Sequence, data.StepTestId, data.HeartRate, data.Lactate, data.Load, data.InCalculation, data.Id];
         this.db.run(sql, params, (err, result) => {
             if (err) {
@@ -140,7 +143,7 @@ class MeasurementRepository {
 
     // Delete Measurement
     deleteMeasurementById(res, id) {
-        var sql = 'DELETE FROM Measurement WHERE Id = ?';
+        var sql = `DELETE FROM ${DB_TABLE} WHERE Id = ?`;
         var params = [id];
         this.db.run(sql, params, (err, result) => {
             if (err) {

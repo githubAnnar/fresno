@@ -1,7 +1,6 @@
 import { IPerson } from "./iperson.interface";
 
-export interface IPatchUserMessage {
+export interface IGetPersonMessage {
     message: string;
     data: IPerson;
-    changes: any;
 }

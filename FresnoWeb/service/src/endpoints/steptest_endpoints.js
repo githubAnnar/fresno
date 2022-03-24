@@ -16,7 +16,7 @@ class StepTestEndpoints {
         console.log(`${Helpers.getDateNowString()} Starting enpoints for steptests`);
         const MODULE = "steptest";
         const ALL_STEPTESTS = "getallsteptests";
-        const ALL_STEPTESTS_BY_USER = "getsteptestsbyuserid";
+        const ALL_STEPTESTS_BY_PERSON = "getsteptestsbypersonid";
         const ONE_STEPTEST = "getsteptestbyid";
         const ONE_STEPTEST_BY_MEASUREMENT = "getsteptestbymeasureid";
         const POST_STEPTEST = "postnewsteptest";
@@ -28,9 +28,9 @@ class StepTestEndpoints {
             console.log(`${Helpers.getDateNowString()} request: GET ${ALL_STEPTESTS}. req:${JSON.stringify(req.params)}`);
         });
 
-        this.app.get(`/${this.rootPath}/${MODULE}/${ALL_STEPTESTS_BY_USER}/:id`, (req, res, next) => {
-            this.repository.getAllStepTestsByUserId(res, req.params.id);
-            console.log(`${Helpers.getDateNowString()} request: GET ${ALL_STEPTESTS_BY_USER}. req:${JSON.stringify(req.params)}`);
+        this.app.get(`/${this.rootPath}/${MODULE}/${ALL_STEPTESTS_BY_PERSON}/:id`, (req, res, next) => {
+            this.repository.getAllStepTestsByPersonId(res, req.params.id);
+            console.log(`${Helpers.getDateNowString()} request: GET ${ALL_STEPTESTS_BY_PERSON}. req:${JSON.stringify(req.params)}`);
         });
 
         this.app.get(`/${this.rootPath}/${MODULE}/${ONE_STEPTEST}/:id`, (req, res, next) => {

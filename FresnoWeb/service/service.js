@@ -3,7 +3,7 @@ var express = require("express");
 var cors = require("cors");
 var Helpers = require('./src/helpers/helpers');
 
-const UserEndpoints = require('./src/endpoints/user_endpoints');
+const PersonEndpoints = require('./src/endpoints/person_endpoints');
 const StepTestEndpoints = require('./src/endpoints/steptest_endpoints');
 const MeasurementEndpoints = require('./src/endpoints/measurement_endpoints');
 
@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 
-const userEndpoints = new UserEndpoints("api", app, db);
+const personEndpoints = new PersonEndpoints("api", app, db);
 const stepTestEndpoints = new StepTestEndpoints("api", app, db);
 const measurementEndpoints = new MeasurementEndpoints("api", app, db);
 const authEndpoints = new AuthEndpoints("api", app, db);
@@ -51,7 +51,7 @@ app.get("/", (req, res, next) => {
     console.log(`${Helpers.getDateNowString()} request on root`);
 });
 
-userEndpoints.endpoints();
+personEndpoints.endpoints();
 stepTestEndpoints.endpoints();
 measurementEndpoints.endpoints();
 authEndpoints.endpoints();
