@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TokenStorageService } from '../core/token-storage.service';
 
 @Component({
@@ -8,19 +9,12 @@ import { TokenStorageService } from '../core/token-storage.service';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private tokenStorage: TokenStorageService) { }
+  constructor(private tokenStorage: TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
     this.tokenStorage.signOut();
-    this.wait(1000);
-    window.location.href = "";
-  }
-
-  wait(ms: number) {
-    var start = new Date().getTime();
-    var end = start;
-    while (end < start + ms) {
-      end = new Date().getTime();
-    }
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 5000);
   }
 }

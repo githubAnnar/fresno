@@ -14,6 +14,7 @@ export class CanOpen implements CanActivate {
             return true;
         }
 
-        return this.router.parseUrl('/login');
+        //return this.router.parseUrl('/login');
+        return this.router.navigate(['/login'], { queryParams: { 'redirectURL': state.url } });
     }
 }

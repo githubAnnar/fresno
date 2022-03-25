@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ModalDismissReasons, NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../core/auth.service';
 import { TokenStorageService } from '../core/token-storage.service';
 
@@ -19,8 +19,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
+  modalRef!: NgbModalRef;
+  redirectURL!: string;
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private modalSerice: NgbModal, private router: Router) { }
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) {
+    let params = this.route.snapshot.queryParams;
+    if (params['redirectURL']) {
+      this.redirectURL = params['redirectURL'];
+    }
+  }
 
   ngAfterViewInit(): void {
     this.open(this.loginModal);
@@ -38,15 +45,23 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   open(content: any) {
-    this.modalSerice
-      .open(content, { ariaLabelledBy: 'loginModalLabel' })
-      .result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-      },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-          console.log(this.closeResult);
-        })
+    const config: NgbModalOptions = {
+      ariaLabelledBy: 'loginModalLabel',
+      backdrop: 'static',
+      keyboard: false,
+      animation: true,
+      centered: true
+    };
+
+    this.modalRef = this.modalService.open(content, config);
+    this.modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      console.log(this.closeResult);
+    },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        console.log(this.closeResult);
+      });
   }
 
   private getDismissReason(reason: any): string {
@@ -66,8 +81,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
     return this.loginForm.get('password');
   }
 
+  get loginFailed(): any {
+    return this.isLoginFailed;
+  }
+
+  onInputChange(): void {
+    this.isLoginFailed = false;
+  }
+
   onSubmit(): void {
-    console.log(this.loginForm.value);
     const { username, password } = this.loginForm.value;
 
     this.authService.login(username, password).subscribe({
@@ -78,16 +100,24 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
+        this.modalRef.close('Login OK');
+        this.redirect();
       },
       error: err => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
+        console.log(this.isLoginFailed, this.errorMessage);
       }
     });
   }
 
-  reloadPage(): void {
-    this.router.navigate(['/persons']);
+  redirect(): void {
+    if (this.redirectURL) {
+      this.router.navigateByUrl(this.redirectURL)
+        .catch(() => this.router.navigate(['/']))
+    } else {
+
+      this.router.navigate(['/'])
+    }
   }
 }
