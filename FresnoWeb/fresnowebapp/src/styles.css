@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
+.background-container {
+    background-color: black;
+    -webkit-filter  : blur(8px) grayscale(90%);
+    -moz-filter     : blur(8px) grayscale(90%);
+    -o-filter       : blur(8px) grayscale(90%);
+    -ms-filter      : blur(8px) grayscale(90%);
+    filter          : blur(8px) grayscale(90%);
+}

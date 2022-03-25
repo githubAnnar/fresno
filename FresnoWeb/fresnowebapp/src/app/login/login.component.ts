@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
-    })
+    });
   }
 
   open(content: any) {
@@ -50,7 +50,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
       backdrop: 'static',
       keyboard: false,
       animation: true,
-      centered: true
+      centered: true,
+      backdropClass: 'background-container'
     };
 
     this.modalRef = this.modalService.open(content, config);
@@ -119,5 +120,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
       this.router.navigate(['/'])
     }
+  }
+
+  goRegister(): void {
+    this.modalRef.close('Goto Register');
+    this.router.navigate(['/register']);
   }
 }
