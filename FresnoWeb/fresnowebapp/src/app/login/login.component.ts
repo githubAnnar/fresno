@@ -117,7 +117,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
       this.router.navigateByUrl(this.redirectURL)
         .catch(() => this.router.navigate(['/']))
     } else {
-
       this.router.navigate(['/'])
     }
   }
