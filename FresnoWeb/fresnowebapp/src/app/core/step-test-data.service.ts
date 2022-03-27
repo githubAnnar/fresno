@@ -21,13 +21,13 @@ export class StepTestDataService {
       .pipe(catchError(this.helpers.handleError));
   }
 
-  getAllStepTestsByUser(user: IPerson): Observable<IGetStepTestsMessage> {
-    return this.http.get<IGetStepTestsMessage>(`${this.baseUrl}getsteptestsbyuserid/${user.Id}`)
+  getAllStepTestsByPerson(person: IPerson): Observable<IGetStepTestsMessage> {
+    return this.http.get<IGetStepTestsMessage>(`${this.baseUrl}getsteptestsbypersonid/${person.Id}`)
       .pipe(catchError(this.helpers.handleError));
   }
 
-  getAllStepTestsByUserId(id: number): Observable<IGetStepTestsMessage> {
-    return this.http.get<IGetStepTestsMessage>(`${this.baseUrl}getsteptestsbyuserid/${id}`)
+  getAllStepTestsByPersonId(id: number): Observable<IGetStepTestsMessage> {
+    return this.http.get<IGetStepTestsMessage>(`${this.baseUrl}getsteptestsbypersonid/${id}`)
       .pipe(catchError(this.helpers.handleError));
   }
 

@@ -6,6 +6,7 @@ export * from './iget-measurements-message.interface';
 export * from './iget-step-test-message.interface';
 export * from './iget-step-tests-message.interface';
 export * from './iget-person-message.interface';
+export * from './iget-person-name-message.interface';
 export * from './iget-persons-message.interface';
 export * from './imeasurement.interface';
 export * from './ipatch-measurement-message.interface';

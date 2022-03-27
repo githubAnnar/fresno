@@ -1,0 +1,41 @@
+<table class="table table-hover">
+    <caption>Number of Step Tests: {{ stepTests.length}}
+    </caption>
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">
+                Person Name</th>
+            <th scope="col" (click)="sort('TestType')">
+                Test Type</th>
+            <th scope="col" (click)="sort('LoadPreset')">
+                LoadPreset</th>
+            <th scope="col" (click)="sort('Increase')">
+                Increase</th>
+            <th scope="col" (click)="sort('TestDate')">Test Date</th>
+        </tr>
+    </thead>
+    <tr *ngFor="let stepTest of stepTests">
+        <th scope="row"> {{stepTest.Id}} </th>
+        <td>
+            <a [routerLink]="['/person', stepTest.PersonId]">not now
+                <!--{{ getPersonName(stepTest.PersonId) | async }}-->
+            </a>
+        </td>
+        <td><a [routerLink]="['/stepTest', stepTest.Id]">
+                {{stepTest.TestType}}
+            </a></td>
+        <td><a [routerLink]="['/stepTest', stepTest.Id]">
+                {{stepTest.LoadPreset}}
+            </a></td>
+        <td><a [routerLink]="['/stepTest', stepTest.Id]">
+                {{stepTest.Increase}}
+            </a></td>
+        <td><a [routerLink]="['/stepTest', stepTest.Id]">
+                {{stepTest.TestDate}}
+            </a></td>
+    </tr>
+    <tr *ngIf="!stepTests || !stepTests.length">
+        <td colspan="3">No Step Tests found</td>
+    </tr>
+</table>

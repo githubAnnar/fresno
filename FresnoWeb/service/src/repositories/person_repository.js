@@ -2,6 +2,7 @@ const Helpers = require('./../helpers/helpers');
 const DB_TABLE = 'Person';
 const INSERT_COLUMNS = 'FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr';
 const FULL_COLUMNS = `Id, ${INSERT_COLUMNS}`;
+const NAME_COLUMNS = 'FirstName, LastName';
 
 class PersonRepository {
     constructor(db) {
@@ -40,9 +41,27 @@ class PersonRepository {
                 "data": row
             });
             console.log(`${Helpers.getDateNowString()} getPersonById returns Id ${row.Id}`);
-
         });
     };
+
+    // Find person name from id
+    getPersonNameById(res, id) {
+
+        var sql = `SELECT ${NAME_COLUMNS} FROM ${DB_TABLE} WHERE Id = ?`;
+        var params = [id];
+        this.db.get(sql, params, (error, row) => {
+            if (error) {
+                console.error(`${Helpers.getDateNowString()} getPersonNameById ERROR: ${error.message}`);
+                res.status(400).json({ "error": err.message });
+                return;
+            }
+
+            res.json({
+                "message": "success",
+                "data": row
+            });
+        });
+    }
 
     // Get person by steptest id
     getPersonByStepTestId(res, id) {
@@ -54,12 +73,12 @@ class PersonRepository {
                 res.status(400).json({ "error": err.message });
                 return;
             }
+
             res.json({
                 "message": "success",
                 "data": row
             });
             console.log(`${Helpers.getDateNowString()} getPersonByStepTestId returns Id ${row.Id}`);
-
         });
     };
 

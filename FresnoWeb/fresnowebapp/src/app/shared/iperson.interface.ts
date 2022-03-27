@@ -11,3 +11,8 @@ export interface IPerson {
     Sex: string;
     MaxHr: number;
 }
+
+export interface IPersonName {
+    FirstName: string;
+    LastName: string;
+}

@@ -46,7 +46,7 @@ class AuthEndpoints {
         }, signin);
 
         this.app.get(`/${this.rootPath}/${MODULE}/${VERIFY}/`, (req, res, next) => {
-            console.log(`${Helpers.getDateNowString()} request: POST ${VERIFY}. req: ${JSON.stringify(req.body)}`);
+            console.log(`${Helpers.getDateNowString()} request: GET ${VERIFY}. req: ${JSON.stringify(req.body)}`);
             next();
         }, verify);
     };

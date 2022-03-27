@@ -16,6 +16,7 @@ import { SharedModule } from './shared/shared.module';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
+import { StepTestsModule } from './step-tests/step-tests.module';
 
 @NgModule({
   declarations: [
@@ -29,14 +30,15 @@ import { ProfileComponent } from './profile/profile.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     ReactiveFormsModule,
     NgbModule,
     PersonsModule,
     HttpClientModule,
     FormsModule,
     CoreModule,
-    SharedModule
+    SharedModule,
+    StepTestsModule,
+    AppRoutingModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

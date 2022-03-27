@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
-import { HelpersModule, IDeletePersonMessage as IDeletePersonMessage, IGetPersonMessage as IGetPersonMessage, IGetPersonsMessage as IGetPersonsMessage, IPatchUserMessage as IPatchPersonMessage, IPostNewPersonMessage as IPostNewPersonMessage, IStepTest, IPerson as IPerson } from '../shared';
+import { HelpersModule, IDeletePersonMessage as IDeletePersonMessage, IGetPersonMessage as IGetPersonMessage, IGetPersonsMessage as IGetPersonsMessage, IPatchUserMessage as IPatchPersonMessage, IPostNewPersonMessage as IPostNewPersonMessage, IStepTest, IPerson as IPerson, IGetPersonNameMessage } from '../shared';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +33,11 @@ export class PersonDataService {
 
   getPersonByStepTest(stepTest: IStepTest): Observable<IGetPersonMessage> {
     return this.http.get<IGetPersonMessage>(`${this.baseUrl}getpersonbysteptestid/${stepTest.Id}`)
+      .pipe(catchError(this.helpers.handleError));
+  }
+
+  getPersonNameById(id: number): Observable<IGetPersonNameMessage> {
+    return this.http.get<IGetPersonNameMessage>(`${this.baseUrl}getpersonnamebyid/${id}`)
       .pipe(catchError(this.helpers.handleError));
   }
 

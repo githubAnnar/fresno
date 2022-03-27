@@ -20,9 +20,7 @@ export class PersonComponent implements OnInit {
 
   ngOnInit(): void {
     this.title = 'Person';
-    console.log('inside person')
     let id: string | null = this.route.snapshot.paramMap.get('id');
-    console.log(id);
     let idSelected = 0;
     if (id) {
       idSelected = +id;
@@ -58,6 +56,7 @@ export class PersonComponent implements OnInit {
         console.log(`StepTest Observer got a complete notification for ${this.stepTests.length} rows(s)`);
       }
     }
-    this.stepTestDataService.getAllStepTestsByUserId(idSelected).subscribe(stepTestsGetObserver);
+
+    this.stepTestDataService.getAllStepTestsByPersonId(idSelected).subscribe(stepTestsGetObserver);
   }
 }
