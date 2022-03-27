@@ -8,15 +8,16 @@ import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'logout', component: LogoutComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'logout', component: LogoutComponent },
   { path: '', pathMatch: 'full', redirectTo: '/persons' },
   { path: '**', pathMatch: 'full', redirectTo: '/persons' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [CanOpen]
 })
 export class AppRoutingModule { }

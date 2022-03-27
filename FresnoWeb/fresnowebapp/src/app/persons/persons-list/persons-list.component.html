@@ -1,0 +1,37 @@
+<table class="table table-hover">
+    <caption>Number of Persons: {{ persons.length}}
+    </caption>
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col" (click)="sort('FirstName')">
+                FirstName</th>
+            <th scope="col" (click)="sort('LastName')">
+                LastName</th>
+            <th scope="col" (click)="sort('Email')">
+                Email</th>
+            <th scope="col" (click)="sort('Sex')">
+                Sex</th>
+        </tr>
+    </thead>
+    <tr *ngFor="let person of persons">
+        <th scope="row"> {{person.Id}} </th>
+        <td>
+            <a [routerLink]="['/person', person.Id]">
+                {{person.FirstName }}
+            </a>
+        </td>
+        <td><a [routerLink]="['/person', person.Id]">
+                {{person.LastName}}
+            </a></td>
+        <td><a [routerLink]="['/person', person.Id]">
+                {{person.Email}}
+            </a></td>
+        <td><a [routerLink]="['/person', person.Id]">
+                {{person.Sex}}
+            </a></td>
+    </tr>
+    <tr *ngIf="!persons || !persons.length">
+        <td colspan="3">No persons found</td>
+    </tr>
+</table>

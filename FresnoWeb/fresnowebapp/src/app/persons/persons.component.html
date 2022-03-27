@@ -1,7 +1,7 @@
 <div class="card">
     <h3 class="card-header">{{title}}</h3>
-
+    <app-persons-list class="card-body" [listPersons]="persons"></app-persons-list>
     <div class="card-footer">
-
+        <a *ngIf="allowedToAdd" class="btn btn-primary" routerLink="/personadd">Add Person</a>
     </div>
 </div>
