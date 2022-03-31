@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { PersonDataService, SorterService } from 'src/app/core';
 import { IGetPersonNameMessage, IStepTest } from 'src/app/shared';
 
@@ -21,37 +22,28 @@ export class StepTestsListComponent implements OnInit {
   }
 
   stepTests: any[] = [];
+  currentPath!: string;
 
-  constructor(private sorterService: SorterService, private personDataService: PersonDataService) { }
+  constructor(private sorterService: SorterService, private personDataService: PersonDataService, private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
+    const urlObserver = {
+      next: (data: UrlSegment[]) => {
+        this.currentPath = data[0].path;
+      },
+      error: (err: string) => console.error('Url Observer got an error: ' + err),
+      complete: () => { }
+    };
+
+    this.route.url.subscribe(urlObserver);
+  }
+
+  isOnPerson(): boolean {
+    return this.currentPath === 'person';
   }
 
   sort(prop: string) {
     this.sorterService.sort(this.stepTests, prop);
   }
-
-  getPersonName(id: number) {
-    return new Promise(resolve => {
-
-      //let temp: IGetPersonNameMessage;
-
-      // Get Person
-      // Create observer object
-      // const personNameGetObserver = {
-      //   next: (m: IGetPersonNameMessage) => {
-      //     console.log(`Person Name Observer got: ${m.message}`);
-      //     temp = m;
-      //   },
-      //   error: (err: string) => console.error('Person Observer got an error: ' + err),
-      //   complete: () => {
-      //   }
-      // };
-
-      //this.personDataService.getPersonById(id).subscribe(personNameGetObserver);
-      this.personDataService.getPersonNameById(id).subscribe((resp: IGetPersonNameMessage) => {
-        resolve(`${resp.data.LastName}, ${resp.data.FirstName}`);
-      });
-    });
-  }
-}//resolve(`${temp.data.LastName}, ${temp.data.FirstName}`);
+}

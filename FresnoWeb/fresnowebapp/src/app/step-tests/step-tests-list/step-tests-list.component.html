@@ -4,7 +4,7 @@
     <thead class="thead-dark">
         <tr>
             <th scope="col">Id</th>
-            <th scope="col">
+            <th *ngIf="!isOnPerson()" scope="col">
                 Person Name</th>
             <th scope="col" (click)="sort('TestType')">
                 Test Type</th>
@@ -17,21 +17,21 @@
     </thead>
     <tr *ngFor="let stepTest of stepTests">
         <th scope="row"> {{stepTest.Id}} </th>
-        <td>
+        <td *ngIf="!isOnPerson()">
             <a [routerLink]="['/person', stepTest.PersonId]">not now
                 <!--{{ getPersonName(stepTest.PersonId) | async }}-->
             </a>
         </td>
-        <td><a [routerLink]="['/stepTest', stepTest.Id]">
+        <td><a [routerLink]="['/steptest', stepTest.Id]">
                 {{stepTest.TestType}}
             </a></td>
-        <td><a [routerLink]="['/stepTest', stepTest.Id]">
+        <td><a [routerLink]="['/steptest', stepTest.Id]">
                 {{stepTest.LoadPreset}}
             </a></td>
-        <td><a [routerLink]="['/stepTest', stepTest.Id]">
+        <td><a [routerLink]="['/steptest', stepTest.Id]">
                 {{stepTest.Increase}}
             </a></td>
-        <td><a [routerLink]="['/stepTest', stepTest.Id]">
+        <td><a [routerLink]="['/steptest', stepTest.Id]">
                 {{stepTest.TestDate}}
             </a></td>
     </tr>
