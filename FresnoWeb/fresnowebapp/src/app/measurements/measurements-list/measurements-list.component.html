@@ -1,0 +1,45 @@
+<table class="table table-hover">
+    <caption>Number of Measurements: {{ measurements.length}}
+    </caption>
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th *ngIf="!isOnStepTest()" scope="col">
+                Step Test</th>
+            <th scope="col" (click)="sort('Sequence')">
+                Sequence</th>
+            <th scope="col" (click)="sort('HeartRate')">
+                Heart Rate</th>
+            <th scope="col" (click)="sort('Lactate')">
+                Lactate</th>
+            <th scope="col" (click)="sort('Load')">Load</th>
+            <th scope="col" (click)="sort('InCalculation')">In Calculation</th>
+        </tr>
+    </thead>
+    <tr *ngFor="let measurement of measurements">
+        <th scope="row"> {{measurement.Id}} </th>
+        <td *ngIf="!isOnStepTest()">
+            <a [routerLink]="['/steptest', measurement.StepTestId]">not now
+                <!--{{ getPersonName(stepTest.PersonId) | async }}-->
+            </a>
+        </td>
+        <td><a [routerLink]="['/measurement', measurement.Id]">
+                {{measurement.Sequence}}
+            </a></td>
+        <td><a [routerLink]="['/measurement', measurement.Id]">
+                {{measurement.HeartRate}}
+            </a></td>
+        <td><a [routerLink]="['/measurement', measurement.Id]">
+                {{measurement.Lactate}}
+            </a></td>
+        <td><a [routerLink]="['/measurement', measurement.Id]">
+                {{measurement.Load}}
+            </a></td>
+        <td><a [routerLink]="['/measurement', measurement.Id]">
+                {{measurement.InCalculation}}
+            </a></td>
+    </tr>
+    <tr *ngIf="!measurements || !measurements.length">
+        <td colspan="3">No Measurements found</td>
+    </tr>
+</table>

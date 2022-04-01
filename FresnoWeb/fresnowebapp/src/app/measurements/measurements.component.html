@@ -1,0 +1,7 @@
+<div class="card">
+    <h3 class="card-header">{{title}}</h3>
+    <app-measurements-list class="card-body" [listMeasurements]="measurements"></app-measurements-list>
+    <div class="card-footer">
+        <a *ngIf="allowedToAdd" class="btn btn-primary" routerLink="/steptestadd">Add Measurement</a>
+    </div>
+</div>

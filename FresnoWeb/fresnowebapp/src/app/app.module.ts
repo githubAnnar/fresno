@@ -17,6 +17,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { StepTestsModule } from './step-tests/step-tests.module';
+import { MeasurementsModule } from './measurements/measurements.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { StepTestsModule } from './step-tests/step-tests.module';
     CoreModule,
     SharedModule,
     StepTestsModule,
+    MeasurementsModule,
     AppRoutingModule
   ],
   providers: [authInterceptorProviders],

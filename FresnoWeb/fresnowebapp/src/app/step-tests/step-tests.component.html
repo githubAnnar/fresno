@@ -1,1 +1,7 @@
-<p>step-tests works!</p>
+<div class="card">
+    <h3 class="card-header">{{title}}</h3>
+    <app-step-tests-list class="card-body" [listStepTests]="stepTests"></app-step-tests-list>
+    <div class="card-footer">
+        <a *ngIf="allowedToAdd" class="btn btn-primary" routerLink="/steptestadd">Add Step Test</a>
+    </div>
+</div>
