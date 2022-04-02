@@ -30,7 +30,7 @@
                 {{measurement.HeartRate}}
             </a></td>
         <td><a [routerLink]="['/measurement', measurement.Id]">
-                {{measurement.Lactate}}
+                {{ measurement.Lactate | number: '1.1-1' }}
             </a></td>
         <td><a [routerLink]="['/measurement', measurement.Id]">
                 {{measurement.Load}}

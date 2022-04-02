@@ -18,6 +18,7 @@ import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { StepTestsModule } from './step-tests/step-tests.module';
 import { MeasurementsModule } from './measurements/measurements.module';
+import { PipesModule } from './shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { MeasurementsModule } from './measurements/measurements.module';
     SharedModule,
     StepTestsModule,
     MeasurementsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    PipesModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

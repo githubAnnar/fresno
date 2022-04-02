@@ -32,7 +32,7 @@
                 {{stepTest.Increase}}
             </a></td>
         <td><a [routerLink]="['/steptest', stepTest.Id]">
-                {{stepTest.TestDate}}
+                {{ stepTest.TestDate | dateTimeFormatted }}
             </a></td>
     </tr>
     <tr *ngIf="!stepTests || !stepTests.length">

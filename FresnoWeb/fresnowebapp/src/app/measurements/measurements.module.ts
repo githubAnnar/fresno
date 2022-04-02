@@ -5,6 +5,7 @@ import { MeasurementsRoutingModule } from './measurements-routing.module';
 import { MeasurementsComponent } from '../measurements/measurements.component';
 import { MeasurementsListComponent } from './measurements-list/measurements-list.component';
 import { MeasurementComponent } from './measurement/measurement.component';
+import { PipesModule } from '../shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { MeasurementComponent } from './measurement/measurement.component';
   ],
   imports: [
     CommonModule,
+    PipesModule,
     MeasurementsRoutingModule
   ],
   exports: [

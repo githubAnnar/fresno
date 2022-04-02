@@ -8,12 +8,12 @@
                     <p>Person Id: {{stepTest.PersonId}}</p>
                     <p>Test Type: {{stepTest.TestType}}</p>
                     <p>Effort Unit: {{stepTest.EffortUnit}}</p>
-                    <p>Step Duration: {{stepTest.StepDuration}}</p>
+                    <p>Step Duration: {{ stepTest.StepDuration | micro10SecFormatted }}</p>
                     <p>Load Duration: {{stepTest.LoadPreset}}</p>
                     <p>Increase: {{stepTest.Increase}}</p>
                     <p>Temperature: {{stepTest.Temperature}}</p>
-                    <p>Weight: {{stepTest.Weight}}</p>
-                    <p>Test Date: {{stepTest.TestDate}}</p>
+                    <p>Weight: {{ stepTest.Weight | number: '1.1-1'}}</p>
+                    <p>Test Date: {{ stepTest.TestDate | dateTimeFormatted}}</p>
                 </div>
             </div>
 

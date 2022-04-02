@@ -8,7 +8,7 @@
                     <p>Sequence: {{measurement.Sequence}}</p>
                     <p>Step Test Id: {{measurement.StepTestId}}</p>
                     <p>Heart Rate: {{measurement.HeartRate}}</p>
-                    <p>Lactate: {{measurement.Lactate}}</p>
+                    <p>Lactate: {{ measurement.Lactate | number: '1.1-1'}}</p>
                     <p>Load: {{measurement.Load}}</p>
                     <p>InCalculation: {{measurement.InCalculation}}</p>
                 </div>

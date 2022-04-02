@@ -6,6 +6,7 @@ import { StepTestsComponent } from './step-tests.component';
 import { StepTestsListComponent } from './step-tests-list/step-tests-list.component';
 import { StepTestComponent } from './step-test/step-test.component';
 import { MeasurementsModule } from '../measurements/measurements.module';
+import { PipesModule } from '../shared/pipes/pipes.module';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { MeasurementsModule } from '../measurements/measurements.module';
   imports: [
     CommonModule,
     MeasurementsModule,
+    PipesModule,
     StepTestsRoutingModule
   ],
   exports: [
