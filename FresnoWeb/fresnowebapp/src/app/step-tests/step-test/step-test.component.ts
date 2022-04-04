@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MeasurementDataService, StepTestDataService } from 'src/app/core';
-import { IGetMeasurementsMessage, IGetStepTestMessage, IMeasurement, IStepTest } from 'src/app/shared';
+import { Observable } from 'rxjs';
+import { MeasurementDataService, PersonDataService, StepTestDataService } from 'src/app/core';
+import { IGetMeasurementsMessage, IGetPersonNameMessage, IGetStepTestMessage, IMeasurement, IStepTest } from 'src/app/shared';
 
 @Component({
   selector: 'app-step-test',
@@ -16,7 +17,9 @@ export class StepTestComponent implements OnInit {
   measurements!: IMeasurement[];
   getMeasurementsMessage!: IGetMeasurementsMessage;
 
-  constructor(private stepTestDataService: StepTestDataService, private measurementDataService: MeasurementDataService, private route: ActivatedRoute) { }
+  testName!: Observable<string>;
+
+  constructor(private stepTestDataService: StepTestDataService, private measurementDataService: MeasurementDataService, private personDataService: PersonDataService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.title = 'Step Test';
@@ -38,6 +41,7 @@ export class StepTestComponent implements OnInit {
         this.stepTest = this.getStepTestMessage.data;
         this.title = `Step Test: ${this.stepTest.TestDate}`;
         console.log(`StepTest Observer got a complete notification for ${this.title}`);
+        this.testName = this.personDataService.getPersonNameByIdEx(this.stepTest.PersonId);
       }
     };
 
@@ -58,5 +62,5 @@ export class StepTestComponent implements OnInit {
     }
 
     this.measurementDataService.getAllMeasurementsByStepTestId(idSelected).subscribe(measurementsGetObserver);
-  }
+  }  
 }

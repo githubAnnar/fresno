@@ -5,7 +5,7 @@
                 <h3 class="card-header">{{title}}</h3>
                 <div class="card-body">
                     <p>Id: {{stepTest.Id}}</p>
-                    <p>Person Id: {{stepTest.PersonId}}</p>
+                    <p>Person: <a [routerLink]="['/person', stepTest.PersonId]">{{ testName | async }}</a></p>
                     <p>Test Type: {{stepTest.TestType}}</p>
                     <p>Effort Unit: {{stepTest.EffortUnit}}</p>
                     <p>Step Duration: {{ stepTest.StepDuration | micro10SecFormatted }}</p>

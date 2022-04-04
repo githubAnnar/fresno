@@ -22,6 +22,7 @@ class PersonEndpoints {
         const UPDATE_PERSON = "updateperson";
         const DELETE_PERSON = "deletepersonbyid";
         const ONE_PERSON_NAME = 'getpersonnamebyid';
+        const ONE_PERSON_FULLNAME = 'getpersonfullnamebyid';
 
         this.app.get(`/${this.rootPath}/${MODULE}/${ALL_PERSONS}`, (req, res, next) => {
             this.repository.getAllPersons(res);
@@ -38,7 +39,7 @@ class PersonEndpoints {
             console.log(`${Helpers.getDateNowString()} request: GET ${ONE_PERSON_BY_STEPTEST}. req:${JSON.stringify(req.params)}`);
         });
 
-        this.app.get(`/${this.rootPath}/${ONE_PERSON_NAME}/:id`, (req, res, next) => {
+        this.app.get(`/${this.rootPath}/${MODULE}/${ONE_PERSON_NAME}/:id`, (req, res, next) => {
             this.repository.getPersonNameById(res, req.params.id);
             console.log(`${Helpers.getDateNowString()} request: GET ${ONE_PERSON_NAME}. req:${JSON.stringify(req.params)}`);
         });

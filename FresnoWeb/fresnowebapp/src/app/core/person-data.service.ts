@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HelpersModule, IDeletePersonMessage as IDeletePersonMessage, IGetPersonMessage as IGetPersonMessage, IGetPersonsMessage as IGetPersonsMessage, IPatchUserMessage as IPatchPersonMessage, IPostNewPersonMessage as IPostNewPersonMessage, IStepTest, IPerson as IPerson, IGetPersonNameMessage } from '../shared';
 
 @Injectable({
@@ -39,6 +40,11 @@ export class PersonDataService {
   getPersonNameById(id: number): Observable<IGetPersonNameMessage> {
     return this.http.get<IGetPersonNameMessage>(`${this.baseUrl}getpersonnamebyid/${id}`)
       .pipe(catchError(this.helpers.handleError));
+  }
+
+  getPersonNameByIdEx(id: number): Observable<string> {
+    return this.http.get<IGetPersonNameMessage>(`${this.baseUrl}getpersonnamebyid/${id}`)
+      .pipe(map((res: IGetPersonNameMessage) => `${res.data.LastName}, ${res.data.FirstName}`), catchError(this.helpers.handleError));
   }
 
   addNewPerson(user: IPerson): Observable<IPostNewPersonMessage> {
