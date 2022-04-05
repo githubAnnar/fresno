@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PersonDataService, StepTestDataService } from 'src/app/core';
-import { IGetPersonMessage, IGetStepTestsMessage, IPerson, IStepTest } from 'src/app/shared';
+import { IGetPersonMessage, IGetStepTestsMessage, IPerson, IStepTest, IStepTestEx } from 'src/app/shared';
 
 @Component({
   selector: 'app-person',
@@ -13,7 +13,7 @@ export class PersonComponent implements OnInit {
   person: IPerson = { Id: 0, FirstName: '', LastName: '', BirthDate: '', Email: '', Height: 0, MaxHr: 0, PostCity: '', PostCode: '', Sex: '', Street: '' };
   getPersonMessage!: IGetPersonMessage;
 
-  stepTests!: IStepTest[];
+  stepTests!: IStepTestEx[];
   getStepTestsMessage!: IGetStepTestsMessage;
 
   constructor(private personDataService: PersonDataService, private stepTestDataService: StepTestDataService, private route: ActivatedRoute) { }
@@ -52,7 +52,7 @@ export class PersonComponent implements OnInit {
       },
       error: (err: string) => { console.error(`StepTest Observer got an error: ${err}`) },
       complete: () => {
-        this.stepTests = this.getStepTestsMessage.data;
+        this.stepTests = this.getStepTestsMessage.data.map(s => ({ Id: s.Id, EffortUnit: s.EffortUnit, FirstName: '', Increase: s.Increase, LastName: '', LoadPreset: s.LoadPreset, PersonId: s.PersonId, StepDuration: s.StepDuration, Temperature: s.Temperature, TestDate: s.TestDate, TestType: s.TestType, Weight: s.Weight }));
         console.log(`StepTest Observer got a complete notification for ${this.stepTests.length} rows(s)`);
       }
     }

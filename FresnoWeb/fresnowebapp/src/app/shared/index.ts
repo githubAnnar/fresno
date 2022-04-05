@@ -15,6 +15,8 @@ export * from './ipatch-user-message.interface';
 export * from './ipost-new-measurement-message.interface';
 export * from './ipost-new-step-test-message.interface';
 export * from './ipost-new-person-message.interface';
+export * from './istep-test-ex.interface';
 export * from './istep-test.interface';
 export * from './iperson.interface';
 export * from './helpers/helpers.module';
+export * from './iget-step-tests-ex-message.interface';

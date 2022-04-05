@@ -25,6 +25,21 @@ class StepTestRepository {
         });
     };
 
+    getAllStepTestsEx(res) {
+        var sql = `SELECT st.Id, st.PersonId, st.TestType, st.EffortUnit, st.StepDuration, st.LoadPreset, st.Increase, st.Temperature, st.Weight, st.TestDate, p.FirstName, p.LastName FROM ${DB_TABLE} st JOIN Person p ON st.PersonId = p.Id`;
+        var params = [];
+        this.db.all(sql, params, (err, rows) => {
+            if (err) {
+                console.error(`${Helpers.getDateNowString()} getAllStepTestsEx ERROR: ${err.message}`)
+            }
+            res.json({
+                "message": "success",
+                "data": rows
+            });
+            console.log(`${Helpers.getDateNowString()} getAllStepTestsEx returns ${rows.length} rows`);
+        });
+    }
+
     // Get all step tests by person id
     getAllStepTestsByPersonId(res, id) {
         var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE PersonId = ?`;

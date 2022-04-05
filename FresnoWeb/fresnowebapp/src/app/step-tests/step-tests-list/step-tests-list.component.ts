@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { Observable } from 'rxjs';
 import { PersonDataService, SorterService } from 'src/app/core';
-import { IGetPersonNameMessage, IStepTest } from 'src/app/shared';
+import { IGetPersonNameMessage, IStepTest, IStepTestEx } from 'src/app/shared';
 
 @Component({
   selector: 'app-step-tests-list',
@@ -9,19 +10,19 @@ import { IGetPersonNameMessage, IStepTest } from 'src/app/shared';
   styleUrls: ['./step-tests-list.component.css']
 })
 export class StepTestsListComponent implements OnInit {
-  private _stepTests: IStepTest[] = [];
+  private _stepTests: IStepTestEx[] = [];
 
-  @Input() get listStepTests(): IStepTest[] {
+  @Input() get listStepTests(): IStepTestEx[] {
     return this._stepTests;
   }
 
-  set listStepTests(value: IStepTest[]) {
+  set listStepTests(value: IStepTestEx[]) {
     if (value) {
       this.stepTests = this._stepTests = value;
     }
   }
 
-  stepTests: any[] = [];
+  stepTests: IStepTestEx[] = [];
   currentPath!: string;
 
   constructor(private sorterService: SorterService, private personDataService: PersonDataService, private route: ActivatedRoute) {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StepTestDataService, TokenStorageService } from '../core';
-import { IGetStepTestsMessage, IStepTest } from '../shared';
+import { IGetStepTestsExMessage, IStepTestEx } from '../shared';
 
 @Component({
   selector: 'app-step-tests',
@@ -9,8 +9,8 @@ import { IGetStepTestsMessage, IStepTest } from '../shared';
 })
 export class StepTestsComponent implements OnInit {
   title!: string;
-  getStepTestsMessage!: IGetStepTestsMessage;
-  stepTests!: IStepTest[];
+  getStepTestsMessage!: IGetStepTestsExMessage;
+  stepTests!: IStepTestEx[];
   allowedToAdd = false;
 
   constructor(private stepTestDataService: StepTestDataService, private tokenService: TokenStorageService) { }
@@ -19,7 +19,7 @@ export class StepTestsComponent implements OnInit {
     this.allowedToAdd = this.tokenService.isModeratorOrAdmin();
     this.title = 'Step Tests';
     const getStepTestObserver = {
-      next: (m: IGetStepTestsMessage) => {
+      next: (m: IGetStepTestsExMessage) => {
         console.log(`getStepTestObserver got ${m.data.length} values: ${m.message}`);
         this.getStepTestsMessage = m;
       },
@@ -30,6 +30,7 @@ export class StepTestsComponent implements OnInit {
       }
     };
 
-    this.stepTestDataService.getAllStepTests().subscribe(getStepTestObserver);
+    this.stepTestDataService.getAllStepTestsEx()
+      .subscribe(getStepTestObserver);
   }
 }

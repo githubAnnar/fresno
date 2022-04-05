@@ -18,8 +18,7 @@
     <tr *ngFor="let stepTest of stepTests">
         <th scope="row"> {{stepTest.Id}} </th>
         <td *ngIf="!isOnPerson()">
-            <a [routerLink]="['/person', stepTest.PersonId]">not now
-                <!--{{ getPersonName(stepTest.PersonId) | async }}-->
+            <a [routerLink]="['/person', stepTest.PersonId]">{{ stepTest.LastName }}, {{ stepTest.FirstName }}
             </a>
         </td>
         <td><a [routerLink]="['/steptest', stepTest.Id]">

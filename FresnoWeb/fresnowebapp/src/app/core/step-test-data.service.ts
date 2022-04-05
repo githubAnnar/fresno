@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
-import { HelpersModule, IDeleteStepTestMessage, IGetStepTestMessage, IGetStepTestsMessage, IMeasurement, IPatchStepTestMessage, IPostNewStepTestMessage, IStepTest, IPerson } from '../shared';
+import { HelpersModule, IDeleteStepTestMessage, IGetStepTestMessage, IGetStepTestsMessage, IMeasurement, IPatchStepTestMessage, IPostNewStepTestMessage, IStepTest, IPerson, IGetStepTestsExMessage } from '../shared';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,11 @@ export class StepTestDataService {
 
   getAllStepTests(): Observable<IGetStepTestsMessage> {
     return this.http.get<IGetStepTestsMessage>(`${this.baseUrl}getallsteptests`)
+      .pipe(catchError(this.helpers.handleError));
+  }
+
+  getAllStepTestsEx(): Observable<IGetStepTestsExMessage> {
+    return this.http.get<IGetStepTestsExMessage>(`${this.baseUrl}getallsteptestsex`)
       .pipe(catchError(this.helpers.handleError));
   }
 
