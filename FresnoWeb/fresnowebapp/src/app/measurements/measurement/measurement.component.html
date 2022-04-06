@@ -7,6 +7,8 @@
                     <p>Id: {{measurement.Id}}</p>
                     <p>Sequence: {{measurement.Sequence}}</p>
                     <p>Step Test Id: {{measurement.StepTestId}}</p>
+                    <p>Step Test: <a [routerLink]="['/steptest',measurement.StepTestId]">{{ stepTestText | async }}</a>
+                    </p>
                     <p>Heart Rate: {{measurement.HeartRate}}</p>
                     <p>Lactate: {{ measurement.Lactate | number: '1.1-1'}}</p>
                     <p>Load: {{measurement.Load}}</p>

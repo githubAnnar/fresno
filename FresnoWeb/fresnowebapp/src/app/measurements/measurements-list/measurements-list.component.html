@@ -19,9 +19,8 @@
     <tr *ngFor="let measurement of measurements">
         <th scope="row"> {{measurement.Id}} </th>
         <td *ngIf="!isOnStepTest()">
-            <a [routerLink]="['/steptest', measurement.StepTestId]">not now
-                <!--{{ getPersonName(stepTest.PersonId) | async }}-->
-            </a>
+            <a [routerLink]="['/steptest', measurement.StepTestId]">{{ measurement.LastName }}, {{ measurement.FirstName
+                }} ({{ measurement.TestDate | dateTimeFormatted}})</a>
         </td>
         <td><a [routerLink]="['/measurement', measurement.Id]">
                 {{measurement.Sequence}}

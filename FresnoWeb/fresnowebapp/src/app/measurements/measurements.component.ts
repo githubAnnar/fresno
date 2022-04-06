@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MeasurementDataService, TokenStorageService } from '../core';
-import { IGetMeasurementsMessage, IMeasurement } from '../shared';
+import { IGetMeasurementsExMessage, IMeasurementEx } from '../shared';
 
 @Component({
   selector: 'app-measurements',
@@ -9,8 +9,8 @@ import { IGetMeasurementsMessage, IMeasurement } from '../shared';
 })
 export class MeasurementsComponent implements OnInit {
   title!: string;
-  getMeasurementsMessage!: IGetMeasurementsMessage;
-  measurements!: IMeasurement[];
+  getMeasurementsMessage!: IGetMeasurementsExMessage;
+  measurements!: IMeasurementEx[];
   allowedToAdd = false;
 
   constructor(private measurementDataService: MeasurementDataService, private tokenService: TokenStorageService) { }
@@ -19,7 +19,7 @@ export class MeasurementsComponent implements OnInit {
     this.allowedToAdd = this.tokenService.isModeratorOrAdmin();
     this.title = 'Measurements';
     const getMeasurementsObserver = {
-      next: (m: IGetMeasurementsMessage) => {
+      next: (m: IGetMeasurementsExMessage) => {
         console.log(`getMeasurementsObserver got ${m.data.length} values: ${m.message}`);
         this.getMeasurementsMessage = m;
       },
@@ -30,6 +30,6 @@ export class MeasurementsComponent implements OnInit {
       }
     };
 
-    this.measurementDataService.getAllMeasurements().subscribe(getMeasurementsObserver);
+    this.measurementDataService.getAllMeasurementsEx().subscribe(getMeasurementsObserver);
   }
 }

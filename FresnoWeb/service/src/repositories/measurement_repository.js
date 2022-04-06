@@ -25,6 +25,21 @@ class MeasurementRepository {
         });
     };
 
+    getAllMeasurementsEx(res) {
+        var sql = `SELECT m.Id, m.Sequence, m.StepTestId, m.HeartRate, m.Lactate, m.Load, m.InCalculation, st.TestDate, p.FirstName, p.LastName FROM ${DB_TABLE} m JOIN StepTest st ON m.StepTestId = st.Id JOIN Person p ON st.PersonId = p.Id`;
+        var params = [];
+        this.db.all(sql, params, (err, rows) => {
+            if (err) {
+                console.error(`${Helpers.getDateNowString()} getAllMeasurementsEx ERROR: ${err.message}`)
+            }
+            res.json({
+                "message": "success",
+                "data": rows
+            });
+            console.log(`${Helpers.getDateNowString()} getAllMeasurementsEx returns ${rows.length} rows`);
+        });
+    };
+
     // Get all measurements by steptest id
     getAllMeasurementsByStepTestId(res, id) {
         var sql = `SELECT ${FULL_COLUMNS} FROM ${DB_TABLE} WHERE StepTestId = ?`;

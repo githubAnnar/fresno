@@ -85,14 +85,33 @@ class StepTestRepository {
                 res.status(400).json({ "error": err.message });
                 return;
             }
+
             res.json({
                 "message": "success",
                 "data": row
             });
             console.log(`${Helpers.getDateNowString()} getStepTestById returns Id ${row.Id}`);
-
         });
     };
+
+    // Get StepTest text by Id
+    getStepTestTextById(res, id) {
+        var sql = `SELECT st.TestDate, p.FirstName, p.LastName FROM StepTest st JOIN Person p ON st.PersonId = p.Id WHERE st.Id = ?`;
+        var params = [id];
+        this.db.get(sql, params, (err, row) => {
+            if (err) {
+                console.error(`${Helpers.getDateNowString()} getStepTestTextById ERROR: ${err.message}`);
+                res.status(400).json({ "error": err.message });
+                return;
+            }
+
+            res.json({
+                "message": "success",
+                "data": row
+            });
+            console.log(`${Helpers.getDateNowString()} getStepTestTextById returns ${JSON.stringify(row)}`);
+        });
+    }
 
     // New StepTest
     postNewStepTest(res, userid, testtype, effortunit, stepduration, loadpreset, increase, temperature, weight, testdate) {

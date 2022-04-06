@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MeasurementDataService } from 'src/app/core';
+import { Observable } from 'rxjs';
+import { MeasurementDataService, StepTestDataService } from 'src/app/core';
 import { IGetMeasurementMessage, IMeasurement } from 'src/app/shared';
 
 @Component({
@@ -12,8 +13,8 @@ export class MeasurementComponent implements OnInit {
   title!: string;
   measurement: IMeasurement = { HeartRate: 0, Id: 0, InCalculation: 0, Lactate: 0, Load: 0, Sequence: 0, StepTestId: 0 };
   getMeasurementMessage!: IGetMeasurementMessage;
-
-  constructor(private measurementDataService: MeasurementDataService, private route: ActivatedRoute) { }
+  stepTestText!: Observable<string>;
+  constructor(private measurementDataService: MeasurementDataService, private stepTestDataService: StepTestDataService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.title = 'Measurement';
@@ -34,8 +35,8 @@ export class MeasurementComponent implements OnInit {
       complete: () => {
         this.measurement = this.getMeasurementMessage.data;
         this.title = `Measurement: ${this.measurement.Id}`;
-        console.log(`    const measurementGetObserver = {
-          got a complete notification for ${this.title}`);
+        console.log(`measurementGetObserver got a complete notification for ${this.title}`);
+        this.stepTestText = this.stepTestDataService.getStepTestTextById(this.measurement.StepTestId);
       }
     };
 

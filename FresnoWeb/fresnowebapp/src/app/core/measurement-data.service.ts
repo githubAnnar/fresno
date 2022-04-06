@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
-import { HelpersModule, IDeleteMeasurementMessage, IGetMeasurementMessage, IGetMeasurementsMessage, IMeasurement, IPatchMeasurementMessage, IPostNewMeasurementMessage, IStepTest } from '../shared';
+import { HelpersModule, IDeleteMeasurementMessage, IGetMeasurementMessage, IGetMeasurementsExMessage, IGetMeasurementsMessage, IMeasurement, IPatchMeasurementMessage, IPostNewMeasurementMessage, IStepTest } from '../shared';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,11 @@ export class MeasurementDataService {
 
   getAllMeasurements(): Observable<IGetMeasurementsMessage> {
     return this.http.get<IGetMeasurementsMessage>(`${this.baseUrl}getallmeasurements`)
+      .pipe(catchError(this.helpers.handleError));
+  }
+
+  getAllMeasurementsEx(): Observable<IGetMeasurementsExMessage> {
+    return this.http.get<IGetMeasurementsExMessage>(`${this.baseUrl}getallmeasurementsex`)
       .pipe(catchError(this.helpers.handleError));
   }
 

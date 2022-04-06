@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { SorterService } from 'src/app/core';
-import { IMeasurement } from 'src/app/shared';
+import { IMeasurementEx } from 'src/app/shared';
 
 @Component({
   selector: 'app-measurements-list',
@@ -9,19 +9,19 @@ import { IMeasurement } from 'src/app/shared';
   styleUrls: ['./measurements-list.component.css']
 })
 export class MeasurementsListComponent implements OnInit {
-  private _measurements: IMeasurement[] = [];
+  private _measurements: IMeasurementEx[] = [];
 
-  @Input() get listMeasurements(): IMeasurement[] {
+  @Input() get listMeasurements(): IMeasurementEx[] {
     return this._measurements;
   }
 
-  set listMeasurements(value: IMeasurement[]) {
+  set listMeasurements(value: IMeasurementEx[]) {
     if (value) {
       this.measurements = this._measurements = value;
     }
   }
 
-  measurements: any[] = [];
+  measurements: IMeasurementEx[] = [];
   currentPath!: string;
 
   constructor(private sorterService: SorterService, private route: ActivatedRoute) { }

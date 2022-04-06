@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MeasurementDataService, PersonDataService, StepTestDataService } from 'src/app/core';
-import { IGetMeasurementsMessage, IGetPersonNameMessage, IGetStepTestMessage, IMeasurement, IStepTest } from 'src/app/shared';
+import { IGetMeasurementsMessage, IGetStepTestMessage, IMeasurementEx, IStepTest } from 'src/app/shared';
 
 @Component({
   selector: 'app-step-test',
@@ -14,7 +14,7 @@ export class StepTestComponent implements OnInit {
   stepTest: IStepTest = { EffortUnit: '', Id: 0, Increase: 0, LoadPreset: 0, PersonId: 0, StepDuration: 0, Temperature: 0, TestDate: '', TestType: '', Weight: 0 };
   getStepTestMessage!: IGetStepTestMessage;
 
-  measurements!: IMeasurement[];
+  measurements!: IMeasurementEx[];
   getMeasurementsMessage!: IGetMeasurementsMessage;
 
   testName!: Observable<string>;
@@ -56,11 +56,11 @@ export class StepTestComponent implements OnInit {
       },
       error: (err: string) => { console.error(`Measurements Observer got an error: ${err}`) },
       complete: () => {
-        this.measurements = this.getMeasurementsMessage.data;
+        this.measurements = this.getMeasurementsMessage.data.map(m => ({ FirstName: '', HeartRate: m.HeartRate, Id: m.Id, InCalculation: m.InCalculation, Lactate: m.Lactate, LastName: '', Load: m.Load, Sequence: m.Sequence, StepTestId: m.StepTestId, TestDate: '' }));
         console.log(`Measurements Observer got a complete notification for ${this.measurements.length} rows(s)`);
       }
     }
 
     this.measurementDataService.getAllMeasurementsByStepTestId(idSelected).subscribe(measurementsGetObserver);
-  }  
+  }
 }

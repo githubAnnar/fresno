@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
-import { HelpersModule, IDeleteStepTestMessage, IGetStepTestMessage, IGetStepTestsMessage, IMeasurement, IPatchStepTestMessage, IPostNewStepTestMessage, IStepTest, IPerson, IGetStepTestsExMessage } from '../shared';
+import { catchError, map, Observable } from 'rxjs';
+import { HelpersModule, IDeleteStepTestMessage, IGetStepTestMessage, IGetStepTestsMessage, IMeasurement, IPatchStepTestMessage, IPostNewStepTestMessage, IStepTest, IPerson, IGetStepTestsExMessage, IGetStepTestTextMessage } from '../shared';
+import { DateTimeFormattedPipe } from '../shared/pipes/date-time-formatted.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,11 @@ export class StepTestDataService {
   getStepTestById(id: number): Observable<IGetStepTestMessage> {
     return this.http.get<IGetStepTestMessage>(`${this.baseUrl}getsteptestbyid/${id}`)
       .pipe(catchError(this.helpers.handleError));
+  }
+
+  getStepTestTextById(id: number): Observable<string> {
+    return this.http.get<IGetStepTestTextMessage>(`${this.baseUrl}getsteptesttextbyid/${id}`)
+      .pipe(map((res: IGetStepTestTextMessage) => `${res.data.LastName}, ${res.data.FirstName} (${new DateTimeFormattedPipe().transform(res.data.TestDate)})`), catchError(this.helpers.handleError));
   }
 
   getStepTestByMeasurementId(id: number): Observable<IGetStepTestMessage> {

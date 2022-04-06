@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { Observable } from 'rxjs';
-import { PersonDataService, SorterService } from 'src/app/core';
-import { IGetPersonNameMessage, IStepTest, IStepTestEx } from 'src/app/shared';
+import { SorterService } from 'src/app/core';
+import { IStepTestEx } from 'src/app/shared';
 
 @Component({
   selector: 'app-step-tests-list',
@@ -25,7 +24,7 @@ export class StepTestsListComponent implements OnInit {
   stepTests: IStepTestEx[] = [];
   currentPath!: string;
 
-  constructor(private sorterService: SorterService, private personDataService: PersonDataService, private route: ActivatedRoute) {
+  constructor(private sorterService: SorterService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
