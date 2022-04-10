@@ -24,3 +24,4 @@ export * from './istep-test-text.interface';
 export * from './istep-test.interface';
 export * from './iperson.interface';
 export * from './helpers/helpers.module';
+export * from './pipes/pipes.module';
