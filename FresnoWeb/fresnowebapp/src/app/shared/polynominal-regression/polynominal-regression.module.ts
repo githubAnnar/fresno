@@ -47,8 +47,8 @@ export class PolynominalRegressionModule {
         .map((_, j) => data.reduce((acc, [x]) => acc + base[i](x) * base[j](x), 0)));
   }
 
-  private buildIndependentTerm(data: number[][], base: Function[]) {
-    return this.buildArray(base.length).map((_, i) => Object.assign({}, data.reduce((acc, [x, y]) => acc + base[i](x) * y, 0)));
+  private buildIndependentTerm(data: number[][], base: Function[]):number[][] {
+    return this.buildArray(base.length).map((_, i) => Object.assign([], data.reduce((acc, [x, y]) => acc + base[i](x) * y, 0)));
   }
 
   private buildSystem(data: number[][], degree: number): [number[][], number[][]] {

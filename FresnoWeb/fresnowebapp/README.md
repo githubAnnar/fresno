@@ -26,5 +26,5 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
-https://github.com/Rainij/regression-multivariate-polynomial
 https://github.com/danielherrerohernando/polynomial-regression
+https://medium.com/guidesmiths-dev/building-a-polynomial-regression-model-factory-in-nodejs-bb0643be258
