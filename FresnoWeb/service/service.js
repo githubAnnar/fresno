@@ -6,6 +6,7 @@ var Helpers = require('./src/helpers/helpers');
 const PersonEndpoints = require('./src/endpoints/person_endpoints');
 const StepTestEndpoints = require('./src/endpoints/steptest_endpoints');
 const MeasurementEndpoints = require('./src/endpoints/measurement_endpoints');
+const PolyRegEndpoints = require('./src/endpoints/polyreg_endpoints');
 
 console.log(`${Helpers.getDateNowString()} Count of args: ${process.argv.length}`);
 
@@ -37,6 +38,7 @@ const personEndpoints = new PersonEndpoints("api", app, db);
 const stepTestEndpoints = new StepTestEndpoints("api", app, db);
 const measurementEndpoints = new MeasurementEndpoints("api", app, db);
 const authEndpoints = new AuthEndpoints("api", app, db);
+const polyRegEndpoints = new PolyRegEndpoints('api', app);
 
 // Server port
 var HTTP_PORT = 8000
@@ -55,3 +57,4 @@ personEndpoints.endpoints();
 stepTestEndpoints.endpoints();
 measurementEndpoints.endpoints();
 authEndpoints.endpoints();
+polyRegEndpoints.endpoints();
