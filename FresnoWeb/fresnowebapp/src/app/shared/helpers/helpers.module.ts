@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { throwError } from 'rxjs';
+import { IMeasurementEx } from '../imeasurement-ex.interface';
 
 @NgModule({
   declarations: [],
@@ -17,5 +18,15 @@ export class HelpersModule {
     }
 
     return throwError(error || 'Node.js server error');
+  }
+
+  public getLactateArray(measurements: IMeasurementEx[]): number[][] {
+    let data = measurements.map(m => { return [m.Load, m.Lactate] });
+    return data;
+  }
+
+  public getHeartRateArray(measurements: IMeasurementEx[]): number[][] {
+    let data = measurements.map(m => { return [m.Load, m.HeartRate] });
+    return data;
   }
 }

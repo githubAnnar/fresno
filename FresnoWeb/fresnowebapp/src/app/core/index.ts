@@ -4,6 +4,7 @@ export * from './can-open.model';
 export * from './core.module';
 export * from './measurement-data.service';
 export * from './person-data.service';
+export * from './polyreg-data.service';
 export * from './sorter.service';
 export * from './step-test-data.service';
 export * from './token-storage.service';

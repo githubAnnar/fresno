@@ -12,15 +12,25 @@ class PolyRegEndpoints {
 
     endpoints() {
         console.log(`${Helpers.getDateNowString()} Starting enpoints for polyreg`);
-        const MODULE = "polyreg";
-        const FIT = "fit";
+        const MODULE = 'polyreg';
+        const FITLACTATE = 'fitlactate';
+        const FITHEART = 'fitheart';
 
-        this.app.post(`/${this.rootPath}/${MODULE}/${FIT}/`, (req, res, next) => {
+        this.app.post(`/${this.rootPath}/${MODULE}/${FITLACTATE}/`, (req, res, next) => {
             const model = createModel();
             model.fit(req.body.data, [3]);
             res.json({
-                "message": "success",
-                "data": model.expressions()
+                'message': 'success',
+                'data': model.expressions()
+            });
+        });
+
+        this.app.post(`/${this.rootPath}/${MODULE}/${FITHEART}/`, (req, res, next) => {
+            const model = createModel();
+            model.fit(req.bod.data[1]);
+            res.json({
+                'message': 'success',
+                'data': model.expressions()
             });
         });
     }
