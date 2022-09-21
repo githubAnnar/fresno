@@ -12,7 +12,6 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
-    <PackageReference Include="Unity" Version="5.8.13" />
   </ItemGroup>
 
   <ItemGroup>

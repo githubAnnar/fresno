@@ -1,4 +1,5 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+﻿using Autofac;
+using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using System;
@@ -69,8 +70,20 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Properties
 
-        private DataService _manager;
-        public DataService DataManager => _manager ?? (_manager = ServiceLocator.Instance.GetService(typeof(IDataService)) as DataService);
+        private IDataService _manager;
+        public IDataService DataManager
+        {
+            get
+            {
+                if (_manager == null)
+                {
+                    var scope = ServiceLocator.Instance.BeginLifetimeScope();
+                    _manager = scope.Resolve<IDataService>();
+                }
+
+                return _manager;
+            }
+        }
 
         public BitmapImage ItemIcon { get; protected set; }
 

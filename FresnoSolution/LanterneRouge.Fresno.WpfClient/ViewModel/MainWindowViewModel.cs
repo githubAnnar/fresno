@@ -1,4 +1,5 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+﻿using Autofac;
+using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using log4net;
@@ -160,8 +161,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (openFileResult.HasValue && openFileResult.Value)
             {
                 CurrentDatabaseFilename = openFileDialog.FileName;
-                if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
+                using (var scope = ServiceLocator.Instance.BeginLifetimeScope())
                 {
+                    var service = scope.Resolve<IDataService>();
                     IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
                     Logger.Debug($"Opened database '{CurrentDatabaseFilename}'");
                     MRUFileList.UpdateEntry(CurrentDatabaseFilename);
@@ -192,8 +194,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (openFileResult.HasValue && openFileResult.Value)
             {
                 CurrentDatabaseFilename = openFileDialog.FileName;
-                if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
+                using (var scope = ServiceLocator.Instance.BeginLifetimeScope())
                 {
+                    var service = scope.Resolve<IDataService>();
                     IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
                     Logger.Debug($"Created new database '{CurrentDatabaseFilename}'");
                     MRUFileList.UpdateEntry(CurrentDatabaseFilename);
@@ -221,8 +224,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 return;
             }
 
-            if (ServiceLocator.Instance.GetService(typeof(IDataService)) is DataService service)
+            using (var scope = ServiceLocator.Instance.BeginLifetimeScope())
             {
+                var service = scope.Resolve<IDataService>();
                 IsDatabaseOpen = service.LoadDatabase(path);
                 Logger.Debug($"Opened database from MRU '{path}'");
                 MRUFileList.UpdateEntry(path);

@@ -1,24 +1,24 @@
-﻿using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
-using Unity;
-using Unity.ServiceLocation;
+﻿using Autofac;
+using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 
 namespace LanterneRouge.Fresno.WpfClient.Services
 {
     public static class ServiceLocator
     {
-        private static UnityServiceLocator _instance;
+        private static IContainer _container;
 
-        public static UnityServiceLocator Instance
+        public static IContainer Instance
         {
             get
             {
-                if (_instance == null)
+                if (_container == null)
                 {
-                    var container = new UnityContainer().RegisterInstance<IDataService>(new DataService());
-                    _instance = new UnityServiceLocator(container);
+                    var builder = new ContainerBuilder();
+                    builder.RegisterType<DataService>().As<IDataService>().SingleInstance();
+                    _container = builder.Build();
                 }
 
-                return _instance;
+                return _container;
             }
         }
     }
