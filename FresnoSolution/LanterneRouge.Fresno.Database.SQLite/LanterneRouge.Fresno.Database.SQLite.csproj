@@ -41,7 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Table.cs" />
+    <Compile Include="AffinityType.cs" />
+    <Compile Include="ColumnConstraint.cs" />
+    <Compile Include="ColumnStatement.cs" />
+    <Compile Include="Common\BaseConstraint.cs" />
+    <Compile Include="Common\BaseOption.cs" />
+    <Compile Include="Common\BaseStatement.cs" />
+    <Compile Include="TableConstraint.cs" />
+    <Compile Include="TableOption.cs" />
+    <Compile Include="TableStatement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
