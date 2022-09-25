@@ -1,4 +1,4 @@
-﻿namespace LanterneRouge.Fresno.Database.SQLite.Common
+﻿namespace LanterneRouge.Fresno.Database.SQLite.Statements
 {
     public abstract class BaseStatement
     {

@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Report
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Database.SQLite", "LanterneRouge.Fresno.Database.SQLite\LanterneRouge.Fresno.Database.SQLite.csproj", "{14480593-83FE-4ECD-9552-44F1705BE4C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Database.SQLite.Test", "LanterneRouge.Fresno.Database.SQLite.Test\LanterneRouge.Fresno.Database.SQLite.Test.csproj", "{2FB91D5B-5F79-4F80-8C54-04A26855B2AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{14480593-83FE-4ECD-9552-44F1705BE4C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14480593-83FE-4ECD-9552-44F1705BE4C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14480593-83FE-4ECD-9552-44F1705BE4C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FB91D5B-5F79-4F80-8C54-04A26855B2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FB91D5B-5F79-4F80-8C54-04A26855B2AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FB91D5B-5F79-4F80-8C54-04A26855B2AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FB91D5B-5F79-4F80-8C54-04A26855B2AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{04064257-A24B-48B1-B687-55F71E695BEF} = {0040BEDE-4C4E-4E60-B856-D76D415FBE8B}
 		{9DED4D87-77FB-4198-B8AC-0AF3817466C8} = {0040BEDE-4C4E-4E60-B856-D76D415FBE8B}
+		{2FB91D5B-5F79-4F80-8C54-04A26855B2AE} = {0040BEDE-4C4E-4E60-B856-D76D415FBE8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BE261D1-9FC2-47E6-A935-A2CC52BD2349}

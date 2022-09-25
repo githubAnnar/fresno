@@ -1,9 +1,10 @@
-﻿using LanterneRouge.Fresno.Database.SQLite.Common;
+﻿using LanterneRouge.Fresno.Database.SQLite.Options;
+using LanterneRouge.Fresno.Database.SQLite.TableConstraints;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LanterneRouge.Fresno.Database.SQLite
+namespace LanterneRouge.Fresno.Database.SQLite.Statements
 {
     public class TableStatement : BaseStatement
     {
@@ -57,7 +58,7 @@ namespace LanterneRouge.Fresno.Database.SQLite
             builder.Append(string.Join(", ", Columns.Select(c => c.GenerateStatement())));
 
             // table constraints
-            builder.Append(string.Join(", ", TableConstraints.Select(t => t.GenerateStatement())));
+            builder.Append(string.Join(", ", TableConstraints.Select(t => t.GenerateConstraint())));
 
             builder.Append(") ");
 

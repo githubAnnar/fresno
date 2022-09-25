@@ -1,4 +1,4 @@
-﻿namespace LanterneRouge.Fresno.Database.SQLite
+﻿namespace LanterneRouge.Fresno.Database.SQLite.Types
 {
     public enum AffinityType
     {

@@ -1,4 +1,4 @@
-﻿namespace LanterneRouge.Fresno.Database.SQLite.Common
+﻿namespace LanterneRouge.Fresno.Database.SQLite.Options
 {
     public abstract class BaseOption
     {

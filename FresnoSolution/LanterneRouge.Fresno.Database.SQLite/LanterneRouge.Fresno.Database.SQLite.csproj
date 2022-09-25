@@ -41,16 +41,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AffinityType.cs" />
-    <Compile Include="ColumnConstraint.cs" />
-    <Compile Include="ColumnStatement.cs" />
-    <Compile Include="Common\BaseConstraint.cs" />
-    <Compile Include="Common\BaseOption.cs" />
-    <Compile Include="Common\BaseStatement.cs" />
-    <Compile Include="TableConstraint.cs" />
-    <Compile Include="TableOption.cs" />
-    <Compile Include="TableStatement.cs" />
+    <Compile Include="Common\BitArrayExtensions.cs" />
+    <Compile Include="Clauses\ForeignKeyClause.cs" />
+    <Compile Include="ColumnConstraints\CheckConstraint.cs" />
+    <Compile Include="ColumnConstraints\CollateConstraint.cs" />
+    <Compile Include="ColumnConstraints\DefaultConstraint.cs" />
+    <Compile Include="ColumnConstraints\ForeignKeyConstraint.cs" />
+    <Compile Include="ColumnConstraints\GeneratedAlwaysConstraint.cs" />
+    <Compile Include="ColumnConstraints\NotNullConstraint.cs" />
+    <Compile Include="ColumnConstraints\UniqueConstraint.cs" />
+    <Compile Include="TableConstraints\BaseTableConstraint.cs" />
+    <Compile Include="Types\AffinityType.cs" />
+    <Compile Include="Clauses\ConflictClause.cs" />
+    <Compile Include="ColumnConstraints\PrimaryKeyConstraint.cs" />
+    <Compile Include="Statements\ColumnStatement.cs" />
+    <Compile Include="ColumnConstraints\BaseColumnConstraint.cs" />
+    <Compile Include="Options\BaseOption.cs" />
+    <Compile Include="Statements\BaseStatement.cs" />
+    <Compile Include="ColumnConstraints\IColumnConstraint.cs" />
+    <Compile Include="TableConstraints\TableConstraint.cs" />
+    <Compile Include="Options\TableOption.cs" />
+    <Compile Include="Statements\TableStatement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\LiteralValue.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,6 @@
-﻿using LanterneRouge.Fresno.Database.SQLite.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace LanterneRouge.Fresno.Database.SQLite
+namespace LanterneRouge.Fresno.Database.SQLite.Options
 {
     public class TableOption : BaseOption
     {
