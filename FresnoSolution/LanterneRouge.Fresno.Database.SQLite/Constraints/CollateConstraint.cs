@@ -1,5 +1,9 @@
 ﻿namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
+    /// <summary>
+    /// Collate Constraint
+    /// For Column
+    /// </summary>
     public class CollateConstraint : BaseConstraint
     {
         public CollateConstraint(string name, string collationName) : base(name)

@@ -1,5 +1,9 @@
 ﻿namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
+    /// <summary>
+    /// Check Constraint
+    /// For both Column and Table
+    /// </summary>
     public class CheckConstraint : BaseConstraint
     {
         public CheckConstraint(string name, string expression) : base(name)

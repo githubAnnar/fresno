@@ -15,31 +15,31 @@ namespace LanterneRouge.Fresno.Database.SQLite.Test
             };
 
             var actual = testObject.GenerateConflictClause();
-            Assert.Equal("ON CONFLICT FAIL", actual);
+            Assert.Equal(" ON CONFLICT FAIL", actual);
 
             testObject.Fail = false;
             testObject.Abort = true;
 
             actual = testObject.GenerateConflictClause();
-            Assert.Equal("ON CONFLICT ABORT", actual);
+            Assert.Equal(" ON CONFLICT ABORT", actual);
 
             testObject.Abort = false;
             testObject.Replace = true;
 
             actual = testObject.GenerateConflictClause();
-            Assert.Equal("ON CONFLICT REPLACE", actual);
+            Assert.Equal(" ON CONFLICT REPLACE", actual);
 
             testObject.Replace = false;
             testObject.Rollback = true;
 
             actual = testObject.GenerateConflictClause();
-            Assert.Equal("ON CONFLICT ROLLBACK", actual);
+            Assert.Equal(" ON CONFLICT ROLLBACK", actual);
 
             testObject.Rollback = false;
             testObject.Ignore = true;
 
             actual = testObject.GenerateConflictClause();
-            Assert.Equal("ON CONFLICT IGNORE", actual);
+            Assert.Equal(" ON CONFLICT IGNORE", actual);
         }
 
         [Fact]

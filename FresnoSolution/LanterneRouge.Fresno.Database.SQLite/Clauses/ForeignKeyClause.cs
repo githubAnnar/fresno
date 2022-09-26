@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.Database.SQLite.Statements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Clauses
         }
 
         public TableStatement ForeignTable { get; }
+
         public IEnumerable<ColumnStatement> Columns { get; }
 
         public List<SetEnum> Set { get; set; }
@@ -49,6 +51,14 @@ namespace LanterneRouge.Fresno.Database.SQLite.Clauses
 
         public string GenerateForeignKeyClause()
         {
+            foreach (var item in Columns)
+            {
+                if (!ForeignTable.Columns.Contains(item))
+                {
+                    throw new ArgumentException($"Table '{ForeignTable.Name}' does not contain column '{item.Name}'");
+                }
+            }
+
             var builder = new StringBuilder("REFERENCES ");
             builder.Append(ForeignTable.Name);
             if (Columns != null && Columns.Any())

@@ -2,6 +2,10 @@
 
 namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
+    /// <summary>
+    /// GeneratedAlways Constraint
+    /// For Column
+    /// </summary>
     public class GeneratedAlwaysConstraint : BaseConstraint
     {
         #region Fields

@@ -32,7 +32,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Clauses
                 throw new ArgumentException($"Too many Clauses set!");
             }
 
-            var builder = new StringBuilder("ON CONFLICT");
+            var builder = new StringBuilder(" ON CONFLICT");
             if (Rollback)
             {
                 builder.Append(" ROLLBACK");

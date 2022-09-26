@@ -3,6 +3,10 @@ using System.Text;
 
 namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
+    /// <summary>
+    /// NotNull Constraint
+    /// For Column
+    /// </summary>
     public class NotNullConstraint : BaseConstraint
     {
         public NotNullConstraint() : base(null)
@@ -18,7 +22,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Constraints
             var builder = new StringBuilder($"{base.GenerateConstraint()}NOT NULL");
             if (!string.IsNullOrEmpty(ConflictCause.GenerateConflictClause()))
             {
-                builder.Append($" {ConflictCause.GenerateConflictClause()}");
+                builder.Append($"{ConflictCause.GenerateConflictClause()}");
             }
 
             return builder.ToString();

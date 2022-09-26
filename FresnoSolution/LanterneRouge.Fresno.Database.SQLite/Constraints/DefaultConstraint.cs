@@ -3,6 +3,10 @@ using System;
 
 namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
+    /// <summary>
+    /// Default Constraint
+    /// For Column
+    /// </summary>
     public class DefaultConstraint : BaseConstraint
     {
         public DefaultConstraint(string name, string expression) : base(name)

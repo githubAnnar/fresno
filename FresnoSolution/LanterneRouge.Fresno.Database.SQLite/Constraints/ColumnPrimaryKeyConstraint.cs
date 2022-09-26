@@ -1,9 +1,14 @@
 ﻿using LanterneRouge.Fresno.Database.SQLite.Clauses;
 using LanterneRouge.Fresno.Database.SQLite.Constraints;
+using System;
 
 namespace LanterneRouge.Fresno.Database.SQLite
 {
-    public class PrimaryKeyConstraint : BaseConstraint
+    /// <summary>
+    /// PrimaryKey Constraint
+    /// For Column
+    /// </summary>
+    public class ColumnPrimaryKeyConstraint : BaseConstraint
     {
         #region Fields
 
@@ -12,14 +17,12 @@ namespace LanterneRouge.Fresno.Database.SQLite
 
         #endregion
 
-        public PrimaryKeyConstraint() : base(null)
-        {
-            IsAscending = false;
-            IsDescending = false;
-        }
+        public ColumnPrimaryKeyConstraint(ConflictClause conflictClause) : this(null, conflictClause)
+        { }
 
-        public PrimaryKeyConstraint(string name) : base(name)
+        public ColumnPrimaryKeyConstraint(string name, ConflictClause conflictClause) : base(name)
         {
+            ConflictClause = conflictClause;
             IsAscending = false;
             IsDescending = false;
         }
@@ -54,8 +57,16 @@ namespace LanterneRouge.Fresno.Database.SQLite
 
         public bool IsAutoIncrement { get; set; }
 
-        public ConflictClause ConflictCause { get; set; }
+        public ConflictClause ConflictClause { get; }
 
-        public override string GenerateConstraint() => $"{base.GenerateConstraint()}PRIMARY KEY {Direction}{ConflictCause.GenerateConflictClause()}{(IsAutoIncrement ? " AUTOINCREMENT" : string.Empty)}";
+        public override string GenerateConstraint()
+        {
+            if (ConflictClause != null)
+            {
+                return $"{base.GenerateConstraint()}PRIMARY KEY{Direction}{ConflictClause.GenerateConflictClause()}{(IsAutoIncrement ? " AUTOINCREMENT" : string.Empty)}";
+            }
+
+            throw new ArgumentException($"Missing {nameof(ConflictClause)}");
+        }
     }
 }
