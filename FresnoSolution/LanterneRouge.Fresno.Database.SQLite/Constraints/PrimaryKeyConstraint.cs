@@ -1,9 +1,9 @@
 ﻿using LanterneRouge.Fresno.Database.SQLite.Clauses;
-using LanterneRouge.Fresno.Database.SQLite.ColumnConstraints;
+using LanterneRouge.Fresno.Database.SQLite.Constraints;
 
 namespace LanterneRouge.Fresno.Database.SQLite
 {
-    public class PrimaryKeyConstraint : BaseColumnConstraint
+    public class PrimaryKeyConstraint : BaseConstraint
     {
         #region Fields
 

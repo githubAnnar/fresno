@@ -1,5 +1,5 @@
-﻿using LanterneRouge.Fresno.Database.SQLite.Options;
-using LanterneRouge.Fresno.Database.SQLite.TableConstraints;
+﻿using LanterneRouge.Fresno.Database.SQLite.Constraints;
+using LanterneRouge.Fresno.Database.SQLite.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +19,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Statements
 
         public List<ColumnStatement> Columns { get; set; }
 
-        public List<TableConstraint> TableConstraints { get; set; }
+        public List<IConstraint> TableConstraints { get; set; }
 
         public TableOption TableOptions { get; set; } = null;
 

@@ -1,9 +1,9 @@
 ﻿using LanterneRouge.Fresno.Database.SQLite.Types;
 using System;
 
-namespace LanterneRouge.Fresno.Database.SQLite.ColumnConstraints
+namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
-    public class DefaultConstraint : BaseColumnConstraint
+    public class DefaultConstraint : BaseConstraint
     {
         public DefaultConstraint(string name, string expression) : base(name)
         {

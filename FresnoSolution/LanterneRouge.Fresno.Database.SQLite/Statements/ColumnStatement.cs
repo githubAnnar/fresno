@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Database.SQLite.ColumnConstraints;
+﻿using LanterneRouge.Fresno.Database.SQLite.Constraints;
 using LanterneRouge.Fresno.Database.SQLite.Types;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Statements
 
         public AffinityType Affinity { get; set; } = AffinityType.INTEGER;
 
-        public List<IColumnConstraint> ColumnConstraints { get; set; } = null;
+        public List<IConstraint> ColumnConstraints { get; set; } = null;
 
         public override string GenerateStatement()
         {

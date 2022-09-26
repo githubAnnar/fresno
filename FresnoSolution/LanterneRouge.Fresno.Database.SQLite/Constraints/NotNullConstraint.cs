@@ -1,9 +1,9 @@
 ﻿using LanterneRouge.Fresno.Database.SQLite.Clauses;
 using System.Text;
 
-namespace LanterneRouge.Fresno.Database.SQLite.ColumnConstraints
+namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
-    public class NotNullConstraint : BaseColumnConstraint
+    public class NotNullConstraint : BaseConstraint
     {
         public NotNullConstraint() : base(null)
         { }

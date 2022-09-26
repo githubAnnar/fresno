@@ -1,8 +1,8 @@
-﻿namespace LanterneRouge.Fresno.Database.SQLite.TableConstraints
+﻿namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
-    public class BaseTableConstraint
+    public abstract class BaseConstraint : IConstraint
     {
-        public BaseTableConstraint(string name)
+        public BaseConstraint(string name)
         {
             Name = name;
         }

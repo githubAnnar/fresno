@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace LanterneRouge.Fresno.Database.SQLite.ColumnConstraints
+namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
-    public class GeneratedAlwaysConstraint : BaseColumnConstraint
+    public class GeneratedAlwaysConstraint : BaseConstraint
     {
         #region Fields
 

@@ -7,7 +7,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Test
     public class ClausesTest
     {
         [Fact]
-        public void ConflicCauseTest()
+        public void ConflicClauseTest()
         {
             var testObject = new ConflictClause
             {
@@ -43,7 +43,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Test
         }
 
         [Fact]
-        public void TooManyCausesTest()
+        public void TooManyClausesTest()
         {
             var testObject = new ConflictClause
             {

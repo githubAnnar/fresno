@@ -1,8 +1,8 @@
 ﻿using LanterneRouge.Fresno.Database.SQLite.Clauses;
 
-namespace LanterneRouge.Fresno.Database.SQLite.ColumnConstraints
+namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
-    public class UniqueConstraint : BaseColumnConstraint
+    public class UniqueConstraint : BaseConstraint
     {
         public UniqueConstraint() : base(null)
         { }

@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Database.SQLite.ColumnConstraints;
+﻿using LanterneRouge.Fresno.Database.SQLite.Constraints;
 using LanterneRouge.Fresno.Database.SQLite.Types;
 using System;
 using Xunit;

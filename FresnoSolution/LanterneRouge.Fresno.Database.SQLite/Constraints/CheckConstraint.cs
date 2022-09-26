@@ -1,6 +1,6 @@
-﻿namespace LanterneRouge.Fresno.Database.SQLite.ColumnConstraints
+﻿namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
-    public class CheckConstraint : BaseColumnConstraint
+    public class CheckConstraint : BaseConstraint
     {
         public CheckConstraint(string name, string expression) : base(name)
         {
