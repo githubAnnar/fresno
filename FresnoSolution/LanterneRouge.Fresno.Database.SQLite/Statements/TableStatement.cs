@@ -57,13 +57,17 @@ namespace LanterneRouge.Fresno.Database.SQLite.Statements
             // column statements
             builder.Append(string.Join(", ", Columns.Select(c => c.GenerateStatement())));
 
-            // table constraints
-            builder.Append(string.Join(", ", TableConstraints.Select(t => t.GenerateConstraint())));
+            if (TableConstraints != null && TableConstraints.Count > 0)
+            {
+                builder.Append(", ");
+                // table constraints
+                builder.Append(string.Join(", ", TableConstraints.Select(t => t.GenerateConstraint())));
+            }
 
             builder.Append(") ");
 
             // table options
-            if (TableOptions.HasContent)
+            if (TableOptions != null && TableOptions.HasContent)
             {
                 builder.Append(TableOptions.GenerateOption());
             }

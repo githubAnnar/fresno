@@ -11,7 +11,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Statements
         public ColumnStatement(string name) : base(name)
         { }
 
-        public AffinityType Affinity { get; set; } = AffinityType.INTEGER;
+        public AffinityType? Affinity { get; set; }
 
         public List<IConstraint> ColumnConstraints { get; set; } = null;
 
@@ -19,7 +19,12 @@ namespace LanterneRouge.Fresno.Database.SQLite.Statements
         {
             var builder = new StringBuilder();
 
-            builder.Append($"{Name} {Affinity}");
+            builder.Append(Name);
+
+            if (Affinity.HasValue)
+            {
+                builder.Append($" {Affinity.Value}");
+            }
 
             if (ColumnConstraints != null && ColumnConstraints.Any())
             {
