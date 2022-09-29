@@ -45,6 +45,12 @@ namespace LanterneRouge.Fresno.Database.SQLite.Test
             var testObject = new TableStatement("TestTable");
             Assert.Throws<ArgumentNullException>(testObject.GenerateStatement);
 
+            testObject = new TableStatement("TestTable")
+            {
+                SchemaName = "feil"
+            };
+            Assert.Throws<ArgumentException>(testObject.GenerateStatement);
+
             testObject = new TableStatement("TestTable");
             var column = new ColumnStatement("TestColumn")
             {
@@ -67,13 +73,13 @@ namespace LanterneRouge.Fresno.Database.SQLite.Test
             testObject = new TableStatement("TestTable")
             {
                 Columns = new List<ColumnStatement> { column },
-                SchemaName = "dbo",
+                SchemaName = "main",
                 TableOptions = new TableOption { WithoutRowId = true },
                 ExistsCheck = true
             };
 
             actual = testObject.GenerateStatement();
-            Assert.Equal("CREATE TABLE IF NOT EXISTS dbo.TestTable (TestColumn INTEGER PRIMARY KEY ON CONFLICT FAIL) WITHOUT ROWID", actual);
+            Assert.Equal("CREATE TABLE IF NOT EXISTS main.TestTable (TestColumn INTEGER PRIMARY KEY ON CONFLICT FAIL) WITHOUT ROWID", actual);
         }
     }
 }

@@ -1,11 +1,17 @@
-﻿using LanterneRouge.Fresno.Database.SQLite.Constraints;
+﻿using LanterneRouge.Fresno.Database.SQLite.Common;
+using LanterneRouge.Fresno.Database.SQLite.Constraints;
 using LanterneRouge.Fresno.Database.SQLite.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace LanterneRouge.Fresno.Database.SQLite.Statements
 {
+    /// <summary>
+    /// Table statement
+    /// </summary>
+    /// <remarks>CREATE TABLE .. AS SELECT Statement is not implemented</remarks>
     public class TableStatement : BaseStatement
     {
         public TableStatement(string name) : base(name)
@@ -27,8 +33,26 @@ namespace LanterneRouge.Fresno.Database.SQLite.Statements
 
         public bool ExistsCheck { get; set; } = false;
 
+        internal override ValidateResultList CheckValidity()
+        {
+            var result = new ValidateResultList();
+
+            if (!string.IsNullOrEmpty(SchemaName) && !(SchemaName.Equals("main", StringComparison.InvariantCultureIgnoreCase) || SchemaName.Equals("temp", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                result.Add(new CheckResult(nameof(SchemaName), "Must be eiter 'main' or 'temp'"));
+            }
+
+            return result;
+        }
+
         public override string GenerateStatement()
         {
+            var validity = CheckValidity();
+            if (!validity.IsValid)
+            {
+                throw new ArgumentException($"Not valid: {string.Join(", ", validity.Select(v => $"{v.PropertyName}: {v.Message}"))}");
+            }
+
             var builder = new StringBuilder();
 
             builder.Append("CREATE");
@@ -47,10 +71,13 @@ namespace LanterneRouge.Fresno.Database.SQLite.Statements
 
             if (!string.IsNullOrEmpty(SchemaName))
             {
-                builder.Append($" {SchemaName}.");
+                builder.Append($" {SchemaName}.{Name}");
             }
 
-            builder.Append($" {Name}");
+            else
+            {
+                builder.Append($" {Name}");
+            }
 
             builder.Append(" (");
 
@@ -64,12 +91,12 @@ namespace LanterneRouge.Fresno.Database.SQLite.Statements
                 builder.Append(string.Join(", ", TableConstraints.Select(t => t.GenerateConstraint())));
             }
 
-            builder.Append(") ");
+            builder.Append(")");
 
             // table options
             if (TableOptions != null && TableOptions.HasContent)
             {
-                builder.Append(TableOptions.GenerateOption());
+                builder.Append($" {TableOptions.GenerateOption()}");
             }
 
             return builder.ToString();
