@@ -35,15 +35,15 @@ namespace LanterneRouge.Fresno.Database.SQLite.Clauses
             { SetEnum.UpdateNoAction, "ON UPDATE NO ACTION" }
         };
 
-        public ForeignKeyClause(TableStatement foreignTable, IEnumerable<ColumnStatement> columns)
+        public ForeignKeyClause(TableStatement foreignTable, IEnumerable<string> columnNames)
         {
             ForeignTable = foreignTable;
-            Columns = columns;
+            Columns = columnNames;
         }
 
         public TableStatement ForeignTable { get; }
 
-        public IEnumerable<ColumnStatement> Columns { get; }
+        public IEnumerable<string> Columns { get; }
 
         public List<SetEnum> Set { get; set; }
 
@@ -53,9 +53,9 @@ namespace LanterneRouge.Fresno.Database.SQLite.Clauses
         {
             foreach (var item in Columns)
             {
-                if (!ForeignTable.Columns.Contains(item))
+                if (!ForeignTable.Columns.Select(s => s.Name).Contains(item))
                 {
-                    throw new ArgumentException($"Table '{ForeignTable.Name}' does not contain column '{item.Name}'");
+                    throw new ArgumentException($"Table '{ForeignTable.Name}' does not contain column '{item}'");
                 }
             }
 
@@ -63,7 +63,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Clauses
             builder.Append(ForeignTable.Name);
             if (Columns != null && Columns.Any())
             {
-                builder.Append($" ({string.Join(", ", Columns.Select(c => c.Name))})");
+                builder.Append($" ({string.Join(", ", Columns)})");
             }
 
             if (Set != null && Set.Any())

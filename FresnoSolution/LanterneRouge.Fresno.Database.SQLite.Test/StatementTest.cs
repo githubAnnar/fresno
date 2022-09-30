@@ -31,12 +31,14 @@ namespace LanterneRouge.Fresno.Database.SQLite.Test
             };
             var conflictCause = new ConflictClause { Fail = true };
             var columnConstraint1 = new ColumnPrimaryKeyConstraint(conflictCause);
+            var columnConstraint2 = new NotNullConstraint();
             testObject.ColumnConstraints = new List<IConstraint>
             {
+                columnConstraint2,
                 columnConstraint1
             };
             actual = testObject.GenerateStatement();
-            Assert.Equal("TestColumn INTEGER PRIMARY KEY ON CONFLICT FAIL", actual);
+            Assert.Equal("TestColumn INTEGER NOT NULL PRIMARY KEY ON CONFLICT FAIL", actual);
         }
 
         [Fact]

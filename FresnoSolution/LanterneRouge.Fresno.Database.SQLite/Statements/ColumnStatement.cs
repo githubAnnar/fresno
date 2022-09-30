@@ -28,7 +28,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Statements
 
             if (ColumnConstraints != null && ColumnConstraints.Any())
             {
-                builder.Append($" {string.Join(", ", ColumnConstraints.Select(c => c.GenerateConstraint()))}");
+                builder.Append($" {string.Join(" ", ColumnConstraints.Select(c => c.GenerateConstraint()))}");
             }
 
             return builder.ToString();

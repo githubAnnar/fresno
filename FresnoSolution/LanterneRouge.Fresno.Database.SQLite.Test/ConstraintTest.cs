@@ -64,7 +64,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Test
             {
                 Columns = new[] { columnStatement }.ToList(),
             };
-            var fkConstraint = new ForeignKeyClause(tableStatement, new[] { columnStatement })
+            var fkConstraint = new ForeignKeyClause(tableStatement, new[] { "FirstRow" })
             {
                 Set = new List<SetEnum> { SetEnum.UpdateSetNull }
             };
@@ -189,7 +189,7 @@ namespace LanterneRouge.Fresno.Database.SQLite.Test
             {
                 Columns = new[] { columnStatement }.ToList(),
             };
-            var fkConstraint = new ForeignKeyClause(tableStatement, new[] { columnStatement })
+            var fkConstraint = new ForeignKeyClause(tableStatement, new[] { "FirstRow" })
             {
                 Set = new List<SetEnum> { SetEnum.UpdateSetNull }
             };
