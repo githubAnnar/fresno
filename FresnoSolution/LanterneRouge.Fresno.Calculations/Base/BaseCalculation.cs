@@ -41,7 +41,7 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         public Func<double, double> L2Curve => Fit.LineFunc(Loads.ToArray(), Lactates.ToArray());
 
-        public (double a, double b) L2Factors => Fit.Line(Loads.ToArray(), Lactates.ToArray());
+        public (double a, double b) L2Factors => Loads.Count > 2 ? Fit.Line(Loads.ToArray(), Lactates.ToArray()) : (0d, 0d);
 
         public (double a, double b) L2FactorsMin => Fit.Line(new[] { Loads[0], Loads[Loads.Count - 1] }, new[] { Lactates[0], Lactates[Lactates.Count - 1] });
 

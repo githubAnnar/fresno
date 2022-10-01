@@ -71,7 +71,7 @@ namespace LanterneRouge.Fresno.Calculations.Test
                 new Measurement {Sequence = 9,Load = 280f, HeartRate = 162, Lactate = 8.7f, StepTestId = 1, InCalculation = true }
             };
 
-            var actual = new DmaxCalculation(testData);
+            var actual = new DmaxCalculation(testData, true);
             var t1 = actual.LoadThreshold;
             var t2 = actual.HeartRateThreshold;
         }

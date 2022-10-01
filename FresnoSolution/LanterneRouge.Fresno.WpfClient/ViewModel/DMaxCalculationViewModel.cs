@@ -11,6 +11,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private DmaxCalculation _dMaxCalculation = null;
         private ObservableCollection<Zone> _dMaxZones = null;
+        private bool _useOnlyEndpointsForDMax;
 
         #endregion
 
@@ -23,13 +24,31 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
+        public bool UseOnlyEndpointsForDMax
+        {
+            get => _useOnlyEndpointsForDMax; set
+            {
+                if (value != _useOnlyEndpointsForDMax)
+                {
+                    _useOnlyEndpointsForDMax = value;
+
+                    // Reset DMax Calculation
+                    _dMaxCalculation = null;
+                    _dMaxZones = null;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(DMaxLactateThresholdText));
+                    OnPropertyChanged(nameof(DMaxZones));
+                }
+            }
+        }
+
         private StepTestViewModel StepTestParent => Parent as StepTestViewModel;
 
         public int StepTestId => StepTestParent.Source.Id;
 
         public string DMaxLactateThresholdText => DMaxCalculation != null ? $"Load Th.: {DMaxCalculation.LoadThreshold:0.0} Heartrate Th.: {DMaxCalculation.HeartRateThreshold:0} @ Lactate: {DMaxCalculation.LactateThreshold:0.00}" : "No Calculation";
 
-        private DmaxCalculation DMaxCalculation => _dMaxCalculation ?? (_dMaxCalculation = StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0 ? new DmaxCalculation(StepTestParent.Source.Measurements) : null);
+        private DmaxCalculation DMaxCalculation => _dMaxCalculation ?? (_dMaxCalculation = StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0 ? new DmaxCalculation(StepTestParent.Source.Measurements, UseOnlyEndpointsForDMax) : null);
 
         public ObservableCollection<Zone> DMaxZones
         {

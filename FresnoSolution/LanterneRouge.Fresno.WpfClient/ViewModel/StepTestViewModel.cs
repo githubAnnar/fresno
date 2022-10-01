@@ -210,7 +210,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private DmaxCalculation _dmaxCalculation;
 
-        private DmaxCalculation DmaxCalculation => _dmaxCalculation ?? (_dmaxCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new DmaxCalculation(Source.Measurements) : null);
+        private DmaxCalculation DmaxCalculation => _dmaxCalculation ?? (_dmaxCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new DmaxCalculation(Source.Measurements, false) : null);
 
         #endregion
 

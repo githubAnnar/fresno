@@ -2,7 +2,6 @@
 using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace LanterneRouge.Fresno.Calculations
 {
@@ -18,12 +17,16 @@ namespace LanterneRouge.Fresno.Calculations
 
         #region Constructors
 
-        public DmaxCalculation(IEnumerable<Measurement> measurements) : base(measurements)
-        { }
+        public DmaxCalculation(IEnumerable<Measurement> measurements, bool useOnlyEndpoints) : base(measurements)
+        {
+            UseOnlyEndpoints = useOnlyEndpoints;
+        }
 
         #endregion
 
         #region Properties
+
+        private bool UseOnlyEndpoints { get; }
 
         public override float LoadThreshold
         {
@@ -74,11 +77,10 @@ namespace LanterneRouge.Fresno.Calculations
         private double CalculateDmax()
         {
             // Calculate the L2 Factors
-            var (_, b) = L2FactorsMin;
+            var (_, b) = UseOnlyEndpoints ? L2FactorsMin : L2Factors;
 
             // Calculate the L3 Factors
             var L3f = L3Factors;
-
 
             var temp = Math.Sqrt(Math.Pow(L3f[2], 2d) - 3 * L3f[3] * (L3f[1] - b));
             var w1 = (-1 * L3f[2] + temp) / (3 * L3f[3]);
