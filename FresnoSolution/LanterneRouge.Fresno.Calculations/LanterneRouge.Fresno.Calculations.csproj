@@ -58,6 +58,7 @@
     <Compile Include="Base\BaseCalculation.cs" />
     <Compile Include="Base\ICalculation.cs" />
     <Compile Include="Base\IZoneRange.cs" />
+    <Compile Include="DmaxCalculation.cs" />
     <Compile Include="FrpbCalculation.cs" />
     <Compile Include="LactateBasedZones.cs" />
     <Compile Include="Base\Zone.cs" />
