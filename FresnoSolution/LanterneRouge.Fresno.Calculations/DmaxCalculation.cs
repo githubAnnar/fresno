@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace LanterneRouge.Fresno.Calculations
 {
@@ -9,8 +10,9 @@ namespace LanterneRouge.Fresno.Calculations
     {
         #region Fields
 
-        private float _lactateThreshold = 0;
+        private float _loadThreshold = 0;
         private float _heartRateThreshold = 0;
+        private float _lactateThreshold = 0;
 
         #endregion
 
@@ -29,13 +31,13 @@ namespace LanterneRouge.Fresno.Calculations
             {
                 if (Measurements != null)
                 {
-                    if (_lactateThreshold == 0)
+                    if (_loadThreshold == 0)
                     {
-                        _lactateThreshold = (float)CalculateDmax();
+                        _loadThreshold = (float)CalculateDmax();
                     }
                 }
 
-                return _lactateThreshold;
+                return _loadThreshold;
             }
         }
 
@@ -52,6 +54,19 @@ namespace LanterneRouge.Fresno.Calculations
             }
         }
 
+        public float LactateThreshold
+        {
+            get
+            {
+                if (_lactateThreshold == 0)
+                {
+                    _lactateThreshold = (float)FittedLactateCurve(LoadThreshold);
+                }
+
+                return _lactateThreshold;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -59,7 +74,7 @@ namespace LanterneRouge.Fresno.Calculations
         private double CalculateDmax()
         {
             // Calculate the L2 Factors
-            var (_, b) = L2Factors;
+            var (_, b) = L2FactorsMin;
 
             // Calculate the L3 Factors
             var L3f = L3Factors;

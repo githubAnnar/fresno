@@ -9,6 +9,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
+        private LTCalculation _ltCalculation = null;
+        private ObservableCollection<Zone> _lTZones = null;
+
         #endregion
 
         #region Constructors
@@ -26,24 +29,22 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string LTLactateThresholdText => LtCalculation != null ? $"Load Th.: {LtCalculation.LoadThreshold:0.0} Heartrate Th.: {LtCalculation.HeartRateThreshold:0}" : "No Calculation";
 
-        private LTCalculation _ltCalculation = null;
         private LTCalculation LtCalculation => _ltCalculation ?? (_ltCalculation = StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0 ? new LTCalculation(StepTestParent.Source.Measurements) : null);
 
-        private ObservableCollection<Zone> _LTZones = null;
         public ObservableCollection<Zone> LTZones
         {
             get
             {
-                if (_LTZones == null && StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0)
+                if (_lTZones == null && StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0)
                 {
                     if (LtCalculation != null)
                     {
                         var z = new PercentOfLTBasedZones(LtCalculation, new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 });
-                        _LTZones = new ObservableCollection<Zone>(z.Zones);
+                        _lTZones = new ObservableCollection<Zone>(z.Zones);
                     }
                 }
 
-                return _LTZones;
+                return _lTZones;
             }
         }
 

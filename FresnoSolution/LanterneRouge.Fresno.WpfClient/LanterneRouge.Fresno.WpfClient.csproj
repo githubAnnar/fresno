@@ -190,6 +190,7 @@
     <Compile Include="ViewModel\AllStepTestsViewModel.cs" />
     <Compile Include="ViewModel\AllUsersViewModel.cs" />
     <Compile Include="ViewModel\CommandViewModel.cs" />
+    <Compile Include="ViewModel\DMaxCalculationViewModel.cs" />
     <Compile Include="ViewModel\FblcCalculationViewModel.cs" />
     <Compile Include="ViewModel\FrpbCalculationViewModel.cs" />
     <Compile Include="ViewModel\LtLogCalculationViewModel.cs" />
@@ -218,6 +219,9 @@
     </Compile>
     <Compile Include="View\FrpbCalculationView.xaml.cs">
       <DependentUpon>FrpbCalculationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DMaxCalculationView.xaml.cs">
+      <DependentUpon>DMaxCalculationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LtLogCalculationView.xaml.cs">
       <DependentUpon>LtLogCalculationView.xaml</DependentUpon>
@@ -282,6 +286,10 @@
     <Page Include="View\FrpbCalculationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DMaxCalculationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\LtLogCalculationView.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -33,6 +33,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ICommand _showFrpbCalculationCommand;
         private ICommand _showLtCalculationCommand;
         private ICommand _showLtLogCalculationCommand;
+        private ICommand _showDMaxCalculationCommand;
         private ICommand _createStepTestPdfCommand;
 
         #endregion
@@ -53,7 +54,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("FBLC Calculation", ShowFblcCalculationCommand),
                 new CommandViewModel("FRPB Calculation", ShowFrpbCalculationCommand),
                 new CommandViewModel("LT Calculation", ShowLtCalculationCommand),
-                new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand)
+                new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand),
+                new CommandViewModel("DMax Calculation", ShowDMaxCalculationCommand)
             };
 
             ContextMenuItemCommands = new ObservableCollection<CommandViewModel>
@@ -66,7 +68,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("FBLC Calculation", ShowFblcCalculationCommand),
                 new CommandViewModel("FRPB Calculation", ShowFrpbCalculationCommand),
                 new CommandViewModel("LT Calculation", ShowLtCalculationCommand),
-                new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand)
+                new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand),
+                new CommandViewModel("DMax Calculation", ShowDMaxCalculationCommand)
             };
         }
 
@@ -190,6 +193,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public double LtLogValue => LtLogCalculation != null ? LtLogCalculation.LoadThreshold : 0d;
 
+        public double DMaxValue => DmaxCalculation != null ? DmaxCalculation.LoadThreshold : 0d;
+
         private FblcCalculation _fblcCalculation = null;
         private FblcCalculation FblcCalculation => _fblcCalculation ?? (_fblcCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new FblcCalculation(Source.Measurements, 4.0) : null);
 
@@ -202,6 +207,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private LTLogCalculation _ltLogCalculation = null;
 
         private LTLogCalculation LtLogCalculation => _ltLogCalculation ?? (_ltLogCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new LTLogCalculation(Source.Measurements) : null);
+
+        private DmaxCalculation _dmaxCalculation;
+
+        private DmaxCalculation DmaxCalculation => _dmaxCalculation ?? (_dmaxCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new DmaxCalculation(Source.Measurements) : null);
 
         #endregion
 
@@ -450,6 +459,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             Logger.Debug($"Show LTLog Calculation for {DisplayName}");
             var workspace = new LtLogCalculationViewModel(this, ShowWorkspace);
+            workspace.Show();
+        }
+
+        #endregion
+
+        #region ShowDMaxCalculationCommand
+
+        public ICommand ShowDMaxCalculationCommand => _showDMaxCalculationCommand ?? (_showDMaxCalculationCommand = new RelayCommand(ShowDMaxCalculation));
+
+        private void ShowDMaxCalculation(object obj)
+        {
+            Logger.Debug($"Show DMax Calculation for {DisplayName}");
+            var workspace = new DMaxCalculationViewModel(this, ShowWorkspace);
             workspace.Show();
         }
 

@@ -29,6 +29,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ICommand _showFrpbCalculationCommand;
         private ICommand _showLtCalculationCommand;
         private ICommand _showLtLogCalculationCommand;
+        private ICommand _showDMaxCalculationCommand;
 
         #endregion
 
@@ -52,7 +53,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("FBLC Calculation", ShowFblcCalculationCommand),
                 new CommandViewModel("FRPB Calculation", ShowFrpbCalculationCommand),
                 new CommandViewModel("LT Calculation", ShowLtCalculationCommand),
-                new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand)
+                new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand),
+                new CommandViewModel("DMax Calculation", ShowDMaxCalculationCommand),
             };
         }
 
@@ -196,6 +198,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ?? (_showLtCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
 
         public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ?? (_showLtLogCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtLogCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
+
+        public ICommand ShowDMaxCalculationCommand => _showDMaxCalculationCommand ?? (_showDMaxCalculationCommand = new RelayCommand((object obj) => { Selected.ShowDMaxCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
 
         private void ShowAllMeasurements()
         {

@@ -43,6 +43,10 @@
         <vw:LtCalculationView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:DMaxCalculationViewModel}">
+        <vw:DMaxCalculationView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type vm:LtLogCalculationViewModel}">
         <vw:LtLogCalculationView />
     </DataTemplate>

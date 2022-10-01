@@ -43,6 +43,8 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         public (double a, double b) L2Factors => Fit.Line(Loads.ToArray(), Lactates.ToArray());
 
+        public (double a, double b) L2FactorsMin => Fit.Line(new[] { Loads[0], Loads[Loads.Count - 1] }, new[] { Lactates[0], Lactates[Lactates.Count - 1] });
+
         public Func<double, double> FittedHeartRateCurve => Fit.LineFunc(Loads.ToArray(), HeartRates.ToArray());
 
         #endregion
