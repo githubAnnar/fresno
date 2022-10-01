@@ -35,6 +35,14 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         public Func<double, double> FittedLactateCurve => Fit.PolynomialFunc(Loads.ToArray(), Lactates.ToArray(), 3, DirectRegressionMethod.QR);
 
+        public Func<double, double> L3Curve => Fit.PolynomialFunc(Loads.ToArray(), Lactates.ToArray(), 3, DirectRegressionMethod.QR);
+
+        public double[] L3Factors => Fit.Polynomial(Loads.ToArray(), Lactates.ToArray(), 3);
+
+        public Func<double, double> L2Curve => Fit.LineFunc(Loads.ToArray(), Lactates.ToArray());
+
+        public (double a, double b) L2Factors => Fit.Line(Loads.ToArray(), Lactates.ToArray());
+
         public Func<double, double> FittedHeartRateCurve => Fit.LineFunc(Loads.ToArray(), HeartRates.ToArray());
 
         #endregion
