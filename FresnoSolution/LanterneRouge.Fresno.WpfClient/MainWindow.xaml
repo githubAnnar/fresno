@@ -45,6 +45,9 @@
                         </MenuItem.ItemContainerStyle>
                     </MenuItem>
                 </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Preferences" Command="{Binding OpenPreferencesCommand}"/>
+                </MenuItem>
             </Menu>
         </DockPanel>
 

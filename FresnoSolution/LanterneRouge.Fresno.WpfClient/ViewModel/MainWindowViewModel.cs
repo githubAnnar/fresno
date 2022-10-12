@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Fresno.WpfClient.Preferences.View;
+using LanterneRouge.Fresno.WpfClient.Preferences.ViewModel;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using log4net;
@@ -14,6 +16,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -33,6 +36,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private readonly string _mruPersistPath;
         private bool _isProcessingMru;
         private ICommand _closeCommand;
+        private ICommand _openPreferencesCommand;
         private const string AppDirecory = "LanterneRouge";
         private const string MruFilename = "FresnoMru.xml";
 
@@ -233,6 +237,31 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 ShowAllUsers();
             }
         }));
+
+        #endregion
+
+        #region OpenPreferencesCommand
+
+        public ICommand OpenPreferencesCommand => _openPreferencesCommand ?? (_openPreferencesCommand = new RelayCommand(param => OpenPreferences()));
+        private void OpenPreferences()
+        {
+            var emailPreferencesView = new EmailPreferencesView
+            {
+                DataContext = new EmailPreferencesViewModel()
+            };
+
+            var dataContext = new FresnoToolWindowViewModel
+            {
+                TabItems = new ObservableCollection<UserControl> { emailPreferencesView }
+            };
+
+            var contentWindow = new FresnoToolWindow
+            {
+                Title = "Preferences",
+                DataContext = dataContext
+            };
+            contentWindow.ShowDialog();
+        }
 
         #endregion
 
