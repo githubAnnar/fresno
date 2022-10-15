@@ -40,6 +40,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private const string AppDirecory = "LanterneRouge";
         private const string MruFilename = "FresnoMru.xml";
 
+        private readonly MainWindow _parentWindow;
+
         #endregion // Fields
 
         #region Constructor
@@ -47,7 +49,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel" /> class.
         /// </summary>
-        public MainWindowViewModel()
+        public MainWindowViewModel(MainWindow parentWindow)
         {
             DisplayName = $"Step Test Viewer";
             Logger.Debug("Checking MRU file");
@@ -75,6 +77,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 LoadMru(_mruPersistPath);
                 Logger.Debug($"Loaded MRU File '{_mruPersistPath}'");
             }
+            _parentWindow = parentWindow;
         }
 
         #endregion // Constructor
@@ -252,13 +255,18 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             var dataContext = new FresnoToolWindowViewModel
             {
-                TabItems = new ObservableCollection<UserControl> { emailPreferencesView }
+                TabItems = new ObservableCollection<CustomTabItem> {
+                    new CustomTabItem {IsSelected = true, Header = "Email", Content = new EmailPreferencesView { DataContext = new EmailPreferencesViewModel() } },
+                    new CustomTabItem { Header = "Lactate Zones", Content = new LactateZonePreferencesView { DataContext = new LactateZonePreferencesViewModel() } }
+                }
             };
 
             var contentWindow = new FresnoToolWindow
             {
                 Title = "Preferences",
-                DataContext = dataContext
+                DataContext = dataContext,
+                Owner = _parentWindow,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             contentWindow.ShowDialog();
         }

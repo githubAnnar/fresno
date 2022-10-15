@@ -7,7 +7,16 @@
         mc:Ignorable="d"
         WindowStyle="ToolWindow"
         Title="FresnoToolWindow" Height="450" Width="800">
-    <TabControl ItemsSource="{Binding TabItems}">
-
+    <TabControl ItemsSource="{Binding TabItems}" SelectedIndex="0">
+        <TabControl.ItemTemplate>
+            <DataTemplate>
+                <TextBlock Text="{Binding Header}"/>
+            </DataTemplate>
+        </TabControl.ItemTemplate>
+        <TabControl.ContentTemplate>
+            <DataTemplate >
+                <ContentPresenter Content="{Binding Content}"/>
+            </DataTemplate>
+        </TabControl.ContentTemplate>
     </TabControl>
 </Window>

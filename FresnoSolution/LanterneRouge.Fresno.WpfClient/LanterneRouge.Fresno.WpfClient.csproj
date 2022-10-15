@@ -180,12 +180,17 @@
     <Compile Include="FresnoToolWindow.xaml.cs">
       <DependentUpon>FresnoToolWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\CustomTabItem.cs" />
     <Compile Include="MVVM\IWorkspaceCommands.cs" />
     <Compile Include="MVVM\RelayCommand.cs" />
     <Compile Include="MVVM\ViewModelBase.cs" />
     <Compile Include="Preferences\ViewModel\EmailPreferencesViewModel.cs" />
+    <Compile Include="Preferences\ViewModel\LactateZonePreferencesViewModel.cs" />
     <Compile Include="Preferences\View\EmailPreferencesView.xaml.cs">
       <DependentUpon>EmailPreferencesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Preferences\View\LactateZonePreferencesView.xaml.cs">
+      <DependentUpon>LactateZonePreferencesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\Interfaces\IDataService.cs" />
     <Compile Include="Services\DataService.cs" />
@@ -276,6 +281,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Preferences\View\EmailPreferencesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Preferences\View\LactateZonePreferencesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

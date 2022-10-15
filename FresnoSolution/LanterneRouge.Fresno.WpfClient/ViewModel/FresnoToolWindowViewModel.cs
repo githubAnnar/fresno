@@ -1,6 +1,5 @@
 ﻿using LanterneRouge.Fresno.WpfClient.MVVM;
 using System.Collections.ObjectModel;
-using System.Windows.Controls;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -8,10 +7,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Fields
 
-        private ObservableCollection<UserControl> _tabItems;
+        private ObservableCollection<CustomTabItem> _tabItems;
 
         #endregion
-        public ObservableCollection<UserControl> TabItems
+        public ObservableCollection<CustomTabItem> TabItems
         {
             get => _tabItems;
             set

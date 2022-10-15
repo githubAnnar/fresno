@@ -24,7 +24,7 @@ namespace LanterneRouge.Fresno.WpfClient
 
             base.OnStartup(e);
             var window = new MainWindow();
-            var viewModel = new MainWindowViewModel();
+            var viewModel = new MainWindowViewModel(window);
 
             void handler(object sender, EventArgs ea)
             {
