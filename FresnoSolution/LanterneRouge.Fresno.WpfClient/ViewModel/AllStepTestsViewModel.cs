@@ -1,5 +1,8 @@
-﻿using LanterneRouge.Fresno.Report;
+﻿using Autofac;
+using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Fresno.WpfClient.Services;
+using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -8,6 +11,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -30,6 +35,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ICommand _showLtCalculationCommand;
         private ICommand _showLtLogCalculationCommand;
         private ICommand _showDMaxCalculationCommand;
+        private ICommand _sendPdfByEmailCommand;
+        private IEmailService _emailService;
 
         #endregion
 
@@ -50,6 +57,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("Show all Measurements", ShowAllMeasurementsCommand),
                 new CommandViewModel("Show Diagram", ShowDiagramCommand),
                 new CommandViewModel("Generate PDF", CreateStepTestPdfCommand),
+                new CommandViewModel("Send PDF by Email", SendPdfByEmailCommand),
                 new CommandViewModel("FBLC Calculation", ShowFblcCalculationCommand),
                 new CommandViewModel("FRPB Calculation", ShowFrpbCalculationCommand),
                 new CommandViewModel("LT Calculation", ShowLtCalculationCommand),
@@ -82,6 +90,22 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public StepTestViewModel Selected => SelectedObject as StepTestViewModel;
 
         public ObservableCollection<StepTestViewModel> AllStepTests { get; private set; }
+
+        public IEmailService EmailService
+        {
+            get
+            {
+                if (_emailService == null)
+                {
+                    var scope = ServiceLocator.Instance.BeginLifetimeScope();
+                    _emailService = scope.Resolve<IEmailService>();
+                }
+
+                return _emailService;
+            }
+        }
+
+
 
         #region ShowDiagram Command
 
@@ -174,6 +198,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void CreateStepTestPdf()
         {
+            string filename = GeneratePdf();
+
+            MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private string GeneratePdf()
+        {
             var allSelectedStepTests = AllSelected.Cast<StepTestViewModel>();
 
             // Find newest steptest
@@ -185,11 +216,47 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var parent = Parent as UserViewModel;
             var generator = new StepTestReport(main.Source, rest.Select(item => item.Source));
             var pdfDocument = generator.CreateReport();
-            var filename = $"{parent.FirstName} {parent.LastName} ({main.Source.Id}).pdf";
-            generator.PdfRender(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), filename), pdfDocument);
-
-            MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
+            var filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"{parent.FirstName} {parent.LastName} ({main.Source.Id}).pdf");
+            generator.PdfRender(filename, pdfDocument);
+            return filename;
         }
+
+        public ICommand SendPdfByEmailCommand => _sendPdfByEmailCommand ?? (_sendPdfByEmailCommand = new RelayCommand(param => SendStepTestPdfByMail(), param => CanSendEmail));
+
+        private void SendStepTestPdfByMail()
+        {
+            if (Parent is UserViewModel user)
+            {
+                var filename = GeneratePdf();
+
+                // Generate mail message
+                var senderEmail = new MailAddress(Properties.Settings.Default.EmailFrom);
+                var message = new MailMessage(senderEmail, new MailAddress(user.Email))
+                {
+                    Subject = $"Lactate Steptest result for {user.FirstName} {user.LastName}",
+                    Body = "The results of the test is attached to the mail",
+                    Sender = senderEmail
+                };
+
+                message.CC.Add(senderEmail);
+                var fileData = new Attachment(filename, MediaTypeNames.Application.Pdf);
+                var disposition = fileData.ContentDisposition;
+                disposition.CreationDate = File.GetCreationTime(filename);
+                disposition.ModificationDate = File.GetLastWriteTime(filename);
+                disposition.ReadDate = File.GetLastAccessTime(filename);
+
+                message.Attachments.Add(fileData);
+
+                // Send it by mail
+                if (EmailService.SendEmail(message))
+                {
+
+                }
+            }
+
+        }
+
+        public bool CanSendEmail => AllSelected.Count() == 1 && !string.IsNullOrEmpty((Parent as UserViewModel)?.Email);
 
         public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ?? (_showFblcCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFblcCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
 

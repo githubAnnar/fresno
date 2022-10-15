@@ -1,4 +1,5 @@
-﻿using LanterneRouge.Fresno.WpfClient.ViewModel;
+﻿using Bluegrams.Application;
+using LanterneRouge.Fresno.WpfClient.ViewModel;
 using System;
 using System.Windows;
 
@@ -21,6 +22,8 @@ namespace LanterneRouge.Fresno.WpfClient
             //uiVisualizerService.Register(typeof(UserViewModel), typeof(UserView));
             //uiVisualizerService.Register(typeof(StepTestViewModel), typeof(StepTestView));
             //uiVisualizerService.Register(typeof(MeasurementViewModel), typeof(MeasurementView));
+
+            PortableJsonSettingsProvider.ApplyProvider(WpfClient.Properties.Settings.Default);
 
             base.OnStartup(e);
             var window = new MainWindow();

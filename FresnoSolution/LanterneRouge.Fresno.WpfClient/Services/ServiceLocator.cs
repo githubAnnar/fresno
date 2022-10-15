@@ -15,6 +15,7 @@ namespace LanterneRouge.Fresno.WpfClient.Services
                 {
                     var builder = new ContainerBuilder();
                     builder.RegisterType<DataService>().As<IDataService>().SingleInstance();
+                    builder.RegisterType<EmailService>().As<IEmailService>().SingleInstance();
                     _container = builder.Build();
                 }
 

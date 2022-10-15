@@ -83,6 +83,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #endregion // Constructor
 
         #region Properties
+
         private WorkspaceViewModel _selectedItem;
         public WorkspaceViewModel SelectedItem
         {
