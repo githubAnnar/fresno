@@ -204,6 +204,7 @@
     <Compile Include="Services\Interfaces\IEmailService.cs" />
     <Compile Include="Services\ServiceLocator.cs" />
     <Compile Include="Utils\AttatchedProperties\GridViewSort.cs" />
+    <Compile Include="Utils\EmailExtensions.cs" />
     <Compile Include="Utils\EnumerableExtentions.cs" />
     <Compile Include="Utils\ValidateHelpers.cs" />
     <Compile Include="ViewModel\AllMeasurementsViewModel.cs" />

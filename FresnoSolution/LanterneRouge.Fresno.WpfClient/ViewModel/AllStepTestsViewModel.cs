@@ -3,6 +3,7 @@ using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Services;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
+using LanterneRouge.Fresno.WpfClient.Utils;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -230,7 +231,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 var filename = GeneratePdf();
 
                 // Generate mail message
-                var senderEmail = new MailAddress(Properties.Settings.Default.EmailFrom);
+                var senderEmail = new MailAddress(Properties.Settings.Default.EmailFrom, !string.IsNullOrEmpty(Properties.Settings.Default.EmailDisplayName) ? Properties.Settings.Default.EmailDisplayName : null);
+
                 var message = new MailMessage(senderEmail, new MailAddress(user.Email))
                 {
                     Subject = $"Lactate Steptest result for {user.FirstName} {user.LastName}",
@@ -256,7 +258,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         }
 
-        public bool CanSendEmail => AllSelected.Count() == 1 && !string.IsNullOrEmpty((Parent as UserViewModel)?.Email);
+        public bool CanSendEmail => AllSelected.Count() == 1 && !string.IsNullOrEmpty((Parent as UserViewModel)?.Email) && Properties.Settings.Default.IsEmailSettingsValid();
 
         public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ?? (_showFblcCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFblcCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
 

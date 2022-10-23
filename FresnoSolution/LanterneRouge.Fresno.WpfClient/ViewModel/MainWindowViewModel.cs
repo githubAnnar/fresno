@@ -249,11 +249,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public ICommand OpenPreferencesCommand => _openPreferencesCommand ?? (_openPreferencesCommand = new RelayCommand(param => OpenPreferences()));
         private void OpenPreferences()
         {
-            var emailPreferencesView = new EmailPreferencesView
-            {
-                DataContext = new EmailPreferencesViewModel()
-            };
-
             var dataContext = new FresnoToolWindowViewModel
             {
                 TabItems = new ObservableCollection<CustomTabItem> {

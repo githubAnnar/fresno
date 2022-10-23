@@ -46,5 +46,17 @@ namespace LanterneRouge.Fresno.WpfClient.Properties {
                 this["EmailFrom"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Annar Gaustad")]
+        public string EmailDisplayName {
+            get {
+                return ((string)(this["EmailDisplayName"]));
+            }
+            set {
+                this["EmailDisplayName"] = value;
+            }
+        }
     }
 }

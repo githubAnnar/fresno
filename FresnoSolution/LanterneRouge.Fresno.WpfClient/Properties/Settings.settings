@@ -8,5 +8,8 @@
     <Setting Name="EmailFrom" Type="System.String" Scope="User">
       <Value Profile="(Default)">annar.gaustad@gmail.com</Value>
     </Setting>
+    <Setting Name="EmailDisplayName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Annar Gaustad</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

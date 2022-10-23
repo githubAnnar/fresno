@@ -23,9 +23,9 @@ namespace LanterneRouge.Fresno.WpfClient
             //uiVisualizerService.Register(typeof(StepTestViewModel), typeof(StepTestView));
             //uiVisualizerService.Register(typeof(MeasurementViewModel), typeof(MeasurementView));
 
-            PortableJsonSettingsProvider.ApplyProvider(WpfClient.Properties.Settings.Default);
 
             base.OnStartup(e);
+            PortableJsonSettingsProvider.ApplyProvider(WpfClient.Properties.Settings.Default);
             var window = new MainWindow();
             var viewModel = new MainWindowViewModel(window);
 
