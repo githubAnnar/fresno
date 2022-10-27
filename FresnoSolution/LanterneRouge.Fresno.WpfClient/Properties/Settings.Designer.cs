@@ -22,41 +22,5 @@ namespace LanterneRouge.Fresno.WpfClient.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("server.email.no")]
-        public string EmailServer {
-            get {
-                return ((string)(this["EmailServer"]));
-            }
-            set {
-                this["EmailServer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("annar.gaustad@gmail.com")]
-        public string EmailFrom {
-            get {
-                return ((string)(this["EmailFrom"]));
-            }
-            set {
-                this["EmailFrom"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Annar Gaustad")]
-        public string EmailDisplayName {
-            get {
-                return ((string)(this["EmailDisplayName"]));
-            }
-            set {
-                this["EmailDisplayName"] = value;
-            }
-        }
     }
 }

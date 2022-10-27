@@ -14,15 +14,29 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0">Server:</Label>
         <TextBox VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="1" Text="{Binding Server}"/>
 
-        <Label Grid.Row="1" Grid.Column="0">From:</Label>
-        <TextBox VerticalContentAlignment="Center"  Grid.Row="1" Grid.Column="1" Text="{Binding From}"/>
+        <Label Grid.Row="1" Grid.Column="0">Port:</Label>
+        <TextBox VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="1" Text="{Binding Port}"/>
 
-        <Label Grid.Row="2" Grid.Column="0">Display Name:</Label>
-        <TextBox VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="1" Text="{Binding EmailDisplayName}"></TextBox>
+        <Label Grid.Row="2" Grid.Column="0">From:</Label>
+        <TextBox VerticalContentAlignment="Center"  Grid.Row="2" Grid.Column="1" Text="{Binding From}"/>
+
+        <Label Grid.Row="3" Grid.Column="0">Display Name:</Label>
+        <TextBox VerticalContentAlignment="Center" Grid.Row="3" Grid.Column="1" Text="{Binding EmailDisplayName}"/>
+
+        <Label Grid.Row="4" Grid.Column="0">Username:</Label>
+        <TextBox VerticalContentAlignment="Center"  Grid.Row="4" Grid.Column="1" Text="{Binding Username}"/>
+
+        <Label Grid.Row="5" Grid.Column="0">Password:</Label>
+        <PasswordBox VerticalContentAlignment="Center" Grid.Row="5" Grid.Column="1" PasswordChanged="PasswordBox_PasswordChanged"/>
+        <Button Grid.Row="6" Command="{Binding SaveCommand}">Save</Button>
     </Grid>
 </UserControl>

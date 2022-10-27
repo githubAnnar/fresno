@@ -1,5 +1,8 @@
 ﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Fresno.WpfClient.Utils;
 using System;
+using System.Security;
+using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 {
@@ -10,7 +13,8 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
         private string _server;
         private string _from;
         private string _displayName;
-
+        private SecureString _password;
+        private ICommand _saveCommand;
 
         #endregion
 
@@ -18,9 +22,12 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 
         public EmailPreferencesViewModel()
         {
-            Server = Properties.Settings.Default.EmailServer;
-            From = Properties.Settings.Default.EmailFrom;
-            EmailDisplayName = Properties.Settings.Default.EmailDisplayName;
+            Server = ApplicationSettingsManager.EmailServer;
+            From = ApplicationSettingsManager.EmailFrom;
+            EmailDisplayName = ApplicationSettingsManager.EmailDisplayName;
+            Port = ApplicationSettingsManager.Port;
+            Username = ApplicationSettingsManager.Username;
+            Password = PasswordHelpers.DecryptString(ApplicationSettingsManager.Password);
         }
 
         #endregion
@@ -40,9 +47,27 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
             }
         }
 
+        public int Port { get; set; }
+
+        public string Username { get; set; }
+
+        public SecureString Password
+        {
+            get => _password;
+            set
+            {
+                if (_password == null || !_password.Equals(value))
+                {
+                    _password = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public string From
         {
-            get => _from; set
+            get => _from;
+            set
             {
                 if (string.IsNullOrEmpty(_from) || !_from.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -54,7 +79,8 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 
         public string EmailDisplayName
         {
-            get => _displayName; set
+            get => _displayName;
+            set
             {
                 if (string.IsNullOrEmpty(_displayName) || !_displayName.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -66,23 +92,40 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 
         #endregion
 
+        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(param => Save()));
+
         #region Methods
 
         public void Save()
         {
-            if (!Properties.Settings.Default.EmailServer.Equals(Server, StringComparison.InvariantCultureIgnoreCase))
+            if (!ApplicationSettingsManager.EmailServer.Equals(Server, StringComparison.InvariantCultureIgnoreCase))
             {
-                Properties.Settings.Default.EmailServer = Server;
+                ApplicationSettingsManager.EmailServer = Server;
             }
 
-            if (!Properties.Settings.Default.EmailFrom.Equals(From, StringComparison.InvariantCultureIgnoreCase))
+            if (ApplicationSettingsManager.Port != Port)
             {
-                Properties.Settings.Default.EmailFrom = From;
+                ApplicationSettingsManager.Port = Port;
             }
 
-            if (!Properties.Settings.Default.EmailDisplayName.Equals(EmailDisplayName, StringComparison.InvariantCultureIgnoreCase))
+            if (string.IsNullOrEmpty(ApplicationSettingsManager.EmailFrom) || !ApplicationSettingsManager.EmailFrom.Equals(From, StringComparison.InvariantCultureIgnoreCase))
             {
-                Properties.Settings.Default.EmailDisplayName = EmailDisplayName;
+                ApplicationSettingsManager.EmailFrom = From;
+            }
+
+            if (string.IsNullOrEmpty(ApplicationSettingsManager.EmailDisplayName) || !ApplicationSettingsManager.EmailDisplayName.Equals(EmailDisplayName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ApplicationSettingsManager.EmailDisplayName = EmailDisplayName;
+            }
+
+            if (string.IsNullOrEmpty(ApplicationSettingsManager.Username) || !ApplicationSettingsManager.Username.Equals(Username, StringComparison.InvariantCultureIgnoreCase))
+            {
+                ApplicationSettingsManager.Username = Username;
+            }
+
+            if (string.IsNullOrEmpty(ApplicationSettingsManager.Password) || !ApplicationSettingsManager.Password.Equals(PasswordHelpers.EncryptString(Password)))
+            {
+                ApplicationSettingsManager.Password = PasswordHelpers.EncryptString(Password);
             }
         }
 

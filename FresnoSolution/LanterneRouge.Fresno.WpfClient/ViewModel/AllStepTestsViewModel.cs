@@ -231,7 +231,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 var filename = GeneratePdf();
 
                 // Generate mail message
-                var senderEmail = new MailAddress(Properties.Settings.Default.EmailFrom, !string.IsNullOrEmpty(Properties.Settings.Default.EmailDisplayName) ? Properties.Settings.Default.EmailDisplayName : null);
+                var senderEmail = new MailAddress(ApplicationSettingsManager.EmailFrom, !string.IsNullOrEmpty(ApplicationSettingsManager.EmailDisplayName) ? ApplicationSettingsManager.EmailDisplayName : null);
 
                 var message = new MailMessage(senderEmail, new MailAddress(user.Email))
                 {
@@ -258,7 +258,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         }
 
-        public bool CanSendEmail => AllSelected.Count() == 1 && !string.IsNullOrEmpty((Parent as UserViewModel)?.Email) && Properties.Settings.Default.IsEmailSettingsValid();
+        public bool CanSendEmail => AllSelected.Count() == 1 && !string.IsNullOrEmpty((Parent as UserViewModel)?.Email) && ApplicationSettingsManager.IsEmailSettingsValid();
 
         public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ?? (_showFblcCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFblcCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
 

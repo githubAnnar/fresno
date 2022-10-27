@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Autofac;
+using LanterneRouge.Fresno.WpfClient.Services;
+using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -7,6 +10,8 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
 {
     public abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
+        private IApplicationSettingsService _applicationSettingsService;
+
         #region Constructors
 
         /// <summary>
@@ -123,5 +128,19 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
 #endif
 
         #endregion // IDisposable Members
+
+        public IApplicationSettingsService ApplicationSettingsManager
+        {
+            get
+            {
+                if (_applicationSettingsService == null)
+                {
+                    var scope = ServiceLocator.Instance.BeginLifetimeScope();
+                    _applicationSettingsService = scope.Resolve<IApplicationSettingsService>();
+                }
+
+                return _applicationSettingsService;
+            }
+        }
     }
 }

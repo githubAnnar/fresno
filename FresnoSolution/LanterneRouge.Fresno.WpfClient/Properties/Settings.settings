@@ -1,15 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LanterneRouge.Fresno.WpfClient.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles />
-  <Settings>
-    <Setting Name="EmailServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">server.email.no</Value>
-    </Setting>
-    <Setting Name="EmailFrom" Type="System.String" Scope="User">
-      <Value Profile="(Default)">annar.gaustad@gmail.com</Value>
-    </Setting>
-    <Setting Name="EmailDisplayName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Annar Gaustad</Value>
-    </Setting>
-  </Settings>
+  <Settings />
 </SettingsFile>

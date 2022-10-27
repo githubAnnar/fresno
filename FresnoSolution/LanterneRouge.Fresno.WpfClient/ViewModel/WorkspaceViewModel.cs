@@ -16,6 +16,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ICommand _closeCommand;
         private ObservableCollection<CommandViewModel> _subCommands;
         private ObservableCollection<CommandViewModel> _contextMenuItemCommands;
+        private IDataService _manager;
 
         #endregion // Fields
 
@@ -70,7 +71,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Properties
 
-        private IDataService _manager;
         public IDataService DataManager
         {
             get
