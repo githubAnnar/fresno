@@ -98,7 +98,7 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 
         public void Save()
         {
-            if (!ApplicationSettingsManager.EmailServer.Equals(Server, StringComparison.InvariantCultureIgnoreCase))
+            if (string.IsNullOrEmpty(ApplicationSettingsManager.EmailServer) || !ApplicationSettingsManager.EmailServer.Equals(Server, StringComparison.InvariantCultureIgnoreCase))
             {
                 ApplicationSettingsManager.EmailServer = Server;
             }

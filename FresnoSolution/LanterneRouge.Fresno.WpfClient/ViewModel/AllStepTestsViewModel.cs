@@ -250,12 +250,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 message.Attachments.Add(fileData);
 
                 // Send it by mail
-                if (EmailService.SendEmail(message))
-                {
-
-                }
+                EmailService.SendEmail(message);
             }
-
         }
 
         public bool CanSendEmail => AllSelected.Count() == 1 && !string.IsNullOrEmpty((Parent as UserViewModel)?.Email) && ApplicationSettingsManager.IsEmailSettingsValid();

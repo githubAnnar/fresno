@@ -4,6 +4,6 @@ namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
 {
     public interface IEmailService
     {
-        bool SendEmail(MailMessage mailMessage);
+        void SendEmail(MailMessage mailMessage);
     }
 }
