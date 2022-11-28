@@ -17,26 +17,29 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0">Server:</Label>
-        <TextBox VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="1" Text="{Binding Server}"/>
+        <Label Grid.Row="0" Grid.Column="0" Margin="5">Server:</Label>
+        <TextBox VerticalContentAlignment="Center" Grid.Row="0" Grid.Column="1" Text="{Binding Server}" Margin="5"/>
 
-        <Label Grid.Row="1" Grid.Column="0">Port:</Label>
-        <TextBox VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="1" Text="{Binding Port}"/>
+        <Label Grid.Row="1" Grid.Column="0" Margin="5">Port:</Label>
+        <TextBox VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="1" Text="{Binding Port}" Margin="5"/>
 
-        <Label Grid.Row="2" Grid.Column="0">From:</Label>
-        <TextBox VerticalContentAlignment="Center"  Grid.Row="2" Grid.Column="1" Text="{Binding From}"/>
+        <Label Grid.Row="2" Grid.Column="0" Margin="5">From:</Label>
+        <TextBox VerticalContentAlignment="Center"  Grid.Row="2" Grid.Column="1" Text="{Binding From}" Margin="5"/>
 
-        <Label Grid.Row="3" Grid.Column="0">Display Name:</Label>
-        <TextBox VerticalContentAlignment="Center" Grid.Row="3" Grid.Column="1" Text="{Binding EmailDisplayName}"/>
+        <Label Grid.Row="3" Grid.Column="0" Margin="5">Display Name:</Label>
+        <TextBox VerticalContentAlignment="Center" Grid.Row="3" Grid.Column="1" Text="{Binding EmailDisplayName}" Margin="5"/>
 
-        <Label Grid.Row="4" Grid.Column="0">Username:</Label>
-        <TextBox VerticalContentAlignment="Center"  Grid.Row="4" Grid.Column="1" Text="{Binding Username}"/>
+        <Label Grid.Row="4" Grid.Column="0" Margin="5">Username:</Label>
+        <TextBox VerticalContentAlignment="Center"  Grid.Row="4" Grid.Column="1" Text="{Binding Username}" Margin="5"/>
 
-        <Label Grid.Row="5" Grid.Column="0">Password:</Label>
-        <PasswordBox VerticalContentAlignment="Center" Grid.Row="5" Grid.Column="1" PasswordChanged="PasswordBox_PasswordChanged"/>
-        <Button Grid.Row="6" Command="{Binding SaveCommand}">Save</Button>
+        <Label Grid.Row="5" Grid.Column="0" Margin="5">Password:</Label>
+        <PasswordBox VerticalContentAlignment="Center" Grid.Row="5" Grid.Column="1" PasswordChanged="PasswordBox_PasswordChanged" Margin="5"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button Height="23" Width="75" Command="{Binding CloseCommand}" Margin="5">Close</Button>
+            <Button Height="23" Width="75"  Command="{Binding SaveCommand}"  Margin="5">Save</Button>
+        </StackPanel>
     </Grid>
 </UserControl>

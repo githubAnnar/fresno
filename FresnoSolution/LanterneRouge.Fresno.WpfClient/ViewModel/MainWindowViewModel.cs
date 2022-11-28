@@ -249,21 +249,22 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public ICommand OpenPreferencesCommand => _openPreferencesCommand ?? (_openPreferencesCommand = new RelayCommand(param => OpenPreferences()));
         private void OpenPreferences()
         {
-            var dataContext = new FresnoToolWindowViewModel
-            {
-                TabItems = new ObservableCollection<CustomTabItem> {
-                    new CustomTabItem {IsSelected = true, Header = "Email", Content = new EmailPreferencesView { DataContext = new EmailPreferencesViewModel() } },
-                    new CustomTabItem { Header = "Lactate Zones", Content = new LactateZonePreferencesView { DataContext = new LactateZonePreferencesViewModel() } }
-                }
-            };
-
             var contentWindow = new FresnoToolWindow
             {
                 Title = "Preferences",
-                DataContext = dataContext,
                 Owner = _parentWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
+
+            var dataContext = new FresnoToolWindowViewModel
+            {
+                TabItems = new ObservableCollection<CustomTabItem> {
+                    new CustomTabItem {IsSelected = true, Header = "Email", Content = new EmailPreferencesView { DataContext = new EmailPreferencesViewModel(contentWindow.Close) } },
+                    new CustomTabItem { Header = "Lactate Zones", Content = new LactateZonePreferencesView { DataContext = new LactateZonePreferencesViewModel(contentWindow.Close) } }
+                }
+            };
+
+            contentWindow.DataContext = dataContext;
             contentWindow.ShowDialog();
         }
 
