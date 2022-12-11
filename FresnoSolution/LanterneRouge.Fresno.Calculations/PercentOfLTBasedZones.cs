@@ -24,7 +24,6 @@ namespace LanterneRouge.Fresno.Calculations
                     _zones = new List<Zone>();
                     for (int i = 1; i <= Limits.Length; i++)
                     {
-
                         var lLoad = Calculation.LoadThreshold * Limits[i - 1];
                         var lHr = Calculation.FittedHeartRateCurve(lLoad);
                         var uLoad = i == Limits.Length ? double.PositiveInfinity : Calculation.LoadThreshold * Limits[i];

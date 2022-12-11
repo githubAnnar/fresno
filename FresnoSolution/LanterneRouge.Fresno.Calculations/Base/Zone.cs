@@ -34,7 +34,7 @@
 
         public double LowerHeartRate { get; }
 
-        public override string ToString() => $"{Name} HR: {LowerHeartRate.ToString("#.0")}-{UpperHeartRate.ToString("#.0")} LD: {LowerLoad.ToString("#.0")}-{UpperLoad.ToString("#.0")}";
+        public override string ToString() => $"{Name} HR: {LowerHeartRate:#.0}-{UpperHeartRate:#.0} LD: {LowerLoad:#.0}-{UpperLoad:#.0}";
     }
 }
 

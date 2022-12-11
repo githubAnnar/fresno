@@ -67,6 +67,7 @@
     <Compile Include="LTCalculation.cs" />
     <Compile Include="PercentOfLTBasedZones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZoneSetting.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LanterneRouge.Fresno.Data\LanterneRouge.Fresno.DataLayer.csproj">

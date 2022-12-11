@@ -1,4 +1,5 @@
-﻿using LanterneRouge.Fresno.WpfClient.Utils;
+﻿using LanterneRouge.Fresno.Calculations;
+using LanterneRouge.Fresno.WpfClient.Utils;
 using System;
 using System.Configuration;
 
@@ -7,11 +8,18 @@ namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
     public class ApplicationSettingsService : IApplicationSettingsService
     {
         public string EmailServer { get => ReadSetting<string>(nameof(EmailServer)); set => UpsertSetting(nameof(EmailServer), value); }
+
         public int Port { get => ReadSetting<int>(nameof(Port)); set => UpsertSetting(nameof(Port), value.ToString()); }
+
         public string Password { get => ReadSetting<string>(nameof(Password)); set => UpsertSetting(nameof(Password), value); }
+
         public string EmailFrom { get => ReadSetting<string>(nameof(EmailFrom)); set => UpsertSetting(nameof(EmailFrom), value); }
+
         public string EmailDisplayName { get => ReadSetting<string>(nameof(EmailDisplayName)); set => UpsertSetting(nameof(EmailDisplayName), value); }
+
         public string Username { get => ReadSetting<string>(nameof(Username)); set => UpsertSetting(nameof(Username), value); }
+
+        public ZoneSettings ZoneSettings { get => ReadSetting<ZoneSettings>(nameof(ZoneSettings)); set => UpsertSetting(nameof(ZoneSettings), value.ToString()); }
 
         private T ReadSetting<T>(string key)
         {
