@@ -1,5 +1,6 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.WpfClient.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Configuration;
 
@@ -19,7 +20,7 @@ namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
 
         public string Username { get => ReadSetting<string>(nameof(Username)); set => UpsertSetting(nameof(Username), value); }
 
-        public ZoneSettings ZoneSettings { get => ReadSetting<ZoneSettings>(nameof(ZoneSettings)); set => UpsertSetting(nameof(ZoneSettings), value.ToString()); }
+        public ZoneSettings ZoneSettingsValue { get => ReadSetting<ZoneSettings>(nameof(ZoneSettings)) ?? ZoneSettings.Default; set => UpsertSetting(nameof(ZoneSettings), JsonConvert.SerializeObject(value)); }
 
         private T ReadSetting<T>(string key)
         {

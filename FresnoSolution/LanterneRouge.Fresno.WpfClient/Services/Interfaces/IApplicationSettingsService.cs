@@ -1,4 +1,6 @@
-﻿namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
+﻿using LanterneRouge.Fresno.Calculations;
+
+namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
 {
     public interface IApplicationSettingsService
     {
@@ -13,5 +15,7 @@
         string EmailDisplayName { get; set; }
 
         string Username { get; set; }
+
+        ZoneSettings ZoneSettingsValue { get; set; }
     }
 }

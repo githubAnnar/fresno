@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.Calculations.Base;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -38,7 +39,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 {
                     if (LtLogCalculation != null)
                     {
-                        var z = new PercentOfLTBasedZones(LtLogCalculation, new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 });
+                        var z = new PercentOfLTBasedZones(LtLogCalculation, ApplicationSettingsManager.ZoneSettingsValue.GetZoneSetting(nameof(LTLogCalculation)).Limits.ToArray());
                         _LTLogZones = new ObservableCollection<Zone>(z.Zones);
                     }
                 }

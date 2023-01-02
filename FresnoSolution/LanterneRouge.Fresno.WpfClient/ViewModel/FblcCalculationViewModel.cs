@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.Calculations.Base;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
@@ -59,7 +60,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 {
                     if (FblcCalculation != null)
                     {
-                        var z = new LactateBasedZones(FblcCalculation, new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 });
+                        var z = new LactateBasedZones(FblcCalculation, ApplicationSettingsManager.ZoneSettingsValue.GetZoneSetting(nameof(FblcCalculation)).Limits.ToArray());
                         _FBLCZones = new ObservableCollection<Zone>(z.Zones);
                     }
                 }
