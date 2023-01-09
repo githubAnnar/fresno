@@ -208,6 +208,10 @@
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\Interfaces\IEmailService.cs" />
     <Compile Include="Services\ServiceLocator.cs" />
+    <Compile Include="UserControls\ViewModel\ZoneSettingViewModel.cs" />
+    <Compile Include="UserControls\View\ZoneSettingView.xaml.cs">
+      <DependentUpon>ZoneSettingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\AttatchedProperties\GridViewSort.cs" />
     <Compile Include="Utils\EmailExtensions.cs" />
     <Compile Include="Utils\EnumerableExtentions.cs" />
@@ -301,6 +305,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Preferences\View\LactateZonePreferencesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\View\ZoneSettingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
