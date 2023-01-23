@@ -1,5 +1,8 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+﻿using LanterneRouge.Fresno.Calculations;
+using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Fresno.WpfClient.UserControls.ViewModel;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
@@ -18,6 +21,11 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
         public LactateZonePreferencesViewModel(Action close)
         {
             Close = close;
+            ZonePrefs = new ObservableCollection<ZoneSettingsViewModel>();
+            foreach (var item in ZoneSettings.Default)
+            {
+                ZonePrefs.Add(new ZoneSettingsViewModel(item));
+            }
         }
 
         #endregion
@@ -31,6 +39,8 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
         #endregion
 
         #region Methods
+
+        public ObservableCollection<ZoneSettingsViewModel> ZonePrefs { get; set; }
 
         public Action Close { get; }
 

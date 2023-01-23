@@ -13,6 +13,6 @@ namespace LanterneRouge.Fresno.WpfClient.UserControls.ViewModel
 
         public int Maximum { get; set; } = 20;
 
-        public double TickFrequency { get; set; } = 1d;
+        public double TickFrequency { get; set; } = 0.1;
     }
 }
