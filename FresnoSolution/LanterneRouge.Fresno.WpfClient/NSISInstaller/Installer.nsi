@@ -9,6 +9,7 @@
   !define NAME "Step Test Assistant" 
   Name "${NAME}"
   !define MUI_FILE "StepTestAssistant"
+  !define MUI_COMPANY "Lanterne Rouge"
   !define MUI_BRANDINGTEXT "${NAME}"
   CRCCheck On
  
@@ -26,12 +27,12 @@
   !define MUI_ICON "..\Resources\icons8-glucometer-32.ico"
   !define MUI_UNICON "..\Resources\icons8-glucometer-32.ico"
   !define MUI_SPECIALBITMAP "Bitmap.bmp"
-  !define RELEASE "debug"
+  !define RELEASE "Release"
  
 ;--------------------------------
 ;Folder selection page
  
-  InstallDir "$PROGRAMFILES\${NAME}"
+  InstallDir "$PROGRAMFILES\${MUI_COMPANY}\${NAME}"
  
  
 ;--------------------------------
@@ -59,11 +60,13 @@
  
  
 ;-------------------------------- 
-;Installer Sections     
+;Installer Sections
 Section "install" Installation
  
 ;Add files
   SetOutPath "$INSTDIR"
+
+  ; DLL Files
  
   File "..\bin\${RELEASE}\Autofac.dll"
   File "..\bin\${RELEASE}\Dapper.dll"
@@ -85,11 +88,9 @@ Section "install" Installation
   File "..\bin\${RELEASE}\OxyPlot.Pdf.dll"
   File "..\bin\${RELEASE}\OxyPlot.Wpf.dll"
   File "..\bin\${RELEASE}\OxyPlot.Wpf.Shared.dll"
-  File "..\bin\${RELEASE}\PdfSharp.Charting-gdi.dll"
   File "..\bin\${RELEASE}\PdfSharp-gdi.dll"
+  File "..\bin\${RELEASE}\PdfSharp.Charting-gdi.dll"
   File "..\bin\${RELEASE}\PortableJsonSettingsProvider.dll"
-  File "..\bin\${RELEASE}\${MUI_FILE}.exe"
-  File "..\bin\${RELEASE}\${MUI_FILE}.exe.config"
   File "..\bin\${RELEASE}\System.Buffers.dll"
   File "..\bin\${RELEASE}\System.Collections.Immutable.dll"
   File "..\bin\${RELEASE}\System.ComponentModel.Annotations.dll"
@@ -105,12 +106,28 @@ Section "install" Installation
   File "..\bin\${RELEASE}\System.Threading.Tasks.Extensions.dll"
   File "..\bin\${RELEASE}\System.ValueTuple.dll"
   File "..\bin\${RELEASE}\System.Windows.Interactivity.dll"
+  File "..\bin\${RELEASE}\Xceed.Wpf.AvalonDock.dll"
+  File "..\bin\${RELEASE}\Xceed.Wpf.AvalonDock.Themes.Aero.dll"
+  File "..\bin\${RELEASE}\Xceed.Wpf.AvalonDock.Themes.Metro.dll"
+  File "..\bin\${RELEASE}\Xceed.Wpf.AvalonDock.Themes.VS2010.dll"
+  File "..\bin\${RELEASE}\Xceed.Wpf.Toolkit.dll"
+
+ ; Exe File
+  File "..\bin\${RELEASE}\${MUI_FILE}.exe"
+
+ ; Config files
+  File "..\bin\${RELEASE}\LanterneRouge.Fresno.Calculations.dll.config"
+  File "..\bin\${RELEASE}\LanterneRouge.Fresno.DataLayer.dll.config"
+  File "..\bin\${RELEASE}\LanterneRouge.Fresno.Report.dll.config"
+  File "..\bin\${RELEASE}\${MUI_FILE}.exe.config"
+
+  ; SQLite Interops
   SetOutPath "$INSTDIR\x64"
   File "..\bin\${RELEASE}\x64\SQLite.Interop.dll"
   SetOutPath "$INSTDIR\x86"
   File "..\bin\${RELEASE}\x86\SQLite.Interop.dll"  
  
-;create desktop shortcut
+ ;create desktop shortcut
   CreateShortCut "$DESKTOP\${NAME}.lnk" "$INSTDIR\${MUI_FILE}.exe" ""
  
 ;create start-menu items
