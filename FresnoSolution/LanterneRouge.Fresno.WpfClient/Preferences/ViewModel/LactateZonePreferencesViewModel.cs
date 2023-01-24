@@ -2,12 +2,13 @@
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.UserControls.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 {
-    public class LactateZonePreferencesViewModel
+    public class LactateZonePreferencesViewModel : ViewModelBase
     {
         #region Fields
 
@@ -21,10 +22,23 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
         public LactateZonePreferencesViewModel(Action close)
         {
             Close = close;
+
+            var savedPrefs = ApplicationSettingsManager.ZoneSettingsValue;
             ZonePrefs = new ObservableCollection<ZoneSettingsViewModel>();
-            foreach (var item in ZoneSettings.Default)
+            if (savedPrefs == null)
             {
-                ZonePrefs.Add(new ZoneSettingsViewModel(item));
+                foreach (var item in ZoneSettings.Default)
+                {
+                    ZonePrefs.Add(new ZoneSettingsViewModel(item));
+                }
+            }
+
+            else
+            {
+                foreach (var item in savedPrefs)
+                {
+                    ZonePrefs.Add(new ZoneSettingsViewModel(item));
+                }
             }
         }
 
@@ -44,7 +58,30 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 
         public Action Close { get; }
 
-        private void Save() { }
+        private void Save()
+        {
+            var saveSettings = new ZoneSettings();
+            foreach (var item in ZonePrefs)
+            {
+                var newLimits = new List<double>();
+                foreach (var limit in item.ZoneSettings)
+                {
+                    newLimits.Add(limit.ZoneValue);
+                }
+
+                var saveItem = new ZoneSetting
+                {
+                    Name = item.Name,
+                    Limits = newLimits
+                };
+
+                saveSettings.Add(saveItem);
+            }
+
+            ApplicationSettingsManager.ZoneSettingsValue = saveSettings;
+
+            Close();
+        }
 
         #endregion
     }

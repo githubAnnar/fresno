@@ -11,7 +11,7 @@
                 <DockPanel Margin="10" VerticalAlignment="Center" LastChildFill="True">
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding ZoneName}"/>
                     <TextBox Text="{Binding ElementName=zoneValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" Width="40" VerticalAlignment="Center"/>
-                    <Slider VerticalAlignment="Center" Name="zoneValue" Maximum="{Binding Maximum, Mode=OneWay}" TickPlacement="BottomRight" TickFrequency="{Binding TickFrequency}" Value="{Binding ZoneValue,Mode=OneWay}" IsSnapToTickEnabled="True"/>
+                    <Slider VerticalAlignment="Center" Name="zoneValue" Maximum="{Binding Maximum, Mode=OneWay}" TickPlacement="BottomRight" TickFrequency="{Binding TickFrequency,Mode=OneWay}" Value="{Binding ZoneValue}" IsSnapToTickEnabled="True"/>
                 </DockPanel>
             </DataTemplate>
         </ListView.ItemTemplate>

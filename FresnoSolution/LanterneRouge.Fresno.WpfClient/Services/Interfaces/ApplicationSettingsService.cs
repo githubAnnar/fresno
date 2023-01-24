@@ -1,5 +1,6 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.WpfClient.Utils;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Configuration;
@@ -8,6 +9,8 @@ namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
 {
     public class ApplicationSettingsService : IApplicationSettingsService
     {
+        private static readonly ILog Logger = LogManager.GetLogger(nameof(ApplicationSettingsService));
+
         public string EmailServer { get => ReadSetting<string>(nameof(EmailServer)); set => UpsertSetting(nameof(EmailServer), value); }
 
         public int Port { get => ReadSetting<int>(nameof(Port)); set => UpsertSetting(nameof(Port), value.ToString()); }
@@ -33,12 +36,18 @@ namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
                     return default;
                 }
 
+                if (typeof(T).Equals(typeof(ZoneSettings)))
+                {
+                    var zs = JsonConvert.DeserializeObject<ZoneSettings>(value);
+                    return (T)Convert.ChangeType(zs, typeof(T));
+                }
+
                 return TConverter.ChangeType<T>(value);
             }
 
             catch (ConfigurationErrorsException ce)
             {
-                Console.WriteLine(ce.Message);
+                Logger.Error(ce.Message, ce);
                 return default;
             }
         }
@@ -63,9 +72,9 @@ namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
                 ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
             }
 
-            catch (ConfigurationErrorsException)
+            catch (ConfigurationErrorsException ce)
             {
-                Console.WriteLine("Error writing app settings");
+                Logger.Error("Error writing app settings", ce);
             }
         }
     }
