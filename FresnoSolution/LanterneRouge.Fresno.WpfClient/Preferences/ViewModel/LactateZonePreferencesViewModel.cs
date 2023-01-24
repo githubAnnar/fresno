@@ -14,6 +14,7 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 
         private ICommand _closeCommand;
         private ICommand _saveCommand;
+        private ICommand _resetCommand;
 
         #endregion
 
@@ -50,6 +51,8 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 
         public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(param => Save()));
 
+        public ICommand ResetCommand => _resetCommand ?? (_resetCommand = new RelayCommand(param => Reset()));
+
         #endregion
 
         #region Methods
@@ -81,6 +84,15 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
             ApplicationSettingsManager.ZoneSettingsValue = saveSettings;
 
             Close();
+        }
+
+        private void Reset()
+        {
+            ZonePrefs.Clear();
+            foreach (var item in ZoneSettings.Default)
+            {
+                ZonePrefs.Add(new ZoneSettingsViewModel(item));
+            }
         }
 
         #endregion

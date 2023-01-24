@@ -31,7 +31,8 @@
         </TabControl>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button Height="23" Width="75" Command="{Binding CloseCommand}" Margin="5">Close</Button>
-            <Button Height="23" Width="75"  Command="{Binding SaveCommand}"  Margin="5">Save</Button>
+            <Button Height="23" Width="75" Command="{Binding ResetCommand}" Margin="5">Reset</Button>
+            <Button Height="23" Width="75"  Command="{Binding SaveCommand}" Margin="5">Save</Button>
         </StackPanel>
     </Grid>
 </UserControl>
