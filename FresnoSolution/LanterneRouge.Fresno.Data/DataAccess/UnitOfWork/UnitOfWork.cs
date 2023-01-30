@@ -119,6 +119,29 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
             }
         }
 
+        public void Close()
+        {
+            // Close db connection
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+
+            _connection.Dispose();
+            _connection = null;
+            Logger.Info("Db connection closed");
+
+            // Reset Caches
+            _cachedUsers = null;
+            Logger.Info("Cached users is reset");
+
+            // Reset repositories
+            _measurementRepository = null;
+            _stepTestRepository = null;
+            _userRepository = null;
+            Logger.Info("Repositories is reset");
+        }
+
         #region User Methods
 
         public List<User> GetAllUsers(bool refresh = false)

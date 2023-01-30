@@ -38,5 +38,7 @@ namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
         void AddMeasurement(Measurement entity);
 
         bool LoadDatabase(string filename);
+
+        bool CloseDatabase();
     }
 }

@@ -16,7 +16,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -168,14 +167,20 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var openFileResult = openFileDialog.ShowDialog();
             if (openFileResult.HasValue && openFileResult.Value)
             {
-                CurrentDatabaseFilename = openFileDialog.FileName;
                 using (var scope = ServiceLocator.Instance.BeginLifetimeScope())
                 {
                     var service = scope.Resolve<IDataService>();
-                    IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
-                    Logger.Debug($"Opened database '{CurrentDatabaseFilename}'");
-                    MRUFileList.UpdateEntry(CurrentDatabaseFilename);
-                    ShowAllUsers();
+                    IsDatabaseOpen = !service.CloseDatabase();
+
+                    if (!IsDatabaseOpen)
+                    {
+                        CurrentDatabaseFilename = openFileDialog.FileName;
+                        IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
+                        Logger.Debug($"Opened database '{CurrentDatabaseFilename}'");
+                        MRUFileList.UpdateEntry(CurrentDatabaseFilename);
+                        CloseAllWorkspaces();
+                        ShowAllUsers();
+                    }
                 }
             }
         }
@@ -201,14 +206,23 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var openFileResult = openFileDialog.ShowDialog();
             if (openFileResult.HasValue && openFileResult.Value)
             {
-                CurrentDatabaseFilename = openFileDialog.FileName;
                 using (var scope = ServiceLocator.Instance.BeginLifetimeScope())
                 {
                     var service = scope.Resolve<IDataService>();
-                    IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
-                    Logger.Debug($"Created new database '{CurrentDatabaseFilename}'");
-                    MRUFileList.UpdateEntry(CurrentDatabaseFilename);
-                    ShowAllUsers();
+                    if (IsDatabaseOpen)
+                    {
+                        IsDatabaseOpen = !service.CloseDatabase();
+                    }
+
+                    if (!IsDatabaseOpen)
+                    {
+                        CurrentDatabaseFilename = openFileDialog.FileName;
+                        IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
+                        Logger.Debug($"Created new database '{CurrentDatabaseFilename}'");
+                        MRUFileList.UpdateEntry(CurrentDatabaseFilename);
+                        CloseAllWorkspaces();
+                        ShowAllUsers();
+                    }
                 }
             }
         }
@@ -235,10 +249,17 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             using (var scope = ServiceLocator.Instance.BeginLifetimeScope())
             {
                 var service = scope.Resolve<IDataService>();
-                IsDatabaseOpen = service.LoadDatabase(path);
-                Logger.Debug($"Opened database from MRU '{path}'");
-                MRUFileList.UpdateEntry(path);
-                ShowAllUsers();
+                IsDatabaseOpen = !service.CloseDatabase();
+
+                if (!IsDatabaseOpen)
+                {
+                    CurrentDatabaseFilename = path;
+                    IsDatabaseOpen = service.LoadDatabase(path);
+                    Logger.Debug($"Opened database from MRU '{path}'");
+                    MRUFileList.UpdateEntry(path);
+                    CloseAllWorkspaces();
+                    ShowAllUsers();
+                }
             }
         }));
 
@@ -333,6 +354,17 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #endregion // Workspaces
 
         #region Private Helpers
+
+        private void CloseAllWorkspaces()
+        {
+            var cmds = new List<ICommand>();
+            foreach (var workspace in Workspaces)
+            {
+                cmds.Add(workspace.CloseCommand);
+            }
+
+            cmds.ForEach(c => c.Execute(null));
+        }
 
         #region User Helpers
 

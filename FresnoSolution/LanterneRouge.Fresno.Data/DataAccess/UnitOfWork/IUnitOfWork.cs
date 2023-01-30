@@ -1,5 +1,4 @@
 ﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
-using LanterneRouge.Fresno.DataLayer.DataAccess.Repositories;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +7,8 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
     public interface IUnitOfWork : IDisposable
     {
         void Commit();
+
+        void Close();
 
         List<User> GetAllUsers(bool refresh = false);
 

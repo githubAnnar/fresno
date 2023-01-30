@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure;
 using LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
+using log4net;
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +10,7 @@ namespace LanterneRouge.Fresno.WpfClient.Services
 {
     public class DataService : IDataService
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(DataService));
         private IUnitOfWork _unitOfWork;
         private ConnectionFactory _connectionFactory;
 
@@ -20,7 +22,7 @@ namespace LanterneRouge.Fresno.WpfClient.Services
 
         public bool LoadDatabase(string filename)
         {
-            var response = false;
+            bool response;
             try
             {
                 Filename = filename;
@@ -28,9 +30,53 @@ namespace LanterneRouge.Fresno.WpfClient.Services
                 response = true;
             }
 
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.Error("Unexpected error", e);
                 response = false;
+            }
+
+            if (response)
+            {
+                Logger.Info($"Database '{filename}' is loaded");
+            }
+
+            else
+            {
+                Logger.Warn($"Database '{filename}' is not loaded");
+            }
+
+            return response;
+        }
+
+        public bool CloseDatabase()
+        {
+            bool response;
+            try
+            {
+                if (_unitOfWork != null)
+                {
+                    _unitOfWork.Close();
+                    _connectionFactory = null;
+                }
+
+                response = true;
+            }
+
+            catch (Exception e)
+            {
+                Logger.Error($"Unexpected error when closing database '{Filename}'", e);
+                response = false;
+            }
+
+            if (response && !string.IsNullOrEmpty(Filename))
+            {
+                Logger.Info($"Database '{Filename}' is closed");
+            }
+
+            else if (!response && !string.IsNullOrEmpty(Filename))
+            {
+                Logger.Warn($"Database '{Filename}' is not closed");
             }
 
             return response;
