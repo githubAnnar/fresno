@@ -1,31 +1,33 @@
 ﻿<UserControl x:Class="LanterneRouge.Fresno.WpfClient.View.StepTestView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             HorizontalAlignment="Left"
-             VerticalAlignment="Top">
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Margin="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="6" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="6" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="26" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="26" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="26" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="26" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="26" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid.Resources>
@@ -36,57 +38,57 @@
 
             <!-- TestType -->
 
-            <Label Grid.Row="0" Grid.Column="0" Content="Test Type:" HorizontalAlignment="Right" Target="{Binding ElementName=testTypeText}" />
-            <TextBox x:Name="testTypeText" Grid.Row="0" Grid.Column="2" Text="{Binding Path=TestType, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="1" Grid.Column="2" Content="{Binding ElementName=testTypeText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Test Type:" HorizontalAlignment="Left" Target="{Binding ElementName=testTypeText}" />
+            <TextBox x:Name="testTypeText" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=TestType, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding ElementName=testTypeText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- EffortUnit -->
 
-            <Label Grid.Row="0" Grid.Column="3" Content="Effort Unit:" HorizontalAlignment="Right" Target="{Binding ElementName=effortUnitText}" />
-            <TextBox x:Name="effortUnitText" Grid.Row="0" Grid.Column="5" Text="{Binding Path=EffortUnit, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="3" Grid.Column="2" Content="{Binding ElementName=effortUnitText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Content="Effort Unit:" HorizontalAlignment="Left" Target="{Binding ElementName=effortUnitText}" />
+            <TextBox x:Name="effortUnitText" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Path=EffortUnit, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Content="{Binding ElementName=effortUnitText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- StepDuration -->
 
-            <Label Grid.Row="2" Grid.Column="0" Content="Step Duration:" HorizontalAlignment="Right" Target="{Binding ElementName=stepDurationText}" />
-            <TextBox x:Name="stepDurationText" Grid.Row="2" Grid.Column="2" Text="{Binding Path=StepDurationTimespan, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="3" Grid.Column="2" Content="{Binding ElementName=stepDurationText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Step Duration:" HorizontalAlignment="Left" Target="{Binding ElementName=stepDurationText}" />
+            <TextBox x:Name="stepDurationText" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=StepDurationTimespan, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding ElementName=stepDurationText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- LoadPreset -->
 
-            <Label Grid.Row="2" Grid.Column="3" Content="Load Preset:" HorizontalAlignment="Right" Target="{Binding ElementName=loadPresetText}" />
-            <TextBox x:Name="loadPresetText" Grid.Row="2" Grid.Column="5" Text="{Binding Path=LoadPreset, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="3" Grid.Column="2" Content="{Binding ElementName=loadPresetText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Content="Load Preset:" HorizontalAlignment="Left" Target="{Binding ElementName=loadPresetText}" />
+            <TextBox x:Name="loadPresetText" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Path=LoadPreset, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Content="{Binding ElementName=loadPresetText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Increase -->
 
-            <Label Grid.Row="4" Grid.Column="0" Content="Increase Step:" HorizontalAlignment="Right" Target="{Binding ElementName=increaseText}" />
-            <TextBox x:Name="increaseText" Grid.Row="4" Grid.Column="2" Text="{Binding Path=Increase, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="5" Grid.Column="2" Content="{Binding ElementName=increaseText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Increase Step:" HorizontalAlignment="Left" Target="{Binding ElementName=increaseText}" />
+            <TextBox x:Name="increaseText" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Increase, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding ElementName=increaseText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Temperature -->
 
-            <Label Grid.Row="4" Grid.Column="3" Content="Temperature:" HorizontalAlignment="Right" Target="{Binding ElementName=temperatureText}" />
-            <TextBox x:Name="temperatureText" Grid.Row="4" Grid.Column="5" Text="{Binding Path=Temperature, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="5" Grid.Column="2" Content="{Binding ElementName=temperatureText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Content="Temperature:" HorizontalAlignment="Left" Target="{Binding ElementName=temperatureText}" />
+            <TextBox x:Name="temperatureText" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Path=Temperature, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="2" Content="{Binding ElementName=temperatureText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Weight -->
 
-            <Label Grid.Row="6" Grid.Column="0" Content="Weight:" HorizontalAlignment="Right" Target="{Binding ElementName=weightText}" />
-            <TextBox x:Name="weightText" Grid.Row="6" Grid.Column="2" Text="{Binding Path=Weight, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="7" Grid.Column="2" Content="{Binding ElementName=weightText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Content="Weight:" HorizontalAlignment="Left" Target="{Binding ElementName=weightText}" />
+            <TextBox x:Name="weightText" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Weight, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding ElementName=weightText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- TestDate -->
 
-            <Label Grid.Row="6" Grid.Column="3" Content="Test Date:" HorizontalAlignment="Right" Target="{Binding ElementName=testDateDate}" />
+            <Label Grid.Row="9" Grid.Column="2" Grid.ColumnSpan="2" Content="Test Date:" HorizontalAlignment="Left" Target="{Binding ElementName=testDateDate}" />
             <!--<usercontrols:DateTimePicker x:Name="testDateDate" Grid.Row="14" Grid.Column="2" SelectedDate="{Binding Path=TestDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
             <ContentPresenter Grid.Row="15" Grid.Column="2" Content="{Binding ElementName=testDateDate, Path=(Validation.Errors).CurrentItem}" />-->
-            <xctk:DateTimePicker x:Name="testDateDate" Grid.Row="6" Grid.Column="5" Value="{Binding TestDate}" Format="Custom" FormatString="dd.MM.yyyy HH:mm"/>
+            <xctk:DateTimePicker x:Name="testDateDate" Grid.Row="10" Grid.Column="2" Grid.ColumnSpan="2" Value="{Binding TestDate}" Format="Custom" FormatString="dd.MM.yyyy HH:mm" Margin="10" Height="24"/>
 
             <!-- BUTTONS -->
-            <StackPanel Grid.Row="8" Grid.ColumnSpan="6" Grid.Column="0" Orientation="Horizontal">
-                <Button Command="{Binding SaveCommand}" Content="_Save" HorizontalAlignment="Right" Margin="4,2" MinWidth="60" />
-                <Button Command="{Binding SaveCommand}" CommandParameter="Close" Content="Save &amp; Close" HorizontalAlignment="Right" Margin="4,2" MinWidth="60" />
+            <StackPanel Grid.Row="15" Grid.ColumnSpan="4" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Command="{Binding SaveCommand}" Content="_Save" Margin="4,2" MinWidth="60" Height="25"/>
+                <Button Command="{Binding SaveCommand}" CommandParameter="Close" Content="Save &amp; Close" Margin="4,2" MinWidth="60" Height="25" />
             </StackPanel>
             <!--<DockPanel Grid.Row="9" Grid.ColumnSpan="6">
                 <TabControl DockPanel.Dock="Top">

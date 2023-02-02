@@ -1,37 +1,33 @@
 ﻿<UserControl x:Class="LanterneRouge.Fresno.WpfClient.View.UserView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" >
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch" >
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Margin="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="6" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="26" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="26" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="26" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="26" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="26" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
@@ -43,68 +39,68 @@
 
             <!-- FirstName -->
 
-            <Label Grid.Row="0" Grid.Column="0" Content="First Name:" HorizontalAlignment="Right" Target="{Binding ElementName=firstNameText}" />
-            <TextBox x:Name="firstNameText" Grid.Row="0" Grid.Column="2" Text="{Binding Path=FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="1" Grid.Column="2" Content="{Binding ElementName=firstNameText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="First Name:" HorizontalAlignment="left" Target="{Binding ElementName=firstNameText}" />
+            <TextBox x:Name="firstNameText" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding ElementName=firstNameText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- LastName -->
 
-            <Label Grid.Row="2" Grid.Column="0" Content="Last Name:" HorizontalAlignment="Right" Target="{Binding ElementName=lastNameText}" />
-            <TextBox x:Name="lastNameText" Grid.Row="2" Grid.Column="2" Text="{Binding Path=LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="3" Grid.Column="2" Content="{Binding ElementName=lastNameText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Content="Last Name:" HorizontalAlignment="Left" Target="{Binding ElementName=lastNameText}" />
+            <TextBox x:Name="lastNameText" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Path=LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Content="{Binding ElementName=lastNameText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Street -->
 
-            <Label Grid.Row="4" Grid.Column="0" Content="Street:" HorizontalAlignment="Right" Target="{Binding ElementName=streetText}" />
-            <TextBox x:Name="streetText" Grid.Row="4" Grid.Column="2" Text="{Binding Path=Street, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="5" Grid.Column="2" Content="{Binding ElementName=streetText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Street:" HorizontalAlignment="Left" Target="{Binding ElementName=streetText}" />
+            <TextBox x:Name="streetText" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Path=Street, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding ElementName=streetText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- PostCode -->
 
-            <Label Grid.Row="6" Grid.Column="0" Content="Post Code:" HorizontalAlignment="Right" Target="{Binding ElementName=postCodeText}" />
-            <TextBox x:Name="postCodeText" Grid.Row="6" Grid.Column="2" Text="{Binding Path=PostCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="7" Grid.Column="2" Content="{Binding ElementName=postCodeText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="3" Grid.Column="2" Content="Post Code:" HorizontalAlignment="Left" Target="{Binding ElementName=postCodeText}" />
+            <TextBox x:Name="postCodeText" Grid.Row="4" Grid.Column="2" Text="{Binding Path=PostCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="5" Grid.Column="2" Content="{Binding ElementName=postCodeText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- PostCity -->
 
-            <Label Grid.Row="8" Grid.Column="0" Content="Post City:" HorizontalAlignment="Right" Target="{Binding ElementName=postCityText}" />
-            <TextBox x:Name="postCityText" Grid.Row="8" Grid.Column="2" Text="{Binding Path=PostCity, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="9" Grid.Column="2" Content="{Binding ElementName=postCityText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="3" Grid.Column="3" Content="Post City:" HorizontalAlignment="Left" Target="{Binding ElementName=postCityText}" />
+            <TextBox x:Name="postCityText" Grid.Row="4" Grid.Column="3" Text="{Binding Path=PostCity, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="5" Grid.Column="3" Content="{Binding ElementName=postCityText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- BirthDate -->
 
-            <Label Grid.Row="10" Grid.Column="0" Content="Birth Date:" HorizontalAlignment="Right" Target="{Binding ElementName=birthDateDate}" />
-            <DatePicker x:Name="birthDateDate" Grid.Row="10" Grid.Column="2" SelectedDate="{Binding Path=BirthDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="11" Grid.Column="2" Content="{Binding ElementName=birthDateDate, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Birth Date:" HorizontalAlignment="Left" Target="{Binding ElementName=birthDateDate}" />
+            <DatePicker x:Name="birthDateDate" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" SelectedDate="{Binding Path=BirthDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding ElementName=birthDateDate, Path=(Validation.Errors).CurrentItem}" />
 
-            <!-- Heighth -->
+            <!-- Height -->
 
-            <Label Grid.Row="12" Grid.Column="0" Content="Height:" HorizontalAlignment="Right" Target="{Binding ElementName=heightText}" />
-            <TextBox x:Name="heightText" Grid.Row="12" Grid.Column="2" Text="{Binding Path=Height, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="13" Grid.Column="2" Content="{Binding ElementName=heightText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="6" Grid.Column="2" Content="Height:" HorizontalAlignment="Left" Target="{Binding ElementName=heightText}" />
+            <TextBox x:Name="heightText" Grid.Row="7" Grid.Column="2" Text="{Binding Path=Height, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="8" Grid.Column="2" Content="{Binding ElementName=heightText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Sex -->
 
-            <Label Grid.Row="14" Grid.Column="0" Content="Sex:" HorizontalAlignment="Right" Target="{Binding ElementName=sexText}" />
-            <TextBox x:Name="sexText" Grid.Row="14" Grid.Column="2" Text="{Binding Path=Sex, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="15" Grid.Column="2" Content="{Binding ElementName=sexText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="6" Grid.Column="3" Content="Sex:" HorizontalAlignment="Left" Target="{Binding ElementName=sexText}" />
+            <TextBox x:Name="sexText" Grid.Row="7" Grid.Column="3" Text="{Binding Path=Sex, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="8" Grid.Column="3" Content="{Binding ElementName=sexText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- Email -->
 
-            <Label Grid.Row="16" Grid.Column="0" Content="Email:" HorizontalAlignment="Right" Target="{Binding ElementName=emailText}" />
-            <TextBox x:Name="emailText" Grid.Row="16" Grid.Column="2" Text="{Binding Path=Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="17" Grid.Column="2" Content="{Binding ElementName=emailText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Content="Email:" HorizontalAlignment="Left" Target="{Binding ElementName=emailText}" />
+            <TextBox x:Name="emailText" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Path=Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="4" Content="{Binding ElementName=emailText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- MaxHr -->
 
-            <Label Grid.Row="18" Grid.Column="0" Content="Max Heartrate:" HorizontalAlignment="Right" Target="{Binding ElementName=maxhrText}" />
-            <TextBox x:Name="maxhrText" Grid.Row="18" Grid.Column="2" Text="{Binding Path=MaxHr, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center"/>
-            <ContentPresenter Grid.Row="19" Grid.Column="2" Content="{Binding ElementName=maxhrText, Path=(Validation.Errors).CurrentItem}" />
+            <Label Grid.Row="12" Grid.Column="0" Content="Max Heartrate:" HorizontalAlignment="Left" Target="{Binding ElementName=maxhrText}" />
+            <TextBox x:Name="maxhrText" Grid.Row="13" Grid.Column="0" Text="{Binding Path=MaxHr, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}" MouseDoubleClick="textBox_GotFocus" GotKeyboardFocus="textBox_GotFocus" PreviewMouseLeftButtonDown="textBox_PreviewMouseLeftButtonDown" VerticalContentAlignment="Center" Margin="10" Height="24"/>
+            <ContentPresenter Grid.Row="14" Grid.Column="0" Content="{Binding ElementName=maxhrText, Path=(Validation.Errors).CurrentItem}" />
 
             <!-- BUTTONS -->
-            <StackPanel Grid.Row="20" Grid.ColumnSpan="3" Grid.Column="0" Orientation="Horizontal">
-                <Button Command="{Binding SaveCommand}" Content="_Save" HorizontalAlignment="Right" Margin="4,2" MinWidth="60" />
-                <Button Command="{Binding SaveCommand}" CommandParameter="Close" Content="Save &amp; Close" HorizontalAlignment="Right" Margin="4,2" MinWidth="60" />
+            <StackPanel Grid.Row="15" Grid.ColumnSpan="4" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Command="{Binding SaveCommand}" Content="_Save" Margin="4,2" MinWidth="60"  Height="25" />
+                <Button Command="{Binding SaveCommand}" CommandParameter="Close" Content="Save &amp; Close" Margin="4,2" MinWidth="60"  Height="25" />
             </StackPanel>
 
         </Grid>
