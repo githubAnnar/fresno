@@ -13,8 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -50,7 +52,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// </summary>
         public MainWindowViewModel(MainWindow parentWindow)
         {
-            DisplayName = $"Step Test Viewer";
+            DisplayName = $"Step Test Viewer ({GetProductVersion()})";
+            Logger.Info($"**** ---- Starting {DisplayName} ---- ****");
             Logger.Debug("Checking MRU file");
             var mruDriectory = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{AppDirecory}";
             if (!Directory.Exists(mruDriectory))
@@ -380,6 +383,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             Logger.Debug("\"All users\" workspace is shown");
 
             SetActiveCommands(workspace);
+        }
+
+        private string GetProductVersion()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            return $"ver.: {fileVersionInfo.ProductVersion} - build: {new AssemblyName(assembly.FullName).Version}";
         }
 
         #endregion

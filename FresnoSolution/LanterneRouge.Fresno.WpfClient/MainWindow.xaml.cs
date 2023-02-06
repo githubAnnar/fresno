@@ -22,6 +22,7 @@ namespace LanterneRouge.Fresno.WpfClient
                 Logger.Info("Saving MRU");
                 vm.SaveMru();
                 Logger.Info("MRU Saved, Closing application");
+                Logger.Info("**** ---- END ---- ****");
             }
         }
     }
