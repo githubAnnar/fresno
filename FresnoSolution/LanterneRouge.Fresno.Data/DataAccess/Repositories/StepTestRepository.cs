@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 {
-    public class StepTestRepository : RepositoryBase, IRepository<StepTest, User>
+    public class StepTestRepository : RepositoryBase, IRepository<StepTest>
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(StepTestRepository));
 
@@ -65,19 +65,6 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             return stepTest;
         }
 
-        public IEnumerable<StepTest> FindByParentId(User parent)
-        {
-            Logger.Debug($"FindByParentId {parent.Id}");
-            var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
-            stepTests.ForEach((StepTest stepTest) =>
-            {
-                stepTest.ParentUser = parent;
-                stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
-                stepTest.AcceptChanges();
-            });
-            return stepTests;
-        }
-
         public void Remove(int id)
         {
             Connection.Execute("DELETE FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction);
@@ -102,6 +89,19 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             Connection.Execute("UPDATE StepTest SET UserId = @UserId, TestType = @TestType, EffortUnit = @EffortUnit, StepDuration = @StepDuration, LoadPreset = @LoadPreset, Increase = @Increase, Temperature = @Temperature, Weight = @Weight, TestDate = @TestDate WHERE Id = @Id", param: new { entity.Id, entity.UserId, entity.TestType, entity.EffortUnit, entity.StepDuration, entity.LoadPreset, entity.Increase, entity.Temperature, entity.Weight, entity.TestDate }, transaction: Transaction);
             entity.AcceptChanges();
             Logger.Info($"Updated {entity.Id}");
+        }
+
+        public IEnumerable<StepTest> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : class, IEntity<TParentEntity>
+        {
+            Logger.Debug($"FindByParentId {parent.Id}");
+            var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
+            stepTests.ForEach((StepTest stepTest) =>
+            {
+                stepTest.ParentUser = parent as IEntity<User>;
+                stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
+                stepTest.AcceptChanges();
+            });
+            return stepTests;
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
-using System.Collections.Generic;
+﻿using LanterneRouge.Fresno.Core.Entities;
 
-namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
+namespace LanterneRouge.Fresno.Core.Contracts
 {
     public interface IRepository<TEntity> where TEntity : class, IEntity<TEntity>
     {

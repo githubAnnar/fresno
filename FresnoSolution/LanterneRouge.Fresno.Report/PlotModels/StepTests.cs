@@ -28,7 +28,7 @@ namespace LanterneRouge.Fresno.Report.PlotModels
 
             var stepTestData = stepTests.ToList();
             var testPlotType = stepTests.Count() > 1 ? "Comparison" : "Plot";
-            var stepTestsModel = new PlotModel { Title = $"{testPlotType} of user {string.Join(", ", stepTests.Select(st => st.ParentUser.LastName).Distinct())}" };
+            var stepTestsModel = new PlotModel { Title = $"{testPlotType} of user {string.Join(", ", stepTests.Select(st => ((User)st.ParentUser).LastName).Distinct())}" };
             var minLoad = stepTests.Select(st => st.Measurements.Min(m => m.Load)).Min();
             var maxLoad = stepTests.Select(st => st.Measurements.Max(m => m.Load)).Max();
             var minLactate = stepTests.Select(st => st.Measurements.Min(m => m.Lactate)).Min();

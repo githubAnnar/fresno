@@ -16,9 +16,9 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UnitOfWork));
         private IDbConnection _connection;
         private IDbTransaction _transaction;
-        private IRepository<Measurement, StepTest> _measurementRepository;
-        private IRepository<StepTest, User> _stepTestRepository;
-        private IRepository<User, object> _userRepository;
+        private IRepository<Measurement> _measurementRepository;
+        private IRepository<StepTest> _stepTestRepository;
+        private IRepository<User> _userRepository;
         private bool _disposed;
         private List<User> _cachedUsers;
 
@@ -37,11 +37,11 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 
         #region Properties
 
-        private IRepository<Measurement, StepTest> MeasurementRepository => _measurementRepository ?? (_measurementRepository = new MeasurementRepository(_transaction));
+        private IRepository<Measurement> MeasurementRepository => _measurementRepository ?? (_measurementRepository = new MeasurementRepository(_transaction));
 
-        private IRepository<StepTest, User> StepTestRepository => _stepTestRepository ?? (_stepTestRepository = new StepTestRepository(_transaction));
+        private IRepository<StepTest> StepTestRepository => _stepTestRepository ?? (_stepTestRepository = new StepTestRepository(_transaction));
 
-        private IRepository<User, object> UserRepository => _userRepository ?? (_userRepository = new UserRepository(_transaction));
+        private IRepository<User> UserRepository => _userRepository ?? (_userRepository = new UserRepository(_transaction));
 
         private List<User> CachedUsers => _cachedUsers ?? (_cachedUsers = new List<User>());
 
@@ -70,13 +70,16 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 
             foreach (var item in newStepTests)
             {
-                Logger.Info($"Adding new steptest for user: {item.ParentUser.LastName}, {item.ParentUser.FirstName}");
+                var parentUser = item.ParentUser as User;
+                Logger.Info($"Adding new steptest for user: {parentUser.LastName}, {parentUser.FirstName}");
                 StepTestRepository.Add(item);
             }
 
             foreach (var item in newMeasurements)
             {
-                Logger.Info($"Adding new measurement: {item.ParentStepTest.ParentUser.LastName}, {item.ParentStepTest.ParentUser.FirstName}, Steptest: {item.ParentStepTest.Id}");
+                var parentStepTest = item.ParentStepTest as StepTest;
+                var parentUser = parentStepTest.ParentUser as User;
+                Logger.Info($"Adding new measurement: {parentUser.LastName}, {parentUser.FirstName}, Steptest: {item.ParentStepTest.Id}");
                 MeasurementRepository.Add(item);
             }
 
@@ -88,13 +91,16 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork
 
             foreach (var item in updatedStepTests)
             {
-                Logger.Info($"Update steptest for user: {item.ParentUser.LastName}, {item.ParentUser.FirstName}");
+                var parentUser = item.ParentUser as User;
+                Logger.Info($"Update steptest for user: {parentUser.LastName}, {parentUser.FirstName}");
                 StepTestRepository.Update(item);
             }
 
             foreach (var item in updatedMeasurements)
             {
-                Logger.Info($"Update measurement: {item.ParentStepTest.ParentUser.LastName}, {item.ParentStepTest.ParentUser.FirstName}, Steptest: {item.ParentStepTest.Id}");
+                var parentStepTest = item.ParentStepTest as StepTest;
+                var parentUser = parentStepTest.ParentUser as User;
+                Logger.Info($"Update measurement: {parentUser.LastName}, {parentUser.FirstName}, Steptest: {item.ParentStepTest.Id}");
                 MeasurementRepository.Update(item);
             }
 

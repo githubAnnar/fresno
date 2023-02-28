@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 {
-    public class UserRepository : RepositoryBase, IRepository<User, object>
+    public class UserRepository : RepositoryBase, IRepository<User>
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UserRepository));
 
@@ -64,9 +64,9 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             return user;
         }
 
-        public IEnumerable<User> FindByParentId(object parent)
+        public IEnumerable<User> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : class, IEntity<TParentEntity>
         {
-            Logger.Debug($"FindByParentId NULL");
+            Logger.Debug($"{nameof(FindByParentId)} is NULL");
             return null;
         }
 

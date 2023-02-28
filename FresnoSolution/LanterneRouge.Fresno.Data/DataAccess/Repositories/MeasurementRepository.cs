@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
 {
-    public class MeasurementRepository : RepositoryBase, IRepository<Measurement, StepTest>
+    public class MeasurementRepository : RepositoryBase, IRepository<Measurement>
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(MeasurementRepository));
 
@@ -94,13 +94,13 @@ namespace LanterneRouge.Fresno.DataLayer.DataAccess.Repositories
             Logger.Info($"Removed {id}");
         }
 
-        public IEnumerable<Measurement> FindByParentId(StepTest parent)
+        public IEnumerable<Measurement> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : class, IEntity<TParentEntity>
         {
             Logger.Debug($"FindByParentId {parent.Id}");
             var measurements = Connection.Query<Measurement>("SELECT * FROM Measurement WHERE StepTestId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
             measurements.ForEach(m =>
             {
-                m.ParentStepTest = parent;
+                m.ParentStepTest = parent as IEntity<StepTest>;
                 m.AcceptChanges();
             });
             return measurements;

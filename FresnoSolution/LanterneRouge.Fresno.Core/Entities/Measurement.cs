@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
+﻿namespace LanterneRouge.Fresno.Core.Entities
 {
     public class Measurement : BaseEntity<Measurement>, IComparable<Measurement>
     {

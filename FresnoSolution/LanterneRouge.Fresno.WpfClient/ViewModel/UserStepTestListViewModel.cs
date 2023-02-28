@@ -1,4 +1,5 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+using LanterneRouge.Fresno.WpfClient.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public StepTestViewModel BaseStepTestViewModel { get; }
 
-        public List<StepTestViewModel> AdditionalStepTestCandidates => (from st in DataManager.GetAllStepTestsByUser(BaseStepTestViewModel.Source.ParentUser).Where(st => st.Id != BaseStepTestViewModel.Source.Id) select new StepTestViewModel(st, UserParent, ShowWorkspace)).ToList();
+        public List<StepTestViewModel> AdditionalStepTestCandidates => (from st in DataManager.GetAllStepTestsByUser(((User)BaseStepTestViewModel.Source.ParentUser)).Where(st => st.Id != BaseStepTestViewModel.Source.Id) select new StepTestViewModel(st, UserParent, ShowWorkspace)).ToList();
 
         public List<StepTestViewModel> SelectedStepTests { get; set; }
         public override WorkspaceViewModel SelectedObject => this;

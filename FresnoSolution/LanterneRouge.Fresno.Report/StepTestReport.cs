@@ -69,7 +69,7 @@ namespace LanterneRouge.Fresno.Report
                 }
             }
 
-            Logger.Info($"Report for Steptest {ReportStepTest.ParentUser.LastName} / {ReportStepTest.Id} is created");
+            Logger.Info($"Report for Steptest {((User)ReportStepTest.ParentUser).LastName} / {ReportStepTest.Id} is created");
             return document;
         }
 
@@ -86,9 +86,10 @@ namespace LanterneRouge.Fresno.Report
             }
 
             var firstMetaDataRow = metaDataTable.AddRow();
+            var parentUser = data.ParentUser as User;
             firstMetaDataRow.Format.Font.Size = Unit.FromPoint(12d);
             firstMetaDataRow[0].AddParagraph("Navn:").Format.Font.Bold = true;
-            firstMetaDataRow[1].AddParagraph($"{data.ParentUser.FirstName} {data.ParentUser.LastName}");
+            firstMetaDataRow[1].AddParagraph($"{parentUser.FirstName} {parentUser.LastName}");
             firstMetaDataRow[1].MergeRight = 2;
             var secondMetatDataRow = metaDataTable.AddRow();
             secondMetatDataRow.Format.Font.Size = Unit.FromPoint(12d);

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace LanterneRouge.Fresno.DataLayer.DataAccess.Entities
+﻿namespace LanterneRouge.Fresno.Core.Entities
 {
     public class StepTest : BaseEntity<StepTest>
     {
