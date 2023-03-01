@@ -30,7 +30,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Database.SQLite.Test", "LanterneRouge.Fresno.Database.SQLite.Test\LanterneRouge.Fresno.Database.SQLite.Test.csproj", "{2FB91D5B-5F79-4F80-8C54-04A26855B2AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Core", "LanterneRouge.Fresno.Core\LanterneRouge.Fresno.Core.csproj", "{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Core", "LanterneRouge.Fresno.Core\LanterneRouge.Fresno.Core.csproj", "{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Repository", "LanterneRouge.Fresno.Repository\LanterneRouge.Fresno.Repository.csproj", "{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,10 @@ Global
 		{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

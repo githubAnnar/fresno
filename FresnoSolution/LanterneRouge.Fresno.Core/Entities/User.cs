@@ -32,7 +32,7 @@
 
         public override bool IsValid => true;
 
-        public bool IsLoaded { get; internal set; }
+        public bool IsLoaded { get; set; }
 
         public static User Create(string firstName, string lastName, string street, string postCode, string postCity, DateTime birthDate, int height, float weight, string sex, string email)
         {
