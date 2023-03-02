@@ -1,6 +1,7 @@
-﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
-using LanterneRouge.Fresno.DataLayer.DataAccess.Infrastructure;
-using LanterneRouge.Fresno.DataLayer.DataAccess.UnitOfWork;
+﻿using LanterneRouge.Fresno.Core.Entities;
+using LanterneRouge.Fresno.Repository.Contracts;
+using LanterneRouge.Fresno.Repository.Infrastructure;
+using LanterneRouge.Fresno.Repository.Managers;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using log4net;
 using System;
@@ -11,7 +12,9 @@ namespace LanterneRouge.Fresno.WpfClient.Services
     public class DataService : IDataService
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(DataService));
-        private IUnitOfWork _unitOfWork;
+        private IUserManager _userManager;
+        private IStepTestManager _stepTestManager;
+        private IMeasurementManager _measurementManager;
         private ConnectionFactory _connectionFactory;
 
         public event CommittedHandler Committed;
@@ -26,7 +29,9 @@ namespace LanterneRouge.Fresno.WpfClient.Services
             try
             {
                 Filename = filename;
-                _unitOfWork = new UnitOfWork(LocalConnectionFactory);
+                _userManager = new UserManager(LocalConnectionFactory);
+                _stepTestManager = new StepTestManager(LocalConnectionFactory);
+                _measurementManager = new MeasurementManager(LocalConnectionFactory);
                 response = true;
             }
 
@@ -54,12 +59,13 @@ namespace LanterneRouge.Fresno.WpfClient.Services
             bool response;
             try
             {
-                if (_unitOfWork != null)
-                {
-                    _unitOfWork.Close();
-                    _connectionFactory = null;
-                }
+                _userManager?.Close();
 
+                _stepTestManager?.Close();
+
+                _measurementManager?.Close();
+
+                _connectionFactory = null;
                 response = true;
             }
 
@@ -84,34 +90,36 @@ namespace LanterneRouge.Fresno.WpfClient.Services
 
         public void Commit()
         {
-            _unitOfWork.Commit();
+            _userManager.Commit();
+            _stepTestManager.Commit();
+            _measurementManager.Commit();
             Committed?.Invoke();
         }
 
-        public IEnumerable<User> GetAllUsers(bool refresh = false) => _unitOfWork.GetAllUsers(refresh);
+        public IEnumerable<User> GetAllUsers(bool refresh = false) => _userManager.GetAllUsers(refresh);
 
-        public void UpdateUser(User entity) => _unitOfWork.UpsertUser(entity);
+        public void UpdateUser(User entity) => _userManager.UpsertUser(entity);
 
-        public void RemoveUser(User entity) => _unitOfWork.RemoveUser(entity);
+        public void RemoveUser(User entity) => _userManager.RemoveUser(entity);
 
-        public void AddUser(User entity) => _unitOfWork.UpsertUser(entity);
+        public void AddUser(User entity) => _userManager.UpsertUser(entity);
 
-        public IEnumerable<StepTest> GetAllStepTests() => _unitOfWork.GetAllStepTests();
+        public IEnumerable<StepTest> GetAllStepTests() => _stepTestManager.GetAllStepTests();
 
-        public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _unitOfWork.GetUserById(parent.Id).StepTests;
+        public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _userManager.GetUserById(parent.Id).StepTests;
 
-        public void UpdateStepTest(StepTest entity) => _unitOfWork.UpsertStepTest(entity);
+        public void UpdateStepTest(StepTest entity) => _stepTestManager.UpsertStepTest(entity);
 
-        public void RemoveStepTest(StepTest entity) => _unitOfWork.RemoveStepTest(entity);
+        public void RemoveStepTest(StepTest entity) => _stepTestManager.RemoveStepTest(entity);
 
-        public void AddStepTest(StepTest entity) => _unitOfWork.UpsertStepTest(entity);
+        public void AddStepTest(StepTest entity) => _stepTestManager.UpsertStepTest(entity);
 
-        public IEnumerable<Measurement> GetAllMeasurements() => _unitOfWork.GetAllMeasurements();
+        public IEnumerable<Measurement> GetAllMeasurements() => _measurementManager.GetAllMeasurements();
 
-        public void UpdateMeasurement(Measurement entity) => _unitOfWork.UpsertMeasurement(entity);
+        public void UpdateMeasurement(Measurement entity) => _measurementManager.UpsertMeasurement(entity);
 
-        public void RemoveMeasurement(Measurement entity) => _unitOfWork.RemoveMeasurement(entity);
+        public void RemoveMeasurement(Measurement entity) => _measurementManager.RemoveMeasurement(entity);
 
-        public void AddMeasurement(Measurement entity) => _unitOfWork.UpsertMeasurement(entity);
+        public void AddMeasurement(Measurement entity) => _measurementManager.UpsertMeasurement(entity);
     }
 }

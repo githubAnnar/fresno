@@ -1,5 +1,5 @@
 ﻿using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+using LanterneRouge.Fresno.Core.Entities;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;

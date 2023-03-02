@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+﻿using LanterneRouge.Fresno.Core.Entities;
 using System.Collections.Generic;
 
 namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces

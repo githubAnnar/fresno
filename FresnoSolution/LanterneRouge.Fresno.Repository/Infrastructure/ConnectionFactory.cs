@@ -1,4 +1,5 @@
-﻿using LanterneRouge.Fresno.Repository.Contracts;
+﻿using LanterneRouge.Fresno.Database.SQLite.Tool;
+using LanterneRouge.Fresno.Repository.Contracts;
 using log4net;
 using System.Data;
 using System.Data.SQLite;

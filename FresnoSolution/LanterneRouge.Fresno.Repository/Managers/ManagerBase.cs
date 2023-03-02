@@ -4,7 +4,7 @@ using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Managers
 {
-    public abstract class ManagerBase
+    public abstract class ManagerBase : IManagerBase
     {
         #region Fields
 

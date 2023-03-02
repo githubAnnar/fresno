@@ -1,5 +1,5 @@
 ﻿using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+using LanterneRouge.Fresno.Core.Entities;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
 using System;

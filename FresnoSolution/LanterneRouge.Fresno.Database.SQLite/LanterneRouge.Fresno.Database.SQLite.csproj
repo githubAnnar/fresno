@@ -1,73 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{14480593-83FE-4ECD-9552-44F1705BE4C3}</ProjectGuid>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LanterneRouge.Fresno.Database.SQLite</RootNamespace>
-    <AssemblyName>LanterneRouge.Fresno.Database.SQLite</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.410601">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\BitArrayExtensions.cs" />
-    <Compile Include="Clauses\ForeignKeyClause.cs" />
-    <Compile Include="Common\CheckResult.cs" />
-    <Compile Include="Common\ValidateResultList.cs" />
-    <Compile Include="Constraints\CheckConstraint.cs" />
-    <Compile Include="Constraints\CollateConstraint.cs" />
-    <Compile Include="Constraints\DefaultConstraint.cs" />
-    <Compile Include="Constraints\ColumnForeignKeyConstraint.cs" />
-    <Compile Include="Constraints\GeneratedAlwaysConstraint.cs" />
-    <Compile Include="Constraints\NotNullConstraint.cs" />
-    <Compile Include="Constraints\ColumnUniqueConstraint.cs" />
-    <Compile Include="Constraints\TableForeignKeyConstraint.cs" />
-    <Compile Include="Constraints\TablePrimaryKeyConstraint.cs" />
-    <Compile Include="Constraints\TableUniqueConstraint.cs" />
-    <Compile Include="Types\AffinityType.cs" />
-    <Compile Include="Clauses\ConflictClause.cs" />
-    <Compile Include="Constraints\ColumnPrimaryKeyConstraint.cs" />
-    <Compile Include="Statements\ColumnStatement.cs" />
-    <Compile Include="Constraints\BaseConstraint.cs" />
-    <Compile Include="Options\BaseOption.cs" />
-    <Compile Include="Statements\BaseStatement.cs" />
-    <Compile Include="Constraints\IConstraint.cs" />
-    <Compile Include="Options\TableOption.cs" />
-    <Compile Include="Statements\TableStatement.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Types\LiteralValue.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

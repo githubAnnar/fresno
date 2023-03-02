@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+﻿using LanterneRouge.Fresno.Core.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using System;
 using System.Collections.Generic;

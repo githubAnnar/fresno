@@ -2,7 +2,7 @@
 
 namespace LanterneRouge.Fresno.Repository.Contracts
 {
-    public interface IStepTestManager : IDisposable
+    public interface IStepTestManager : IManagerBase, IDisposable
     {
         List<StepTest> GetAllStepTests(bool refresh = false);
 

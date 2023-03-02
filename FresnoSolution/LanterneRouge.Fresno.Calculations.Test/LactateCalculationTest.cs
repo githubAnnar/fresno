@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+﻿using LanterneRouge.Fresno.Core.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;

@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+﻿using LanterneRouge.Fresno.Core.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
 using log4net;

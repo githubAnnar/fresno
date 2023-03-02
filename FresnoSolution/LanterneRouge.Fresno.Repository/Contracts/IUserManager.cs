@@ -2,7 +2,7 @@
 
 namespace LanterneRouge.Fresno.Repository.Contracts
 {
-    public interface IUserManager : IDisposable
+    public interface IUserManager : IManagerBase, IDisposable
     {
         List<User> GetAllUsers(bool refresh = false);
 

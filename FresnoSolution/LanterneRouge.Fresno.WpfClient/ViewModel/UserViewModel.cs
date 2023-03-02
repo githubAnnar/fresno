@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+﻿using LanterneRouge.Fresno.Core.Entities;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
 using log4net;
@@ -322,7 +322,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                     break;
 
                 default:
-                    Logger.Warn($"Unexpected property being validated on User: { propertyName}");
+                    Logger.Warn($"Unexpected property being validated on User: {propertyName}");
                     break;
             }
 

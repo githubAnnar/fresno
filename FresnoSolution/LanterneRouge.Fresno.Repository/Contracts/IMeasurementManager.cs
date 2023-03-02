@@ -2,7 +2,7 @@
 
 namespace LanterneRouge.Fresno.Repository.Contracts
 {
-    public interface IMeasurementManager : IDisposable
+    public interface IMeasurementManager : IManagerBase, IDisposable
     {
         List<Measurement> GetAllMeasurements(bool refresh = false);
 

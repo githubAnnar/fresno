@@ -9,11 +9,12 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="log4net" Version="2.0.15" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LanterneRouge.Fresno.Core\LanterneRouge.Fresno.Core.csproj" />
+    <ProjectReference Include="..\LanterneRouge.Fresno.Database.SQLite\LanterneRouge.Fresno.Database.SQLite.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.DataLayer.DataAccess.Entities;
+using LanterneRouge.Fresno.Core.Entities;
 using LanterneRouge.Fresno.Report.Helpers;
 using LanterneRouge.Fresno.Report.PlotModels;
 using log4net;
