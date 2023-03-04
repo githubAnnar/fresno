@@ -1,12 +1,11 @@
-﻿using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
-using System;
+﻿using LanterneRouge.Fresno.Services.Interfaces;
 using System.Net.Mail;
 
 namespace LanterneRouge.Fresno.WpfClient.Utils
 {
-    internal static class EmailExtensions
+    public static class EmailExtensions
     {
-        internal static bool IsEmailSettingsValid(this IApplicationSettingsService settings)
+        public static bool IsEmailSettingsValid(this IApplicationSettingsService settings)
         {
             if (string.IsNullOrEmpty(settings.EmailServer) || string.IsNullOrEmpty(settings.EmailFrom))
             {

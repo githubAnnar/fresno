@@ -1,9 +1,9 @@
 ﻿using Autofac;
+using LanterneRouge.Fresno.Services;
+using LanterneRouge.Fresno.Services.Interfaces;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Preferences.View;
 using LanterneRouge.Fresno.WpfClient.Preferences.ViewModel;
-using LanterneRouge.Fresno.WpfClient.Services;
-using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using log4net;
 using Microsoft.Win32;
 using MRULib;

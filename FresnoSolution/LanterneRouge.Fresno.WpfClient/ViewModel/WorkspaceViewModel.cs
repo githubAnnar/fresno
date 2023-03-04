@@ -1,7 +1,7 @@
 ﻿using Autofac;
+using LanterneRouge.Fresno.Services;
+using LanterneRouge.Fresno.Services.Interfaces;
 using LanterneRouge.Fresno.WpfClient.MVVM;
-using LanterneRouge.Fresno.WpfClient.Services;
-using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;

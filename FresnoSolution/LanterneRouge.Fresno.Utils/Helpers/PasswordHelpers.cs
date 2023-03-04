@@ -1,10 +1,9 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace LanterneRouge.Fresno.WpfClient.Utils
+namespace LanterneRouge.Fresno.Utils.Helpers
 {
     // https://weblogs.asp.net/jongalloway/encrypting-passwords-in-a-net-app-config-file
 

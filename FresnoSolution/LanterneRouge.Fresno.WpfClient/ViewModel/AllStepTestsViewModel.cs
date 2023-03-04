@@ -1,8 +1,8 @@
 ﻿using Autofac;
 using LanterneRouge.Fresno.Report;
+using LanterneRouge.Fresno.Services;
+using LanterneRouge.Fresno.Services.Interfaces;
 using LanterneRouge.Fresno.WpfClient.MVVM;
-using LanterneRouge.Fresno.WpfClient.Services;
-using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 using LanterneRouge.Fresno.WpfClient.Utils;
 using log4net;
 using System;
@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -100,13 +101,73 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 {
                     var scope = ServiceLocator.Instance.BeginLifetimeScope();
                     _emailService = scope.Resolve<IEmailService>();
+                    _emailService.MailIsSentCallback = SendCompleteCallback;
                 }
 
                 return _emailService;
             }
         }
 
+        private void SendCompleteCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            var message = e.UserState as MailMessage;
 
+            if (e.Cancelled)
+            {
+                var cancelledMessage = new StringBuilder();
+                if (message != null)
+                {
+                    cancelledMessage.Append($"Send Message to {string.Join(", ", message.To.Select(m => m.Address))} is cancelled!");
+                }
+
+                else
+                {
+                    cancelledMessage.Append("Send Message is cancelled!");
+                }
+
+                Logger.Warn(cancelledMessage.ToString());
+                MessageBox.Show(cancelledMessage.ToString(), "Sending Message Cancelled", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            if (e.Error != null)
+            {
+                var errorMessage = new StringBuilder();
+                if (message != null)
+                {
+                    errorMessage.Append($"Send Message to {string.Join(", ", message.To.Select(m => m.Address))} failed!");
+                }
+
+                else
+                {
+                    errorMessage.Append("Send Message failed!");
+                }
+
+                Logger.Error(errorMessage.ToString(), e.Error);
+                MessageBox.Show(errorMessage.ToString(), "Error Sending Message", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            else
+            {
+                var sentMessage = new StringBuilder();
+                if (message != null)
+                {
+                    sentMessage.Append($"Message is sent to {string.Join(", ", message.To.Select(m => m.Address))}");
+                }
+
+                else
+                {
+                    sentMessage.Append("Message is sent");
+                }
+
+                Logger.Info(sentMessage.ToString());
+                MessageBox.Show(sentMessage.ToString(), "Message Sent", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+            if (message != null)
+            {
+                message.Dispose();
+            }
+        }
 
         #region ShowDiagram Command
 
@@ -256,15 +317,15 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool CanSendEmail => AllSelected.Count() == 1 && !string.IsNullOrEmpty((Parent as UserViewModel)?.Email) && ApplicationSettingsManager.IsEmailSettingsValid();
 
-        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ?? (_showFblcCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFblcCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
+        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ??= new RelayCommand(Selected.ShowFblcCalculationCommand.Execute, param => AllSelected.Count() == 1);
 
-        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ?? (_showFrpbCalculationCommand = new RelayCommand((object obj) => { Selected.ShowFrpbCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
+        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ??= new RelayCommand(Selected.ShowFrpbCalculationCommand.Execute, param => AllSelected.Count() == 1);
 
-        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ?? (_showLtCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
+        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ??= new RelayCommand(Selected.ShowLtCalculationCommand.Execute, param => AllSelected.Count() == 1);
 
-        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ?? (_showLtLogCalculationCommand = new RelayCommand((object obj) => { Selected.ShowLtLogCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
+        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ??= new RelayCommand(Selected.ShowLtLogCalculationCommand.Execute, param => AllSelected.Count() == 1);
 
-        public ICommand ShowDMaxCalculationCommand => _showDMaxCalculationCommand ?? (_showDMaxCalculationCommand = new RelayCommand((object obj) => { Selected.ShowDMaxCalculationCommand.Execute(obj); }, param => AllSelected.Count() == 1));
+        public ICommand ShowDMaxCalculationCommand => _showDMaxCalculationCommand ??= new RelayCommand(Selected.ShowDMaxCalculationCommand.Execute, param => AllSelected.Count() == 1);
 
         private void ShowAllMeasurements()
         {

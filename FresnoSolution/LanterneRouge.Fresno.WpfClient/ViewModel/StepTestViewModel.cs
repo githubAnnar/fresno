@@ -1,6 +1,7 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Core.Entities;
 using LanterneRouge.Fresno.Report;
+using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
 using LanterneRouge.Fresno.WpfClient.View;

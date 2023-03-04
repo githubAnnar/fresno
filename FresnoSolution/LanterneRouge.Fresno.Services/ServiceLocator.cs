@@ -1,7 +1,10 @@
 ﻿using Autofac;
+using LanterneRouge.Fresno.Services.Data;
+using LanterneRouge.Fresno.Services.Email;
+using LanterneRouge.Fresno.Services.Interfaces;
 using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
 
-namespace LanterneRouge.Fresno.WpfClient.Services
+namespace LanterneRouge.Fresno.Services
 {
     public static class ServiceLocator
     {

@@ -1,8 +1,8 @@
 ﻿using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.WpfClient.Utils;
+using LanterneRouge.Fresno.Services.Interfaces;
+using LanterneRouge.Fresno.Utils.Converters;
 using log4net;
 using Newtonsoft.Json;
-using System;
 using System.Configuration;
 
 namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces

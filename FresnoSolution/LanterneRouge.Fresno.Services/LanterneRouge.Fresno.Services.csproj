@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LanterneRouge.Fresno.Calculations\LanterneRouge.Fresno.Calculations.csproj" />
+    <ProjectReference Include="..\LanterneRouge.Fresno.Repository\LanterneRouge.Fresno.Repository.csproj" />
+    <ProjectReference Include="..\LanterneRouge.Fresno.Utils\LanterneRouge.Fresno.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

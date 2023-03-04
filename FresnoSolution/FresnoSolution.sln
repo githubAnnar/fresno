@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.WpfClient", "LanterneRouge.Fresno.WpfClient\LanterneRouge.Fresno.WpfClient.csproj", "{0CADB447-5769-4C7B-AEEA-B524238BA11E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.WpfClient", "LanterneRouge.Fresno.WpfClient\LanterneRouge.Fresno.WpfClient.csproj", "{0CADB447-5769-4C7B-AEEA-B524238BA11E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{83D692A1-A839-4A14-BFA4-ACAB9BFF4C79}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,11 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{0040BEDE-4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Calculations", "LanterneRouge.Fresno.Calculations\LanterneRouge.Fresno.Calculations.csproj", "{5FD857F4-ACC3-44A1-A628-D1B5AD24A3E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Calculations.Test", "LanterneRouge.Fresno.Calculations.Test\LanterneRouge.Fresno.Calculations.Test.csproj", "{9DED4D87-77FB-4198-B8AC-0AF3817466C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Calculations.Test", "LanterneRouge.Fresno.Calculations.Test\LanterneRouge.Fresno.Calculations.Test.csproj", "{9DED4D87-77FB-4198-B8AC-0AF3817466C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Wpf", "LanterneRouge.Wpf\LanterneRouge.Wpf.csproj", "{6B448EDE-588F-45A0-8229-1BC4FB0D1E07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Wpf", "LanterneRouge.Wpf\LanterneRouge.Wpf.csproj", "{6B448EDE-588F-45A0-8229-1BC4FB0D1E07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Report", "LanterneRouge.Fresno.Report\LanterneRouge.Fresno.Report.csproj", "{C37D6DA3-9082-4416-A4B8-3DA83F23C1C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Report", "LanterneRouge.Fresno.Report\LanterneRouge.Fresno.Report.csproj", "{C37D6DA3-9082-4416-A4B8-3DA83F23C1C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Database.SQLite", "LanterneRouge.Fresno.Database.SQLite\LanterneRouge.Fresno.Database.SQLite.csproj", "{14480593-83FE-4ECD-9552-44F1705BE4C3}"
 EndProject
@@ -29,6 +29,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Core", "LanterneRouge.Fresno.Core\LanterneRouge.Fresno.Core.csproj", "{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Repository", "LanterneRouge.Fresno.Repository\LanterneRouge.Fresno.Repository.csproj", "{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Services", "LanterneRouge.Fresno.Services\LanterneRouge.Fresno.Services.csproj", "{E1B61183-643F-41F7-A331-226A97FBA52C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Utils", "LanterneRouge.Fresno.Utils\LanterneRouge.Fresno.Utils.csproj", "{229BF89D-DABD-49CC-A82D-A508871DF64F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +76,14 @@ Global
 		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1B61183-643F-41F7-A331-226A97FBA52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1B61183-643F-41F7-A331-226A97FBA52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1B61183-643F-41F7-A331-226A97FBA52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1B61183-643F-41F7-A331-226A97FBA52C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{229BF89D-DABD-49CC-A82D-A508871DF64F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{229BF89D-DABD-49CC-A82D-A508871DF64F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{229BF89D-DABD-49CC-A82D-A508871DF64F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{229BF89D-DABD-49CC-A82D-A508871DF64F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

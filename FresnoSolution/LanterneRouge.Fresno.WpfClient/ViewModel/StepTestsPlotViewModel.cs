@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.Report.PlotModels;
+using LanterneRouge.Fresno.Utils.Extensions;
 using LanterneRouge.Fresno.WpfClient.Utils;
 using OxyPlot;
 using System;

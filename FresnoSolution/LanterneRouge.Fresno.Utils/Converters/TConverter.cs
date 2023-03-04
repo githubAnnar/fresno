@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace LanterneRouge.Fresno.WpfClient.Utils
+namespace LanterneRouge.Fresno.Utils.Converters
 {
     // https://stackoverflow.com/questions/8625/generic-type-conversion-from-string
     public static class TConverter

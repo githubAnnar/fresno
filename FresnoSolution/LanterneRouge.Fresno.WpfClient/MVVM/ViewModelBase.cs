@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using LanterneRouge.Fresno.WpfClient.Services;
-using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
+using LanterneRouge.Fresno.Services;
+using LanterneRouge.Fresno.Services.Interfaces;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;

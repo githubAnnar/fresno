@@ -1,6 +1,6 @@
 ﻿using LanterneRouge.Fresno.Core.Entities;
+using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Fresno.WpfClient.MVVM;
-using LanterneRouge.Fresno.WpfClient.Utils;
 using log4net;
 using System;
 using System.Collections.ObjectModel;

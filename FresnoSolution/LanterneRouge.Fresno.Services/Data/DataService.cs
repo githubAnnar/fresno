@@ -2,12 +2,10 @@
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Infrastructure;
 using LanterneRouge.Fresno.Repository.Managers;
-using LanterneRouge.Fresno.WpfClient.Services.Interfaces;
+using LanterneRouge.Fresno.Services.Interfaces;
 using log4net;
-using System;
-using System.Collections.Generic;
 
-namespace LanterneRouge.Fresno.WpfClient.Services
+namespace LanterneRouge.Fresno.Services.Data
 {
     public class DataService : IDataService
     {
@@ -19,7 +17,7 @@ namespace LanterneRouge.Fresno.WpfClient.Services
 
         public event CommittedHandler Committed;
 
-        private ConnectionFactory LocalConnectionFactory => _connectionFactory ?? (_connectionFactory = new ConnectionFactory(Filename));
+        private ConnectionFactory LocalConnectionFactory => _connectionFactory ??= new ConnectionFactory(Filename);
 
         private string Filename { get; set; }
 

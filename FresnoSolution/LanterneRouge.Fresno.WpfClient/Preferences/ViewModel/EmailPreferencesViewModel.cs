@@ -1,5 +1,5 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
-using LanterneRouge.Fresno.WpfClient.Utils;
+﻿using LanterneRouge.Fresno.Utils.Helpers;
+using LanterneRouge.Fresno.WpfClient.MVVM;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -123,9 +123,9 @@ namespace LanterneRouge.Fresno.WpfClient.Preferences.ViewModel
 
         #endregion
 
-        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(param => Save()));
+        public ICommand SaveCommand => _saveCommand ??= new RelayCommand(param => Save());
 
-        public ICommand CloseCommand => _closeCommand ?? (_closeCommand = new RelayCommand(param => Close()));
+        public ICommand CloseCommand => _closeCommand ??= new RelayCommand(param => Close());
 
         #region Methods
 

@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace LanterneRouge.Fresno.WpfClient.Utils
+﻿namespace LanterneRouge.Fresno.Utils.Extensions
 {
-    public static class EnumerableExtentions
+    public static class EnumerableExtensions
     {
         public static int GetSequenceHashCode<TItem>(this IEnumerable<TItem> list)
         {

@@ -1,7 +1,6 @@
 ﻿using LanterneRouge.Fresno.Core.Entities;
-using System.Collections.Generic;
 
-namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
+namespace LanterneRouge.Fresno.Services.Interfaces
 {
     public delegate void CommittedHandler();
 
