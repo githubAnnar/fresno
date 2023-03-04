@@ -4,6 +4,7 @@ using LanterneRouge.Fresno.Services.Interfaces;
 using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Preferences.View;
 using LanterneRouge.Fresno.WpfClient.Preferences.ViewModel;
+using LanterneRouge.Wpf.MVVM;
 using log4net;
 using Microsoft.Win32;
 using MRULib;
@@ -124,7 +125,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// </summary>
         public ObservableCollection<CommandViewModel> Commands
         {
-            get => _commands ?? (_commands = new ObservableCollection<CommandViewModel>(GetInitialCommands()));
+            get => _commands ??= new ObservableCollection<CommandViewModel>(GetInitialCommands());
             set
             {
                 _commands = value;
@@ -136,8 +137,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// Creates the commands.
         /// </summary>
         /// <returns></returns>
-        private List<CommandViewModel> GetInitialCommands() => new List<CommandViewModel>
-            {
+        private List<CommandViewModel> GetInitialCommands() => new()
+        {
                 new CommandViewModel("All Users", new RelayCommand(param => ShowAllUsers(), param=>IsDatabaseOpen))
             };
 
@@ -147,13 +148,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// Returns the command that, when invoked, attempts
         /// to remove this workspace from the user interface.
         /// </summary>
-        public ICommand CloseCommand => _closeCommand ?? (_closeCommand = new RelayCommand(param => OnRequestClose()));
+        public ICommand CloseCommand => _closeCommand ??= new RelayCommand(param => OnRequestClose());
 
         #endregion // CloseCommand
 
         #region OpenFileCommand
 
-        public ICommand OpenFileCommand => _openFileCommand ?? (_openFileCommand = new RelayCommand(param => OpenFile()));
+        public ICommand OpenFileCommand => _openFileCommand ??= new RelayCommand(param => OpenFile());
 
         private void OpenFile()
         {
@@ -192,7 +193,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region NewFileCommand
 
-        public ICommand NewFileCommand => _newFileCommand ?? (_newFileCommand = new RelayCommand(param => NewFile()));
+        public ICommand NewFileCommand => _newFileCommand ??= new RelayCommand(param => NewFile());
 
         private void NewFile()
         {
@@ -234,9 +235,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region NavigateUriCommand
 
-        public ICommand NavigateUriCommand => _navigateUriCommand ?? (_navigateUriCommand = new RelayCommand((object param) =>
+        public ICommand NavigateUriCommand => _navigateUriCommand ??= new RelayCommand((object param) =>
         {
-            if (!(param is string path))
+            if (param is not string path)
             {
                 return;
             }
@@ -264,13 +265,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                     ShowAllUsers();
                 }
             }
-        }));
+        });
 
         #endregion
 
         #region OpenPreferencesCommand
 
-        public ICommand OpenPreferencesCommand => _openPreferencesCommand ?? (_openPreferencesCommand = new RelayCommand(param => OpenPreferences()));
+        public ICommand OpenPreferencesCommand => _openPreferencesCommand ??= new RelayCommand(param => OpenPreferences());
+
         private void OpenPreferences()
         {
             var contentWindow = new FresnoToolWindow
@@ -337,7 +339,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void OnWorkspaceRequestClose(object sender, EventArgs e)
         {
-            if (!(sender is WorkspaceViewModel workspace)) return;
+            if (sender is not WorkspaceViewModel workspace) return;
             workspace.Dispose();
             Workspaces.Remove(workspace);
 
@@ -373,7 +375,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowAllUsers()
         {
-            if (!(Workspaces.FirstOrDefault(vm => vm is AllUsersViewModel) is AllUsersViewModel workspace))
+            if (Workspaces.FirstOrDefault(vm => vm is AllUsersViewModel) is not AllUsersViewModel workspace)
             {
                 workspace = new AllUsersViewModel(ShowWorkspace);
                 Workspaces.Add(workspace);
@@ -385,7 +387,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             SetActiveCommands(workspace);
         }
 
-        private string GetProductVersion()
+        private static string GetProductVersion()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);

@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.Services;
 using LanterneRouge.Fresno.Services.Interfaces;
 using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Wpf.MVVM;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -37,7 +38,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// Returns the command that, when invoked, attempts
         /// to remove this workspace from the user interface.
         /// </summary>
-        public ICommand CloseCommand => _closeCommand ?? (_closeCommand = new RelayCommand(param => OnRequestClose()));
+        public ICommand CloseCommand => _closeCommand ??= new RelayCommand(param => OnRequestClose());
 
         #endregion // CloseCommand
 
@@ -97,7 +98,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ObservableCollection<CommandViewModel> SubCommands
         {
-            get => _subCommands ?? (_subCommands = new ObservableCollection<CommandViewModel>());
+            get => _subCommands ??= new ObservableCollection<CommandViewModel>();
             set => _subCommands = value;
         }
 

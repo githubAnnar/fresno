@@ -43,7 +43,7 @@ namespace LanterneRouge.Wpf.UserControls
 
         static AdornerLayer GetAdornerLayer(FrameworkElement subject)
         {
-            AdornerLayer layer = null;
+            AdornerLayer layer;
             do
             {
                 if ((layer = AdornerLayer.GetAdornerLayer(subject)) != null)
@@ -160,8 +160,7 @@ namespace LanterneRouge.Wpf.UserControls
         private void CalDisplay_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
             PopUpCalendarButton.IsChecked = false;
-            var timeOfDay = TimeSpan.Zero;
-            timeOfDay = SelectedDate.TimeOfDay;
+            var timeOfDay = SelectedDate.TimeOfDay;
             SelectedDate = CalDisplay.SelectedDate.Value.Date + timeOfDay;
         }
 
@@ -227,7 +226,9 @@ namespace LanterneRouge.Wpf.UserControls
         {
             DateTime? date = ParseDateText(true);
             if (date != null)
+            {
                 SelectedDate = date.Value;
+            }
         }
 
         private void DateTimePicker_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -530,10 +531,10 @@ namespace LanterneRouge.Wpf.UserControls
     // Adorners must subclass the abstract base class Adorner. 
     public class TextBoxUpDownAdorner : Adorner
     {
-        StreamGeometry _triangle = new StreamGeometry();
+        readonly StreamGeometry _triangle = new();
         bool _shown;
         double _x, _top, _bottom;
-        public Pen Outline = new Pen(new SolidColorBrush(Color.FromArgb(64, 255, 255, 255)), 5);
+        public Pen Outline = new(new SolidColorBrush(Color.FromArgb(64, 255, 255, 255)), 5);
         public Brush Fill = Brushes.Black;
 
         public TextBoxUpDownAdorner(TextBox adornedBox) : base(adornedBox)

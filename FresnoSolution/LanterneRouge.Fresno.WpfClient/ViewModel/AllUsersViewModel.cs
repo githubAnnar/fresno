@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.ObjectModel;
@@ -83,19 +84,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public override WorkspaceViewModel SelectedObject => AllUsers.FirstOrDefault(item => item.IsSelected);
 
-        public ICommand AddUserCommand => _addUserCommand ?? (_addUserCommand = new RelayCommand(param => CreateChild()));
+        public ICommand AddUserCommand => _addUserCommand ??= new RelayCommand(param => CreateChild());
 
         public override void CreateChild() => UserViewModel.Create(ShowWorkspace);
 
-        public ICommand AddStepTestCommand => _addSteptestCommand ?? (_addSteptestCommand = new RelayCommand(param => CreateStepTest(), param => Selected != null && Selected.IsValid));
+        public ICommand AddStepTestCommand => _addSteptestCommand ??= new RelayCommand(param => CreateStepTest(), param => Selected != null && Selected.IsValid);
 
         public void CreateStepTest() => StepTestViewModel.Create(Selected, ShowWorkspace);
 
-        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => ShowUser(), param => Selected != null && Selected.IsValid));
+        public ICommand ShowUserCommand => _showUserCommand ??= new RelayCommand(param => ShowUser(), param => Selected != null && Selected.IsValid);
 
         private void ShowUser() => Selected.Show();
 
-        public ICommand ShowAllStepTestsCommand => _showAllStepTestCommand ?? (_showAllStepTestCommand = new RelayCommand(param => ShowAllStepTests(), param => Selected != null && Selected.IsValid));
+        public ICommand ShowAllStepTestsCommand => _showAllStepTestCommand ??= new RelayCommand(param => ShowAllStepTests(), param => Selected != null && Selected.IsValid);
 
         private void ShowAllStepTests()
         {

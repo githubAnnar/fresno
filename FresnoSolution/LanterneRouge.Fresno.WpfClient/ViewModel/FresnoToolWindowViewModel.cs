@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Wpf.MVVM;
 using System.Collections.ObjectModel;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel

@@ -2,8 +2,8 @@
 using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.Services;
 using LanterneRouge.Fresno.Services.Interfaces;
-using LanterneRouge.Fresno.WpfClient.MVVM;
 using LanterneRouge.Fresno.WpfClient.Utils;
+using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -163,15 +163,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 MessageBox.Show(sentMessage.ToString(), "Message Sent", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
-            if (message != null)
-            {
-                message.Dispose();
-            }
+            message?.Dispose();
         }
 
         #region ShowDiagram Command
 
-        public ICommand ShowDiagramCommand => _showDiagramCommand ?? (_showDiagramCommand = new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected)));
+        public ICommand ShowDiagramCommand => _showDiagramCommand ??= new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected));
 
         private void ShowDiagram(object obj) => new StepTestsPlotViewModel(AllStepTests.Where(st => st.IsSelected), ShowWorkspace).Show();
 
@@ -248,20 +245,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public static string GetIdentifierName(StepTestViewModel stepTest) => $"{Name}_StepTest_{stepTest.StepTestId}";
 
-        public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(param => CreateChild()));
+        public ICommand AddStepTestCommand => _addStepTestCommand ??= new RelayCommand(param => CreateChild());
 
         public override void CreateChild() => StepTestViewModel.Create(Parent as UserViewModel, ShowWorkspace);
 
-        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => Parent.Show(), param => Parent != null));
+        public ICommand ShowUserCommand => _showUserCommand ??= new RelayCommand(param => Parent.Show(), param => Parent != null);
 
-        public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ?? (_showAllMeasurementsCommand = new RelayCommand(param => ShowAllMeasurements(), param => Selected != null && Selected.IsValid));
+        public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ??= new RelayCommand(param => ShowAllMeasurements(), param => Selected != null && Selected.IsValid);
 
-        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ?? (_createStepTestPdfCommand = new RelayCommand(param => CreateStepTestPdf(), param => AllSelected.Count() >= 1));
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => CreateStepTestPdf(), param => AllSelected.Any());
 
         private void CreateStepTestPdf()
         {
-            string filename = GeneratePdf();
-
+            var filename = GeneratePdf();
             MessageBox.Show($"PDF {filename} is generated", "PDF Generation", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -283,7 +279,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             return filename;
         }
 
-        public ICommand SendPdfByEmailCommand => _sendPdfByEmailCommand ?? (_sendPdfByEmailCommand = new RelayCommand(param => SendStepTestPdfByMail(), param => CanSendEmail));
+        public ICommand SendPdfByEmailCommand => _sendPdfByEmailCommand ??= new RelayCommand(param => SendStepTestPdfByMail(), param => CanSendEmail);
 
         private void SendStepTestPdfByMail()
         {

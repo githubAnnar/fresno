@@ -10,6 +10,7 @@ namespace LanterneRouge.Fresno.WpfClient
     public partial class MainWindow
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(MainWindow));
+
         public MainWindow()
         {
             InitializeComponent();

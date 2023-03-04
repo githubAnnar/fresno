@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace LanterneRouge.Fresno.WpfClient.MVVM
+namespace LanterneRouge.Wpf.MVVM
 {
     public class CustomTabItem
     {

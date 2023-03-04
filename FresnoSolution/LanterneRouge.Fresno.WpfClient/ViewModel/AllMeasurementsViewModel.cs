@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+﻿using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.ObjectModel;
@@ -152,15 +152,15 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             return x.Sequence.CompareTo(y.Sequence);
         }
 
-        public ICommand AddMeasurementCommand => _addMeasurementCommand ?? (_addMeasurementCommand = new RelayCommand(param => CreateChild()));
+        public ICommand AddMeasurementCommand => _addMeasurementCommand ??= new RelayCommand(param => CreateChild());
 
         public override void CreateChild() => MeasurementViewModel.Create(Parent as StepTestViewModel, ShowWorkspace);
 
-        public ICommand ShowStepTestCommand => _showStepTestCommand ?? (_showStepTestCommand = new RelayCommand(param => Selected.Parent.Show(), param => Selected != null && Selected.IsValid));
+        public ICommand ShowStepTestCommand => _showStepTestCommand ??= new RelayCommand(param => Selected.Parent.Show(), param => Selected != null && Selected.IsValid);
 
-        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(param => Selected.Parent.Parent.Show(), param => Selected != null && Selected.IsValid));
+        public ICommand ShowUserCommand => _showUserCommand ??= new RelayCommand(param => Selected.Parent.Parent.Show(), param => Selected != null && Selected.IsValid);
 
-        public ICommand ShowMeasurementCommand => _showMeasurementCommand ?? (_showMeasurementCommand = new RelayCommand(param => Selected.Show(), param => Selected != null && Selected.IsValid));
+        public ICommand ShowMeasurementCommand => _showMeasurementCommand ??= new RelayCommand(param => Selected.Show(), param => Selected != null && Selected.IsValid);
 
         #endregion
 

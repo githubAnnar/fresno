@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace LanterneRouge.Fresno.WpfClient.MVVM
+namespace LanterneRouge.Wpf.MVVM
 {
     public class RelayCommand : ICommand
     {

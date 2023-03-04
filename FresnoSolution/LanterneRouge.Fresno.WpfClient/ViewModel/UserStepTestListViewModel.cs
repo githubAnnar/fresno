@@ -1,5 +1,5 @@
 ﻿using LanterneRouge.Fresno.Core.Entities;
-using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Wpf.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,10 +52,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #region Commands
 
         private ICommand _okCommand;
-        public ICommand OkCommand => _okCommand ?? (_okCommand = new RelayCommand(p => Ok(p)));
+        public ICommand OkCommand => _okCommand ??= new RelayCommand(p => Ok(p));
 
         private ICommand _cancelCommand;
-        public ICommand CancelCommand => _cancelCommand ?? (_cancelCommand = new RelayCommand(p => Cancel()));
+        public ICommand CancelCommand => _cancelCommand ??= new RelayCommand(p => Cancel());
 
         #endregion
     }

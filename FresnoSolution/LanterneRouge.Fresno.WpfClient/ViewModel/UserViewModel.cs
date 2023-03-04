@@ -1,6 +1,6 @@
 ﻿using LanterneRouge.Fresno.Core.Entities;
 using LanterneRouge.Fresno.Utils.Helpers;
-using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.ObjectModel;
@@ -209,7 +209,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
-        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(param => Save(param), param => CanSave));
+        public ICommand SaveCommand => _saveCommand ??= new RelayCommand(param => Save(param), param => CanSave);
 
         #endregion
 
@@ -348,7 +348,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region EditSelectedCommand
 
-        public ICommand EditSelectedCommand => _editSelectedCommand ?? (_editSelectedCommand = new RelayCommand(EditSelected));
+        public ICommand EditSelectedCommand => _editSelectedCommand ??= new RelayCommand(EditSelected);
 
         private void EditSelected(object obj)
         {
@@ -360,7 +360,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowAllStepTestsCommand
 
-        public ICommand ShowAllStepTestsCommand => _showAllStepTestsCommand ?? (_showAllStepTestsCommand = new RelayCommand(param => ShowAllStepTests()));
+        public ICommand ShowAllStepTestsCommand => _showAllStepTestsCommand ??= new RelayCommand(param => ShowAllStepTests());
 
         public void ShowAllStepTests()
         {
@@ -373,7 +373,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region AddStepTestCommand
 
-        public ICommand AddStepTestCommand => _addStepTestCommand ?? (_addStepTestCommand = new RelayCommand(param => CreateChild()));
+        public ICommand AddStepTestCommand => _addStepTestCommand ??= new RelayCommand(param => CreateChild());
 
         public override void CreateChild()
         {

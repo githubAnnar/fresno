@@ -1,6 +1,6 @@
 ﻿using LanterneRouge.Fresno.Core.Entities;
 using LanterneRouge.Fresno.Utils.Helpers;
-using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.ObjectModel;
@@ -138,7 +138,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
-        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(param => Save(param), param => CanSave));
+        public ICommand SaveCommand => _saveCommand ??= new RelayCommand(param => Save(param), param => CanSave);
 
         public override WorkspaceViewModel SelectedObject => this;
 
@@ -267,7 +267,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region EditSelectedCommand
 
-        public ICommand EditSelectedCommand => _editSelectedCommand ?? (_editSelectedCommand = new RelayCommand(EditSelected));
+        public ICommand EditSelectedCommand => _editSelectedCommand ??= new RelayCommand(EditSelected);
 
         private void EditSelected(object obj)
         {
@@ -279,7 +279,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowStepTestCommand
 
-        public ICommand ShowStepTestCommand => _showStepTestCommand ?? (_showStepTestCommand = new RelayCommand(ShowStepTest));
+        public ICommand ShowStepTestCommand => _showStepTestCommand ??= new RelayCommand(ShowStepTest);
 
         private void ShowStepTest(object obj)
         {
@@ -291,7 +291,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowUserCommand
 
-        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(ShowUser));
+        public ICommand ShowUserCommand => _showUserCommand ??= new RelayCommand(ShowUser);
 
         private void ShowUser(object obj)
         {

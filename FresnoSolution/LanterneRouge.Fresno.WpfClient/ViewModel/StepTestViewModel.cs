@@ -2,9 +2,8 @@
 using LanterneRouge.Fresno.Core.Entities;
 using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.Utils.Helpers;
-using LanterneRouge.Fresno.WpfClient.MVVM;
-using LanterneRouge.Fresno.WpfClient.Utils;
 using LanterneRouge.Fresno.WpfClient.View;
+using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -197,21 +196,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public double DMaxValue => DmaxCalculation != null ? DmaxCalculation.LoadThreshold : 0d;
 
         private FblcCalculation _fblcCalculation = null;
-        private FblcCalculation FblcCalculation => _fblcCalculation ?? (_fblcCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new FblcCalculation(Source.Measurements, 4.0) : null);
+        private FblcCalculation FblcCalculation => _fblcCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new FblcCalculation(Source.Measurements, 4.0) : null;
 
         private FrpbCalculation _frpbCalculation = null;
-        private FrpbCalculation FrpbCalculation => _frpbCalculation ?? (_frpbCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new FrpbCalculation(Source.Measurements, 1.0) : null);
+        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new FrpbCalculation(Source.Measurements, 1.0) : null;
 
         private LTCalculation _ltCalculation = null;
-        private LTCalculation LtCalculation => _ltCalculation ?? (_ltCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new LTCalculation(Source.Measurements) : null);
+        private LTCalculation LtCalculation => _ltCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new LTCalculation(Source.Measurements) : null;
 
         private LTLogCalculation _ltLogCalculation = null;
 
-        private LTLogCalculation LtLogCalculation => _ltLogCalculation ?? (_ltLogCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new LTLogCalculation(Source.Measurements) : null);
+        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new LTLogCalculation(Source.Measurements) : null;
 
         private DmaxCalculation _dmaxCalculation;
 
-        private DmaxCalculation DmaxCalculation => _dmaxCalculation ?? (_dmaxCalculation = Source.Measurements != null && Source.Measurements.Count > 0 ? new DmaxCalculation(Source.Measurements, false) : null);
+        private DmaxCalculation DmaxCalculation => _dmaxCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new DmaxCalculation(Source.Measurements, false) : null;
 
         #endregion
 
@@ -254,7 +253,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
                 DataManager.Commit();
 
-                OnPropertyChanged("DisplayName");
+                OnPropertyChanged(nameof(DisplayName));
 
                 MessageBox.Show($"Step Test: {StepTestId} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
                 Logger.Info($"Step Test: {StepTestId} saved OK");
@@ -364,7 +363,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region EditSelectedCommand
 
-        public ICommand EditSelectedCommand => _editSelectedCommand ?? (_editSelectedCommand = new RelayCommand(EditSelected));
+        public ICommand EditSelectedCommand => _editSelectedCommand ??= new RelayCommand(EditSelected);
 
         private void EditSelected(object obj)
         {
@@ -376,9 +375,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowUserCommand
 
-        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(param => Save(param), param => CanSave));
+        public ICommand SaveCommand => _saveCommand ??= new RelayCommand(param => Save(param), param => CanSave);
 
-        public ICommand ShowUserCommand => _showUserCommand ?? (_showUserCommand = new RelayCommand(ShowUser));
+        public ICommand ShowUserCommand => _showUserCommand ??= new RelayCommand(ShowUser);
 
         private void ShowUser(object obj)
         {
@@ -390,7 +389,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowAllMeasurementsCommand
 
-        public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ?? (_showAllMeasurementsCommand = new RelayCommand(param => ShowAllMeasurements()));
+        public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ??= new RelayCommand(param => ShowAllMeasurements());
 
         private void ShowAllMeasurements()
         {
@@ -403,7 +402,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region AddMeasurementCommand
 
-        public ICommand AddMeasurementCommand => _addMeasurementCommand ?? (_addMeasurementCommand = new RelayCommand(param => CreateChild(), param => IsValid));
+        public ICommand AddMeasurementCommand => _addMeasurementCommand ??= new RelayCommand(param => CreateChild(), param => IsValid);
 
         public override void CreateChild()
         {
@@ -415,7 +414,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowFblcCalculationCommand
 
-        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ?? (_showFblcCalculationCommand = new RelayCommand(param => ShowFblcCalculation()));
+        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ??= new RelayCommand(param => ShowFblcCalculation());
 
         private void ShowFblcCalculation()
         {
@@ -428,7 +427,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowFrpbCalculationCommand
 
-        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ?? (_showFrpbCalculationCommand = new RelayCommand(param => ShowFrpbCalculation()));
+        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ??= new RelayCommand(param => ShowFrpbCalculation());
 
         private void ShowFrpbCalculation()
         {
@@ -441,7 +440,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowLtCalculationCommand
 
-        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ?? (_showLtCalculationCommand = new RelayCommand(ShowLtCalculation));
+        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ??= new RelayCommand(ShowLtCalculation);
 
         private void ShowLtCalculation(object obj)
         {
@@ -454,7 +453,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowLtLogCalculationCommand
 
-        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ?? (_showLtLogCalculationCommand = new RelayCommand(ShowLtLogCalculation));
+        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ??= new RelayCommand(ShowLtLogCalculation);
 
         private void ShowLtLogCalculation(object obj)
         {
@@ -467,7 +466,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowDMaxCalculationCommand
 
-        public ICommand ShowDMaxCalculationCommand => _showDMaxCalculationCommand ?? (_showDMaxCalculationCommand = new RelayCommand(ShowDMaxCalculation));
+        public ICommand ShowDMaxCalculationCommand => _showDMaxCalculationCommand ??= new RelayCommand(ShowDMaxCalculation);
 
         private void ShowDMaxCalculation(object obj)
         {
@@ -480,7 +479,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowPdfCommand
 
-        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ?? (_createStepTestPdfCommand = new RelayCommand(param => GenerateStepTestPdf(), param => Source.IsValid));
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => GenerateStepTestPdf(), param => Source.IsValid);
 
         public void GenerateStepTestPdf()
         {
