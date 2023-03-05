@@ -80,7 +80,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("entity");
+                throw new ArgumentNullException(nameof(entity));
             }
 
             Remove(entity.Id);

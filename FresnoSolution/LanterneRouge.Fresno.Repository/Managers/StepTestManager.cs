@@ -40,11 +40,11 @@ namespace LanterneRouge.Fresno.Repository.Managers
             }
 
             _connection.Dispose();
-            _connection = null;
+            _connection = null!;
             Logger.Info("Db connection closed");
 
             // Reset Caches
-            _cachedStepTests = null;
+            _cachedStepTests = null!;
             Logger.Info("Cached step tests are reset");
 
             // Reset repository
@@ -136,7 +136,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         private void ResetRepository()
         {
-            _stepTestRepository = null;
+            _stepTestRepository = null!;
             Logger.Debug("StepTest Repository is resetted");
         }
 
@@ -149,13 +149,13 @@ namespace LanterneRouge.Fresno.Repository.Managers
                     if (_transaction != null)
                     {
                         _transaction.Dispose();
-                        _transaction = null;
+                        _transaction = null!;
                     }
 
                     if (_connection != null)
                     {
                         _connection.Dispose();
-                        _connection = null;
+                        _connection = null!;
                     }
                 }
 

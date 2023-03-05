@@ -40,11 +40,11 @@ namespace LanterneRouge.Fresno.Repository.Managers
             }
 
             _connection.Dispose();
-            _connection = null;
+            _connection = null!;
             Logger.Info("Db connection closed");
 
             // Reset Caches
-            _cachedMeasurements = null;
+            _cachedMeasurements = null!;
             Logger.Info("Cached measurements are reset");
 
             // Reset repository
@@ -84,7 +84,11 @@ namespace LanterneRouge.Fresno.Repository.Managers
             finally
             {
                 _transaction.Dispose();
-                _transaction = _connection.BeginTransaction();
+                if (_connection != null)
+                {
+                    _transaction = _connection.BeginTransaction();
+                }
+
                 ResetRepository();
             }
         }
@@ -136,7 +140,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         private void ResetRepository()
         {
-            _measurementRepository = null;
+            _measurementRepository = null!;
             Logger.Debug("Measurement Repository is resetted");
         }
 
@@ -149,13 +153,13 @@ namespace LanterneRouge.Fresno.Repository.Managers
                     if (_transaction != null)
                     {
                         _transaction.Dispose();
-                        _transaction = null;
+                        _transaction = null!;
                     }
 
                     if (_connection != null)
                     {
                         _connection.Dispose();
-                        _connection = null;
+                        _connection = null!;
                     }
                 }
 

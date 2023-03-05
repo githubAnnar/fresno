@@ -37,11 +37,11 @@ namespace LanterneRouge.Fresno.Repository.Managers
             }
 
             _connection.Dispose();
-            _connection = null;
+            _connection = null!;
             Logger.Info("Db connection closed");
 
             // Reset Caches
-            _cachedUsers = null;
+            _cachedUsers = null!;
             Logger.Info("Cached users is reset");
 
             // Reset repository
@@ -133,7 +133,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         private void ResetRepository()
         {
-            _userRepository = null;
+            _userRepository = null!;
             Logger.Debug("User Repository is resetted");
         }
 
@@ -146,13 +146,13 @@ namespace LanterneRouge.Fresno.Repository.Managers
                     if (_transaction != null)
                     {
                         _transaction.Dispose();
-                        _transaction = null;
+                        _transaction = null!;
                     }
 
                     if (_connection != null)
                     {
                         _connection.Dispose();
-                        _connection = null;
+                        _connection = null!;
                     }
                 }
 

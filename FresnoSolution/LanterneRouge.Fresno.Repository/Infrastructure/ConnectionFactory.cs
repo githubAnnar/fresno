@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.Repository.Contracts;
 using log4net;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 
 namespace LanterneRouge.Fresno.Repository.Infrastructure
@@ -33,8 +34,8 @@ namespace LanterneRouge.Fresno.Repository.Infrastructure
                 CheckExistingFile();
                 //var table = DbProviderFactories.GetFactoryClasses();
                 //var factory = DbProviderFactories.GetFactory("System.Data.SQLite");
-                var factory = SQLiteFactory.Instance;
-                var conn = factory.CreateConnection();
+                SQLiteFactory factory = SQLiteFactory.Instance;
+                DbConnection conn = factory.CreateConnection();
                 conn.ConnectionString = _connectionString;
                 conn.Open();
                 Logger.Debug($"Connection '{_connectionString}' is open!");
