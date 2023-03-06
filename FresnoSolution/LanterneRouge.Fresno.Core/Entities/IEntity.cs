@@ -8,7 +8,7 @@
         Deleted
     }
 
-    public interface IEntity<TEntity> where TEntity : class
+    public interface IEntity
     {
         int Id { get; }
 

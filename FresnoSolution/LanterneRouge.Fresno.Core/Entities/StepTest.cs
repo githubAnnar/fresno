@@ -29,7 +29,7 @@
 
         public override bool IsValid => UserId > 0;
 
-        public IEntity<User> ParentUser { get; set; }
+        public User ParentUser { get; set; }
 
         public static StepTest Create(int userId, string testType, string effortUnit, long stepDuration, float loadPreset, float increase, float temperature, float weight, DateTime testDate)
         {

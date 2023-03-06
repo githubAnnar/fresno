@@ -2,7 +2,7 @@
 
 namespace LanterneRouge.Fresno.Core.Contracts
 {
-    public interface IRepository<TEntity> where TEntity : class, IEntity<TEntity>
+    public interface IRepository<TEntity> where TEntity : BaseEntity<TEntity>
     {
         void Add(TEntity entity);
 
@@ -14,7 +14,7 @@ namespace LanterneRouge.Fresno.Core.Contracts
 
         TEntity FindWithParentAndChilds(int id);
 
-        IEnumerable<TEntity> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : class, IEntity<TParentEntity>;
+        IEnumerable<TEntity> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>;
 
         void Remove(int id);
 

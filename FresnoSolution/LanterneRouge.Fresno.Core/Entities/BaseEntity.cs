@@ -1,6 +1,6 @@
 ﻿namespace LanterneRouge.Fresno.Core.Entities
 {
-    public abstract class BaseEntity<TEntity> : IEntity<TEntity> where TEntity : class
+    public abstract class BaseEntity<TEntity> : IEntity where TEntity : class
     {
         private readonly string[] PropertyNameSkipArray = new string[] { "IsValid", "IsChanged", "State" };
         private Dictionary<string, object> OriginalValues { get; set; }

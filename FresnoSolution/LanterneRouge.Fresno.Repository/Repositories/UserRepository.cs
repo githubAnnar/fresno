@@ -62,7 +62,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return user;
         }
 
-        public IEnumerable<User> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : class, IEntity<TParentEntity>
+        public IEnumerable<User> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>
         {
             Logger.Debug($"{nameof(FindByParentId)} is NULL");
             return null;

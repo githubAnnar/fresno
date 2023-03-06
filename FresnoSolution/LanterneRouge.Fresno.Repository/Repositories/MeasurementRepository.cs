@@ -92,13 +92,13 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             Logger.Info($"Removed {id}");
         }
 
-        public IEnumerable<Measurement> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : class, IEntity<TParentEntity>
+        public IEnumerable<Measurement> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>
         {
             Logger.Debug($"FindByParentId {parent.Id}");
             var measurements = Connection.Query<Measurement>("SELECT * FROM Measurement WHERE StepTestId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
             measurements.ForEach(m =>
             {
-                m.ParentStepTest = parent as IEntity<StepTest>;
+                m.ParentStepTest = parent as StepTest;
                 m.AcceptChanges();
             });
             return measurements;

@@ -89,13 +89,13 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             Logger.Info($"Updated {entity.Id}");
         }
 
-        public IEnumerable<StepTest> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : class, IEntity<TParentEntity>
+        public IEnumerable<StepTest> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>
         {
             Logger.Debug($"FindByParentId {parent.Id}");
             var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
             stepTests.ForEach((stepTest) =>
             {
-                stepTest.ParentUser = parent as IEntity<User>;
+                stepTest.ParentUser = parent as User;
                 stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
                 stepTest.AcceptChanges();
             });
