@@ -11,6 +11,7 @@ namespace LanterneRouge.Fresno.Repository.Infrastructure
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ConnectionFactory));
         private readonly string _connectionString;
+        private IDbConnection _connection;
 
         public ConnectionFactory(SQLiteConnectionStringBuilder connectionStringBuilder)
         {
@@ -31,15 +32,19 @@ namespace LanterneRouge.Fresno.Repository.Infrastructure
         {
             get
             {
-                CheckExistingFile();
-                //var table = DbProviderFactories.GetFactoryClasses();
-                //var factory = DbProviderFactories.GetFactory("System.Data.SQLite");
-                SQLiteFactory factory = SQLiteFactory.Instance;
-                DbConnection conn = factory.CreateConnection();
-                conn.ConnectionString = _connectionString;
-                conn.Open();
-                Logger.Debug($"Connection '{_connectionString}' is open!");
-                return conn;
+                if (_connection == null)
+                {
+                    CheckExistingFile();
+                    //var table = DbProviderFactories.GetFactoryClasses();
+                    //var factory = DbProviderFactories.GetFactory("System.Data.SQLite");
+                    SQLiteFactory factory = SQLiteFactory.Instance;
+                    _connection = factory.CreateConnection();
+                    _connection.ConnectionString = _connectionString;
+                    _connection.Open();
+                    Logger.Debug($"Connection '{_connectionString}' is open!");
+                }
+
+                return _connection;
             }
         }
 
