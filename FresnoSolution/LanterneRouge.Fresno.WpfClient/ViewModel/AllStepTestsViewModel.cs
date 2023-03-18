@@ -239,7 +239,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         /// <summary>
         /// Gets the selected object.
         /// </summary>
-        public override WorkspaceViewModel SelectedObject => AllStepTests.FirstOrDefault(item => item.IsSelected);
+        //public override WorkspaceViewModel SelectedObject => AllStepTests.FirstOrDefault(item => item.IsSelected);
+
+        public override WorkspaceViewModel SelectedObject
+        {
+            get
+            {
+                if (AllStepTests.Any(item => item.IsSelected))
+                {
+                    return AllStepTests.First(item => item.IsSelected);
+                }
+
+                AllStepTests.Last().IsSelected = true;
+                return AllStepTests.Last();
+            }
+        }
 
         public IEnumerable<WorkspaceViewModel> AllSelected => AllStepTests.Where(item => item.IsSelected);
 
