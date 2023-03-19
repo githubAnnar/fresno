@@ -2,7 +2,7 @@
 {
     public class User : BaseEntity<User>
     {
-        private User() : base()
+        public User() : base()
         {
             IsLoaded = false;
         }
