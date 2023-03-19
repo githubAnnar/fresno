@@ -6,7 +6,9 @@
         private Dictionary<string, object> OriginalValues { get; set; }
 
         protected BaseEntity()
-        { }
+        {
+            OriginalValues = new Dictionary<string, object>();
+        }
 
         public Dictionary<string, object> GetChanges()
         {
@@ -21,7 +23,11 @@
             var tempProperties = GetType().GetProperties().Where(p => !ExcludeName(p.Name) && !Equals(p.GetValue(this, null), OriginalValues[p.Name]));
             foreach (var item in tempProperties)
             {
-                latestChanges.Add(item.Name, item.GetValue(this));
+                var value = item.GetValue(this);
+                if (value != null)
+                {
+                    latestChanges.Add(item.Name, value);
+                }
             }
 
             return latestChanges;
@@ -58,13 +64,16 @@
 
         public void AcceptChanges()
         {
-            OriginalValues = new Dictionary<string, object>();
             var properties = GetType().GetProperties();
 
             // Save the current value of the properties to our dictionary.
             foreach (var property in properties.Where(p => !ExcludeName(p.Name)))
             {
-                OriginalValues.Add(property.Name, property.GetValue(this));
+                var value = property.GetValue(this);
+                if (value != null)
+                {
+                    OriginalValues.Add(property.Name, value);
+                }
             }
         }
 
@@ -72,6 +81,6 @@
 
         public override int GetHashCode() => Id.GetHashCode();
 
-        public override bool Equals(object obj) => obj is TEntity entity && GetHashCode().Equals(entity.GetHashCode());
+        public override bool Equals(object? obj) => obj is TEntity entity && GetHashCode().Equals(entity.GetHashCode());
     }
 }

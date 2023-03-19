@@ -2,33 +2,32 @@
 {
     public class User : BaseEntity<User>
     {
-        public User() : base()
+        private User() : base()
         {
-            StepTests = new List<StepTest>();
             IsLoaded = false;
         }
 
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
 
-        public string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
 
-        public string Street { get; set; }
+        public string Street { get; set; } = string.Empty;
 
-        public string PostCode { get; set; }
+        public string PostCode { get; set; } = string.Empty;
 
-        public string PostCity { get; set; }
+        public string PostCity { get; set; } = string.Empty;
 
         public DateTime BirthDate { get; set; }
 
         public int Height { get; set; }
 
-        public string Sex { get; set; }
+        public string Sex { get; set; } = string.Empty;
 
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         public int MaxHr { get; set; }
 
-        public List<StepTest> StepTests { get; set; }
+        public List<StepTest> StepTests { get; set; } = new List<StepTest>();
 
         public override bool IsValid => true;
 

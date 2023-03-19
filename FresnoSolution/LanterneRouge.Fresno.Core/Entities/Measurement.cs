@@ -14,7 +14,7 @@
 
         public bool InCalculation { get; set; }
 
-        public StepTest ParentStepTest { get; set; }
+        public StepTest? ParentStepTest { get; set; }
 
         public override bool IsValid => StepTestId > 0;
 
@@ -25,7 +25,7 @@
             return newMeasurement;
         }
 
-        public int CompareTo(Measurement other) => other == null
+        public int CompareTo(Measurement? other) => other == null
                 ? 1
                 : StepTestId > other.StepTestId ? 1 : StepTestId < other.StepTestId ? -1 : Sequence.CompareTo(other.Sequence);
     }
