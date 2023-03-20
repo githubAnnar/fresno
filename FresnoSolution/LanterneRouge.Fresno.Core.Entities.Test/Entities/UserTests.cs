@@ -31,7 +31,7 @@ namespace LanterneRouge.Fresno.Core.Entities
                 .RuleFor(u => u.MaxHr, f => f.Random.Int(150, 210))
                 .FinishWith((f, u) =>
                 {
-                    Console.WriteLine("User Created");
+                    Console.WriteLine($"User {u.FirstName} {u.LastName} Created");
                 });
         }
 
@@ -52,6 +52,7 @@ namespace LanterneRouge.Fresno.Core.Entities
             Assert.True(testUser.Sex.Equals("M", StringComparison.InvariantCultureIgnoreCase) || testUser.Sex.Equals("F", StringComparison.InvariantCultureIgnoreCase));
             Assert.Equal(_user.MaxHr, testUser.MaxHr);
             Assert.True(testUser.IsLoaded);
+            Assert.Equal(EntityState.New, testUser.State);
         }
     }
 }

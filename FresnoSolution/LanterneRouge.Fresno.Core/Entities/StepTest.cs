@@ -2,7 +2,7 @@
 {
     public class StepTest : BaseEntity<StepTest>
     {
-        private StepTest() : base()
+        public StepTest() : base()
         { }
 
         public int UserId { get; set; }
