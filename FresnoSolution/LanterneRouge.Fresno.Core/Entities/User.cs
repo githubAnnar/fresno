@@ -33,9 +33,9 @@
 
         public bool IsLoaded { get; set; }
 
-        public static User Create(string firstName, string lastName, string street, string postCode, string postCity, DateTime birthDate, int height, float weight, string sex, string email)
+        public static User Create(string firstName, string lastName, string street, string postCode, string postCity, DateTime birthDate, int height, int maxHr, string sex, string email)
         {
-            var newUser = new User { FirstName = firstName, LastName = lastName, Street = street, PostCode = postCode, PostCity = postCity, BirthDate = birthDate, Height = height, Sex = sex, Email = email, IsLoaded = true };
+            var newUser = new User { FirstName = firstName, LastName = lastName, Street = street, PostCode = postCode, PostCity = postCity, BirthDate = birthDate, Height = height, Sex = sex, Email = email, IsLoaded = true, MaxHr = maxHr };
             newUser.AcceptChanges();
             return newUser;
         }
