@@ -521,7 +521,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             var newStepTest = StepTest.Create(parentUser.UserId, "Bike", "W", TimeSpan.FromMinutes(4d).Ticks, 0, 0, 0, 0, DateTime.Now);
             newStepTest.ParentUser = parentUser.Source;
-            parentUser.Source.StepTests.Add(newStepTest);
             newStepTest.AcceptChanges();
             Logger.Info("Created new empty step test entity");
             var workspace = new StepTestViewModel(newStepTest, parentUser, showWorkspace);

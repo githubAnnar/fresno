@@ -78,7 +78,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (Parent is UserViewModel parent)
             {
-                var all = (from stepTest in parent.Source.StepTests select new StepTestViewModel(stepTest, parent, ShowWorkspace)).ToList();
+                var all = DataManager.GetAllStepTestsByUser(parent.Source).Select(s => new StepTestViewModel(s, parent, ShowWorkspace)).ToList();
                 all.ForEach(cvm => cvm.PropertyChanged += OnStepTestViewModelPropertyChanged);
                 AllStepTests = new ObservableCollection<StepTestViewModel>(all);
                 AllStepTests.CollectionChanged += OnCollectionChanged;

@@ -104,7 +104,7 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public IEnumerable<StepTest> GetAllStepTests() => _stepTestManager.GetAllStepTests();
 
-        public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _userManager.GetUserById(parent.Id).StepTests;
+        public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _stepTestManager.GetStepTestsByUser(parent);
 
         public void UpdateStepTest(StepTest entity) => _stepTestManager.UpsertStepTest(entity);
 

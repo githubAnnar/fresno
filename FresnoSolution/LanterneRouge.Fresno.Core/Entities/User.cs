@@ -27,8 +27,6 @@
 
         public int MaxHr { get; set; }
 
-        public List<StepTest> StepTests { get; set; } = new List<StepTest>();
-
         public override bool IsValid => true;
 
         public bool IsLoaded { get; set; }

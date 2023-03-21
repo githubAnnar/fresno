@@ -99,6 +99,17 @@ namespace LanterneRouge.Fresno.Repository.Managers
             return CachedStepTests;
         }
 
+        public List<StepTest> GetStepTestsByUser(User parent, bool refresh = false)
+        {
+            if (refresh || CachedStepTests.Count == 0)
+            {
+                _cachedStepTests = StepTestRepository.All().ToList();
+            }
+
+            return CachedStepTests.Where(s => s.UserId == parent.Id).ToList();
+        }
+
+
         public StepTest GetStepTestById(int id, bool refresh = false)
         {
             if (refresh || CachedStepTests.Count == 0)

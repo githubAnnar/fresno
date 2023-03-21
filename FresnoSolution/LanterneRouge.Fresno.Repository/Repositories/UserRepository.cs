@@ -31,13 +31,6 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             var allUsers = Connection.Query<User>("SELECT * FROM User").ToList();
 
-            allUsers.ForEach((user) =>
-            {
-                user.StepTests = new StepTestRepository(Transaction).FindByParentId(user).ToList();
-                user.IsLoaded = true;
-                user.AcceptChanges();
-            });
-
             Logger.Debug("Returning All");
             return allUsers;
         }
@@ -58,7 +51,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             Logger.Debug($"FindWithParentAndChilds({id})");
             var user = FindSingle(id);
-            user.StepTests = new StepTestRepository(Transaction).FindByParentId(user).ToList();
+            //user.StepTests = new StepTestRepository(Transaction).FindByParentId(user).ToList();
             return user;
         }
 
