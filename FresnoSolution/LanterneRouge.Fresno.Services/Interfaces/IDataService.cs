@@ -12,6 +12,8 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
         IEnumerable<User> GetAllUsers(bool refresh = false);
 
+        User GetUserByStepTest(StepTest stepTest,bool refresh=false);
+
         void UpdateUser(User entity);
 
         void RemoveUser(User entity);
@@ -29,6 +31,8 @@ namespace LanterneRouge.Fresno.Services.Interfaces
         void AddStepTest(StepTest entity);
 
         IEnumerable<Measurement> GetAllMeasurements();
+
+        IEnumerable<Measurement> GetAllMeasurementsByStepTest(StepTest entity);
 
         void UpdateMeasurement(Measurement entity);
 

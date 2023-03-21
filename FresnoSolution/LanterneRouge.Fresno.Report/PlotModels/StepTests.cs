@@ -1,5 +1,8 @@
-﻿using LanterneRouge.Fresno.Calculations;
+﻿using Autofac;
+using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Core.Entities;
+using LanterneRouge.Fresno.Services;
+using LanterneRouge.Fresno.Services.Interfaces;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -16,8 +19,20 @@ namespace LanterneRouge.Fresno.Report.PlotModels
         private const string LoadAxisKey = "Load";
         private const string LactateAxisKey = "Lactate";
         private const string HeartrateAxisKey = "Heartrate";
+        private static IDataService _dataManager;
 
         #endregion
+
+        private static IDataService GetDataManager()
+        {
+            if (_dataManager == null)
+            {
+                var scope = ServiceLocator.Instance.BeginLifetimeScope();
+                _dataManager = scope.Resolve<IDataService>();
+            }
+
+            return _dataManager;
+        }
 
         public static PlotModel StepTestPlotModel(IEnumerable<StepTest> stepTests)
         {
@@ -28,8 +43,8 @@ namespace LanterneRouge.Fresno.Report.PlotModels
 
             var stepTestData = stepTests.ToList();
             var testPlotType = stepTests.Count() > 1 ? "Comparison" : "Plot";
-            var stepTestsModel = new PlotModel { Title = $"{testPlotType} of user {string.Join(", ", stepTests.Select(st => ((User)st.ParentUser).LastName).Distinct())}" };
-            var minLoad = stepTests.Select(st => st.Measurements.Min(m => m.Load)).Min();
+            var stepTestsModel = new PlotModel { Title = $"{testPlotType} of user {string.Join(", ", stepTests.Select(st => (GetDataManager().GetUserByStepTest(st)).LastName).Distinct())}" };
+            var minLoad = stepTests.Select(st => GetDataManager().GetAllMeasurementsByStepTest(st).Min(m => m.Load)).Min();
             var maxLoad = stepTests.Select(st => st.Measurements.Max(m => m.Load)).Max();
             var minLactate = stepTests.Select(st => st.Measurements.Min(m => m.Lactate)).Min();
             var maxLactate = stepTests.Select(st => st.Measurements.Max(m => m.Lactate)).Max();

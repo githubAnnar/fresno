@@ -30,12 +30,12 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest").ToList();
 
             // Get parent and childs
-            stepTests.ForEach((stepTest) =>
-            {
-                stepTest.ParentUser = new UserRepository(Transaction).FindWithParent(stepTest.UserId);
-                stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
-                stepTest.AcceptChanges();
-            });
+            //stepTests.ForEach((stepTest) =>
+            //{
+            //    stepTest.ParentUser = new UserRepository(Transaction).FindWithParent(stepTest.UserId);
+            //    stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
+            //    stepTest.AcceptChanges();
+            //});
 
             Logger.Debug("Returning All");
             return stepTests;
@@ -51,7 +51,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             Logger.Debug($"FindWithParent({id})");
             var stepTest = FindSingle(id);
-            stepTest.ParentUser = new UserRepository(Transaction).FindWithParent(stepTest.UserId);
+            //stepTest.ParentUser = new UserRepository(Transaction).FindWithParent(stepTest.UserId);
             return stepTest;
         }
 
@@ -59,7 +59,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             Logger.Debug($"FindWithParentAndChilds({id})");
             var stepTest = FindWithParent(id);
-            stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
+            //stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
             return stepTest;
         }
 
@@ -93,12 +93,12 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             Logger.Debug($"FindByParentId {parent.Id}");
             var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
-            stepTests.ForEach((stepTest) =>
-            {
-                stepTest.ParentUser = parent as User;
-                stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
-                stepTest.AcceptChanges();
-            });
+            //stepTests.ForEach((stepTest) =>
+            //{
+            //    stepTest.ParentUser = parent as User;
+            //    stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
+            //    stepTest.AcceptChanges();
+            //});
             return stepTests;
         }
     }

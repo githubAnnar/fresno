@@ -8,6 +8,8 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 
         User GetUserById(int id, bool refresh = false);
 
+        User GetUserByStepTest(StepTest stepTest, bool refresh = false);
+
         void UpsertUser(User entity);
 
         void RemoveUser(User entity);

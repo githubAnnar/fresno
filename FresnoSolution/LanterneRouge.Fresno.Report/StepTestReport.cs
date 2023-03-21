@@ -1,8 +1,11 @@
-﻿using LanterneRouge.Fresno.Calculations;
+﻿using Autofac;
+using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Calculations.Base;
 using LanterneRouge.Fresno.Core.Entities;
 using LanterneRouge.Fresno.Report.Helpers;
 using LanterneRouge.Fresno.Report.PlotModels;
+using LanterneRouge.Fresno.Services;
+using LanterneRouge.Fresno.Services.Interfaces;
 using log4net;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
@@ -27,6 +30,7 @@ namespace LanterneRouge.Fresno.Report
         private readonly int[] _resultTableColumnRelativeWidths = new[] { 1, 1, 1, 1, 1 };
         private const double MARKER = 4d;
         private readonly double[] ZONES = new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 };
+        private IDataService _dataManager;
 
         #endregion
 
@@ -42,11 +46,25 @@ namespace LanterneRouge.Fresno.Report
 
         #region Properties
 
+        private IDataService DataManager
+        {
+            get
+            {
+                if (_dataManager == null)
+                {
+                    var scope = ServiceLocator.Instance.BeginLifetimeScope();
+                    _dataManager = scope.Resolve<IDataService>();
+                }
+
+                return _dataManager;
+            }
+        }
+
         public StepTest ReportStepTest { get; }
 
         public IEnumerable<StepTest> AdditionalStepTests { get; set; }
 
-        private FblcCalculation LactateCalculation(StepTest data) => new FblcCalculation(data.Measurements, MARKER);
+        private FblcCalculation LactateCalculation(StepTest data) => new FblcCalculation(DataManager.GetAllMeasurementsByStepTest(data), MARKER);
 
         private List<Zone> LactateZones(StepTest data) => new LactateBasedZones(LactateCalculation(data), ZONES).Zones.ToList();
 
@@ -69,7 +87,7 @@ namespace LanterneRouge.Fresno.Report
                 }
             }
 
-            Logger.Info($"Report for Steptest {((User)ReportStepTest.ParentUser).LastName} / {ReportStepTest.Id} is created");
+            Logger.Info($"Report for Steptest {(DataManager.GetUserByStepTest(ReportStepTest)).LastName} / {ReportStepTest.Id} is created");
             return document;
         }
 
@@ -86,7 +104,7 @@ namespace LanterneRouge.Fresno.Report
             }
 
             var firstMetaDataRow = metaDataTable.AddRow();
-            var parentUser = data.ParentUser as User;
+            var parentUser = DataManager.GetUserByStepTest(data);
             firstMetaDataRow.Format.Font.Size = Unit.FromPoint(12d);
             firstMetaDataRow[0].AddParagraph("Navn:").Format.Font.Bold = true;
             firstMetaDataRow[1].AddParagraph($"{parentUser.FirstName} {parentUser.LastName}");
@@ -123,7 +141,7 @@ namespace LanterneRouge.Fresno.Report
             measurementHeaderRow[3].AddParagraph($"Laktat [mmol/L]");
 
             // Add measurements
-            foreach (var measurement in data.Measurements)
+            foreach (var measurement in DataManager.GetAllMeasurementsByStepTest(data))
             {
                 var dataRow = measurementsTable.AddRow();
                 dataRow.Borders = new Borders { Width = 0.1, Color = Colors.Black };

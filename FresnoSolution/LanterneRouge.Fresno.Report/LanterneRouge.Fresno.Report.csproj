@@ -14,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LanterneRouge.Fresno.Calculations\LanterneRouge.Fresno.Calculations.csproj" />
+    <ProjectReference Include="..\LanterneRouge.Fresno.Services\LanterneRouge.Fresno.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.15" />

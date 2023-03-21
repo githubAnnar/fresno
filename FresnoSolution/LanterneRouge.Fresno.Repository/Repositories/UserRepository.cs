@@ -51,7 +51,6 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             Logger.Debug($"FindWithParentAndChilds({id})");
             var user = FindSingle(id);
-            //user.StepTests = new StepTestRepository(Transaction).FindByParentId(user).ToList();
             return user;
         }
 

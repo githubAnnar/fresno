@@ -96,6 +96,8 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public IEnumerable<User> GetAllUsers(bool refresh = false) => _userManager.GetAllUsers(refresh);
 
+        public User GetUserByStepTest(StepTest stepTest, bool refresh = false) => _userManager.GetUserByStepTest(stepTest, refresh);
+
         public void UpdateUser(User entity) => _userManager.UpsertUser(entity);
 
         public void RemoveUser(User entity) => _userManager.RemoveUser(entity);
@@ -113,6 +115,8 @@ namespace LanterneRouge.Fresno.Services.Data
         public void AddStepTest(StepTest entity) => _stepTestManager.UpsertStepTest(entity);
 
         public IEnumerable<Measurement> GetAllMeasurements() => _measurementManager.GetAllMeasurements();
+
+        public IEnumerable<Measurement> GetAllMeasurementsByStepTest(StepTest entity) => _measurementManager.GetMeasurementsByStepTest(entity);
 
         public void UpdateMeasurement(Measurement entity) => _measurementManager.UpsertMeasurement(entity);
 

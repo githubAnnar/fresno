@@ -103,6 +103,16 @@ namespace LanterneRouge.Fresno.Repository.Managers
             return CachedMeasurements;
         }
 
+        public List<Measurement> GetMeasurementsByStepTest(StepTest parent, bool refresh = false)
+        {
+            if (refresh || CachedMeasurements.Count == 0)
+            {
+                _cachedMeasurements = MeasurementRepository.All().ToList();
+            }
+
+            return CachedMeasurements.Where(m => m.StepTestId == parent.Id).ToList();
+        }
+
         public Measurement GetMeasurementById(int id, bool refresh = false)
         {
             if (refresh || CachedMeasurements.Count == 0)

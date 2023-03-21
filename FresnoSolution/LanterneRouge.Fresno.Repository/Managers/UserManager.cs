@@ -106,6 +106,16 @@ namespace LanterneRouge.Fresno.Repository.Managers
             return _cachedUsers.FirstOrDefault(u => u.Id == id);
         }
 
+        public User GetUserByStepTest(StepTest stepTest, bool refresh = false)
+        {
+            if (refresh || CachedUsers.Count == 0)
+            {
+                _cachedUsers = UserRepository.All().ToList();
+            }
+
+            return CachedUsers.FirstOrDefault(u => u.Id == stepTest.UserId);
+        }
+
         public void UpsertUser(User entity)
         {
             if (entity.State == EntityState.New)
