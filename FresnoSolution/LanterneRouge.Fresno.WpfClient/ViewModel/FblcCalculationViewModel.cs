@@ -49,14 +49,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public string FBLCLactateThresholdText => FblcCalculation != null ? $"Load Th.: {FblcCalculation.LoadThreshold:0.0} Heartrate Th.: {FblcCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private FblcCalculation _fblcCalculation = null;
-        private FblcCalculation FblcCalculation => _fblcCalculation ?? (_fblcCalculation = StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0 ? new FblcCalculation(StepTestParent.Source.Measurements, FblcCalculationThreshold) : null);
+        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source) != null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Any() ? new FblcCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source), FblcCalculationThreshold) : null;
 
         private ObservableCollection<Zone> _FBLCZones = null;
         public ObservableCollection<Zone> FBLCZones
         {
             get
             {
-                if (_FBLCZones == null && StepTestParent.Source.Measurements != null && StepTestParent.Source.Measurements.Count > 0)
+                if (_FBLCZones == null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source) != null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Any())
                 {
                     if (FblcCalculation != null)
                     {

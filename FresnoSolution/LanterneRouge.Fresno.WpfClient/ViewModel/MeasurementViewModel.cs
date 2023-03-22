@@ -3,6 +3,7 @@ using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -303,16 +304,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #endregion
 
-        public static void Create(StepTestViewModel parentStepTest, Action<WorkspaceViewModel> showWorkspace)
+        public static void Create(StepTestViewModel parentStepTest, List<Measurement> measurements, Action<WorkspaceViewModel> showWorkspace)
         {
-            var newSequence = parentStepTest.Source.Measurements.Count == 0 ? 1 : parentStepTest.Source.Measurements.Max(m => m.Sequence) + 1;
-            var newLoad = parentStepTest.Source.Measurements.Count == 0 ? parentStepTest.Source.LoadPreset : parentStepTest.Source.Measurements.Last().Load + parentStepTest.Source.Increase;
+            var newSequence = measurements.Count == 0 ? 1 : measurements.Max(m => m.Sequence) + 1;
+            var newLoad = measurements.Count == 0 ? parentStepTest.Source.LoadPreset : measurements.Last().Load + parentStepTest.Source.Increase;
 
             var newMeasurement = Measurement.Create(newSequence, parentStepTest.StepTestId, 0, 0, newLoad);
             newMeasurement.InCalculation = true;
-            newMeasurement.ParentStepTest = parentStepTest.Source;
             newMeasurement.AcceptChanges();
-            parentStepTest.Source.Measurements.Add(newMeasurement);
             Logger.Info("New empty measurement created");
             var workspace = new MeasurementViewModel(newMeasurement, parentStepTest, showWorkspace);
             workspace.Show();

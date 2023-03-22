@@ -196,21 +196,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public double DMaxValue => DmaxCalculation != null ? DmaxCalculation.LoadThreshold : 0d;
 
         private FblcCalculation _fblcCalculation = null;
-        private FblcCalculation FblcCalculation => _fblcCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new FblcCalculation(Source.Measurements, 4.0) : null;
+        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new FblcCalculation(DataManager.GetAllMeasurementsByStepTest(Source), 4.0) : null;
 
         private FrpbCalculation _frpbCalculation = null;
-        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new FrpbCalculation(Source.Measurements, 1.0) : null;
+        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new FrpbCalculation(DataManager.GetAllMeasurementsByStepTest(Source), 1.0) : null;
 
         private LTCalculation _ltCalculation = null;
-        private LTCalculation LtCalculation => _ltCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new LTCalculation(Source.Measurements) : null;
+        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new LTCalculation(DataManager.GetAllMeasurementsByStepTest(Source)) : null;
 
         private LTLogCalculation _ltLogCalculation = null;
 
-        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new LTLogCalculation(Source.Measurements) : null;
+        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new LTLogCalculation(DataManager.GetAllMeasurementsByStepTest(Source)) : null;
 
         private DmaxCalculation _dmaxCalculation;
 
-        private DmaxCalculation DmaxCalculation => _dmaxCalculation ??= Source.Measurements != null && Source.Measurements.Count > 0 ? new DmaxCalculation(Source.Measurements, false) : null;
+        private DmaxCalculation DmaxCalculation => _dmaxCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new DmaxCalculation(DataManager.GetAllMeasurementsByStepTest(Source), false) : null;
 
         #endregion
 
@@ -407,7 +407,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public override void CreateChild()
         {
             Logger.Debug($"Add Measurement on {DisplayName}");
-            MeasurementViewModel.Create(this, ShowWorkspace);
+            MeasurementViewModel.Create(this, DataManager.GetAllMeasurementsByStepTest(Source).ToList(), ShowWorkspace);
         }
 
         #endregion
@@ -520,7 +520,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public static void Create(UserViewModel parentUser, Action<WorkspaceViewModel> showWorkspace)
         {
             var newStepTest = StepTest.Create(parentUser.UserId, "Bike", "W", TimeSpan.FromMinutes(4d).Ticks, 0, 0, 0, 0, DateTime.Now);
-            newStepTest.ParentUser = parentUser.Source;
             newStepTest.AcceptChanges();
             Logger.Info("Created new empty step test entity");
             var workspace = new StepTestViewModel(newStepTest, parentUser, showWorkspace);
