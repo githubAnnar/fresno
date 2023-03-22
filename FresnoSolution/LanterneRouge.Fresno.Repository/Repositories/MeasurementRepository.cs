@@ -17,35 +17,15 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         public IEnumerable<Measurement> All()
         {
             var measurements = Connection.Query<Measurement>("SELECT * FROM Measurement").ToList();
-            measurements.ForEach((measurement) =>
-            {
-                measurement.ParentStepTest = new StepTestRepository(Transaction).FindWithParent(measurement.StepTestId);
-                measurement.AcceptChanges();
-            });
 
             Logger.Debug("Returning All");
             return measurements;
         }
 
-        public Measurement FindSingle(int id)
+        public Measurement? FindSingle(int id)
         {
             Logger.Debug($"FindSingle({id})");
             return Connection.Query<Measurement>("SELECT * FROM Measurement WHERE Id = @MeasurementId", param: new { MeasurementId = id }, transaction: Transaction).FirstOrDefault();
-        }
-
-        public Measurement FindWithParent(int id)
-        {
-            Logger.Debug($"FindWithParent({id})");
-            var measurement = FindSingle(id);
-            measurement.ParentStepTest = new StepTestRepository(Transaction).FindWithParent(measurement.StepTestId);
-            return measurement;
-        }
-
-        public Measurement FindWithParentAndChilds(int id)
-        {
-            Logger.Debug($"FindWithParentAndChilds({id})");
-            var measurement = FindWithParent(id);
-            return measurement;
         }
 
         public void Add(Measurement entity)
@@ -96,11 +76,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             Logger.Debug($"FindByParentId {parent.Id}");
             var measurements = Connection.Query<Measurement>("SELECT * FROM Measurement WHERE StepTestId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
-            measurements.ForEach(m =>
-            {
-                m.ParentStepTest = parent as StepTest;
-                m.AcceptChanges();
-            });
+
             return measurements;
         }
     }

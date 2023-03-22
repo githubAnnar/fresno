@@ -35,23 +35,10 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return allUsers;
         }
 
-        public User FindSingle(int id)
+        public User? FindSingle(int id)
         {
             Logger.Debug($"FindSingle({id})");
             return Connection.Query<User>("SELECT * FROM User WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
-        }
-
-        public User FindWithParent(int id)
-        {
-            Logger.Debug($"FindWithParent({id})");
-            return FindSingle(id);
-        }
-
-        public User FindWithParentAndChilds(int id)
-        {
-            Logger.Debug($"FindWithParentAndChilds({id})");
-            var user = FindSingle(id);
-            return user;
         }
 
         public IEnumerable<User> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>

@@ -29,38 +29,14 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest").ToList();
 
-            // Get parent and childs
-            //stepTests.ForEach((stepTest) =>
-            //{
-            //    stepTest.ParentUser = new UserRepository(Transaction).FindWithParent(stepTest.UserId);
-            //    stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
-            //    stepTest.AcceptChanges();
-            //});
-
             Logger.Debug("Returning All");
             return stepTests;
         }
 
-        public StepTest FindSingle(int id)
+        public StepTest? FindSingle(int id)
         {
             Logger.Debug($"FindSingle({id})");
             return Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
-        }
-
-        public StepTest FindWithParent(int id)
-        {
-            Logger.Debug($"FindWithParent({id})");
-            var stepTest = FindSingle(id);
-            //stepTest.ParentUser = new UserRepository(Transaction).FindWithParent(stepTest.UserId);
-            return stepTest;
-        }
-
-        public StepTest FindWithParentAndChilds(int id)
-        {
-            Logger.Debug($"FindWithParentAndChilds({id})");
-            var stepTest = FindWithParent(id);
-            //stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
-            return stepTest;
         }
 
         public void Remove(int id)
@@ -73,7 +49,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("entity");
+                throw new ArgumentNullException(nameof(entity));
             }
 
             Remove(entity.Id);
@@ -93,12 +69,6 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             Logger.Debug($"FindByParentId {parent.Id}");
             var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }, transaction: Transaction).ToList();
-            //stepTests.ForEach((stepTest) =>
-            //{
-            //    stepTest.ParentUser = parent as User;
-            //    stepTest.Measurements = new MeasurementRepository(Transaction).FindByParentId(stepTest).ToList();
-            //    stepTest.AcceptChanges();
-            //});
             return stepTests;
         }
     }

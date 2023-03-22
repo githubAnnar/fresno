@@ -147,7 +147,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Methods
 
-        public override string ToString() => $"Measurement ({Source.ParentStepTest.Id} / {Sequence})";
+        public override string ToString() => $"Measurement ({Source.StepTestId} / {Sequence})";
 
         public void Save(object param)
         {

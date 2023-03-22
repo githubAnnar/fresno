@@ -174,6 +174,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
             }
         }
 
+
         ~StepTestManager()
         {
             Dispose(false);

@@ -14,8 +14,6 @@
 
         public bool InCalculation { get; set; }
 
-        public StepTest? ParentStepTest { get; set; }
-
         public override bool IsValid => StepTestId > 0;
 
         public static Measurement Create(int sequence, int stepTestId, int heartRate, float lactate, float load)
