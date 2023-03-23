@@ -88,15 +88,13 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public void Commit()
         {
-            _userManager.Commit();
-            _stepTestManager.Commit();
-            _measurementManager.Commit();
+
             Committed?.Invoke();
         }
 
-        public IEnumerable<User> GetAllUsers(bool refresh = false) => _userManager.GetAllUsers(refresh);
+        public IEnumerable<User> GetAllUsers() => _userManager.GetAllUsers();
 
-        public User GetUserByStepTest(StepTest stepTest, bool refresh = false) => _userManager.GetUserByStepTest(stepTest, refresh);
+        public User GetUserByStepTest(StepTest stepTest) => _userManager.GetUserByStepTest(stepTest);
 
         public void UpdateUser(User entity) => _userManager.UpsertUser(entity);
 

@@ -31,5 +31,7 @@
             newStepTest.AcceptChanges();
             return newStepTest;
         }
+
+        public static StepTest Empty => new();
     }
 }

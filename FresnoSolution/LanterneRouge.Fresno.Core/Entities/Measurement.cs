@@ -26,5 +26,7 @@
         public int CompareTo(Measurement? other) => other == null
                 ? 1
                 : StepTestId > other.StepTestId ? 1 : StepTestId < other.StepTestId ? -1 : Sequence.CompareTo(other.Sequence);
+
+        public static Measurement Empty => new();
     }
 }

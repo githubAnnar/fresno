@@ -2,8 +2,6 @@
 {
     public interface IManagerBase
     {
-        public abstract void Commit();
-
         public abstract void Close();
     }
 }

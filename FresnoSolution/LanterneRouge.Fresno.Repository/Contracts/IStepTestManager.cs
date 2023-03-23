@@ -4,11 +4,11 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IStepTestManager : IManagerBase, IDisposable
     {
-        List<StepTest> GetAllStepTests(bool refresh = false);
+        List<StepTest> GetAllStepTests();
 
-        List<StepTest> GetStepTestsByUser(User parent, bool refresh = false);
+        List<StepTest> GetStepTestsByUser(User parent);
 
-        StepTest GetStepTestById(int id, bool refresh = false);
+        StepTest GetStepTestById(int id);
 
         void UpsertStepTest(StepTest entity);
 

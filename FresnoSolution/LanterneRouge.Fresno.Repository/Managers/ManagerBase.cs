@@ -28,8 +28,6 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         #region Methods
 
-        public abstract void Commit();
-
         public abstract void Close();
 
         #endregion

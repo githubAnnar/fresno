@@ -37,5 +37,7 @@
             newUser.AcceptChanges();
             return newUser;
         }
+
+        public static User Empty => new();
     }
 }

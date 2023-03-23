@@ -22,10 +22,11 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return measurements;
         }
 
-        public Measurement? FindSingle(int id)
+        public Measurement FindSingle(int id)
         {
             Logger.Debug($"FindSingle({id})");
-            return Connection.Query<Measurement>("SELECT * FROM Measurement WHERE Id = @MeasurementId", param: new { MeasurementId = id }, transaction: Transaction).FirstOrDefault();
+            var measurement = Connection.Query<Measurement>("SELECT * FROM Measurement WHERE Id = @MeasurementId", param: new { MeasurementId = id }, transaction: Transaction).FirstOrDefault();
+            return measurement ?? Measurement.Empty;
         }
 
         public void Add(Measurement entity)

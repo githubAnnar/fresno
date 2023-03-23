@@ -4,11 +4,11 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IUserManager : IManagerBase, IDisposable
     {
-        List<User> GetAllUsers(bool refresh = false);
+        List<User> GetAllUsers();
 
-        User GetUserById(int id, bool refresh = false);
+        User GetUserById(int id);
 
-        User GetUserByStepTest(StepTest stepTest, bool refresh = false);
+        User GetUserByStepTest(StepTest stepTest);
 
         void UpsertUser(User entity);
 

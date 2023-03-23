@@ -10,9 +10,9 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
         event CommittedHandler Committed;
 
-        IEnumerable<User> GetAllUsers(bool refresh = false);
+        IEnumerable<User> GetAllUsers();
 
-        User GetUserByStepTest(StepTest stepTest,bool refresh=false);
+        User GetUserByStepTest(StepTest stepTest);
 
         void UpdateUser(User entity);
 

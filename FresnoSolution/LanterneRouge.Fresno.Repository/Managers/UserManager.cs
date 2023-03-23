@@ -8,21 +8,14 @@ namespace LanterneRouge.Fresno.Repository.Managers
 {
     public class UserManager : ManagerBase, IUserManager
     {
-        #region Fields
-
-        private IRepository<User> _userRepository;
-        private List<User> _cachedUsers;
-
-        #endregion
-
         public UserManager(IConnectionFactory connectionFactory) : base(connectionFactory)
-        { }
+        {
+            UserRepository = new UserRepository(_transaction);
+        }
 
         #region Properties
 
-        private IRepository<User> UserRepository => _userRepository ??= new UserRepository(_transaction);
-
-        private List<User> CachedUsers => _cachedUsers ??= new List<User>();
+        private IRepository<User> UserRepository { get; }
 
         #endregion
 
@@ -39,82 +32,13 @@ namespace LanterneRouge.Fresno.Repository.Managers
             _connection.Dispose();
             _connection = null!;
             Logger.Info("Db connection closed");
-
-            // Reset Caches
-            _cachedUsers = null!;
-            Logger.Info("Cached users is reset");
-
-            // Reset repository
-            Logger.Info("Repository is reset");
         }
 
-        public override void Commit()
-        {
-            var updatedUsers = CachedUsers.Where(u => u.State == EntityState.Updated);
-            var newUsers = CachedUsers.Where(u => u.State == EntityState.New);
+        public List<User> GetAllUsers() => UserRepository.All().ToList();
 
-            foreach (var item in newUsers)
-            {
-                Logger.Info($"Adding new user: {item.LastName}, {item.FirstName}");
-                UserRepository.Add(item);
-            }
+        public User GetUserById(int id) => UserRepository.FindSingle(id);
 
-            foreach (var item in updatedUsers)
-            {
-                Logger.Info($"Update user: {item.LastName}, {item.FirstName}");
-                UserRepository.Update(item);
-            }
-
-            try
-            {
-                _transaction.Commit();
-                Logger.Debug("Transaction Committed");
-            }
-
-            catch (Exception e)
-            {
-                _transaction.Rollback();
-                Logger.Error("Error in commit, transaction is rolled back!", e);
-                throw;
-            }
-
-            finally
-            {
-                _transaction.Dispose();
-                _transaction = _connection.BeginTransaction();
-                ResetRepository();
-            }
-        }
-
-        public List<User> GetAllUsers(bool refresh = false)
-        {
-            if (refresh || CachedUsers.Count == 0)
-            {
-                _cachedUsers = UserRepository.All().ToList();
-            }
-
-            return CachedUsers;
-        }
-
-        public User GetUserById(int id, bool refresh = false)
-        {
-            if (refresh || CachedUsers.Count == 0)
-            {
-                _cachedUsers = UserRepository.All().ToList();
-            }
-
-            return _cachedUsers.FirstOrDefault(u => u.Id == id);
-        }
-
-        public User GetUserByStepTest(StepTest stepTest, bool refresh = false)
-        {
-            if (refresh || CachedUsers.Count == 0)
-            {
-                _cachedUsers = UserRepository.All().ToList();
-            }
-
-            return CachedUsers.FirstOrDefault(u => u.Id == stepTest.UserId);
-        }
+        public User GetUserByStepTest(StepTest stepTest) => UserRepository.FindSingle(stepTest.UserId);
 
         public void UpsertUser(User entity)
         {
@@ -139,12 +63,6 @@ namespace LanterneRouge.Fresno.Repository.Managers
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        private void ResetRepository()
-        {
-            _userRepository = null!;
-            Logger.Debug("User Repository is resetted");
         }
 
         private void Dispose(bool disposing)

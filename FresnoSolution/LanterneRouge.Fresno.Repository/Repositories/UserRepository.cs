@@ -31,20 +31,21 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         {
             var allUsers = Connection.Query<User>("SELECT * FROM User").ToList();
 
-            Logger.Debug("Returning All");
+            Logger.Debug("Returning all users");
             return allUsers;
         }
 
-        public User? FindSingle(int id)
+        public User FindSingle(int id)
         {
             Logger.Debug($"FindSingle({id})");
-            return Connection.Query<User>("SELECT * FROM User WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
+            var user = Connection.Query<User>("SELECT * FROM User WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
+            return user ?? User.Empty;
         }
 
         public IEnumerable<User> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>
         {
             Logger.Debug($"{nameof(FindByParentId)} is NULL");
-            return null;
+            return new List<User>();
         }
 
         public void Remove(int id)

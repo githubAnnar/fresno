@@ -8,7 +8,7 @@ namespace LanterneRouge.Fresno.Core.Contracts
 
         IEnumerable<TEntity> All();
 
-        TEntity? FindSingle(int id);
+        TEntity FindSingle(int id);
 
         IEnumerable<TEntity> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>;
 

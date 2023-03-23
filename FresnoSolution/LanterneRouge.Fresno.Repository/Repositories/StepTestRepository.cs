@@ -33,10 +33,11 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return stepTests;
         }
 
-        public StepTest? FindSingle(int id)
+        public StepTest FindSingle(int id)
         {
             Logger.Debug($"FindSingle({id})");
-            return Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
+            var stepTest = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: Transaction).FirstOrDefault();
+            return stepTest ?? StepTest.Empty;
         }
 
         public void Remove(int id)

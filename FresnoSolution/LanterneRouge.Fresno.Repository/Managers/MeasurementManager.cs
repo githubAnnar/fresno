@@ -8,24 +8,17 @@ namespace LanterneRouge.Fresno.Repository.Managers
 {
     public class MeasurementManager : ManagerBase, IMeasurementManager
     {
-        #region Fields
-
-        private IRepository<Measurement> _measurementRepository;
-        private List<Measurement> _cachedMeasurements;
-
-        #endregion
-
         #region Constructors
         public MeasurementManager(IConnectionFactory connectionFactory) : base(connectionFactory)
-        { }
+        {
+            MeasurementRepository = new MeasurementRepository(_transaction);
+        }
 
         #endregion
 
         #region Properties
 
-        private IRepository<Measurement> MeasurementRepository => _measurementRepository ??= new MeasurementRepository(_transaction);
-
-        private List<Measurement> CachedMeasurements => _cachedMeasurements ??= new List<Measurement>();
+        private IRepository<Measurement> MeasurementRepository { get; }
 
         #endregion
 
@@ -42,86 +35,13 @@ namespace LanterneRouge.Fresno.Repository.Managers
             _connection.Dispose();
             _connection = null!;
             Logger.Info("Db connection closed");
-
-            // Reset Caches
-            _cachedMeasurements = null!;
-            Logger.Info("Cached measurements are reset");
-
-            // Reset repository
-            Logger.Info("Repository is reset");
         }
 
-        public override void Commit()
-        {
-            var updatedMeasurements = CachedMeasurements.Where(u => u.State == EntityState.Updated);
-            var newMeasurements = CachedMeasurements.Where(u => u.State == EntityState.New);
+        public List<Measurement> GetAllMeasurements() => MeasurementRepository.All().ToList();
 
-            foreach (var item in newMeasurements)
-            {
-                Logger.Info($"Adding new measurement: {item.StepTestId}");
-                MeasurementRepository.Add(item);
-            }
+        public List<Measurement> GetMeasurementsByStepTest(StepTest parent) => MeasurementRepository.FindByParentId(parent).ToList();
 
-            foreach (var item in updatedMeasurements)
-            {
-                Logger.Info($"Update measurement: {item.Id}, {item.StepTestId}");
-                MeasurementRepository.Update(item);
-            }
-
-            try
-            {
-                _transaction.Commit();
-                Logger.Debug("Transaction Committed");
-            }
-
-            catch (Exception e)
-            {
-                _transaction.Rollback();
-                Logger.Error("Error in commit, transaction is rolled back!", e);
-                throw;
-            }
-
-            finally
-            {
-                _transaction.Dispose();
-                if (_connection != null)
-                {
-                    _transaction = _connection.BeginTransaction();
-                }
-
-                ResetRepository();
-            }
-        }
-
-        public List<Measurement> GetAllMeasurements(bool refresh = false)
-        {
-            if (refresh || CachedMeasurements.Count == 0)
-            {
-                _cachedMeasurements = MeasurementRepository.All().ToList();
-            }
-
-            return CachedMeasurements;
-        }
-
-        public List<Measurement> GetMeasurementsByStepTest(StepTest parent, bool refresh = false)
-        {
-            if (refresh || CachedMeasurements.Count == 0)
-            {
-                _cachedMeasurements = MeasurementRepository.All().ToList();
-            }
-
-            return CachedMeasurements.Where(m => m.StepTestId == parent.Id).ToList();
-        }
-
-        public Measurement GetMeasurementById(int id, bool refresh = false)
-        {
-            if (refresh || CachedMeasurements.Count == 0)
-            {
-                _cachedMeasurements = MeasurementRepository.All().ToList();
-            }
-
-            return CachedMeasurements.FirstOrDefault(m => m.Id == id);
-        }
+        public Measurement GetMeasurementById(int id) => MeasurementRepository.FindSingle(id);
 
         public void UpsertMeasurement(Measurement entity)
         {
@@ -146,12 +66,6 @@ namespace LanterneRouge.Fresno.Repository.Managers
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        private void ResetRepository()
-        {
-            _measurementRepository = null!;
-            Logger.Debug("Measurement Repository is resetted");
         }
 
         private void Dispose(bool disposing)

@@ -4,11 +4,11 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IMeasurementManager : IManagerBase, IDisposable
     {
-        List<Measurement> GetAllMeasurements(bool refresh = false);
+        List<Measurement> GetAllMeasurements();
 
-        List<Measurement> GetMeasurementsByStepTest(StepTest parent, bool refresh = false);
+        List<Measurement> GetMeasurementsByStepTest(StepTest parent);
 
-        Measurement GetMeasurementById(int id, bool refresh = false);
+        Measurement GetMeasurementById(int id);
 
         void UpsertMeasurement(Measurement entity);
 

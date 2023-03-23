@@ -232,7 +232,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 }
 
                 DataManager.Commit();
-                DataManager.GetAllUsers(true);
+                DataManager.GetAllUsers();
                 OnPropertyChanged(nameof(DisplayName));
 
                 MessageBox.Show($"User: {LastName} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
