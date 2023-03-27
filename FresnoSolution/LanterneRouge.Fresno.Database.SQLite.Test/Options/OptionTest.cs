@@ -1,7 +1,6 @@
-﻿using LanterneRouge.Fresno.Database.SQLite.Options;
-using Xunit;
+﻿using Xunit;
 
-namespace LanterneRouge.Fresno.Database.SQLite.Test
+namespace LanterneRouge.Fresno.Database.SQLite.Options
 {
     public class OptionTest
     {

@@ -1,8 +1,7 @@
-﻿using LanterneRouge.Fresno.Database.SQLite.Types;
-using System;
+﻿using System;
 using Xunit;
 
-namespace LanterneRouge.Fresno.Database.SQLite.Test
+namespace LanterneRouge.Fresno.Database.SQLite.Types
 {
     public class TypesTest
     {

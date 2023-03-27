@@ -1,5 +1,4 @@
 ﻿using LanterneRouge.Fresno.Database.SQLite.Clauses;
-using LanterneRouge.Fresno.Database.SQLite.Constraints;
 using LanterneRouge.Fresno.Database.SQLite.Statements;
 using LanterneRouge.Fresno.Database.SQLite.Types;
 using System;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace LanterneRouge.Fresno.Database.SQLite.Test
+namespace LanterneRouge.Fresno.Database.SQLite.Constraints
 {
     public class ConstraintTest
     {
