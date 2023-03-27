@@ -9,6 +9,9 @@
                 <scm:SortDescription PropertyName="TestDate" Direction="Descending" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
+        <Style x:Key="GridViewColumnHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="ToolTip" Value="{Binding Path=Column.(sf:GridViewColumnHeaderToolTipAttachedProperty.Tooltip), RelativeSource={RelativeSource Self}}" />
+        </Style>
     </UserControl.Resources>
 
     <DockPanel LastChildFill="True">
@@ -27,11 +30,11 @@
                     <GridViewColumn Header="Step Duration" DisplayMemberBinding="{Binding StepDurationTimespan}" sf:GridViewSort.PropertyName="StepDurationTimespan"/>
                     <GridViewColumn Header="Load Preset" DisplayMemberBinding="{Binding LoadPreset}" sf:GridViewSort.PropertyName="LoadPreset"/>
                     <GridViewColumn Header="Increase" DisplayMemberBinding="{Binding Increase}" sf:GridViewSort.PropertyName="Increase"/>
-                    <GridViewColumn Header="FBLC" DisplayMemberBinding="{Binding FblcValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FblcValue"/>
-                    <GridViewColumn Header="FRBP" DisplayMemberBinding="{Binding FrpbValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FrpbValue"/>
-                    <GridViewColumn Header="LT" DisplayMemberBinding="{Binding LtValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtValue"/>
-                    <GridViewColumn Header="LT Log" DisplayMemberBinding="{Binding LtLogValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtLogValue"/>
-                    <GridViewColumn Header="DMax" DisplayMemberBinding="{Binding DMaxValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="DMaxValue"/>
+                    <GridViewColumn Header="FBLC" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" DisplayMemberBinding="{Binding FblcValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FblcValue" sf:GridViewColumnHeaderToolTipAttachedProperty.Tooltip="Fixed Blood Lactate Consentration Threshold"/>
+                    <GridViewColumn Header="FRBP" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" DisplayMemberBinding="{Binding FrpbValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FrpbValue" sf:GridViewColumnHeaderToolTipAttachedProperty.Tooltip="Fixed Rise Post Baseline Threshold"/>
+                    <GridViewColumn Header="LT" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" DisplayMemberBinding="{Binding LtValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtValue" sf:GridViewColumnHeaderToolTipAttachedProperty.Tooltip="Lactate Threshold"/>
+                    <GridViewColumn Header="LT Log" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" DisplayMemberBinding="{Binding LtLogValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtLogValue" sf:GridViewColumnHeaderToolTipAttachedProperty.Tooltip="Log Log Threshold"/>
+                    <GridViewColumn Header="DMax" HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" DisplayMemberBinding="{Binding DMaxValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="DMaxValue" sf:GridViewColumnHeaderToolTipAttachedProperty.Tooltip="DMax Threshold"/>
                 </GridView>
             </ListView.View>
         </ListView>

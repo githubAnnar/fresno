@@ -111,7 +111,7 @@
         <ItemsControl IsTabStop="False" ItemsSource="{Binding}" Margin="6,2">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Margin="2,6">
+                    <TextBlock Margin="2,6" ToolTip="{Binding Path=ToolTipText}">
                         <Hyperlink Command="{Binding Path=Command}">
                           <TextBlock Text="{Binding Path=DisplayName}" />
                         </Hyperlink>

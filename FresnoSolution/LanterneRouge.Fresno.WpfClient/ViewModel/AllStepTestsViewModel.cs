@@ -60,9 +60,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("Show Diagram", ShowDiagramCommand),
                 new CommandViewModel("Generate PDF", CreateStepTestPdfCommand),
                 new CommandViewModel("Send PDF by Email", SendPdfByEmailCommand),
-                new CommandViewModel("FBLC Calculation", ShowFblcCalculationCommand),
-                new CommandViewModel("FRPB Calculation", ShowFrpbCalculationCommand),
-                new CommandViewModel("LT Calculation", ShowLtCalculationCommand),
+                new CommandViewModel("FBLC Calculation", ShowFblcCalculationCommand, "Fixed Blood Lactate Consentration Calculation"),
+                new CommandViewModel("FRPB Calculation", ShowFrpbCalculationCommand,"Fixed Rise Post Baseline Calculation"),
+                new CommandViewModel("LT Calculation", ShowLtCalculationCommand,"Lactate Threshold Calculation"),
                 new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand),
                 new CommandViewModel("DMax Calculation", ShowDMaxCalculationCommand),
             };

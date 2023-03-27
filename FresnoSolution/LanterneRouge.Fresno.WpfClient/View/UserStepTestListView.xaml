@@ -21,7 +21,7 @@
                     <GridViewColumn Header="Step Duration" DisplayMemberBinding="{Binding StepDurationTimespan}" sf:GridViewSort.PropertyName="StepDurationTimespan"/>
                     <GridViewColumn Header="Load Preset" DisplayMemberBinding="{Binding LoadPreset}" sf:GridViewSort.PropertyName="LoadPreset"/>
                     <GridViewColumn Header="Increase" DisplayMemberBinding="{Binding Increase}" sf:GridViewSort.PropertyName="Increase"/>
-                    <GridViewColumn Header="FBLC" DisplayMemberBinding="{Binding FblcValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FblcValue"/>
+                    <GridViewColumn Header="Fixed Blood Lactate Consentration" DisplayMemberBinding="{Binding FblcValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FblcValue"/>
                     <GridViewColumn Header="FRBP" DisplayMemberBinding="{Binding FrpbValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="FrpbValue"/>
                     <GridViewColumn Header="LT" DisplayMemberBinding="{Binding LtValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtValue"/>
                     <GridViewColumn Header="LT Log" DisplayMemberBinding="{Binding LtLogValue, StringFormat=##0.0}" sf:GridViewSort.PropertyName="LtLogValue"/>
