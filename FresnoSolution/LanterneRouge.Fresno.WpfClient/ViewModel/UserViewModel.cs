@@ -54,7 +54,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         internal User Source
         {
-            get => _source.IsLoaded ? _source : DataManager.GetAllUsers().Where(u => u.Id == _source.Id).FirstOrDefault();
+            get => _source.IsLoaded ? _source : DataManager.GetUser(_source.Id);
             private set => _source = value;
         }
 
@@ -62,7 +62,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string FirstName
         {
-            get { return Source.FirstName; }
+            get => Source.FirstName;
             set
             {
                 if (!value.Equals(Source.FirstName))
@@ -75,7 +75,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string LastName
         {
-            get { return Source.LastName; }
+            get => Source.LastName;
             set
             {
                 if (!value.Equals(Source.LastName))
@@ -88,7 +88,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string Street
         {
-            get { return Source.Street; }
+            get => Source.Street;
             set
             {
                 if (!value.Equals(Source.Street))
@@ -101,7 +101,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string PostCode
         {
-            get { return Source.PostCode; }
+            get => Source.PostCode;
             set
             {
                 if (!value.Equals(Source.PostCode))
@@ -114,7 +114,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string PostCity
         {
-            get { return Source.PostCity; }
+            get => Source.PostCity;
             set
             {
                 if (!value.Equals(Source.PostCity))
@@ -127,7 +127,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public DateTime BirthDate
         {
-            get { return Source.BirthDate; }
+            get => Source.BirthDate;
             set
             {
                 if (!value.Equals(Source.BirthDate))
@@ -140,7 +140,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public int Height
         {
-            get { return Source.Height; }
+            get => Source.Height;
             set
             {
                 if (!value.Equals(Source.Height))
@@ -153,7 +153,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string Sex
         {
-            get { return Source.Sex; }
+            get => Source.Sex;
             set
             {
                 if (!value.Equals(Source.Sex))
@@ -166,7 +166,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string Email
         {
-            get { return Source.Email; }
+            get => Source.Email;
             set
             {
                 if (!value.Equals(Source.Email))
@@ -179,7 +179,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public int MaxHr
         {
-            get { return Source.MaxHr; }
+            get => Source.MaxHr;
             set
             {
                 if (!value.Equals(Source.MaxHr))
@@ -198,7 +198,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 if (!value.Equals(_isSelected))

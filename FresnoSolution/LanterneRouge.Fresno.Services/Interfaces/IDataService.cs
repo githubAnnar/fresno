@@ -12,6 +12,8 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
         IEnumerable<User> GetAllUsers();
 
+        User GetUser(int id);
+
         User GetUserByStepTest(StepTest stepTest);
 
         void UpdateUser(User entity);

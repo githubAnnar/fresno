@@ -57,7 +57,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public int HeartRate
         {
-            get { return Source.HeartRate; }
+            get => Source.HeartRate;
             set
             {
                 if (!value.Equals(Source.HeartRate))
@@ -70,7 +70,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public float Lactate
         {
-            get { return Source.Lactate; }
+            get => Source.Lactate;
             set
             {
                 if (!value.Equals(Source.Lactate))
@@ -83,7 +83,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public float Load
         {
-            get { return Source.Load; }
+            get => Source.Load;
             set
             {
                 if (!value.Equals(Source.Load))
@@ -96,7 +96,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public int Sequence
         {
-            get { return Source.Sequence; }
+            get => Source.Sequence;
             set
             {
                 if (!value.Equals(Source.Sequence))
@@ -109,7 +109,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool InCalculation
         {
-            get { return Source.InCalculation; }
+            get => Source.InCalculation;
             set
             {
                 if (!value.Equals(Source.InCalculation))
@@ -128,7 +128,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 if (!value == _isSelected)

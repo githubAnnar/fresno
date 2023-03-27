@@ -94,6 +94,8 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public IEnumerable<User> GetAllUsers() => _userManager.GetAllUsers();
 
+        public User GetUser(int id) => _userManager.GetUserById(id);
+
         public User GetUserByStepTest(StepTest stepTest) => _userManager.GetUserByStepTest(stepTest);
 
         public void UpdateUser(User entity) => _userManager.UpsertUser(entity);

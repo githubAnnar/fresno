@@ -83,7 +83,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string TestType
         {
-            get { return Source.TestType; }
+            get => Source.TestType;
             set
             {
                 if (!value.Equals(Source.TestType))
@@ -96,7 +96,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string EffortUnit
         {
-            get { return Source.EffortUnit; }
+            get => Source.EffortUnit;
             set
             {
                 if (!value.Equals(Source.EffortUnit))
@@ -109,7 +109,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public TimeSpan StepDurationTimespan
         {
-            get { return TimeSpan.FromTicks(Source.StepDuration); }
+            get => TimeSpan.FromTicks(Source.StepDuration);
             set
             {
                 if (!value.Ticks.Equals(Source.StepDuration))
@@ -122,7 +122,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public float LoadPreset
         {
-            get { return Source.LoadPreset; }
+            get => Source.LoadPreset;
             set
             {
                 if (!value.Equals(Source.LoadPreset))
@@ -135,7 +135,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public float Increase
         {
-            get { return Source.Increase; }
+            get => Source.Increase;
             set
             {
                 if (!value.Equals(Source.Increase))
@@ -148,7 +148,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public float Temperature
         {
-            get { return Source.Temperature; }
+            get => Source.Temperature;
             set
             {
                 if (!value.Equals(Source.Temperature))
@@ -161,7 +161,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public float Weight
         {
-            get { return Source.Weight; }
+            get => Source.Weight;
             set
             {
                 if (!value.Equals(Source.Weight))
@@ -174,7 +174,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public DateTime TestDate
         {
-            get { return Source.TestDate; }
+            get => Source.TestDate;
             set
             {
                 if (!value.Equals(Source.TestDate))
@@ -196,21 +196,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public double DMaxValue => DmaxCalculation != null ? DmaxCalculation.LoadThreshold : 0d;
 
         private FblcCalculation _fblcCalculation = null;
-        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new FblcCalculation(DataManager.GetAllMeasurementsByStepTest(Source), 4.0) : null;
+        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Any() ? new FblcCalculation(DataManager.GetAllMeasurementsByStepTest(Source), 4.0) : null;
 
         private FrpbCalculation _frpbCalculation = null;
-        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new FrpbCalculation(DataManager.GetAllMeasurementsByStepTest(Source), 1.0) : null;
+        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Any() ? new FrpbCalculation(DataManager.GetAllMeasurementsByStepTest(Source), 1.0) : null;
 
         private LTCalculation _ltCalculation = null;
-        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new LTCalculation(DataManager.GetAllMeasurementsByStepTest(Source)) : null;
+        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Any() ? new LTCalculation(DataManager.GetAllMeasurementsByStepTest(Source)) : null;
 
         private LTLogCalculation _ltLogCalculation = null;
 
-        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new LTLogCalculation(DataManager.GetAllMeasurementsByStepTest(Source)) : null;
+        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Any() ? new LTLogCalculation(DataManager.GetAllMeasurementsByStepTest(Source)) : null;
 
         private DmaxCalculation _dmaxCalculation;
 
-        private DmaxCalculation DmaxCalculation => _dmaxCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Count() > 0 ? new DmaxCalculation(DataManager.GetAllMeasurementsByStepTest(Source), false) : null;
+        private DmaxCalculation DmaxCalculation => _dmaxCalculation ??= DataManager.GetAllMeasurementsByStepTest(Source) != null && DataManager.GetAllMeasurementsByStepTest(Source).Any() ? new DmaxCalculation(DataManager.GetAllMeasurementsByStepTest(Source), false) : null;
 
         #endregion
 
@@ -220,7 +220,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 if (!value.Equals(_isSelected))
