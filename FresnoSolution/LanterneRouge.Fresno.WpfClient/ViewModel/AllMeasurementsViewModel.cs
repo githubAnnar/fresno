@@ -54,6 +54,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 var all = (from measurement in DataManager.GetAllMeasurementsByStepTest(parent.Source) select new MeasurementViewModel(measurement, parent, ShowWorkspace)).ToList();
                 all.ForEach(a => a.PropertyChanged += OnMeasurementViewModelPropertyChanged);
                 AllMeasurements = new ObservableCollection<MeasurementViewModel>(all);
+                OnPropertyChanged(nameof(AllMeasurements));
                 AllMeasurements.CollectionChanged += OnCollectionChanged;
                 Logger.Debug("AllMeasurements created");
             }

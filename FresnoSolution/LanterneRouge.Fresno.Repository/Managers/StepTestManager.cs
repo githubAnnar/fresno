@@ -11,7 +11,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
         #region Constructors
         public StepTestManager(IConnectionFactory connectionFactory) : base(connectionFactory)
         {
-            StepTestRepository = new StepTestRepository(_transaction);
+            StepTestRepository = new StepTestRepository(_connection);
         }
 
         #endregion
@@ -75,12 +75,6 @@ namespace LanterneRouge.Fresno.Repository.Managers
             {
                 if (disposing)
                 {
-                    if (_transaction != null)
-                    {
-                        _transaction.Dispose();
-                        _transaction = null!;
-                    }
-
                     if (_connection != null)
                     {
                         _connection.Dispose();

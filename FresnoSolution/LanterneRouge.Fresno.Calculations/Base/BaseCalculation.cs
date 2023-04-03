@@ -43,7 +43,7 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         public (double a, double b) L2Factors => Loads.Count > 2 ? Fit.Line(Loads.ToArray(), Lactates.ToArray()) : (0d, 0d);
 
-        public (double a, double b) L2FactorsMin => Fit.Line(new[] { Loads[0], Loads[Loads.Count - 1] }, new[] { Lactates[0], Lactates[Lactates.Count - 1] });
+        public (double a, double b) L2FactorsMin => Fit.Line(new[] { Loads[0], Loads[^1] }, new[] { Lactates[0], Lactates[^1] });
 
         public Func<double, double> FittedHeartRateCurve => Fit.LineFunc(Loads.ToArray(), HeartRates.ToArray());
 
@@ -53,7 +53,7 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         public double FindLoadFromLactate(double lactate)
         {
-            if (Loads == null || Loads.Count() <= 3)
+            if (Loads == null || Loads.Count <= 3)
             {
                 return 0d;
             }

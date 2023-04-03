@@ -10,7 +10,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
     {
         public UserManager(IConnectionFactory connectionFactory) : base(connectionFactory)
         {
-            UserRepository = new UserRepository(_transaction);
+            UserRepository = new UserRepository(_connection);
         }
 
         #region Properties
@@ -71,12 +71,6 @@ namespace LanterneRouge.Fresno.Repository.Managers
             {
                 if (disposing)
                 {
-                    if (_transaction != null)
-                    {
-                        _transaction.Dispose();
-                        _transaction = null!;
-                    }
-
                     if (_connection != null)
                     {
                         _connection.Dispose();

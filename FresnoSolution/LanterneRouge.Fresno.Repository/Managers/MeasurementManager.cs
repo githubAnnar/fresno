@@ -11,7 +11,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
         #region Constructors
         public MeasurementManager(IConnectionFactory connectionFactory) : base(connectionFactory)
         {
-            MeasurementRepository = new MeasurementRepository(_transaction);
+            MeasurementRepository = new MeasurementRepository(_connection);
         }
 
         #endregion
@@ -74,12 +74,6 @@ namespace LanterneRouge.Fresno.Repository.Managers
             {
                 if (disposing)
                 {
-                    if (_transaction != null)
-                    {
-                        _transaction.Dispose();
-                        _transaction = null!;
-                    }
-
                     if (_connection != null)
                     {
                         _connection.Dispose();

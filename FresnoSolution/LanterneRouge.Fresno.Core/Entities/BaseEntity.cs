@@ -20,7 +20,7 @@
             var properties = GetType().GetProperties();
             var latestChanges = new Dictionary<string, object>();
 
-            var tempProperties = GetType().GetProperties().Where(p => !ExcludeName(p.Name) && !Equals(p.GetValue(this, null), OriginalValues[p.Name]));
+            var tempProperties = GetType().GetProperties().Where(p => !ExcludeName(p.Name) && OriginalValues.ContainsKey(p.Name) && !Equals(p.GetValue(this, null), OriginalValues[p.Name]));
             foreach (var item in tempProperties)
             {
                 var value = item.GetValue(this);
@@ -72,7 +72,7 @@
                 var value = property.GetValue(this);
                 if (value != null)
                 {
-                    OriginalValues.Add(property.Name, value);
+                    OriginalValues[property.Name] = value;
                 }
             }
         }

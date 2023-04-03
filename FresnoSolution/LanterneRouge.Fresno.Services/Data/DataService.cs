@@ -88,7 +88,6 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public void Commit()
         {
-
             Committed?.Invoke();
         }
 
@@ -98,30 +97,24 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public User GetUserByStepTest(StepTest stepTest) => _userManager.GetUserByStepTest(stepTest);
 
-        public void UpdateUser(User entity) => _userManager.UpsertUser(entity);
+        public void SaveUser(User entity) => _userManager.UpsertUser(entity);
 
         public void RemoveUser(User entity) => _userManager.RemoveUser(entity);
-
-        public void AddUser(User entity) => _userManager.UpsertUser(entity);
 
         public IEnumerable<StepTest> GetAllStepTests() => _stepTestManager.GetAllStepTests();
 
         public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _stepTestManager.GetStepTestsByUser(parent);
 
-        public void UpdateStepTest(StepTest entity) => _stepTestManager.UpsertStepTest(entity);
+        public void SaveStepTest(StepTest entity) => _stepTestManager.UpsertStepTest(entity);
 
         public void RemoveStepTest(StepTest entity) => _stepTestManager.RemoveStepTest(entity);
-
-        public void AddStepTest(StepTest entity) => _stepTestManager.UpsertStepTest(entity);
 
         public IEnumerable<Measurement> GetAllMeasurements() => _measurementManager.GetAllMeasurements();
 
         public IEnumerable<Measurement> GetAllMeasurementsByStepTest(StepTest entity) => _measurementManager.GetMeasurementsByStepTest(entity);
 
-        public void UpdateMeasurement(Measurement entity) => _measurementManager.UpsertMeasurement(entity);
+        public void SaveMeasurement(Measurement entity) => _measurementManager.UpsertMeasurement(entity);
 
         public void RemoveMeasurement(Measurement entity) => _measurementManager.RemoveMeasurement(entity);
-
-        public void AddMeasurement(Measurement entity) => _measurementManager.UpsertMeasurement(entity);
     }
 }

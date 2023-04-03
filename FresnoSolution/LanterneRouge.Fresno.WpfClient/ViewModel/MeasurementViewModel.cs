@@ -153,16 +153,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (Source.IsChanged)
             {
-                if (Source.State == EntityState.New)
-                {
-                    DataManager.AddMeasurement(Source);
-                }
-
-                else
-                {
-                    DataManager.UpdateMeasurement(Source);
-                }
-
+                DataManager.SaveMeasurement(Source);
                 DataManager.Commit();
                 OnPropertyChanged(nameof(DisplayName));
 

@@ -221,16 +221,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (Source.IsChanged)
             {
-                if (Source.State == EntityState.New)
-                {
-                    DataManager.AddUser(Source);
-                }
-
-                else
-                {
-                    DataManager.UpdateUser(Source);
-                }
-
+                DataManager.SaveUser(Source);
                 DataManager.Commit();
                 DataManager.GetAllUsers();
                 OnPropertyChanged(nameof(DisplayName));
@@ -387,7 +378,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public static void Create(Action<WorkspaceViewModel> showWorkspace)
         {
             var newUser = User.Create(string.Empty, string.Empty, null, null, null, DateTime.Now, 0, 0, "M", null);
-            newUser.AcceptChanges();
             Logger.Info("Created new Empty user");
             var workspace = new UserViewModel(newUser, showWorkspace);
             workspace.Show();

@@ -81,7 +81,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 var all = DataManager.GetAllStepTestsByUser(parent.Source).Select(s => new StepTestViewModel(s, parent, ShowWorkspace)).ToList();
                 all.ForEach(cvm => cvm.PropertyChanged += OnStepTestViewModelPropertyChanged);
                 AllStepTests = new ObservableCollection<StepTestViewModel>(all);
+                OnPropertyChanged(nameof(AllStepTests));
                 AllStepTests.CollectionChanged += OnCollectionChanged;
+                Logger.Debug("AllStepTests created");
             }
         }
 
@@ -90,6 +92,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         #region Public Interface
 
         public StepTestViewModel Selected => SelectedObject as StepTestViewModel;
+
+        public int SelectedMeasurementCount => Selected != null ? DataManager.GetAllMeasurementsByStepTest(Selected.Source).Count(m => m.InCalculation) : 0;
 
         public ObservableCollection<StepTestViewModel> AllStepTests { get; private set; }
 
@@ -168,7 +172,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowDiagram Command
 
-        public ICommand ShowDiagramCommand => _showDiagramCommand ??= new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected));
+        public ICommand ShowDiagramCommand => _showDiagramCommand ??= new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected) && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.GetAllMeasurementsByStepTest(s.Source).Count(s => s.InCalculation) > 3));
 
         private void ShowDiagram(object obj) => new StepTestsPlotViewModel(AllStepTests.Where(st => st.IsSelected), ShowWorkspace).Show();
 
@@ -267,7 +271,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ??= new RelayCommand(param => ShowAllMeasurements(), param => Selected != null && Selected.IsValid);
 
-        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => CreateStepTestPdf(), param => AllSelected.Any());
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => CreateStepTestPdf(), param => AllSelected.Any() && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.GetAllMeasurementsByStepTest(s.Source).Count(s => s.InCalculation) > 3));
 
         private void CreateStepTestPdf()
         {
@@ -327,15 +331,15 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool CanSendEmail => AllSelected.Count() == 1 && !string.IsNullOrEmpty((Parent as UserViewModel)?.Email) && ApplicationSettingsManager.IsEmailSettingsValid();
 
-        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ??= new RelayCommand(Selected.ShowFblcCalculationCommand.Execute, param => AllSelected.Count() == 1);
+        public ICommand ShowFblcCalculationCommand => _showFblcCalculationCommand ??= new RelayCommand(Selected.ShowFblcCalculationCommand.Execute, param => AllSelected.Count() == 1 && SelectedMeasurementCount > 3);
 
-        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ??= new RelayCommand(Selected.ShowFrpbCalculationCommand.Execute, param => AllSelected.Count() == 1);
+        public ICommand ShowFrpbCalculationCommand => _showFrpbCalculationCommand ??= new RelayCommand(Selected.ShowFrpbCalculationCommand.Execute, param => AllSelected.Count() == 1 && SelectedMeasurementCount > 3);
 
-        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ??= new RelayCommand(Selected.ShowLtCalculationCommand.Execute, param => AllSelected.Count() == 1);
+        public ICommand ShowLtCalculationCommand => _showLtCalculationCommand ??= new RelayCommand(Selected.ShowLtCalculationCommand.Execute, param => AllSelected.Count() == 1 && SelectedMeasurementCount > 4);
 
-        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ??= new RelayCommand(Selected.ShowLtLogCalculationCommand.Execute, param => AllSelected.Count() == 1);
+        public ICommand ShowLtLogCalculationCommand => _showLtLogCalculationCommand ??= new RelayCommand(Selected.ShowLtLogCalculationCommand.Execute, param => AllSelected.Count() == 1 && SelectedMeasurementCount > 4);
 
-        public ICommand ShowDMaxCalculationCommand => _showDMaxCalculationCommand ??= new RelayCommand(Selected.ShowDMaxCalculationCommand.Execute, param => AllSelected.Count() == 1);
+        public ICommand ShowDMaxCalculationCommand => _showDMaxCalculationCommand ??= new RelayCommand(Selected.ShowDMaxCalculationCommand.Execute, param => AllSelected.Count() == 1 && SelectedMeasurementCount > 3);
 
         private void ShowAllMeasurements()
         {

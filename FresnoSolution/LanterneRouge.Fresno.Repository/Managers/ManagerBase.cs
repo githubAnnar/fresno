@@ -10,7 +10,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         protected static readonly ILog Logger = LogManager.GetLogger(typeof(ManagerBase));
         protected IDbConnection _connection;
-        protected IDbTransaction _transaction;
+        //protected IDbTransaction _transaction;
         protected bool _disposed;
 
         #endregion
@@ -21,7 +21,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
         {
             _connection = connectionFactory.GetConnection;
             Logger.Debug($"Connection set: {_connection.ConnectionString}");
-            _transaction = _connection.BeginTransaction();
+            //_transaction = _connection.BeginTransaction();
         }
 
         #endregion

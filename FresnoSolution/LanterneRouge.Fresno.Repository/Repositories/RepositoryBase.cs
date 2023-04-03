@@ -4,12 +4,12 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 {
     public abstract class RepositoryBase
     {
-        protected IDbTransaction Transaction { get; private set; }
-        protected IDbConnection? Connection => Transaction.Connection;
+        //protected IDbTransaction Transaction { get; private set; }
+        protected IDbConnection Connection { get; private set; }
 
-        public RepositoryBase(IDbTransaction transaction)
+        public RepositoryBase(IDbConnection connection)
         {
-            Transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
+            Connection = connection ?? throw new ArgumentNullException(nameof(connection));
         }
     }
 }

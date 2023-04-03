@@ -32,7 +32,7 @@ namespace LanterneRouge.Fresno.Calculations
         {
             get
             {
-                if (Measurements != null)
+                if (Measurements != null && Measurements.Count > 3)
                 {
                     if (_loadThreshold == 0)
                     {
@@ -48,9 +48,12 @@ namespace LanterneRouge.Fresno.Calculations
         {
             get
             {
-                if (_heartRateThreshold == 0)
+                if (Measurements != null && Measurements.Count > 3)
                 {
-                    _heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold);
+                    if (_heartRateThreshold == 0)
+                    {
+                        _heartRateThreshold = (float)FittedHeartRateCurve(LoadThreshold);
+                    }
                 }
 
                 return _heartRateThreshold;
@@ -61,9 +64,12 @@ namespace LanterneRouge.Fresno.Calculations
         {
             get
             {
-                if (_lactateThreshold == 0)
+                if (Measurements != null && Measurements.Count > 3)
                 {
-                    _lactateThreshold = (float)FittedLactateCurve(LoadThreshold);
+                    if (_lactateThreshold == 0)
+                    {
+                        _lactateThreshold = (float)FittedLactateCurve(LoadThreshold);
+                    }
                 }
 
                 return _lactateThreshold;

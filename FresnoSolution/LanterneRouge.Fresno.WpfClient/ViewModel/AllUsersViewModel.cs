@@ -54,7 +54,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var all = (from user in DataManager.GetAllUsers() select new UserViewModel(user, ShowWorkspace)).ToList();
             all.ForEach(a => a.PropertyChanged += OnUserViewModelPropertyChanged);
             AllUsers = new ObservableCollection<UserViewModel>(all);
+            OnPropertyChanged(nameof(AllUsers));
             AllUsers.CollectionChanged += OnCollectionChanged;
+            Logger.Debug("AllUsers created");
         }
 
         #endregion

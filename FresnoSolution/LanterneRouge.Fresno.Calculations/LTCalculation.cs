@@ -59,12 +59,12 @@ namespace LanterneRouge.Fresno.Calculations
 
         private double CalculateLT()
         {
-            if (Measurements.Count() < 4)
+            if (Measurements.Count < 4)
             {
                 return 0d;
             }
 
-            var count = Measurements.Count();
+            var count = Measurements.Count;
 
             var x = Loads.ToArray();
             var y = Lactates.ToArray();
@@ -86,10 +86,10 @@ namespace LanterneRouge.Fresno.Calculations
                 var line1 = Fit.Line(xsub1, ysub1);
                 var line2 = Fit.Line(xsub2, ysub2);
 
-                var A = Matrix<double>.Build.DenseOfArray(new double[,] { { line1.Item2, -1 }, { line2.Item2, -1 } });
-                var b = Vector<double>.Build.Dense(new double[] { line1.Item1 * -1, line2.Item1 * -1 });
+                var A = Matrix<double>.Build.DenseOfArray(new double[,] { { line1.B, -1 }, { line2.B, -1 } });
+                var b = Vector<double>.Build.Dense(new double[] { line1.A * -1, line2.A * -1 });
                 var xSolve = A.Solve(b);
-                var gof = GoodnessOfFit.CoefficientOfDetermination(x.Select(x1 => x1 < xSolve[0] ? line1.Item1 + (line1.Item2 * x1) : line2.Item1 + (line2.Item2 * x1)), y);
+                var gof = GoodnessOfFit.CoefficientOfDetermination(x.Select(x1 => x1 < xSolve[0] ? line1.A + (line1.B * x1) : line2.A + (line2.B * x1)), y);
                 results.Add(new Result { LoadPoint = xSolve[0], LactatePoint = xSolve[1], CoeffOfFit = gof });
             }
 
