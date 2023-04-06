@@ -6,10 +6,6 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
     public interface IDataService
     {
-        void Commit();
-
-        event CommittedHandler Committed;
-
         IEnumerable<User> GetAllUsers();
 
         User GetUser(int id);

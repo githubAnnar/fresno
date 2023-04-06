@@ -1,5 +1,4 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
-using LanterneRouge.Wpf.MVVM;
+﻿using LanterneRouge.Wpf.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     {
         #region Constructors
 
-        public UserStepTestListViewModel(UserViewModel user, StepTestViewModel baseStepTestViewModel, Action<IEnumerable<StepTestViewModel>, bool> closeAction, Action<WorkspaceViewModel> showWorkspace) : base(user, showWorkspace, null)
+        public UserStepTestListViewModel(UserViewModel user, StepTestViewModel baseStepTestViewModel, Action<IEnumerable<StepTestViewModel>, bool> closeAction, MainWindowViewModel rootViewModel) : base(user, rootViewModel, null)
         {
             BaseStepTestViewModel = baseStepTestViewModel ?? throw new ArgumentNullException(nameof(baseStepTestViewModel));
             CloseAction = closeAction ?? throw new ArgumentNullException(nameof(closeAction));
@@ -27,7 +26,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public StepTestViewModel BaseStepTestViewModel { get; }
 
-        public List<StepTestViewModel> AdditionalStepTestCandidates => (from st in DataManager.GetAllStepTestsByUser(DataManager.GetUserByStepTest(BaseStepTestViewModel.Source)).Where(st => st.Id != BaseStepTestViewModel.Source.Id) select new StepTestViewModel(st, UserParent, ShowWorkspace)).ToList();
+        public List<StepTestViewModel> AdditionalStepTestCandidates => (from st in DataManager.GetAllStepTestsByUser(DataManager.GetUserByStepTest(BaseStepTestViewModel.Source)).Where(st => st.Id != BaseStepTestViewModel.Source.Id) select new StepTestViewModel(st, UserParent, RootViewModel)).ToList();
 
         public List<StepTestViewModel> SelectedStepTests { get; set; }
         public override WorkspaceViewModel SelectedObject => this;

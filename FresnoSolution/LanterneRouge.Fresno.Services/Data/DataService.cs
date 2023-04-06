@@ -15,8 +15,6 @@ namespace LanterneRouge.Fresno.Services.Data
         private IMeasurementManager _measurementManager;
         private ConnectionFactory _connectionFactory;
 
-        public event CommittedHandler Committed;
-
         private ConnectionFactory LocalConnectionFactory => _connectionFactory ??= new ConnectionFactory(Filename);
 
         private string Filename { get; set; }
@@ -84,11 +82,6 @@ namespace LanterneRouge.Fresno.Services.Data
             }
 
             return response;
-        }
-
-        public void Commit()
-        {
-            Committed?.Invoke();
         }
 
         public IEnumerable<User> GetAllUsers() => _userManager.GetAllUsers();

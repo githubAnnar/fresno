@@ -16,7 +16,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public StepTestsPlotViewModel(IEnumerable<StepTestViewModel> parentStepTests, Action<WorkspaceViewModel> showWorkspace) : base(null, showWorkspace, null)
+        public StepTestsPlotViewModel(IEnumerable<StepTestViewModel> parentStepTests, MainWindowViewModel rootViewModel) : base(null, rootViewModel, null)
         {
             StepTestData = parentStepTests.ToList();
             StepTestsModel = StepTests.StepTestPlotModel(StepTestData.Select(st => st.Source));

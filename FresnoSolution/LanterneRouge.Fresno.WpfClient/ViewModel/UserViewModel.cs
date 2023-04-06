@@ -18,9 +18,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UserViewModel));
         private static readonly string _name = typeof(UserViewModel).Name;
-        private ICommand _saveCommand = null;
         private bool _isSelected = false;
         private User _source;
+        private ICommand _saveCommand = null;
         private ICommand _editSelectedCommand;
         private ICommand _showAllStepTestsCommand;
         private ICommand _addStepTestCommand;
@@ -29,7 +29,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public UserViewModel(User user, Action<WorkspaceViewModel> showWorkspace) : base(null, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
+        public UserViewModel(User user, MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             Source = user ?? throw new ArgumentNullException(nameof(user));
 
@@ -222,8 +222,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (Source.IsChanged)
             {
                 DataManager.SaveUser(Source);
-                DataManager.Commit();
-                DataManager.GetAllUsers();
+                SaveToAllUsers();                
                 OnPropertyChanged(nameof(DisplayName));
 
                 MessageBox.Show($"User: {LastName} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -234,6 +233,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             {
                 Logger.Debug($"Closing {nameof(UserViewModel)} for {DisplayName}");
                 CloseCommand.Execute(null);
+            }
+        }
+
+        public void SaveToAllUsers()
+        {
+            // find AllUsers
+            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllUsersViewModel)));
+            if (workSpace != null && workSpace is AllUsersViewModel users)
+            {
+                if (!users.AllUsers.Contains(this))
+                {
+                    users.AllUsers.Add(this);
+                }
             }
         }
 
@@ -344,7 +356,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void EditSelected(object obj)
         {
             Logger.Debug($"Editing {DisplayName}");
-            ShowWorkspace(this);
+            Show();
         }
 
         #endregion
@@ -355,8 +367,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void ShowAllStepTests()
         {
-            var workspace = new AllStepTestsViewModel(this, ShowWorkspace);
-            ShowWorkspace(workspace);
+            var workspace = new AllStepTestsViewModel(this, RootViewModel);
+            workspace.Show();
             Logger.Debug($"Show All StepTests for {DisplayName}");
         }
 
@@ -366,21 +378,32 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddStepTestCommand => _addStepTestCommand ??= new RelayCommand(param => CreateChild());
 
-        public override void CreateChild()
+        public override void CreateChild() => StepTestViewModel.Create(this, RootViewModel);
+
+        public void SaveToAllStepTests(StepTestViewModel newStepTest)
         {
-            StepTestViewModel.Create(this, ShowWorkspace);
+            // find AllSteptests for this user if shown
+            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllStepTestsViewModel)) && w is AllStepTestsViewModel allStepTestsForUser && ((UserViewModel)allStepTestsForUser.Parent).UserId == this.UserId);
+            if (workSpace != null && workSpace is AllStepTestsViewModel stepTests)
+            {
+                if (!stepTests.AllStepTests.Contains(newStepTest))
+                {
+                    stepTests.AllStepTests.Add(newStepTest);
+                }
+            }
         }
 
         #endregion
 
         #region Create
 
-        public static void Create(Action<WorkspaceViewModel> showWorkspace)
+        public static UserViewModel Create(MainWindowViewModel rootViewModel)
         {
             var newUser = User.Create(string.Empty, string.Empty, null, null, null, DateTime.Now, 0, 0, "M", null);
             Logger.Info("Created new Empty user");
-            var workspace = new UserViewModel(newUser, showWorkspace);
+            var workspace = new UserViewModel(newUser, rootViewModel);
             workspace.Show();
+            return workspace;
         }
 
         #endregion

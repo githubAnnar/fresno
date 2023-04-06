@@ -1,5 +1,4 @@
-﻿using LanterneRouge.Fresno.WpfClient.MVVM;
-using LanterneRouge.Wpf.MVVM;
+﻿using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.ObjectModel;
@@ -26,11 +25,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public AllUsersViewModel(Action<WorkspaceViewModel> showWorkspace) : base(null, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
+        public AllUsersViewModel(MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             DisplayName = "All Users"; /*KayakStrings.Race_All_Races;*/
             CreateAllUsers();
-            DataManager.Committed += DataManager_Committed;
             Logger.Debug($"AllUsers loaded");
 
             // Set up commands
@@ -42,16 +40,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("Add Steptest", AddStepTestCommand)
             };
         }
-
-        private void DataManager_Committed()
-        {
-            OnDispose();
-            CreateAllUsers();
-        }
-
+        
         private void CreateAllUsers()
         {
-            var all = (from user in DataManager.GetAllUsers() select new UserViewModel(user, ShowWorkspace)).ToList();
+            var all = (from user in DataManager.GetAllUsers() select new UserViewModel(user, RootViewModel)).ToList();
             all.ForEach(a => a.PropertyChanged += OnUserViewModelPropertyChanged);
             AllUsers = new ObservableCollection<UserViewModel>(all);
             OnPropertyChanged(nameof(AllUsers));
@@ -88,11 +80,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddUserCommand => _addUserCommand ??= new RelayCommand(param => CreateChild());
 
-        public override void CreateChild() => UserViewModel.Create(ShowWorkspace);
+        public override void CreateChild()
+        {
+            UserViewModel.Create(RootViewModel);
+        }
 
         public ICommand AddStepTestCommand => _addSteptestCommand ??= new RelayCommand(param => CreateStepTest(), param => Selected != null && Selected.IsValid);
 
-        public void CreateStepTest() => StepTestViewModel.Create(Selected, ShowWorkspace);
+        public void CreateStepTest() => StepTestViewModel.Create(Selected, RootViewModel);
 
         public ICommand ShowUserCommand => _showUserCommand ??= new RelayCommand(param => ShowUser(), param => Selected != null && Selected.IsValid);
 
@@ -102,7 +97,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowAllStepTests()
         {
-            var workspace = new AllStepTestsViewModel(Selected, ShowWorkspace);
+            var workspace = new AllStepTestsViewModel(Selected, RootViewModel);
             workspace.Show();
         }
 

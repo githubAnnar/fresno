@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using LanterneRouge.Fresno.Services;
 using LanterneRouge.Fresno.Services.Interfaces;
+using log4net;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -10,6 +11,7 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
 {
     public abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ViewModelBase));
         private IApplicationSettingsService _applicationSettingsService;
 
         #region Constructors
@@ -49,7 +51,7 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
             // public, instance property on this object.
             if (TypeDescriptor.GetProperties(this)[propertyName] == null)
             {
-                string msg = $"Invalid property name: {propertyName}";
+                var msg = $"Invalid property name: {propertyName}";
 
                 if (ThrowOnInvalidPropertyName)
                 {
@@ -58,7 +60,7 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
 
                 else
                 {
-                    Debug.Fail(msg);
+                    Logger.Error(msg);
                 }
             }
         }

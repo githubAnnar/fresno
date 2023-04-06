@@ -23,8 +23,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(StepTestViewModel));
         private static readonly string _name = typeof(StepTestViewModel).Name;
-        private ICommand _saveCommand;
         private bool _isSelected = false;
+        private ICommand _saveCommand;
         private ICommand _editSelectedCommand;
         private ICommand _showUserCommand;
         private ICommand _showAllMeasurementsCommand;
@@ -40,7 +40,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public StepTestViewModel(StepTest stepTest, UserViewModel parentUser, Action<WorkspaceViewModel> showWorkspace) : base(parentUser, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
+        public StepTestViewModel(StepTest stepTest, UserViewModel parentUser, MainWindowViewModel rootViewModel) : base(parentUser, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
         {
             Source = stepTest ?? throw new ArgumentNullException(nameof(stepTest));
 
@@ -242,7 +242,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (Source.IsChanged)
             {
                 DataManager.SaveStepTest(Source);
-                DataManager.Commit();
+                if (Parent is UserViewModel uvm)
+                {
+                    uvm.SaveToAllStepTests(this);
+                }
 
                 OnPropertyChanged(nameof(DisplayName));
 
@@ -359,7 +362,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void EditSelected(object obj)
         {
             Logger.Debug($"Editing {DisplayName}");
-            ShowWorkspace(this);
+            Show();
         }
 
         #endregion
@@ -384,7 +387,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowAllMeasurements()
         {
-            var workspace = new AllMeasurementsViewModel(this, ShowWorkspace);
+            var workspace = new AllMeasurementsViewModel(this, RootViewModel);
             workspace.Show();
             Logger.Debug("Shown all measurements");
         }
@@ -398,7 +401,20 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public override void CreateChild()
         {
             Logger.Debug($"Add Measurement on {DisplayName}");
-            MeasurementViewModel.Create(this, DataManager.GetAllMeasurementsByStepTest(Source).ToList(), ShowWorkspace);
+            MeasurementViewModel.Create(this, DataManager.GetAllMeasurementsByStepTest(Source).ToList(), RootViewModel);
+        }
+
+        public void SaveToAllMeasurements(MeasurementViewModel newMeasurement)
+        {
+            // find AllMeasurements for this steptest if shown
+            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllMeasurementsViewModel)) && w is AllMeasurementsViewModel allMeasurementsForStepTest && ((StepTestViewModel)allMeasurementsForStepTest.Parent).StepTestId == StepTestId);
+            if (workSpace != null && workSpace is AllMeasurementsViewModel measurements)
+            {
+                if (!measurements.AllMeasurements.Contains(newMeasurement))
+                {
+                    measurements.AllMeasurements.Add(newMeasurement);
+                }
+            }
         }
 
         #endregion
@@ -410,7 +426,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowFblcCalculation()
         {
             Logger.Debug($"Show FBLC Calculation for {DisplayName}");
-            var workspace = new FblcCalculationViewModel(this, ShowWorkspace);
+            var workspace = new FblcCalculationViewModel(this, RootViewModel);
             workspace.Show();
         }
 
@@ -423,7 +439,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowFrpbCalculation()
         {
             Logger.Debug($"Show FRPB Calculation for {DisplayName}");
-            var workspace = new FrpbCalculationViewModel(this, ShowWorkspace);
+            var workspace = new FrpbCalculationViewModel(this, RootViewModel);
             workspace.Show();
         }
 
@@ -436,7 +452,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowLtCalculation(object obj)
         {
             Logger.Debug($"Show LT Calculation for {DisplayName}");
-            var workspace = new LtCalculationViewModel(this, ShowWorkspace);
+            var workspace = new LtCalculationViewModel(this, RootViewModel);
             workspace.Show();
         }
 
@@ -449,7 +465,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowLtLogCalculation(object obj)
         {
             Logger.Debug($"Show LTLog Calculation for {DisplayName}");
-            var workspace = new LtLogCalculationViewModel(this, ShowWorkspace);
+            var workspace = new LtLogCalculationViewModel(this, RootViewModel);
             workspace.Show();
         }
 
@@ -462,7 +478,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void ShowDMaxCalculation(object obj)
         {
             Logger.Debug($"Show DMax Calculation for {DisplayName}");
-            var workspace = new DMaxCalculationViewModel(this, ShowWorkspace);
+            var workspace = new DMaxCalculationViewModel(this, RootViewModel);
             workspace.Show();
         }
 
@@ -485,7 +501,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                  }
                  modalWindow.DialogResult = dr;
                  modalWindow.Close();
-             }, ShowWorkspace);
+             }, RootViewModel);
 
             var view = new UserStepTestListView { DataContext = viewModel };
             modalWindow = new ContentWindow
@@ -508,12 +524,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #endregion
 
-        public static void Create(UserViewModel parentUser, Action<WorkspaceViewModel> showWorkspace)
+        public static void Create(UserViewModel parentUser, MainWindowViewModel rootViewModel)
         {
             var newStepTest = StepTest.Create(parentUser.UserId, "Bike", "W", TimeSpan.FromMinutes(4d).Ticks, 0, 0, 0, 0, DateTime.Now);
             newStepTest.AcceptChanges();
             Logger.Info("Created new empty step test entity");
-            var workspace = new StepTestViewModel(newStepTest, parentUser, showWorkspace);
+            var workspace = new StepTestViewModel(newStepTest, parentUser, rootViewModel);
             workspace.Show();
             Logger.Debug($"Created new StepTest on {workspace.DisplayName}");
         }

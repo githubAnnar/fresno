@@ -339,7 +339,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void OnWorkspaceRequestClose(object sender, EventArgs e)
         {
-            if (sender is not WorkspaceViewModel workspace) return;
+            if (sender is not WorkspaceViewModel workspace)
+            {
+                return;
+            }
+
             workspace.Dispose();
             Workspaces.Remove(workspace);
 
@@ -377,12 +381,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (Workspaces.FirstOrDefault(vm => vm is AllUsersViewModel) is not AllUsersViewModel workspace)
             {
-                workspace = new AllUsersViewModel(ShowWorkspace);
+                workspace = new AllUsersViewModel(this);
                 Workspaces.Add(workspace);
             }
 
             SetActiveWorkspace(workspace);
-            Logger.Debug("\"All users\" workspace is shown");
+            Logger.Debug($"{typeof(AllUsersViewModel)} workspace is shown");
 
             SetActiveCommands(workspace);
         }
@@ -412,21 +416,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (!Workspaces.Contains(workspace))
             {
-                Logger.Warn($"Workspace \"{workspace}\" is not found in collection!");
+                Logger.Warn($"Workspace '{workspace}' is not found in collection!");
             }
 
             var collectionView = CollectionViewSource.GetDefaultView(Workspaces);
             if (collectionView != null)
             {
                 collectionView.MoveCurrentTo(workspace);
-                Logger.Debug($"Changed workspace to \"{workspace}\"");
+                Logger.Debug($"Changed workspace to '{workspace}'");
             }
         }
 
         public void SetActiveCommands(WorkspaceViewModel workspace)
         {
             Commands = workspace.SubCommands;
-            Logger.Debug($"Changed commands for workspace \"{workspace}\"");
+            Logger.Debug($"Changed commands for workspace '{workspace}'");
 
             if (!ContainsWorkspace(typeof(AllUsersViewModel)))
             {

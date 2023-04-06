@@ -44,11 +44,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public AllStepTestsViewModel(UserViewModel parentUser, Action<WorkspaceViewModel> showWorkspace) : base(parentUser, showWorkspace, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
+        public AllStepTestsViewModel(UserViewModel parentUser, MainWindowViewModel rootViewModel) : base(parentUser, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
         {
             DisplayName = parentUser == null ? "All Users"/*KayakStrings.Category_All_Categories*/ : $"StepTests: {parentUser.LastName}";
             CreateAllStepTests();
-            DataManager.Committed += DataManager_Committed;
+            //DataManager.Committed += DataManager_Committed;
             Logger.Debug($"AllStepests for user {parentUser.LastName} loaded");
 
             // Set up sub commands
@@ -78,7 +78,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (Parent is UserViewModel parent)
             {
-                var all = DataManager.GetAllStepTestsByUser(parent.Source).Select(s => new StepTestViewModel(s, parent, ShowWorkspace)).ToList();
+                var all = DataManager.GetAllStepTestsByUser(parent.Source).Select(s => new StepTestViewModel(s, parent, RootViewModel)).ToList();
                 all.ForEach(cvm => cvm.PropertyChanged += OnStepTestViewModelPropertyChanged);
                 AllStepTests = new ObservableCollection<StepTestViewModel>(all);
                 OnPropertyChanged(nameof(AllStepTests));
@@ -174,7 +174,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand ShowDiagramCommand => _showDiagramCommand ??= new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected) && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.GetAllMeasurementsByStepTest(s.Source).Count(s => s.InCalculation) > 3));
 
-        private void ShowDiagram(object obj) => new StepTestsPlotViewModel(AllStepTests.Where(st => st.IsSelected), ShowWorkspace).Show();
+        private void ShowDiagram(object obj) => new StepTestsPlotViewModel(AllStepTests.Where(st => st.IsSelected), RootViewModel).Show();
 
         #endregion
 
@@ -265,7 +265,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddStepTestCommand => _addStepTestCommand ??= new RelayCommand(param => CreateChild());
 
-        public override void CreateChild() => StepTestViewModel.Create(Parent as UserViewModel, ShowWorkspace);
+        public override void CreateChild() => StepTestViewModel.Create(Parent as UserViewModel, RootViewModel);
 
         public ICommand ShowUserCommand => _showUserCommand ??= new RelayCommand(param => Parent.Show(), param => Parent != null);
 
@@ -343,7 +343,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowAllMeasurements()
         {
-            var workspace = new AllMeasurementsViewModel(Selected, ShowWorkspace);
+            var workspace = new AllMeasurementsViewModel(Selected, RootViewModel);
             workspace.Show();
         }
 

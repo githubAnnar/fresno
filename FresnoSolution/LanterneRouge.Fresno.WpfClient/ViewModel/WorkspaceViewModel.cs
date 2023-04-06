@@ -23,10 +23,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public WorkspaceViewModel(WorkspaceViewModel parent, Action<WorkspaceViewModel> showWorkspace, BitmapImage icon)
+        public WorkspaceViewModel(WorkspaceViewModel parent, MainWindowViewModel rootViewModel, BitmapImage icon)
         {
             Parent = parent;
-            ShowWorkspace = showWorkspace ?? throw new ArgumentNullException(nameof(showWorkspace));
+            RootViewModel = rootViewModel ?? throw new ArgumentNullException(nameof(rootViewModel));
             ItemIcon = icon ?? new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-report-card-100.png"));
         }
 
@@ -90,7 +90,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public WorkspaceViewModel Parent { get; }
 
-        public Action<WorkspaceViewModel> ShowWorkspace { get; }
+        public MainWindowViewModel RootViewModel { get; }
 
         #endregion
 
@@ -108,7 +108,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             set => _contextMenuItemCommands = value;
         }
 
-        public void Show() => ShowWorkspace(this);
+        public void Show() => RootViewModel.ShowWorkspace(this);
 
         public abstract void CreateChild();
 
