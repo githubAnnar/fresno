@@ -222,7 +222,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (Source.IsChanged)
             {
                 DataManager.SaveUser(Source);
-                SaveToAllUsers();                
+                SaveToAllUsers();
                 OnPropertyChanged(nameof(DisplayName));
 
                 MessageBox.Show($"User: {LastName} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -363,7 +363,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowAllStepTestsCommand
 
-        public ICommand ShowAllStepTestsCommand => _showAllStepTestsCommand ??= new RelayCommand(param => ShowAllStepTests());
+        public ICommand ShowAllStepTestsCommand => _showAllStepTestsCommand ??= new RelayCommand(param => ShowAllStepTests(), CanShowAllStepTests);
 
         public void ShowAllStepTests()
         {
@@ -371,12 +371,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             workspace.Show();
             Logger.Debug($"Show All StepTests for {DisplayName}");
         }
+        public Predicate<object> CanShowAllStepTests => (object o) => DataManager.GetAllStepTestsByUser(Source).Any();
 
         #endregion
 
         #region AddStepTestCommand
 
         public ICommand AddStepTestCommand => _addStepTestCommand ??= new RelayCommand(param => CreateChild());
+
 
         public override void CreateChild() => StepTestViewModel.Create(this, RootViewModel);
 

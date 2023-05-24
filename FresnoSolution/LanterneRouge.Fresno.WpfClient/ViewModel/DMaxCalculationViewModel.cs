@@ -49,13 +49,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string DMaxLactateThresholdText => DMaxCalculation != null ? $"Load Th.: {DMaxCalculation.LoadThreshold:0.0} Heartrate Th.: {DMaxCalculation.HeartRateThreshold:0} @ Lactate: {DMaxCalculation.LactateThreshold:0.00}" : "No Calculation";
 
-        private DmaxCalculation DMaxCalculation => _dMaxCalculation ??= DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source) != null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Any() ? new DmaxCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source), UseOnlyEndpointsForDMax) : null;
+        private DmaxCalculation DMaxCalculation => _dMaxCalculation ??= DataManager.MeasurementsCountByStepTest(StepTestParent.Source) > 0 ? new DmaxCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source), UseOnlyEndpointsForDMax) : null;
 
         public ObservableCollection<Zone> DMaxZones
         {
             get
             {
-                if (_dMaxZones == null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source) != null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Any())
+                if (_dMaxZones == null && DataManager.MeasurementsCountByStepTest(StepTestParent.Source) > 0)
                 {
                     if (DMaxCalculation != null)
                     {

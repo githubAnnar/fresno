@@ -41,6 +41,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public List<StepTest> GetStepTestsByUser(User parent) => StepTestRepository.FindByParentId(parent).ToList();
 
+        public int StepTestCountByUser(User parent, bool onlyInCalculation) => StepTestRepository.GetCountByParentId(parent, onlyInCalculation);
 
         public StepTest GetStepTestById(int id) => StepTestRepository.FindSingle(id);
 
@@ -85,7 +86,6 @@ namespace LanterneRouge.Fresno.Repository.Managers
                 _disposed = true;
             }
         }
-
 
         ~StepTestManager()
         {

@@ -28,14 +28,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public string LTLogLactateThresholdText => LtLogCalculation != null ? $"Load Th.: {LtLogCalculation.LoadThreshold:0.0} Heartrate Th.: {LtLogCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private LTLogCalculation _ltLogCalculation = null;
-        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source) != null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Any() ? new LTLogCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source)) : null;
+        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= DataManager.MeasurementsCountByStepTest(StepTestParent.Source) > 0 ? new LTLogCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source)) : null;
 
         private ObservableCollection<Zone> _LTLogZones = null;
         public ObservableCollection<Zone> LTLogZones
         {
             get
             {
-                if (_LTLogZones == null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source) != null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Any())
+                if (_LTLogZones == null && DataManager.MeasurementsCountByStepTest(StepTestParent.Source) > 0)
                 {
                     if (LtLogCalculation != null)
                     {

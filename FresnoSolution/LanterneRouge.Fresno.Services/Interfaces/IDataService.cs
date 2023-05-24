@@ -20,6 +20,8 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
         IEnumerable<StepTest> GetAllStepTestsByUser(User entity);
 
+        int StepTestCountByUser(User entity, bool onlyInCalculation = false);
+
         void SaveStepTest(StepTest entity);
 
         void RemoveStepTest(StepTest entity);
@@ -27,6 +29,8 @@ namespace LanterneRouge.Fresno.Services.Interfaces
         IEnumerable<Measurement> GetAllMeasurements();
 
         IEnumerable<Measurement> GetAllMeasurementsByStepTest(StepTest entity);
+
+        int MeasurementsCountByStepTest(StepTest entity, bool onlyInCalculation = false);
 
         void SaveMeasurement(Measurement entity);
 

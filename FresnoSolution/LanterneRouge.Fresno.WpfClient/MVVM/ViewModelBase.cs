@@ -124,8 +124,7 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
         /// </summary>
         ~ViewModelBase()
         {
-            var msg = $"{GetType().Name} ({DisplayName}) ({GetHashCode()}) Finalized";
-            Debug.WriteLine(msg);
+            Logger.Debug($"{GetType().Name} ({DisplayName}) ({GetHashCode()}) Finalized");
         }
 #endif
 

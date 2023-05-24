@@ -78,6 +78,8 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return new List<User>();
         }
 
+        public int GetCountByParentId<TParentEntity>(TParentEntity parent, bool onlyInCalculation) where TParentEntity : BaseEntity<TParentEntity> => 0;
+
         public void Remove(int id)
         {
             var transaction = Connection.BeginTransaction();

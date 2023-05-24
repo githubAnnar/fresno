@@ -3,6 +3,7 @@ using LanterneRouge.Fresno.Core.Contracts;
 using LanterneRouge.Fresno.Core.Entities;
 using log4net;
 using System.Data;
+using System.Text;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
 {
@@ -143,6 +144,25 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             measurements.ForEach(m => m.AcceptChanges());
 
             return measurements;
+        }
+
+        public int GetCountByParentId<TParentEntity>(TParentEntity parent, bool onlyInCalculation) where TParentEntity : BaseEntity<TParentEntity>
+        {
+            var sqlBuilder = new StringBuilder("SELECT COUNT(Id) FROM Measurement WHERE StepTestId = @ParentId");
+            var paramDictionary = new Dictionary<string, object> { { "@ParentId", 1 } };
+
+
+            if (onlyInCalculation)
+            {
+                sqlBuilder.Append(" AND InCalculation = @inC");
+                paramDictionary.Add("@inC", "True");
+            }
+
+
+            var result = Connection.ExecuteScalar<int>("SELECT COUNT(Id) FROM Measurement WHERE StepTestId = @ParentId", new DynamicParameters(paramDictionary));
+            Logger.Debug($"{nameof(GetCountByParentId)} {parent.Id} = {result}");
+
+            return result;
         }
     }
 }

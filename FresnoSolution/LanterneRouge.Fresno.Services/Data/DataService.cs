@@ -98,6 +98,8 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _stepTestManager.GetStepTestsByUser(parent);
 
+        public int StepTestCountByUser(User entity, bool onlyInCalculation = false) => _stepTestManager.StepTestCountByUser(entity, onlyInCalculation);
+
         public void SaveStepTest(StepTest entity) => _stepTestManager.UpsertStepTest(entity);
 
         public void RemoveStepTest(StepTest entity) => _stepTestManager.RemoveStepTest(entity);
@@ -105,6 +107,8 @@ namespace LanterneRouge.Fresno.Services.Data
         public IEnumerable<Measurement> GetAllMeasurements() => _measurementManager.GetAllMeasurements();
 
         public IEnumerable<Measurement> GetAllMeasurementsByStepTest(StepTest entity) => _measurementManager.GetMeasurementsByStepTest(entity);
+
+        public int MeasurementsCountByStepTest(StepTest entity, bool onlyInCalculation = false) => _measurementManager.MeasurementsCountByStepTest(entity, onlyInCalculation);
 
         public void SaveMeasurement(Measurement entity) => _measurementManager.UpsertMeasurement(entity);
 

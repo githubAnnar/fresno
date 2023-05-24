@@ -8,6 +8,8 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 
         List<StepTest> GetStepTestsByUser(User parent);
 
+        int StepTestCountByUser(User parent, bool onlyInCalculation);
+
         StepTest GetStepTestById(int id);
 
         void UpsertStepTest(StepTest entity);

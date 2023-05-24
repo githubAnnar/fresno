@@ -93,7 +93,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public StepTestViewModel Selected => SelectedObject as StepTestViewModel;
 
-        public int SelectedMeasurementCount => Selected != null ? DataManager.GetAllMeasurementsByStepTest(Selected.Source).Count(m => m.InCalculation) : 0;
+        public int SelectedMeasurementCount => Selected != null ? DataManager.MeasurementsCountByStepTest(Selected.Source, true) : 0;
 
         public ObservableCollection<StepTestViewModel> AllStepTests { get; private set; }
 
@@ -172,7 +172,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowDiagram Command
 
-        public ICommand ShowDiagramCommand => _showDiagramCommand ??= new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected) && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.GetAllMeasurementsByStepTest(s.Source).Count(s => s.InCalculation) > 3));
+        public ICommand ShowDiagramCommand => _showDiagramCommand ??= new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected) && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.MeasurementsCountByStepTest(s.Source, true) > 3));
 
         private void ShowDiagram(object obj) => new StepTestsPlotViewModel(AllStepTests.Where(st => st.IsSelected), RootViewModel).Show();
 
@@ -271,7 +271,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ??= new RelayCommand(param => ShowAllMeasurements(), param => Selected != null && Selected.IsValid);
 
-        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => CreateStepTestPdf(), param => AllSelected.Any() && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.GetAllMeasurementsByStepTest(s.Source).Count(s => s.InCalculation) > 3));
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => CreateStepTestPdf(), param => AllSelected.Any() && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.MeasurementsCountByStepTest(s.Source, true) > 3));
 
         private void CreateStepTestPdf()
         {

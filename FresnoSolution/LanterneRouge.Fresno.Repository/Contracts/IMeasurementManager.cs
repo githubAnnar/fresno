@@ -8,6 +8,8 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 
         List<Measurement> GetMeasurementsByStepTest(StepTest parent);
 
+        int MeasurementsCountByStepTest(StepTest parent, bool onlyInCalculation);
+
         Measurement GetMeasurementById(int id);
 
         void UpsertMeasurement(Measurement entity);

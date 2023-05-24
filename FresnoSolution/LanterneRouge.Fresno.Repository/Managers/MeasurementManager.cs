@@ -41,6 +41,8 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public List<Measurement> GetMeasurementsByStepTest(StepTest parent) => MeasurementRepository.FindByParentId(parent).ToList();
 
+        public int MeasurementsCountByStepTest(StepTest parent, bool onlyInCalculation) => MeasurementRepository.GetCountByParentId(parent, onlyInCalculation);
+
         public Measurement GetMeasurementById(int id) => MeasurementRepository.FindSingle(id);
 
         public void UpsertMeasurement(Measurement entity)

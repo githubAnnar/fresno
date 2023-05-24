@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Caching;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -344,8 +345,19 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 return;
             }
 
+            if (Workspaces.Remove(workspace))
+            {
+                Logger.Info($"Workspace {workspace} removed from collection views");
+            }
+
+            else
+            {
+                Logger.Warn($"Workspace {workspace} was not found or was not removed from collection");
+            }
+
+            OnPropertyChanged(nameof(Workspaces));
+
             workspace.Dispose();
-            Workspaces.Remove(workspace);
 
             var newWS = GetActiveWorkspace();
             if (newWS != null)
@@ -357,7 +369,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             {
                 Commands = null;
             }
-
         }
 
         #endregion // Workspaces
@@ -382,13 +393,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (Workspaces.FirstOrDefault(vm => vm is AllUsersViewModel) is not AllUsersViewModel workspace)
             {
                 workspace = new AllUsersViewModel(this);
-                Workspaces.Add(workspace);
             }
 
-            SetActiveWorkspace(workspace);
+            ShowWorkspace(workspace);
             Logger.Debug($"{typeof(AllUsersViewModel)} workspace is shown");
-
-            SetActiveCommands(workspace);
         }
 
         private static string GetProductVersion()

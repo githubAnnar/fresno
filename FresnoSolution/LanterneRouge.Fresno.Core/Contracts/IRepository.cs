@@ -12,6 +12,8 @@ namespace LanterneRouge.Fresno.Core.Contracts
 
         IEnumerable<TEntity> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>;
 
+        int GetCountByParentId<TParentEntity>(TParentEntity parent, bool onlyInCalculation) where TParentEntity : BaseEntity<TParentEntity>;
+
         void Remove(int id);
 
         void Remove(TEntity entity);

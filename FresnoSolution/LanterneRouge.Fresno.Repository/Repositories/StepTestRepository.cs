@@ -136,10 +136,17 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
         public IEnumerable<StepTest> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>
         {
-            Logger.Debug($"FindByParentId {parent.Id}");
+            Logger.Debug($"{nameof(FindByParentId)} {parent.Id}");
             var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }).ToList();
             stepTests.ForEach(s => { s.AcceptChanges(); });
             return stepTests;
+        }
+
+        public int GetCountByParentId<TParentEntity>(TParentEntity parent, bool onlyInCalculation) where TParentEntity : BaseEntity<TParentEntity>
+        {
+            Logger.Debug($"{nameof(GetCountByParentId)} {parent.Id}");
+            var result = Connection.ExecuteScalar<int>("SELECT COUNT(Id) FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id });
+            return result;
         }
     }
 }

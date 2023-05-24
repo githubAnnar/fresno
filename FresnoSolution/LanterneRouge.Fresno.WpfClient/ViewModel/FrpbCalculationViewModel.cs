@@ -47,14 +47,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public string FRPBLactateThresholdText => FrpbCalculation != null ? $"Load Th.: {FrpbCalculation.LoadThreshold:0.0} Heartrate Th.: {FrpbCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private FrpbCalculation _frpbCalculation = null;
-        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source) != null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Any() ? new FrpbCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source), FrpbCalculationThreshold) : null;
+        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.MeasurementsCountByStepTest(StepTestParent.Source) > 0 ? new FrpbCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source), FrpbCalculationThreshold) : null;
 
         private ObservableCollection<Zone> _FRPBZones = null;
         public ObservableCollection<Zone> FRPBZones
         {
             get
             {
-                if (_FRPBZones == null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source) != null && DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Any())
+                if (_FRPBZones == null && DataManager.MeasurementsCountByStepTest(StepTestParent.Source) > 0)
                 {
                     if (FrpbCalculation != null)
                     {
