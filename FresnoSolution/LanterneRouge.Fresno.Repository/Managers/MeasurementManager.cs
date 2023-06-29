@@ -1,5 +1,5 @@
 ﻿using LanterneRouge.Fresno.Core.Contracts;
-using LanterneRouge.Fresno.Core.Entities;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Repositories;
 using System.Data;
@@ -18,7 +18,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         #region Properties
 
-        private IRepository<Measurement> MeasurementRepository { get; }
+        private IRepository<IMeasurementEntity, IStepTestEntity> MeasurementRepository { get; }
 
         #endregion
 
@@ -37,17 +37,17 @@ namespace LanterneRouge.Fresno.Repository.Managers
             Logger.Info("Db connection closed");
         }
 
-        public List<Measurement> GetAllMeasurements() => MeasurementRepository.All().ToList();
+        public List<IMeasurementEntity> GetAllMeasurements() => MeasurementRepository.All().ToList();
 
-        public List<Measurement> GetMeasurementsByStepTest(StepTest parent) => MeasurementRepository.FindByParentId(parent).ToList();
+        public List<IMeasurementEntity> GetMeasurementsByStepTest(IStepTestEntity parent) => MeasurementRepository.FindByParentId(parent).ToList();
 
-        public int MeasurementsCountByStepTest(StepTest parent, bool onlyInCalculation) => MeasurementRepository.GetCountByParentId(parent, onlyInCalculation);
+        public int MeasurementsCountByStepTest(IStepTestEntity parent, bool onlyInCalculation) => MeasurementRepository.GetCountByParentId(parent, onlyInCalculation);
 
-        public Measurement GetMeasurementById(int id) => MeasurementRepository.FindSingle(id);
+        public IMeasurementEntity GetMeasurementById(int id) => MeasurementRepository.FindSingle(id);
 
-        public void UpsertMeasurement(Measurement entity)
+        public void UpsertMeasurement(IMeasurementEntity entity)
         {
-            if (entity.State == EntityState.New)
+            if (entity.Id == 0)
             {
                 MeasurementRepository.Add(entity);
             }
@@ -58,7 +58,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
             }
         }
 
-        public void RemoveMeasurement(Measurement entity) => MeasurementRepository.Remove(entity);
+        public void RemoveMeasurement(IMeasurementEntity entity) => MeasurementRepository.Remove(entity);
 
         #endregion
 

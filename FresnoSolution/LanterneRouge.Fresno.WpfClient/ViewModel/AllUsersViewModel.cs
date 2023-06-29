@@ -40,7 +40,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("Add Steptest", AddStepTestCommand)
             };
         }
-        
+
         private void CreateAllUsers()
         {
             var all = (from user in DataManager.GetAllUsers() select new UserViewModel(user, RootViewModel)).ToList();

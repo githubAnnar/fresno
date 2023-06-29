@@ -1,19 +1,19 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Interface;
 
 namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IMeasurementManager : IManagerBase, IDisposable
     {
-        List<Measurement> GetAllMeasurements();
+        List<IMeasurementEntity> GetAllMeasurements();
 
-        List<Measurement> GetMeasurementsByStepTest(StepTest parent);
+        List<IMeasurementEntity> GetMeasurementsByStepTest(IStepTestEntity parent);
 
-        int MeasurementsCountByStepTest(StepTest parent, bool onlyInCalculation);
+        int MeasurementsCountByStepTest(IStepTestEntity parent, bool onlyInCalculation);
 
-        Measurement GetMeasurementById(int id);
+        IMeasurementEntity GetMeasurementById(int id);
 
-        void UpsertMeasurement(Measurement entity);
+        void UpsertMeasurement(IMeasurementEntity entity);
 
-        void RemoveMeasurement(Measurement entity);
+        void RemoveMeasurement(IMeasurementEntity entity);
     }
 }

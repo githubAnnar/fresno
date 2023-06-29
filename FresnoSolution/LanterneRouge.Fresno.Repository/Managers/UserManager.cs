@@ -1,5 +1,5 @@
 ﻿using LanterneRouge.Fresno.Core.Contracts;
-using LanterneRouge.Fresno.Core.Entities;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Repositories;
 using System.Data;
@@ -15,7 +15,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         #region Properties
 
-        private IRepository<User> UserRepository { get; }
+        private IRepository<IUserEntity, IUserEntity> UserRepository { get; }
 
         #endregion
 
@@ -34,15 +34,15 @@ namespace LanterneRouge.Fresno.Repository.Managers
             Logger.Info("Db connection closed");
         }
 
-        public List<User> GetAllUsers() => UserRepository.All().ToList();
+        public List<IUserEntity> GetAllUsers() => UserRepository.All().ToList();
 
-        public User GetUserById(int id) => UserRepository.FindSingle(id);
+        public IUserEntity GetUserById(int id) => UserRepository.FindSingle(id);
 
-        public User GetUserByStepTest(StepTest stepTest) => UserRepository.FindSingle(stepTest.UserId);
+        public IUserEntity GetUserByStepTest(IStepTestEntity stepTest) => UserRepository.FindSingle(stepTest.UserId);
 
-        public void UpsertUser(User entity)
+        public void UpsertUser(IUserEntity entity)
         {
-            if (entity.State == EntityState.New)
+            if (entity.Id == 0)
             {
                 UserRepository.Add(entity);
             }
@@ -53,7 +53,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
             }
         }
 
-        public void RemoveUser(User entity) => UserRepository.Remove(entity);
+        public void RemoveUser(IUserEntity entity) => UserRepository.Remove(entity);
 
         #endregion
 

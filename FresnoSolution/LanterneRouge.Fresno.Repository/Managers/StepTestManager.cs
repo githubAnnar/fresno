@@ -1,5 +1,5 @@
 ﻿using LanterneRouge.Fresno.Core.Contracts;
-using LanterneRouge.Fresno.Core.Entities;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Repositories;
 using System.Data;
@@ -18,7 +18,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         #region Properties
 
-        private IRepository<StepTest> StepTestRepository { get; }
+        private IRepository<IStepTestEntity, IUserEntity> StepTestRepository { get; }
 
         #endregion
 
@@ -37,17 +37,17 @@ namespace LanterneRouge.Fresno.Repository.Managers
             Logger.Info("Db connection closed");
         }
 
-        public List<StepTest> GetAllStepTests() => StepTestRepository.All().ToList();
+        public List<IStepTestEntity> GetAllStepTests() => StepTestRepository.All().ToList();
 
-        public List<StepTest> GetStepTestsByUser(User parent) => StepTestRepository.FindByParentId(parent).ToList();
+        public List<IStepTestEntity> GetStepTestsByUser(IUserEntity parent) => StepTestRepository.FindByParentId(parent).ToList();
 
-        public int StepTestCountByUser(User parent, bool onlyInCalculation) => StepTestRepository.GetCountByParentId(parent, onlyInCalculation);
+        public int StepTestCountByUser(IUserEntity parent, bool onlyInCalculation) => StepTestRepository.GetCountByParentId(parent, onlyInCalculation);
 
-        public StepTest GetStepTestById(int id) => StepTestRepository.FindSingle(id);
+        public IStepTestEntity GetStepTestById(int id) => StepTestRepository.FindSingle(id);
 
-        public void UpsertStepTest(StepTest entity)
+        public void UpsertStepTest(IStepTestEntity entity)
         {
-            if (entity.State == EntityState.New)
+            if (entity.Id == 0)
             {
                 StepTestRepository.Add(entity);
             }
@@ -58,7 +58,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
             }
         }
 
-        public void RemoveStepTest(StepTest entity) => StepTestRepository.Remove(entity);
+        public void RemoveStepTest(IStepTestEntity entity) => StepTestRepository.Remove(entity);
 
         #endregion
 

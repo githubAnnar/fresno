@@ -1,5 +1,6 @@
 ﻿using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.Core.Entities;
+using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Fresno.WpfClient.View;
@@ -40,7 +41,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public StepTestViewModel(StepTest stepTest, UserViewModel parentUser, MainWindowViewModel rootViewModel) : base(parentUser, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
+        public StepTestViewModel(IStepTestEntity stepTest, UserViewModel parentUser, MainWindowViewModel rootViewModel) : base(parentUser, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-diabetes-96.png")))
         {
             Source = stepTest ?? throw new ArgumentNullException(nameof(stepTest));
 
@@ -77,7 +78,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
-        internal StepTest Source { get; private set; }
+        internal IStepTestEntity Source { get; private set; }
 
         public int StepTestId => Source.Id;
 

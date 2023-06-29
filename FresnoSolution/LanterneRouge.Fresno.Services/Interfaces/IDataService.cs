@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Interface;
 
 namespace LanterneRouge.Fresno.Services.Interfaces
 {
@@ -6,35 +6,35 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
     public interface IDataService
     {
-        IEnumerable<User> GetAllUsers();
+        IEnumerable<IUserEntity> GetAllUsers();
 
-        User GetUser(int id);
+        IUserEntity GetUser(int id);
 
-        User GetUserByStepTest(StepTest stepTest);
+        IUserEntity GetUserByStepTest(IStepTestEntity stepTest);
 
-        void SaveUser(User entity);
+        void SaveUser(IUserEntity entity);
 
-        void RemoveUser(User entity);
+        void RemoveUser(IUserEntity entity);
 
-        IEnumerable<StepTest> GetAllStepTests();
+        IEnumerable<IStepTestEntity> GetAllStepTests();
 
-        IEnumerable<StepTest> GetAllStepTestsByUser(User entity);
+        IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity entity);
 
-        int StepTestCountByUser(User entity, bool onlyInCalculation = false);
+        int StepTestCountByUser(IUserEntity entity, bool onlyInCalculation = false);
 
-        void SaveStepTest(StepTest entity);
+        void SaveStepTest(IStepTestEntity entity);
 
-        void RemoveStepTest(StepTest entity);
+        void RemoveStepTest(IStepTestEntity entity);
 
-        IEnumerable<Measurement> GetAllMeasurements();
+        IEnumerable<IMeasurementEntity> GetAllMeasurements();
 
-        IEnumerable<Measurement> GetAllMeasurementsByStepTest(StepTest entity);
+        IEnumerable<IMeasurementEntity> GetAllMeasurementsByStepTest(IStepTestEntity entity);
 
-        int MeasurementsCountByStepTest(StepTest entity, bool onlyInCalculation = false);
+        int MeasurementsCountByStepTest(IStepTestEntity entity, bool onlyInCalculation = false);
 
-        void SaveMeasurement(Measurement entity);
+        void SaveMeasurement(IMeasurementEntity entity);
 
-        void RemoveMeasurement(Measurement entity);
+        void RemoveMeasurement(IMeasurementEntity entity);
 
         bool LoadDatabase(string filename);
 

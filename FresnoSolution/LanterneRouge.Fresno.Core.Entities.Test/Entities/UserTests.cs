@@ -1,7 +1,7 @@
 using Bogus;
 using static Bogus.DataSets.Name;
 
-namespace LanterneRouge.Fresno.Core.Entities
+namespace LanterneRouge.Fresno.Core.Entity
 {
     public class UserTests
     {
@@ -52,7 +52,6 @@ namespace LanterneRouge.Fresno.Core.Entities
             Assert.True(testUser.Sex.Equals("M", StringComparison.InvariantCultureIgnoreCase) || testUser.Sex.Equals("F", StringComparison.InvariantCultureIgnoreCase));
             Assert.Equal(_user.MaxHr, testUser.MaxHr);
             Assert.True(testUser.IsLoaded);
-            Assert.Equal(EntityState.New, testUser.State);
         }
     }
 }

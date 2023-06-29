@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Infrastructure;
 using LanterneRouge.Fresno.Repository.Managers;
@@ -84,34 +84,34 @@ namespace LanterneRouge.Fresno.Services.Data
             return response;
         }
 
-        public IEnumerable<User> GetAllUsers() => _userManager.GetAllUsers();
+        public IEnumerable<IUserEntity> GetAllUsers() => _userManager.GetAllUsers();
 
-        public User GetUser(int id) => _userManager.GetUserById(id);
+        public IUserEntity GetUser(int id) => _userManager.GetUserById(id);
 
-        public User GetUserByStepTest(StepTest stepTest) => _userManager.GetUserByStepTest(stepTest);
+        public IUserEntity GetUserByStepTest(IStepTestEntity stepTest) => _userManager.GetUserByStepTest(stepTest);
 
-        public void SaveUser(User entity) => _userManager.UpsertUser(entity);
+        public void SaveUser(IUserEntity entity) => _userManager.UpsertUser(entity);
 
-        public void RemoveUser(User entity) => _userManager.RemoveUser(entity);
+        public void RemoveUser(IUserEntity entity) => _userManager.RemoveUser(entity);
 
-        public IEnumerable<StepTest> GetAllStepTests() => _stepTestManager.GetAllStepTests();
+        public IEnumerable<IStepTestEntity> GetAllStepTests() => _stepTestManager.GetAllStepTests();
 
-        public IEnumerable<StepTest> GetAllStepTestsByUser(User parent) => _stepTestManager.GetStepTestsByUser(parent);
+        public IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity parent) => _stepTestManager.GetStepTestsByUser(parent);
 
-        public int StepTestCountByUser(User entity, bool onlyInCalculation = false) => _stepTestManager.StepTestCountByUser(entity, onlyInCalculation);
+        public int StepTestCountByUser(IUserEntity entity, bool onlyInCalculation = false) => _stepTestManager.StepTestCountByUser(entity, onlyInCalculation);
 
-        public void SaveStepTest(StepTest entity) => _stepTestManager.UpsertStepTest(entity);
+        public void SaveStepTest(IStepTestEntity entity) => _stepTestManager.UpsertStepTest(entity);
 
-        public void RemoveStepTest(StepTest entity) => _stepTestManager.RemoveStepTest(entity);
+        public void RemoveStepTest(IStepTestEntity entity) => _stepTestManager.RemoveStepTest(entity);
 
-        public IEnumerable<Measurement> GetAllMeasurements() => _measurementManager.GetAllMeasurements();
+        public IEnumerable<IMeasurementEntity> GetAllMeasurements() => _measurementManager.GetAllMeasurements();
 
-        public IEnumerable<Measurement> GetAllMeasurementsByStepTest(StepTest entity) => _measurementManager.GetMeasurementsByStepTest(entity);
+        public IEnumerable<IMeasurementEntity> GetAllMeasurementsByStepTest(IStepTestEntity entity) => _measurementManager.GetMeasurementsByStepTest(entity);
 
-        public int MeasurementsCountByStepTest(StepTest entity, bool onlyInCalculation = false) => _measurementManager.MeasurementsCountByStepTest(entity, onlyInCalculation);
+        public int MeasurementsCountByStepTest(IStepTestEntity entity, bool onlyInCalculation = false) => _measurementManager.MeasurementsCountByStepTest(entity, onlyInCalculation);
 
-        public void SaveMeasurement(Measurement entity) => _measurementManager.UpsertMeasurement(entity);
+        public void SaveMeasurement(IMeasurementEntity entity) => _measurementManager.UpsertMeasurement(entity);
 
-        public void RemoveMeasurement(Measurement entity) => _measurementManager.RemoveMeasurement(entity);
+        public void RemoveMeasurement(IMeasurementEntity entity) => _measurementManager.RemoveMeasurement(entity);
     }
 }

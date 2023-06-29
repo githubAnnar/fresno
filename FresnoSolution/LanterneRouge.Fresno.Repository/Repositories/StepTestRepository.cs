@@ -1,99 +1,71 @@
-﻿using Dapper;
-using LanterneRouge.Fresno.Core.Contracts;
-using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Contracts;
+using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 using log4net;
 using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
 {
-    public class StepTestRepository : RepositoryBase, IRepository<StepTest>
+    public class StepTestRepository : RepositoryBase, IRepository<IStepTestEntity, IUserEntity>
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(StepTestRepository));
 
         public StepTestRepository(IDbConnection connection) : base(connection)
         { }
 
-        public void Add(StepTest entity)
+        public void Add(IStepTestEntity entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var transaction = Connection.BeginTransaction();
-            try
+            if (entity is StepTest stepTest)
             {
-                var newId = Connection.ExecuteScalar<int>("INSERT INTO StepTest(UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate) VALUES(@UserId, @TestType, @EffortUnit, @StepDuration, @LoadPreset, @Increase, @Temperature, @Weight, @TestDate); SELECT last_insert_rowid()", param: new { entity.UserId, entity.TestType, entity.EffortUnit, entity.StepDuration, entity.LoadPreset, entity.Increase, entity.Temperature, entity.Weight, entity.TestDate }, transaction: transaction);
-                transaction.Commit();
-                var t = typeof(BaseEntity<StepTest>);
-                t.GetProperty("Id").SetValue(entity, newId, null);
-                entity.AcceptChanges();
-                Logger.Info($"Added steptest with ID: {entity.Id}");
-            }
-
-            catch (Exception ex)
-            {
-                Logger.Error($"Commit error for adding steptest '{entity.UserId}, {entity.TestDate}'", ex);
                 try
                 {
-                    transaction.Rollback();
+                    var newId = Context.StepTests.Add(stepTest);
+                    Context.SaveChanges();
+                    Logger.Info($"Added {newId.Entity.Id}");
                 }
 
-                catch (Exception ex2)
+                catch (Exception ex)
                 {
-                    Logger.Error($"Rollback Exception Type '{ex2.GetType()}' for steptest '{entity.UserId}, {entity.TestDate}'", ex2);
+                    Logger.Error($"Commit error for adding step test for user '{entity.UserId}'", ex);
                 }
             }
         }
 
-        public IEnumerable<StepTest> All()
+        public IEnumerable<IStepTestEntity> All()
         {
-            var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest").ToList();
-            stepTests.ForEach(s => s.AcceptChanges());
-
+            var stepTests = Context.StepTests;
             Logger.Debug("Return all steptests");
-            return stepTests;
+            return stepTests.ToList();
         }
 
-        public StepTest FindSingle(int id)
+        public IStepTestEntity? FindSingle(int id)
         {
             Logger.Debug($"FindSingle({id})");
-            var stepTest = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE Id = @Id", param: new { Id = id }).FirstOrDefault();
-            if (stepTest != null)
-            {
-                stepTest.AcceptChanges();
-                return stepTest;
-            }
-
-            return StepTest.Empty;
+            var stepTest = Context.StepTests.SingleOrDefault(x => x.Id == id);
+            return stepTest;
         }
 
         public void Remove(int id)
         {
-            var transaction = Connection.BeginTransaction();
             try
             {
-                Connection.Execute("DELETE FROM StepTest WHERE Id = @Id", param: new { Id = id }, transaction: transaction);
-                transaction.Commit();
-                Logger.Info($"Removed {id}");
+                var stepTest = Context.StepTests.Single(m => m.Id == id);
+                Context.StepTests.Remove(stepTest);
+                Logger.Info($"Removed step test {id}");
             }
 
             catch (Exception ex)
             {
-                Logger.Error($"Commit error for removing steptest {id}", ex);
-                try
-                {
-                    transaction.Rollback();
-                }
-
-                catch (Exception ex2)
-                {
-                    Logger.Error($"Rollback Exception Type '{ex2.GetType()}' for steptest {id}", ex2);
-                }
+                Logger.Error($"Commit error for removing step test {id}", ex);
             }
         }
 
-        public void Remove(StepTest entity)
+        public void Remove(IStepTestEntity entity)
         {
             if (entity == null)
             {
@@ -103,49 +75,81 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             Remove(entity.Id);
         }
 
-        public void Update(StepTest entity)
+        public void Update(IStepTestEntity entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var transaction = Connection.BeginTransaction();
             try
             {
-                Connection.Execute("UPDATE StepTest SET UserId = @UserId, TestType = @TestType, EffortUnit = @EffortUnit, StepDuration = @StepDuration, LoadPreset = @LoadPreset, Increase = @Increase, Temperature = @Temperature, Weight = @Weight, TestDate = @TestDate WHERE Id = @Id", param: new { entity.Id, entity.UserId, entity.TestType, entity.EffortUnit, entity.StepDuration, entity.LoadPreset, entity.Increase, entity.Temperature, entity.Weight, entity.TestDate }, transaction: transaction);
-                entity.AcceptChanges();
-                transaction.Commit();
+                var stepTest = Context.StepTests.Single(m => m.Id == entity.Id);
+                if (stepTest.TestType != entity.TestType)
+                {
+                    stepTest.TestType = entity.TestType;
+                }
+
+                if (stepTest.EffortUnit != entity.EffortUnit)
+                {
+                    stepTest.EffortUnit = entity.EffortUnit;
+                }
+
+                if (stepTest.StepDuration != entity.StepDuration)
+                {
+                    stepTest.StepDuration = entity.StepDuration;
+                }
+
+                if (stepTest.LoadPreset != entity.LoadPreset)
+                {
+                    stepTest.LoadPreset = entity.LoadPreset;
+                }
+
+                if (stepTest.Increase != entity.Increase)
+                {
+                    stepTest.Increase = entity.Increase;
+                }
+
+                if (stepTest.Temperature != entity.Temperature)
+                {
+                    stepTest.Temperature = entity.Temperature;
+                }
+
+                if (stepTest.Weight != entity.Weight)
+                {
+                    stepTest.Weight = entity.Weight;
+                }
+
+                if (stepTest.TestDate != entity.TestDate)
+                {
+                    stepTest.TestDate = entity.TestDate;
+                }
+
+                Context.SaveChanges();
+
+
                 Logger.Info($"Updated {entity.Id}");
             }
 
             catch (Exception ex)
             {
-                Logger.Error($"Commit error for updating steptest {entity.Id}", ex);
-                try
-                {
-                    transaction.Rollback();
-                }
-
-                catch (Exception ex2)
-                {
-                    Logger.Error($"Rollback Exception Type '{ex2.GetType()}' for steptest {entity.Id}", ex2);
-                }
+                Logger.Error($"Commit error for updating step test {entity.Id}", ex);
             }
         }
 
-        public IEnumerable<StepTest> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>
+        public IEnumerable<IStepTestEntity> FindByParentId(IUserEntity parent)
         {
-            Logger.Debug($"{nameof(FindByParentId)} {parent.Id}");
-            var stepTests = Connection.Query<StepTest>("SELECT Id, UserId, TestType, EffortUnit, StepDuration, LoadPreset, Increase, Temperature, Weight, TestDate FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id }).ToList();
-            stepTests.ForEach(s => { s.AcceptChanges(); });
-            return stepTests;
+            Logger.Debug($"FindByParentId {parent.Id}");
+            var stepTests = Context.StepTests.Where(m => m.UserId == parent.Id);
+
+            return stepTests.ToList();
         }
 
-        public int GetCountByParentId<TParentEntity>(TParentEntity parent, bool onlyInCalculation) where TParentEntity : BaseEntity<TParentEntity>
+        public int GetCountByParentId(IUserEntity parent, bool onlyInCalculation)
         {
-            Logger.Debug($"{nameof(GetCountByParentId)} {parent.Id}");
-            var result = Connection.ExecuteScalar<int>("SELECT COUNT(Id) FROM StepTest WHERE UserId = @ParentId", param: new { ParentId = parent.Id });
+            var result = Context.StepTests.Where(m => m.UserId == parent.Id).Count();
+            Logger.Debug($"{nameof(GetCountByParentId)} {parent.Id} = {result}");
+
             return result;
         }
     }

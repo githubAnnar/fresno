@@ -1,4 +1,5 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
 using log4net;
@@ -28,7 +29,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public MeasurementViewModel(Measurement measurement, StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
+        public MeasurementViewModel(IMeasurementEntity measurement, StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
         {
             Source = measurement ?? throw new ArgumentNullException(nameof(measurement));
 
@@ -51,7 +52,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
-        internal Measurement Source { get; private set; }
+        internal IMeasurementEntity Source { get; private set; }
 
         public int MeasurementId => Source.Id;
 
@@ -299,7 +300,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #endregion
 
-        public static void Create(StepTestViewModel parentStepTest, List<Measurement> measurements, MainWindowViewModel rootViewModel)
+        public static void Create(StepTestViewModel parentStepTest, List<IMeasurementEntity> measurements, MainWindowViewModel rootViewModel)
         {
             var newSequence = measurements.Count == 0 ? 1 : measurements.Max(m => m.Sequence) + 1;
             var newLoad = measurements.Count == 0 ? parentStepTest.Source.LoadPreset : measurements.Last().Load + parentStepTest.Source.Increase;

@@ -1,17 +1,17 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Interface;
 
 namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IUserManager : IManagerBase, IDisposable
     {
-        List<User> GetAllUsers();
+        List<IUserEntity> GetAllUsers();
 
-        User GetUserById(int id);
+        IUserEntity GetUserById(int id);
 
-        User GetUserByStepTest(StepTest stepTest);
+        IUserEntity GetUserByStepTest(IStepTestEntity stepTest);
 
-        void UpsertUser(User entity);
+        void UpsertUser(IUserEntity entity);
 
-        void RemoveUser(User entity);
+        void RemoveUser(IUserEntity entity);
     }
 }

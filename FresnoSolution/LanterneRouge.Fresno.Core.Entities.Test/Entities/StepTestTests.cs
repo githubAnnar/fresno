@@ -1,6 +1,6 @@
 ﻿using Bogus;
 
-namespace LanterneRouge.Fresno.Core.Entities
+namespace LanterneRouge.Fresno.Core.Entity
 {
     public class StepTestTests
     {
@@ -33,7 +33,6 @@ namespace LanterneRouge.Fresno.Core.Entities
             Assert.Equal(_stepTest.EffortUnit, testStepTest.EffortUnit);
             Assert.Equal(_stepTest.Increase, testStepTest.Increase);
             Assert.Equal(_stepTest.LoadPreset, testStepTest.LoadPreset);
-            Assert.Equal(EntityState.New,testStepTest.State);
             Assert.Equal(_stepTest.StepDuration, testStepTest.StepDuration);
             Assert.Equal(_stepTest.Temperature, testStepTest.Temperature);
             Assert.Equal(_stepTest.TestDate, testStepTest.TestDate);

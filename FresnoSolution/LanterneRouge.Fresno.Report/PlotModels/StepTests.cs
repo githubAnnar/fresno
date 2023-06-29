@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.Core.Entities;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Services;
 using LanterneRouge.Fresno.Services.Interfaces;
 using OxyPlot;
@@ -34,7 +34,7 @@ namespace LanterneRouge.Fresno.Report.PlotModels
             return _dataManager;
         }
 
-        public static PlotModel StepTestPlotModel(IEnumerable<StepTest> stepTests)
+        public static PlotModel StepTestPlotModel(IEnumerable<IStepTestEntity> stepTests)
         {
             if (stepTests is null)
             {

@@ -1,111 +1,80 @@
-﻿using Dapper;
-using LanterneRouge.Fresno.Core.Contracts;
-using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Contracts;
+using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 using log4net;
 using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
 {
-    public class UserRepository : RepositoryBase, IRepository<User>
+    public class UserRepository : RepositoryBase, IRepository<IUserEntity, IUserEntity>
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UserRepository));
 
         public UserRepository(IDbConnection connection) : base(connection)
         { }
 
-        public void Add(User entity)
+        public void Add(IUserEntity entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            var transaction = Connection.BeginTransaction();
-            try
-            {
-                var newId = Connection.ExecuteScalar<int>("INSERT INTO User(FirstName, LastName, Email, Street, PostCode, PostCity, BirthDate, Height, Sex, MaxHr) VALUES(@FirstName, @LastName, @Email, @Street, @PostCode, @PostCity, @BirthDate, @Height, @Sex, @MaxHr); SELECT last_insert_rowid()", param: new { entity.FirstName, entity.LastName, entity.Email, entity.Street, entity.PostCode, entity.PostCity, entity.BirthDate, entity.Height, entity.Sex, entity.MaxHr }, transaction: transaction);
-                transaction.Commit();
-                var t = typeof(BaseEntity<User>);
-                t.GetProperty("Id").SetValue(entity, newId, null);
-                entity.AcceptChanges();
-                Logger.Info($"Added user with ID: {entity.Id}");
-            }
 
-            catch (Exception ex)
+            if (entity is User user)
             {
-                Logger.Error($"Commit error for adding user '{entity.FirstName}, {entity.LastName}'", ex);
                 try
                 {
-                    transaction.Rollback();
+                    var newId = Context.Users.Add(user);
+                    Context.SaveChanges();
+                    Logger.Info($"Added {newId.Entity.Id}");
                 }
 
-                catch (Exception ex2)
+                catch (Exception ex)
                 {
-                    Logger.Error($"Rollback Exception Type '{ex2.GetType()}' for user '{entity.FirstName}, {entity.LastName}'", ex2);
+                    Logger.Error($"Commit error for adding user '{entity.LastName}, {entity.FirstName}'", ex);
                 }
             }
         }
 
-        public IEnumerable<User> All()
+        public IEnumerable<IUserEntity> All()
         {
-            var allUsers = Connection.Query<User>("SELECT * FROM User").ToList();
-            allUsers.ForEach(u =>
-            {
-                u.IsLoaded = true;
-                u.AcceptChanges();
-            });
+            var users = Context.Users;
 
-            Logger.Debug("Returning all users");
-            return allUsers;
+            Logger.Debug("Return all users");
+            return users.ToList();
         }
 
-        public User FindSingle(int id)
+        public IUserEntity? FindSingle(int id)
         {
             Logger.Debug($"FindSingle({id})");
-            var user = Connection.Query<User>("SELECT * FROM User WHERE Id = @Id", param: new { Id = id }).FirstOrDefault();
-            if (user != null)
-            {
-                user.IsLoaded = true;
-                user.AcceptChanges();
-                return user;
-            }
-
-            return User.Empty;
+            var user = Context.Users.SingleOrDefault(x => x.Id == id);
+            return user;
         }
 
-        public IEnumerable<User> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>
+        public IEnumerable<IUserEntity> FindByParentId(IUserEntity user)
         {
             Logger.Debug($"{nameof(FindByParentId)} is NULL");
-            return new List<User>();
+            return new List<IUserEntity>();
         }
 
-        public int GetCountByParentId<TParentEntity>(TParentEntity parent, bool onlyInCalculation) where TParentEntity : BaseEntity<TParentEntity> => 0;
+        public int GetCountByParentId(IUserEntity parent, bool onlyInCalculation) => 0;
 
         public void Remove(int id)
         {
-            var transaction = Connection.BeginTransaction();
             try
             {
-                Connection.Execute("DELETE FROM User WHERE Id = @Id", param: new { Id = id }, transaction: transaction);
-                transaction.Commit();
+                var user = Context.Users.Single(m => m.Id == id);
+                Context.Users.Remove(user);
                 Logger.Info($"Removed user {id}");
             }
 
             catch (Exception ex)
             {
                 Logger.Error($"Commit error for removing user {id}", ex);
-                try
-                {
-                    transaction.Rollback();
-                }
-
-                catch (Exception ex2)
-                {
-                    Logger.Error($"Rollback Exception Type '{ex2.GetType()}' for user {id}", ex2);
-                }
             }
         }
 
-        public void Remove(User entity)
+        public void Remove(IUserEntity entity)
         {
             if (entity == null)
             {
@@ -115,34 +84,75 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             Remove(entity.Id);
         }
 
-        public void Update(User entity)
+        public void Update(IUserEntity entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var transaction = Connection.BeginTransaction();
             try
             {
-                Connection.Execute("UPDATE User SET FirstName = @FirstName, LastName = @LastName, Email = @Email, Street = @Street, PostCode = @PostCode, PostCity = @PostCity, BirthDate = @BirthDate, Height = @Height, Sex = @Sex, MaxHr = @MaxHr WHERE Id = @Id", param: new { entity.Id, entity.FirstName, entity.LastName, entity.Email, entity.Street, entity.PostCode, entity.PostCity, entity.BirthDate, entity.Height, entity.Sex, entity.MaxHr }, transaction: transaction);
-                transaction.Commit();
-                entity.AcceptChanges();
+                var user = Context.Users.Single(m => m.Id == entity.Id);
+                if (user.FirstName != entity.FirstName)
+                {
+                    user.FirstName = entity.FirstName;
+                }
+
+                if (user.LastName != entity.LastName)
+                {
+                    user.LastName = entity.LastName;
+                }
+
+                if (user.Email != entity.Email)
+                {
+                    user.Email = entity.Email;
+                }
+
+                if (user.Street != entity.Street)
+                {
+                    user.Street = entity.Street;
+                }
+
+                if (user.PostCode != entity.PostCode)
+                {
+                    user.PostCode = entity.PostCode;
+                }
+
+                if (user.PostCity != entity.PostCity)
+                {
+                    user.PostCity = entity.PostCity;
+                }
+
+                if (user.BirthDate != entity.BirthDate)
+                {
+                    user.BirthDate = entity.BirthDate;
+                }
+
+                if (user.Height != entity.Height)
+                {
+                    user.Height = entity.Height;
+                }
+
+                if (user.Sex != entity.Sex)
+                {
+                    user.Sex = entity.Sex;
+                }
+
+                if (user.MaxHr != entity.MaxHr)
+                {
+                    user.MaxHr = entity.MaxHr;
+                }
+
+                Context.SaveChanges();
+
+
                 Logger.Info($"Updated {entity.Id}");
             }
 
             catch (Exception ex)
             {
                 Logger.Error($"Commit error for updating user {entity.Id}", ex);
-                try
-                {
-                    transaction.Rollback();
-                }
-
-                catch (Exception ex2)
-                {
-                    Logger.Error($"Rollback Exception Type '{ex2.GetType()}' for user {entity.Id}", ex2);
-                }
             }
         }
     }

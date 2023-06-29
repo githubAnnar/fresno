@@ -1,19 +1,19 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Interface;
 
 namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IStepTestManager : IManagerBase, IDisposable
     {
-        List<StepTest> GetAllStepTests();
+        List<IStepTestEntity> GetAllStepTests();
 
-        List<StepTest> GetStepTestsByUser(User parent);
+        List<IStepTestEntity> GetStepTestsByUser(IUserEntity parent);
 
-        int StepTestCountByUser(User parent, bool onlyInCalculation);
+        int StepTestCountByUser(IUserEntity parent, bool onlyInCalculation);
 
-        StepTest GetStepTestById(int id);
+        IStepTestEntity GetStepTestById(int id);
 
-        void UpsertStepTest(StepTest entity);
+        void UpsertStepTest(IStepTestEntity entity);
 
-        void RemoveStepTest(StepTest entity);
+        void RemoveStepTest(IStepTestEntity entity);
     }
 }

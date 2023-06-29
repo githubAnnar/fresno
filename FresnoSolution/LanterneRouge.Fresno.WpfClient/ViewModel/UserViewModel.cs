@@ -1,4 +1,5 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
 using log4net;
@@ -19,7 +20,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UserViewModel));
         private static readonly string _name = typeof(UserViewModel).Name;
         private bool _isSelected = false;
-        private User _source;
+        private IUserEntity _source;
         private ICommand _saveCommand = null;
         private ICommand _editSelectedCommand;
         private ICommand _showAllStepTestsCommand;
@@ -29,7 +30,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public UserViewModel(User user, MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
+        public UserViewModel(IUserEntity user, MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             Source = user ?? throw new ArgumentNullException(nameof(user));
 
@@ -52,7 +53,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
-        internal User Source
+        internal IUserEntity Source
         {
             get => _source.IsLoaded ? _source : DataManager.GetUser(_source.Id);
             private set => _source = value;

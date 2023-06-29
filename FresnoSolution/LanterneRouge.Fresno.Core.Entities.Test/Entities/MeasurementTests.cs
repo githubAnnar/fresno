@@ -1,6 +1,6 @@
 ﻿using Bogus;
 
-namespace LanterneRouge.Fresno.Core.Entities
+namespace LanterneRouge.Fresno.Core.Entity
 {
     public class MeasurementTests
     {
@@ -33,7 +33,6 @@ namespace LanterneRouge.Fresno.Core.Entities
             Assert.Equal(_measurement.Load, testMeasurement.Load);
             Assert.Equal(_measurement.StepTestId, testMeasurement.StepTestId);
             Assert.Equal(_measurement.Sequence, testMeasurement.Sequence);
-            Assert.Equal(EntityState.New, testMeasurement.State);
         }
     }
 }
