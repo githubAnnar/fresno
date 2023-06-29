@@ -13,5 +13,7 @@ namespace LanterneRouge.Fresno.Repository.Contracts
         void UpsertUser(IUserEntity entity);
 
         void RemoveUser(IUserEntity entity);
+
+        bool IsChanged(IUserEntity entity);
     }
 }

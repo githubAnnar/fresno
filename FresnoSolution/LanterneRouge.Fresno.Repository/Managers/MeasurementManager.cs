@@ -60,6 +60,8 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public void RemoveMeasurement(IMeasurementEntity entity) => MeasurementRepository.Remove(entity);
 
+        public bool IsChanged(IMeasurementEntity entity)=>MeasurementRepository.IsChanged(entity);
+
         #endregion
 
         #region IDisposable Support

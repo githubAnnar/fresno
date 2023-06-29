@@ -60,6 +60,8 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public void RemoveStepTest(IStepTestEntity entity) => StepTestRepository.Remove(entity);
 
+        public bool IsChanged(IStepTestEntity entity) => StepTestRepository.IsChanged(entity);
+
         #endregion
 
         #region IDisposable Support

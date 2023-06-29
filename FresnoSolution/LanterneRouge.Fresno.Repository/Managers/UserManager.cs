@@ -55,6 +55,8 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public void RemoveUser(IUserEntity entity) => UserRepository.Remove(entity);
 
+        public bool IsChanged(IUserEntity entity)=>UserRepository.IsChanged(entity);
+
         #endregion
 
         #region IDisposable Support

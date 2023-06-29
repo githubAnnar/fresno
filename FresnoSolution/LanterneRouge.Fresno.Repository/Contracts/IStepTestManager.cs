@@ -15,5 +15,7 @@ namespace LanterneRouge.Fresno.Repository.Contracts
         void UpsertStepTest(IStepTestEntity entity);
 
         void RemoveStepTest(IStepTestEntity entity);
+
+        bool IsChanged(IStepTestEntity entity);
     }
 }

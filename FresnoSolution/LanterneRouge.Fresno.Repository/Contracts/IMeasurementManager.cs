@@ -15,5 +15,7 @@ namespace LanterneRouge.Fresno.Repository.Contracts
         void UpsertMeasurement(IMeasurementEntity entity);
 
         void RemoveMeasurement(IMeasurementEntity entity);
+
+        bool IsChanged(IMeasurementEntity entity);
     }
 }

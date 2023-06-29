@@ -94,6 +94,12 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public void RemoveUser(IUserEntity entity) => _userManager.RemoveUser(entity);
 
+        public bool IsChanged(IUserEntity entity) => _userManager.IsChanged(entity);
+
+        public bool IsChanged(IStepTestEntity entity) => _stepTestManager.IsChanged(entity);
+
+        public bool IsChanged(IMeasurementEntity entity) => _measurementManager.IsChanged(entity);
+
         public IEnumerable<IStepTestEntity> GetAllStepTests() => _stepTestManager.GetAllStepTests();
 
         public IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity parent) => _stepTestManager.GetStepTestsByUser(parent);

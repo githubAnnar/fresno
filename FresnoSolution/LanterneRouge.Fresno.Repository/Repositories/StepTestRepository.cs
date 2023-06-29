@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using log4net;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
@@ -152,5 +153,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             return result;
         }
+
+        public bool IsChanged(IStepTestEntity entity) => entity is StepTest stepTestEntity && Context.Entry(stepTestEntity).State != EntityState.Unchanged;
     }
 }

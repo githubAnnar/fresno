@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using log4net;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Text;
 
@@ -124,7 +125,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             }
         }
 
-        public IEnumerable<IMeasurementEntity> FindByParentId(IStepTestEntity parent)
+                public IEnumerable<IMeasurementEntity> FindByParentId(IStepTestEntity parent)
         {
             Logger.Debug($"FindByParentId {parent.Id}");
             var measurements = Context.Measurements.Where(m => m.StepTestId == parent.Id);
@@ -139,5 +140,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             return result;
         }
+
+        public bool IsChanged(IMeasurementEntity entity) => entity is Measurement measurementsEntity && Context.Entry(measurementsEntity).State != EntityState.Unchanged;
     }
 }

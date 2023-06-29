@@ -152,7 +152,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (Source.IsChanged)
+            if (DataManager.IsChanged(Source))
             {
                 DataManager.SaveMeasurement(Source);
                 if (Parent is StepTestViewModel stvm)
@@ -179,7 +179,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => IsValid && Source.IsChanged;
+        private bool CanSave => IsValid && DataManager.IsChanged(Source);
 
         #endregion
 

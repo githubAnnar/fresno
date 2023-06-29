@@ -16,6 +16,12 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
         void RemoveUser(IUserEntity entity);
 
+        bool IsChanged(IUserEntity entity);
+
+        bool IsChanged(IStepTestEntity entity);
+
+        bool IsChanged(IMeasurementEntity entity);
+
         IEnumerable<IStepTestEntity> GetAllStepTests();
 
         IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity entity);

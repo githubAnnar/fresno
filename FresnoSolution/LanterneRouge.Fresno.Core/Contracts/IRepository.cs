@@ -17,5 +17,7 @@
         void Remove(TEntity entity);
 
         void Update(TEntity entity);
+
+        bool IsChanged(TEntity entity);
     }
 }

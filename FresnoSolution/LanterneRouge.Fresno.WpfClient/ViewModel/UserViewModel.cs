@@ -220,7 +220,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (Source.IsChanged)
+            if (DataManager.IsChanged(Source))
             {
                 DataManager.SaveUser(Source);
                 SaveToAllUsers();
@@ -262,7 +262,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => Source.IsValid && Source.IsChanged;
+        private bool CanSave => Source.IsValid && DataManager.IsChanged(Source);
 
         #endregion
 

@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using log4net;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
@@ -155,5 +156,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
                 Logger.Error($"Commit error for updating user {entity.Id}", ex);
             }
         }
+
+        public bool IsChanged(IUserEntity entity) => entity is User userEntity && Context.Entry(userEntity).State != EntityState.Unchanged;
     }
 }
