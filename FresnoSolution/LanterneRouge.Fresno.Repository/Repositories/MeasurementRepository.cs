@@ -3,7 +3,6 @@ using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using log4net;
 using System.Data;
-using System.Text;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
 {

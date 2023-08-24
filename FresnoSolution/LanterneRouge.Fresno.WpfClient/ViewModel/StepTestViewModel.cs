@@ -529,18 +529,29 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public static void Create(UserViewModel parentUser, MainWindowViewModel rootViewModel)
         {
-            var newStepTest = StepTest.Create(parentUser.UserId, "Bike", "W", TimeSpan.FromMinutes(4d).Ticks, 0, 0, 0, 0, DateTime.Now);
-            newStepTest.AcceptChanges();
+            var newStepTest = new StepTest
+            {
+                UserId = parentUser.UserId,
+                TestType = "Bike",
+                EffortUnit = "W",
+                StepDuration = TimeSpan.FromMinutes(4d).Ticks,
+                Increase = 0,
+                LoadPreset = 0,
+                Weight = 0,
+                Temperature = 0,
+                TestDate = DateTime.Now
+            };
+        newStepTest.AcceptChanges();
             Logger.Info("Created new empty step test entity");
             var workspace = new StepTestViewModel(newStepTest, parentUser, rootViewModel);
-            workspace.Show();
+        workspace.Show();
             Logger.Debug($"Created new StepTest on {workspace.DisplayName}");
         }
 
-        public bool Equals(StepTestViewModel other) => Equals((object)other);
+    public bool Equals(StepTestViewModel other) => Equals((object)other);
 
-        public override bool Equals(object obj) => obj is StepTestViewModel viewModel && Source.Equals(viewModel.Source);
+    public override bool Equals(object obj) => obj is StepTestViewModel viewModel && Source.Equals(viewModel.Source);
 
-        public override int GetHashCode() => Source.GetHashCode();
-    }
+    public override int GetHashCode() => Source.GetHashCode();
+}
 }

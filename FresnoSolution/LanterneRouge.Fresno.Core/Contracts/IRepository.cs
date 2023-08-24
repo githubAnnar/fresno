@@ -6,7 +6,7 @@
 
         IEnumerable<TEntity> All();
 
-        TEntity FindSingle(int id);
+        TEntity? FindSingle(int id);
 
         IEnumerable<TEntity> FindByParentId(TParentEntity parent);
 
