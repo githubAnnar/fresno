@@ -4,7 +4,7 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IUserManager : IManagerBase, IDisposable
     {
-        List<IUserEntity> GetAllUsers();
+        IList<IUserEntity> GetAllUsers();
 
         IUserEntity GetUserById(int id);
 

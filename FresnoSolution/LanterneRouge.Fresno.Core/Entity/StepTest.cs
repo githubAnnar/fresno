@@ -27,7 +27,7 @@ namespace LanterneRouge.Fresno.Core.Entity
 
         public required DateTime TestDate { get; set; }
 
-        public User? ParentUser { get; set; }
+        public User? User { get; set; }
 
         public ICollection<Measurement>? Measurements { get; set; }
     }

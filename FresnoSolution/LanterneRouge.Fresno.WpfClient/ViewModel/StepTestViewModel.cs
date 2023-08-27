@@ -531,6 +531,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             var newStepTest = new StepTest
             {
+                Id = 0,
                 UserId = parentUser.UserId,
                 TestType = "Bike",
                 EffortUnit = "W",
@@ -541,17 +542,17 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 Temperature = 0,
                 TestDate = DateTime.Now
             };
-        newStepTest.AcceptChanges();
+            newStepTest.AcceptChanges();
             Logger.Info("Created new empty step test entity");
             var workspace = new StepTestViewModel(newStepTest, parentUser, rootViewModel);
-        workspace.Show();
+            workspace.Show();
             Logger.Debug($"Created new StepTest on {workspace.DisplayName}");
         }
 
-    public bool Equals(StepTestViewModel other) => Equals((object)other);
+        public bool Equals(StepTestViewModel other) => Equals((object)other);
 
-    public override bool Equals(object obj) => obj is StepTestViewModel viewModel && Source.Equals(viewModel.Source);
+        public override bool Equals(object obj) => obj is StepTestViewModel viewModel && Source.Equals(viewModel.Source);
 
-    public override int GetHashCode() => Source.GetHashCode();
-}
+        public override int GetHashCode() => Source.GetHashCode();
+    }
 }

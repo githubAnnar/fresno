@@ -25,7 +25,7 @@ namespace LanterneRouge.Fresno.Core.Configuration
                 .IsRequired();
 
             entity.HasMany(e => e.StepTests)
-                .WithOne(e => e.ParentUser)
+                .WithOne(e => e.User)
                 .HasForeignKey(e => e.UserId);
         }
     }

@@ -4,9 +4,9 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IStepTestManager : IManagerBase, IDisposable
     {
-        List<IStepTestEntity> GetAllStepTests();
+        IList<IStepTestEntity> GetAllStepTests();
 
-        List<IStepTestEntity> GetStepTestsByUser(IUserEntity parent);
+        IList<IStepTestEntity> GetStepTestsByUser(IUserEntity parent);
 
         int StepTestCountByUser(IUserEntity parent, bool onlyInCalculation);
 

@@ -38,7 +38,7 @@ namespace LanterneRouge.Fresno.Core.Configuration
                 .IsRequired();
 
             entity.HasMany(e => e.Measurements)
-                .WithOne(e => e.ParentStepTest)
+                .WithOne(e => e.StepTest)
                 .HasForeignKey(e => e.StepTestId);
         }
     }

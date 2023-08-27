@@ -21,6 +21,6 @@ namespace LanterneRouge.Fresno.Core.Entity
 
         public required bool InCalculation { get; set; }
 
-        public StepTest? ParentStepTest { get; set; }
+        public StepTest? StepTest { get; set; }
     }
 }
