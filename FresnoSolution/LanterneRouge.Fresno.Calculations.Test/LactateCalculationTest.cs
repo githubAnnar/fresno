@@ -14,15 +14,15 @@ namespace LanterneRouge.Fresno.Calculations
         {
             TestMeasurementData = new List<IMeasurementEntity>
             {
-                new Measurement {Sequence = 1,Load = 120f, HeartRate = 104, Lactate = 1.4f, StepTestId = 1, InCalculation = true},
-                new Measurement {Sequence = 2,Load = 140f, HeartRate = 110, Lactate = 1.7f, StepTestId = 1, InCalculation = true},
-                new Measurement {Sequence = 3,Load = 160f, HeartRate = 113, Lactate = 1.6f, StepTestId = 1, InCalculation = true},
-                new Measurement {Sequence = 4,Load = 180f, HeartRate = 122, Lactate = 1.8f, StepTestId = 1, InCalculation = true},
-                new Measurement {Sequence = 5,Load = 200f, HeartRate = 131, Lactate = 2.1f, StepTestId = 1, InCalculation = true},
-                new Measurement {Sequence = 6,Load = 220f, HeartRate = 140, Lactate = 2.7f, StepTestId = 1, InCalculation = true},
-                new Measurement {Sequence = 7,Load = 240f, HeartRate = 148, Lactate = 3.3f, StepTestId = 1, InCalculation = true},
-                new Measurement {Sequence = 8,Load = 260f, HeartRate = 157, Lactate = 5.0f, StepTestId = 1, InCalculation = true},
-                new Measurement {Sequence = 9,Load = 280f, HeartRate = 162, Lactate = 8.7f, StepTestId = 1, InCalculation = true }
+                new Measurement {Id = 1,Sequence = 1,Load = 120f, HeartRate = 104, Lactate = 1.4f, StepTestId = 1, InCalculation = true},
+                new Measurement {Id = 2,Sequence = 2,Load = 140f, HeartRate = 110, Lactate = 1.7f, StepTestId = 1, InCalculation = true},
+                new Measurement {Id = 3, Sequence = 3,Load = 160f, HeartRate = 113, Lactate = 1.6f, StepTestId = 1, InCalculation = true},
+                new Measurement {Id = 4, Sequence = 4,Load = 180f, HeartRate = 122, Lactate = 1.8f, StepTestId = 1, InCalculation = true},
+                new Measurement {Id = 5, Sequence = 5,Load = 200f, HeartRate = 131, Lactate = 2.1f, StepTestId = 1, InCalculation = true},
+                new Measurement {Id = 6, Sequence = 6,Load = 220f, HeartRate = 140, Lactate = 2.7f, StepTestId = 1, InCalculation = true},
+                new Measurement {Id = 7, Sequence = 7,Load = 240f, HeartRate = 148, Lactate = 3.3f, StepTestId = 1, InCalculation = true},
+                new Measurement {Id = 8, Sequence = 8,Load = 260f, HeartRate = 157, Lactate = 5.0f, StepTestId = 1, InCalculation = true},
+                new Measurement {Id = 9, Sequence = 9,Load = 280f, HeartRate = 162, Lactate = 8.7f, StepTestId = 1, InCalculation = true }
             };
         }
 
