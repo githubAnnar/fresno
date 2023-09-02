@@ -45,7 +45,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return users.ToList();
         }
 
-        public IUserEntity? FindSingle(int id)
+        public IUserEntity? FindSingle(Guid id)
         {
             Logger.Debug($"FindSingle({id})");
             var user = Context.Users.SingleOrDefault(x => x.Id == id);
@@ -60,7 +60,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
         public int GetCountByParentId(IUserEntity parent, bool onlyInCalculation) => 0;
 
-        public void Remove(int id)
+        public void Remove(Guid id)
         {
             try
             {
@@ -94,59 +94,8 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             try
             {
-                var user = Context.Users.Single(m => m.Id == entity.Id);
-                if (user.FirstName != entity.FirstName)
-                {
-                    user.FirstName = entity.FirstName;
-                }
-
-                if (user.LastName != entity.LastName)
-                {
-                    user.LastName = entity.LastName;
-                }
-
-                if (user.Email != entity.Email)
-                {
-                    user.Email = entity.Email;
-                }
-
-                if (user.Street != entity.Street)
-                {
-                    user.Street = entity.Street;
-                }
-
-                if (user.PostCode != entity.PostCode)
-                {
-                    user.PostCode = entity.PostCode;
-                }
-
-                if (user.PostCity != entity.PostCity)
-                {
-                    user.PostCity = entity.PostCity;
-                }
-
-                if (user.BirthDate != entity.BirthDate)
-                {
-                    user.BirthDate = entity.BirthDate;
-                }
-
-                if (user.Height != entity.Height)
-                {
-                    user.Height = entity.Height;
-                }
-
-                if (user.Sex != entity.Sex)
-                {
-                    user.Sex = entity.Sex;
-                }
-
-                if (user.MaxHr != entity.MaxHr)
-                {
-                    user.MaxHr = entity.MaxHr;
-                }
-
+                Context.Users.Update(entity);
                 Context.SaveChanges();
-
 
                 Logger.Info($"Updated {entity.Id}");
             }

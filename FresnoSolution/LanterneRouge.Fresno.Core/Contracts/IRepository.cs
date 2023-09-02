@@ -6,13 +6,13 @@
 
         IEnumerable<TEntity> All();
 
-        TEntity FindSingle(int id);
+        TEntity? FindSingle(Guid id);
 
         IEnumerable<TEntity> FindByParentId(TParentEntity parent);
 
         int GetCountByParentId(TParentEntity parent, bool onlyInCalculation);
 
-        void Remove(int id);
+        void Remove(Guid id);
 
         void Remove(TEntity entity);
 

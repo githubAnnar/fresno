@@ -15,7 +15,7 @@ namespace LanterneRouge.Fresno.Core.Configuration
 
             entity.Property(t => t.Id)
                 .IsRequired()
-                .ValueGeneratedOnAdd();
+                .ValueGeneratedNever();
 
             entity.Property(e => e.UserId)
                 .IsRequired();

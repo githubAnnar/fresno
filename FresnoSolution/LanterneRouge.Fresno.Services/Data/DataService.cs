@@ -86,7 +86,7 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public IEnumerable<IUserEntity> GetAllUsers() => _userManager.GetAllUsers();
 
-        public IUserEntity GetUser(int id) => _userManager.GetUserById(id);
+        public IUserEntity GetUser(Guid id) => _userManager.GetUserById(id);
 
         public IUserEntity GetUserByStepTest(IStepTestEntity stepTest) => _userManager.GetUserByStepTest(stepTest);
 

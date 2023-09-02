@@ -43,12 +43,13 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public int MeasurementsCountByStepTest(IStepTestEntity parent, bool onlyInCalculation) => MeasurementRepository.GetCountByParentId(parent, onlyInCalculation);
 
-        public IMeasurementEntity GetMeasurementById(int id) => MeasurementRepository.FindSingle(id);
+        public IMeasurementEntity GetMeasurementById(Guid id) => MeasurementRepository.FindSingle(id);
 
         public void UpsertMeasurement(IMeasurementEntity entity)
         {
-            if (entity.Id == 0)
+            if (entity.Id == Guid.Empty)
             {
+                entity.Id = Guid.NewGuid();
                 MeasurementRepository.Add(entity);
             }
 

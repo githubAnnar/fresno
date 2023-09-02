@@ -23,7 +23,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return measurements.ToList();
         }
 
-        public IMeasurementEntity? FindSingle(int id)
+        public IMeasurementEntity? FindSingle(Guid id)
         {
             Logger.Debug($"FindSingle({id})");
             var measurement = Context.Measurements.SingleOrDefault(x => x.Id == id);
@@ -62,35 +62,8 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             try
             {
-                var measurement = Context.Measurements.Single(m => m.Id == entity.Id);
-                if (measurement.Sequence != entity.Sequence)
-                {
-                    measurement.Sequence = entity.Sequence;
-                }
-
-                if (measurement.InCalculation != entity.InCalculation)
-                {
-                    measurement.InCalculation = entity.InCalculation;
-                }
-
-                if (measurement.Lactate != entity.Lactate)
-                {
-                    measurement.Lactate = entity.Lactate;
-                }
-
-                if (measurement.HeartRate != entity.HeartRate)
-                {
-                    measurement.HeartRate = entity.HeartRate;
-                }
-
-                if (measurement.Load != entity.Load)
-                {
-                    measurement.Load = entity.Load;
-                }
-
+                Context.Update(entity);
                 Context.SaveChanges();
-
-
                 Logger.Info($"Updated {entity.Id}");
             }
 
@@ -110,7 +83,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             Remove(entity.Id);
         }
 
-        public void Remove(int id)
+        public void Remove(Guid id)
         {
             try
             {
@@ -125,7 +98,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             }
         }
 
-                public IEnumerable<IMeasurementEntity> FindByParentId(IStepTestEntity parent)
+        public IEnumerable<IMeasurementEntity> FindByParentId(IStepTestEntity parent)
         {
             Logger.Debug($"FindByParentId {parent.Id}");
             var measurements = Context.Measurements.Where(m => m.StepTestId == parent.Id);

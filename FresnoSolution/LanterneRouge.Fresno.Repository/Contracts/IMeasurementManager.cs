@@ -10,7 +10,7 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 
         int MeasurementsCountByStepTest(IStepTestEntity parent, bool onlyInCalculation);
 
-        IMeasurementEntity GetMeasurementById(int id);
+        IMeasurementEntity GetMeasurementById(Guid id);
 
         void UpsertMeasurement(IMeasurementEntity entity);
 

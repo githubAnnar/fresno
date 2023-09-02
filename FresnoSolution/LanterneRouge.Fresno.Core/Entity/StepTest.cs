@@ -7,9 +7,9 @@ namespace LanterneRouge.Fresno.Core.Entity
     [EntityTypeConfiguration(typeof(StepTestConfig))]
     public class StepTest : IStepTestEntity
     {
-        public required int Id { get; set; }
+        public required Guid Id { get; set; }
 
-        public required int UserId { get; set; }
+        public required Guid UserId { get; set; }
 
         public required string TestType { get; set; }
 

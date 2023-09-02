@@ -8,7 +8,7 @@ namespace LanterneRouge.Fresno.Services.Interfaces
     {
         IEnumerable<IUserEntity> GetAllUsers();
 
-        IUserEntity GetUser(int id);
+        IUserEntity GetUser(Guid id);
 
         IUserEntity GetUserByStepTest(IStepTestEntity stepTest);
 

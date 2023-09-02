@@ -44,14 +44,14 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return stepTests.ToList();
         }
 
-        public IStepTestEntity? FindSingle(int id)
+        public IStepTestEntity? FindSingle(Guid id)
         {
             Logger.Debug($"FindSingle({id})");
             var stepTest = Context.StepTests.SingleOrDefault(x => x.Id == id);
             return stepTest;
         }
 
-        public void Remove(int id)
+        public void Remove(Guid id)
         {
             try
             {
@@ -85,49 +85,8 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             try
             {
-                var stepTest = Context.StepTests.Single(m => m.Id == entity.Id);
-                if (stepTest.TestType != entity.TestType)
-                {
-                    stepTest.TestType = entity.TestType;
-                }
-
-                if (stepTest.EffortUnit != entity.EffortUnit)
-                {
-                    stepTest.EffortUnit = entity.EffortUnit;
-                }
-
-                if (stepTest.StepDuration != entity.StepDuration)
-                {
-                    stepTest.StepDuration = entity.StepDuration;
-                }
-
-                if (stepTest.LoadPreset != entity.LoadPreset)
-                {
-                    stepTest.LoadPreset = entity.LoadPreset;
-                }
-
-                if (stepTest.Increase != entity.Increase)
-                {
-                    stepTest.Increase = entity.Increase;
-                }
-
-                if (stepTest.Temperature != entity.Temperature)
-                {
-                    stepTest.Temperature = entity.Temperature;
-                }
-
-                if (stepTest.Weight != entity.Weight)
-                {
-                    stepTest.Weight = entity.Weight;
-                }
-
-                if (stepTest.TestDate != entity.TestDate)
-                {
-                    stepTest.TestDate = entity.TestDate;
-                }
-
+                Context.StepTests.Update(entity);
                 Context.SaveChanges();
-
 
                 Logger.Info($"Updated {entity.Id}");
             }

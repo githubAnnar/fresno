@@ -8,7 +8,7 @@ namespace LanterneRouge.Fresno.Services
 {
     public static class ServiceLocator
     {
-        private static IContainer _container;
+        private static IContainer? _container;
 
         public static IContainer Instance
         {

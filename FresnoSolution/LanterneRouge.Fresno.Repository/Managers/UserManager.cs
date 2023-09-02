@@ -36,14 +36,15 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public List<IUserEntity> GetAllUsers() => UserRepository.All().ToList();
 
-        public IUserEntity GetUserById(int id) => UserRepository.FindSingle(id);
+        public IUserEntity GetUserById(Guid id) => UserRepository.FindSingle(id);
 
         public IUserEntity GetUserByStepTest(IStepTestEntity stepTest) => UserRepository.FindSingle(stepTest.UserId);
 
         public void UpsertUser(IUserEntity entity)
         {
-            if (entity.Id == 0)
+            if (entity.Id == Guid.Empty)
             {
+                entity.Id = Guid.NewGuid();
                 UserRepository.Add(entity);
             }
 
@@ -55,7 +56,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public void RemoveUser(IUserEntity entity) => UserRepository.Remove(entity);
 
-        public bool IsChanged(IUserEntity entity)=>UserRepository.IsChanged(entity);
+        public bool IsChanged(IUserEntity entity) => UserRepository.IsChanged(entity);
 
         #endregion
 

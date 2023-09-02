@@ -7,7 +7,7 @@ namespace LanterneRouge.Fresno.Core.Entity
     [EntityTypeConfiguration(typeof(UserConfig))]
     public class User : IUserEntity
     {
-        public required int Id { get; set; }
+        public required Guid Id { get; set; }
 
         public required string FirstName { get; set; } 
 
