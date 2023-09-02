@@ -7,6 +7,9 @@ namespace LanterneRouge.Fresno.Core.Entity
     [EntityTypeConfiguration(typeof(StepTestConfig))]
     public class StepTest : IStepTestEntity
     {
+        private StepTest()
+        { }
+
         public required Guid Id { get; set; }
 
         public required Guid UserId { get; set; }
@@ -30,5 +33,19 @@ namespace LanterneRouge.Fresno.Core.Entity
         public User? ParentUser { get; set; }
 
         public ICollection<Measurement>? Measurements { get; set; }
+
+        public static StepTest Create(Guid userId) => new()
+        {
+            Id = Guid.Empty,
+            EffortUnit = "W",
+            Increase = 0f,
+            Temperature = 0f,
+            Weight = 0f,
+            LoadPreset = 0f,
+            StepDuration = TimeSpan.FromMinutes(4d).Ticks,
+            TestDate = DateTime.Now,
+            TestType = "Bike",
+            UserId = userId
+        };
     }
 }

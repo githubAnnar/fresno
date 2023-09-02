@@ -7,6 +7,9 @@ namespace LanterneRouge.Fresno.Core.Entity
     [EntityTypeConfiguration(typeof(MeasurementConfig))]
     public class Measurement : IMeasurementEntity
     {
+        public Measurement()
+        { }
+
         public required Guid Id { get; set; }
 
         public required int HeartRate { get; set; }
@@ -22,5 +25,16 @@ namespace LanterneRouge.Fresno.Core.Entity
         public required bool InCalculation { get; set; }
 
         public StepTest? ParentStepTest { get; set; }
+
+        public static Measurement Create(int sequence, Guid stepTestId, float load) => new()
+        {
+            Id = Guid.Empty,
+            HeartRate = 0,
+            Lactate = 0f,
+            Load = load,
+            InCalculation = true,
+            StepTestId = stepTestId,
+            Sequence = sequence
+        };
     }
 }

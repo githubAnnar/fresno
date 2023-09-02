@@ -85,10 +85,13 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             try
             {
-                Context.StepTests.Update(entity);
-                Context.SaveChanges();
+                if (entity is StepTest entityObject)
+                {
+                    Context.StepTests.Update(entityObject);
+                    Context.SaveChanges();
 
-                Logger.Info($"Updated {entity.Id}");
+                    Logger.Info($"Updated {entity.Id}");
+                }
             }
 
             catch (Exception ex)

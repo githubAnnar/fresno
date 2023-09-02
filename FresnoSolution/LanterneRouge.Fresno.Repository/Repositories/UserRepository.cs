@@ -94,10 +94,13 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             try
             {
-                Context.Users.Update(entity);
-                Context.SaveChanges();
+                if (entity is User entityObect)
+                {
+                    Context.Users.Update(entityObect);
+                    Context.SaveChanges();
 
-                Logger.Info($"Updated {entity.Id}");
+                    Logger.Info($"Updated {entity.Id}"); 
+                }
             }
 
             catch (Exception ex)

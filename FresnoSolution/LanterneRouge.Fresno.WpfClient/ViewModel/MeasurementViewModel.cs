@@ -305,9 +305,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var newSequence = measurements.Count == 0 ? 1 : measurements.Max(m => m.Sequence) + 1;
             var newLoad = measurements.Count == 0 ? parentStepTest.Source.LoadPreset : measurements.Last().Load + parentStepTest.Source.Increase;
 
-            var newMeasurement = Measurement.Create(newSequence, parentStepTest.StepTestId, 0, 0, newLoad);
-            newMeasurement.InCalculation = true;
-            newMeasurement.AcceptChanges();
+            var newMeasurement = Measurement.Create(newSequence, parentStepTest.StepTestId, newLoad);
             Logger.Info("New empty measurement created");
             var workspace = new MeasurementViewModel(newMeasurement, parentStepTest, rootViewModel);
             workspace.Show();

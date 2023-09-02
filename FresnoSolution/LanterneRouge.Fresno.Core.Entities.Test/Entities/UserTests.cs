@@ -39,20 +39,18 @@ namespace LanterneRouge.Fresno.Core.Entity
         [Fact]
         public void CreateUserTest()
         {
-            var testUser = new User
-            {
-                Id = _user.Id,
-                FirstName = _user.FirstName,
-                LastName = _user.LastName,
-                Street = _user.Street,
-                PostCode = _user.PostCode,
-                PostCity = _user.PostCity,
-                BirthDate = _user.BirthDate,
-                Height = _user.Height,
-                MaxHr = _user.MaxHr,
-                Sex = _user.Sex,
-                Email = _user.Email
-            };
+            var testUser = User.Create();
+            testUser.Id = _user.Id;
+            testUser.FirstName = _user.FirstName;
+            testUser.LastName = _user.LastName;
+            testUser.Street = _user.Street;
+            testUser.PostCode = _user.PostCode;
+            testUser.PostCity = _user.PostCity;
+            testUser.BirthDate = _user.BirthDate;
+            testUser.Height = _user.Height;
+            testUser.MaxHr = _user.MaxHr;
+            testUser.Sex = _user.Sex;
+            testUser.Email = _user.Email;
 
             Assert.Equal(_user.FirstName, testUser.FirstName);
             Assert.Equal(_user.LastName, testUser.LastName);

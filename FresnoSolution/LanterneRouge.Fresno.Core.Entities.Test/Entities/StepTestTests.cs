@@ -28,19 +28,17 @@ namespace LanterneRouge.Fresno.Core.Entity
         [Fact]
         public void CreateStepTestTest()
         {
-            var testStepTest = new StepTest
-            {
-                Id = _stepTest.Id,
-                UserId = _stepTest.UserId,
-                TestType = _stepTest.TestType,
-                EffortUnit = _stepTest.EffortUnit,
-                StepDuration = _stepTest.StepDuration,
-                LoadPreset = _stepTest.LoadPreset,
-                Increase = _stepTest.Increase,
-                Temperature = _stepTest.Temperature,
-                Weight = _stepTest.Weight,
-                TestDate = _stepTest.TestDate
-            };
+            var testStepTest = StepTest.Create(_stepTest.UserId);
+            testStepTest.Id = _stepTest.Id;
+            testStepTest.UserId = _stepTest.UserId;
+            testStepTest.TestType = _stepTest.TestType;
+            testStepTest.EffortUnit = _stepTest.EffortUnit;
+            testStepTest.StepDuration = _stepTest.StepDuration;
+            testStepTest.LoadPreset = _stepTest.LoadPreset;
+            testStepTest.Increase = _stepTest.Increase;
+            testStepTest.Temperature = _stepTest.Temperature;
+            testStepTest.Weight = _stepTest.Weight;
+            testStepTest.TestDate = _stepTest.TestDate;
 
             Assert.Equal(_stepTest.UserId, testStepTest.UserId);
             Assert.Equal(_stepTest.EffortUnit, testStepTest.EffortUnit);

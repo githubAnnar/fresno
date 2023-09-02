@@ -9,7 +9,7 @@ namespace LanterneRouge.Fresno.Core.Entity
         public MeasurementTests()
         {
             _measurement = new Faker<Measurement>()
-                .RuleFor(m=>m.Id, f=>f.Random.Guid())
+                .RuleFor(m => m.Id, f => f.Random.Guid())
                 .RuleFor(m => m.HeartRate, f => f.Random.Int(100, 210))
                 .RuleFor(m => m.Lactate, f => f.Random.Float(0.5f, 12f))
                 .RuleFor(m => m.Load, f => f.Random.Float(40f, 400f))
@@ -25,17 +25,15 @@ namespace LanterneRouge.Fresno.Core.Entity
         [Fact]
         public void CreateMeasurementTest()
         {
-            var testMeasurement =new Measurement
-            {
-                Id=_measurement.Id,
-                Sequence = _measurement.Sequence,
-                StepTestId = _measurement.StepTestId,
-                HeartRate = _measurement.HeartRate,
-                Lactate = _measurement.Lactate,
-                Load = _measurement.Load,
-                InCalculation=_measurement.InCalculation
-            };
-            
+            var testMeasurement = Measurement.Create(_measurement.Sequence, _measurement.StepTestId, _measurement.Load);
+            testMeasurement.Id = _measurement.Id;
+            testMeasurement.Sequence = _measurement.Sequence;
+            testMeasurement.StepTestId = _measurement.StepTestId;
+            testMeasurement.HeartRate = _measurement.HeartRate;
+            testMeasurement.Lactate = _measurement.Lactate;
+            testMeasurement.Load = _measurement.Load;
+            testMeasurement.InCalculation = _measurement.InCalculation;
+
             Assert.Equal(_measurement.HeartRate, testMeasurement.HeartRate);
             Assert.Equal(_measurement.InCalculation, testMeasurement.InCalculation);
             Assert.Equal(_measurement.Lactate, testMeasurement.Lactate);

@@ -62,9 +62,12 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             try
             {
-                Context.Update(entity);
-                Context.SaveChanges();
-                Logger.Info($"Updated {entity.Id}");
+                if (entity is Measurement entityObject)
+                {
+                    Context.Measurements.Update(entityObject);
+                    Context.SaveChanges();
+                    Logger.Info($"Updated {entity.Id}"); 
+                }
             }
 
             catch (Exception ex)

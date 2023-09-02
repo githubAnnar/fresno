@@ -1,5 +1,6 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Entity.Extentions;
 using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.Utils.Helpers;
@@ -489,7 +490,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowPdfCommand
 
-        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => GenerateStepTestPdf(), param => Source.IsValid);
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => GenerateStepTestPdf(), param => Source.IsValid());
 
         public void GenerateStepTestPdf()
         {
@@ -529,8 +530,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public static void Create(UserViewModel parentUser, MainWindowViewModel rootViewModel)
         {
-            var newStepTest = StepTest.Create(parentUser.UserId, "Bike", "W", TimeSpan.FromMinutes(4d).Ticks, 0, 0, 0, 0, DateTime.Now);
-            newStepTest.AcceptChanges();
+            var newStepTest = StepTest.Create(parentUser.UserId);
             Logger.Info("Created new empty step test entity");
             var workspace = new StepTestViewModel(newStepTest, parentUser, rootViewModel);
             workspace.Show();
