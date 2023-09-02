@@ -28,7 +28,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public StepTestViewModel StepTestParent => Parent as StepTestViewModel;
 
-        public int StepTestId => StepTestParent.Source.Id;
+        public Guid StepTestId => StepTestParent.Source.Id;
 
         public double FblcCalculationThreshold
         {

@@ -19,7 +19,7 @@ namespace LanterneRouge.Fresno.Core.Entity
                 .RuleFor(g => g.Ug, f => f.Person.Gender);
 
             _user = new Faker<User>()
-                .RuleFor(u => u.Id, f => f.Random.Int())
+                .RuleFor(u => u.Id, f => f.Random.Guid())
                 .RuleFor(u => u.FirstName, (f, u) => f.Name.FirstName(_gender.Ug))
                 .RuleFor(u => u.LastName, (f, u) => f.Name.LastName(_gender.Ug))
                 .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName))

@@ -9,11 +9,11 @@ namespace LanterneRouge.Fresno.Core.Entity
         public MeasurementTests()
         {
             _measurement = new Faker<Measurement>()
-                .RuleFor(m=>m.Id, f=>f.Random.Int())
+                .RuleFor(m=>m.Id, f=>f.Random.Guid())
                 .RuleFor(m => m.HeartRate, f => f.Random.Int(100, 210))
                 .RuleFor(m => m.Lactate, f => f.Random.Float(0.5f, 12f))
                 .RuleFor(m => m.Load, f => f.Random.Float(40f, 400f))
-                .RuleFor(m => m.StepTestId, f => f.Random.Int(0))
+                .RuleFor(m => m.StepTestId, f => f.Random.Guid())
                 .RuleFor(m => m.Sequence, f => f.Random.Int(1))
                 .RuleFor(m => m.InCalculation, f => f.Random.Bool())
                 .FinishWith((f, m) =>

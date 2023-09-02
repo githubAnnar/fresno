@@ -59,7 +59,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             private set => _source = value;
         }
 
-        public int UserId => Source.Id;
+        public Guid UserId => Source.Id;
 
         public string FirstName
         {
@@ -195,7 +195,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Display Properties
 
-        public override string DisplayName => Source.Id == 0 ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
+        public override string DisplayName => Source.Id == Guid.Empty ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
 
         public bool IsSelected
         {

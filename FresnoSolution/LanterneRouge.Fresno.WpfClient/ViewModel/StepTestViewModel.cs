@@ -80,7 +80,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         internal IStepTestEntity Source { get; private set; }
 
-        public int StepTestId => Source.Id;
+        public Guid StepTestId => Source.Id;
 
         public string TestType
         {
@@ -217,7 +217,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Display Properties
 
-        public override string DisplayName => Source.Id == 0 ? "New Step Test"/*KayakStrings.Category_New_Singular*/ : ToString();
+        public override string DisplayName => Source.Id == Guid.Empty ? "New Step Test"/*KayakStrings.Category_New_Singular*/ : ToString();
 
         public bool IsSelected
         {

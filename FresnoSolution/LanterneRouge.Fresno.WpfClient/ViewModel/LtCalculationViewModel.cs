@@ -26,7 +26,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private StepTestViewModel StepTestParent => Parent as StepTestViewModel;
 
-        public int StepTestId => StepTestParent.Source.Id;
+        public Guid StepTestId => StepTestParent.Source.Id;
 
         public string LTLactateThresholdText => LtCalculation != null ? $"Load Th.: {LtCalculation.LoadThreshold:0.0} Heartrate Th.: {LtCalculation.HeartRateThreshold:0}" : "No Calculation";
 

@@ -54,7 +54,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         internal IMeasurementEntity Source { get; private set; }
 
-        public int MeasurementId => Source.Id;
+        public Guid MeasurementId => Source.Id;
 
         public int HeartRate
         {
@@ -125,7 +125,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Presentation Properties
 
-        public override string DisplayName => Source.Id == 0 ? "New Measurement" /*KayakStrings.Person_New_Singular*/ : ToString();
+        public override string DisplayName => Source.Id == Guid.Empty ? "New Measurement" /*KayakStrings.Person_New_Singular*/ : ToString();
 
         public bool IsSelected
         {

@@ -9,8 +9,8 @@ namespace LanterneRouge.Fresno.Core.Entity
         public StepTestTests()
         {
             _stepTest = new Faker<StepTest>()
-                .RuleFor(s => s.Id, f => f.Random.Int())
-                .RuleFor(s => s.UserId, f => f.Random.Int(0))
+                .RuleFor(s => s.Id, f => f.Random.Guid())
+                .RuleFor(s => s.UserId, f => f.Random.Guid())
                 .RuleFor(s => s.EffortUnit, f => f.PickRandom(new[] { "W", "m-s" }))
                 .RuleFor(s => s.Increase, f => f.Random.Float(0f, 40f))
                 .RuleFor(s => s.LoadPreset, f => f.Random.Float(40f, 200f))
