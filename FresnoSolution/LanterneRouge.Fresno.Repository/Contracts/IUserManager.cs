@@ -6,9 +6,9 @@ namespace LanterneRouge.Fresno.Repository.Contracts
     {
         IList<IUserEntity> GetAllUsers();
 
-        IUserEntity GetUserById(Guid id);
+        IUserEntity? GetUserById(Guid id);
 
-        IUserEntity GetUserByStepTest(IStepTestEntity stepTest);
+        IUserEntity? GetUserByStepTest(IStepTestEntity stepTest);
 
         void UpsertUser(IUserEntity entity);
 

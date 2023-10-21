@@ -43,7 +43,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public int MeasurementsCountByStepTest(IStepTestEntity parent, bool onlyInCalculation) => MeasurementRepository.GetCountByParentId(parent, onlyInCalculation);
 
-        public IMeasurementEntity GetMeasurementById(Guid id) => MeasurementRepository.FindSingle(id);
+        public IMeasurementEntity? GetMeasurementById(Guid id) => MeasurementRepository.FindSingle(id);
 
         public void UpsertMeasurement(IMeasurementEntity entity)
         {
@@ -61,7 +61,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public void RemoveMeasurement(IMeasurementEntity entity) => MeasurementRepository.Remove(entity);
 
-        public bool IsChanged(IMeasurementEntity entity)=>MeasurementRepository.IsChanged(entity);
+        public bool IsChanged(IMeasurementEntity entity) => MeasurementRepository.IsChanged(entity);
 
         #endregion
 

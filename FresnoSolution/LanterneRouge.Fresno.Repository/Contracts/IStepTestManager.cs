@@ -10,7 +10,7 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 
         int StepTestCountByUser(IUserEntity parent, bool onlyInCalculation);
 
-        IStepTestEntity GetStepTestById(Guid id);
+        IStepTestEntity? GetStepTestById(Guid id);
 
         void UpsertStepTest(IStepTestEntity entity);
 

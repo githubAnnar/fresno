@@ -34,11 +34,11 @@ namespace LanterneRouge.Fresno.Repository.Managers
             Logger.Info("Db connection closed");
         }
 
-        public List<IUserEntity> GetAllUsers() => UserRepository.All().ToList();
+        public IList<IUserEntity> GetAllUsers() => UserRepository.All().ToList();
 
-        public IUserEntity GetUserById(Guid id) => UserRepository.FindSingle(id);
+        public IUserEntity? GetUserById(Guid id) => UserRepository.FindSingle(id);
 
-        public IUserEntity GetUserByStepTest(IStepTestEntity stepTest) => UserRepository.FindSingle(stepTest.UserId);
+        public IUserEntity? GetUserByStepTest(IStepTestEntity stepTest) => UserRepository.FindSingle(stepTest.UserId);
 
         public void UpsertUser(IUserEntity entity)
         {

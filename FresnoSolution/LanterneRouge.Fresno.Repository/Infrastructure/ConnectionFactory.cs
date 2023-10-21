@@ -2,7 +2,6 @@
 using LanterneRouge.Fresno.Repository.Contracts;
 using log4net;
 using System.Data;
-using System.Data.Common;
 using System.Data.SQLite;
 
 namespace LanterneRouge.Fresno.Repository.Infrastructure
@@ -11,7 +10,7 @@ namespace LanterneRouge.Fresno.Repository.Infrastructure
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ConnectionFactory));
         private readonly string _connectionString;
-        private IDbConnection _connection;
+        private IDbConnection? _connection = null;
 
         public ConnectionFactory(SQLiteConnectionStringBuilder connectionStringBuilder)
         {

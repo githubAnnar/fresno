@@ -43,7 +43,7 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public int StepTestCountByUser(IUserEntity parent, bool onlyInCalculation) => StepTestRepository.GetCountByParentId(parent, onlyInCalculation);
 
-        public IStepTestEntity GetStepTestById(Guid id) => StepTestRepository.FindSingle(id);
+        public IStepTestEntity? GetStepTestById(Guid id) => StepTestRepository.FindSingle(id);
 
         public void UpsertStepTest(IStepTestEntity entity)
         {

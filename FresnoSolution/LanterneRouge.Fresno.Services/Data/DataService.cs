@@ -3,7 +3,6 @@ using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Infrastructure;
 using LanterneRouge.Fresno.Repository.Managers;
 using LanterneRouge.Fresno.Services.Interfaces;
-using LanterneRouge.Fresno.Services.Models;
 using log4net;
 
 namespace LanterneRouge.Fresno.Services.Data
@@ -11,24 +10,28 @@ namespace LanterneRouge.Fresno.Services.Data
     public class DataService : IDataService
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(DataService));
-        private IUserManager _userManager;
-        private IStepTestManager _stepTestManager;
-        private IMeasurementManager _measurementManager;
-        private ConnectionFactory _connectionFactory;
+        private IUserManager? _userManager;
+        private IStepTestManager? _stepTestManager;
+        private IMeasurementManager? _measurementManager;
+        private ConnectionFactory? _connectionFactory;
 
-        private ConnectionFactory LocalConnectionFactory => _connectionFactory ??= new ConnectionFactory(Filename);
-
-        private string Filename { get; set; }
+        private string? Filename { get; set; }
 
         public bool LoadDatabase(string filename)
         {
+            if (filename is null)
+            {
+                throw new ArgumentNullException(nameof(filename));
+            }
+
             bool response;
             try
             {
                 Filename = filename;
-                _userManager = new UserManager(LocalConnectionFactory);
-                _stepTestManager = new StepTestManager(LocalConnectionFactory);
-                _measurementManager = new MeasurementManager(LocalConnectionFactory);
+                var localConnectionFactory = _connectionFactory ??= new ConnectionFactory(Filename);
+                _userManager = new UserManager(localConnectionFactory);
+                _stepTestManager = new StepTestManager(localConnectionFactory);
+                _measurementManager = new MeasurementManager(localConnectionFactory);
                 response = true;
             }
 
@@ -85,40 +88,40 @@ namespace LanterneRouge.Fresno.Services.Data
             return response;
         }
 
-        public IEnumerable<UserModel> GetAllUsers() => _userManager.GetAllUsers();
+        public IEnumerable<IUserEntity> GetAllUsers() => _userManager != null ? _userManager.GetAllUsers() : new List<IUserEntity>();
 
-        public IUserEntity GetUser(Guid id) => _userManager.GetUserById(id);
+        public IUserEntity? GetUser(Guid id) => _userManager?.GetUserById(id);
 
-        public IUserEntity GetUserByStepTest(IStepTestEntity stepTest) => _userManager.GetUserByStepTest(stepTest);
+        public IUserEntity? GetUserByStepTest(IStepTestEntity stepTest) => _userManager?.GetUserByStepTest(stepTest);
 
-        public void SaveUser(IUserEntity entity) => _userManager.UpsertUser(entity);
+        public void SaveUser(IUserEntity entity) => _userManager?.UpsertUser(entity);
 
-        public void RemoveUser(IUserEntity entity) => _userManager.RemoveUser(entity);
+        public void RemoveUser(IUserEntity entity) => _userManager?.RemoveUser(entity);
 
-        public bool IsChanged(IUserEntity entity) => _userManager.IsChanged(entity);
+        public bool IsChanged(IUserEntity entity) => _userManager != null && _userManager.IsChanged(entity);
 
-        public bool IsChanged(IStepTestEntity entity) => _stepTestManager.IsChanged(entity);
+        public bool IsChanged(IStepTestEntity entity) => _stepTestManager != null && _stepTestManager.IsChanged(entity);
 
-        public bool IsChanged(IMeasurementEntity entity) => _measurementManager.IsChanged(entity);
+        public bool IsChanged(IMeasurementEntity entity) => _measurementManager != null && _measurementManager.IsChanged(entity);
 
-        public IEnumerable<IStepTestEntity> GetAllStepTests() => _stepTestManager.GetAllStepTests();
+        public IEnumerable<IStepTestEntity> GetAllStepTests() => _stepTestManager != null ? _stepTestManager.GetAllStepTests() : new List<IStepTestEntity>();
 
-        public IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity parent) => _stepTestManager.GetStepTestsByUser(parent);
+        public IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity parent) => _stepTestManager != null ? _stepTestManager.GetStepTestsByUser(parent) : new List<IStepTestEntity>();
 
-        public int StepTestCountByUser(IUserEntity entity, bool onlyInCalculation = false) => _stepTestManager.StepTestCountByUser(entity, onlyInCalculation);
+        public int StepTestCountByUser(IUserEntity entity, bool onlyInCalculation = false) => _stepTestManager != null ? _stepTestManager.StepTestCountByUser(entity, onlyInCalculation) : 0;
 
-        public void SaveStepTest(IStepTestEntity entity) => _stepTestManager.UpsertStepTest(entity);
+        public void SaveStepTest(IStepTestEntity entity) => _stepTestManager?.UpsertStepTest(entity);
 
-        public void RemoveStepTest(IStepTestEntity entity) => _stepTestManager.RemoveStepTest(entity);
+        public void RemoveStepTest(IStepTestEntity entity) => _stepTestManager?.RemoveStepTest(entity);
 
-        public IEnumerable<IMeasurementEntity> GetAllMeasurements() => _measurementManager.GetAllMeasurements();
+        public IEnumerable<IMeasurementEntity> GetAllMeasurements() => _measurementManager != null ? _measurementManager.GetAllMeasurements() : new List<IMeasurementEntity>();
 
-        public IEnumerable<IMeasurementEntity> GetAllMeasurementsByStepTest(IStepTestEntity entity) => _measurementManager.GetMeasurementsByStepTest(entity);
+        public IEnumerable<IMeasurementEntity> GetAllMeasurementsByStepTest(IStepTestEntity entity) => _measurementManager != null ? _measurementManager.GetMeasurementsByStepTest(entity) : new List<IMeasurementEntity>();
 
-        public int MeasurementsCountByStepTest(IStepTestEntity entity, bool onlyInCalculation = false) => _measurementManager.MeasurementsCountByStepTest(entity, onlyInCalculation);
+        public int MeasurementsCountByStepTest(IStepTestEntity entity, bool onlyInCalculation = false) => _measurementManager != null ? _measurementManager.MeasurementsCountByStepTest(entity, onlyInCalculation) : 0;
 
-        public void SaveMeasurement(IMeasurementEntity entity) => _measurementManager.UpsertMeasurement(entity);
+        public void SaveMeasurement(IMeasurementEntity entity) => _measurementManager?.UpsertMeasurement(entity);
 
-        public void RemoveMeasurement(IMeasurementEntity entity) => _measurementManager.RemoveMeasurement(entity);
+        public void RemoveMeasurement(IMeasurementEntity entity) => _measurementManager?.RemoveMeasurement(entity);
     }
 }

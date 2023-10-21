@@ -10,7 +10,7 @@ namespace LanterneRouge.Fresno.Services.Email
     public class EmailService : IEmailService
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(EmailService));
-        private IApplicationSettingsService _applicationSettingsService;
+        private IApplicationSettingsService? _applicationSettingsService = null;
 
         private IApplicationSettingsService ApplicationSettingsService
         {
@@ -30,10 +30,11 @@ namespace LanterneRouge.Fresno.Services.Email
 
         public void SendEmail(MailMessage mailMessage)
         {
+
             var smtpClient = new SmtpClient(ApplicationSettingsService.EmailServer, ApplicationSettingsService.Port)
             {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(ApplicationSettingsService.Username, PasswordHelpers.DecryptString(ApplicationSettingsService.Password)),
+                Credentials = new NetworkCredential(ApplicationSettingsService.Username, PasswordHelpers.DecryptString(ApplicationSettingsService.Password ?? string.Empty)),
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 EnableSsl = true
             };
