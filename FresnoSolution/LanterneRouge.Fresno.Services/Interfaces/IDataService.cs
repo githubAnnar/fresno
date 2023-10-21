@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.Core.Interface;
+using LanterneRouge.Fresno.Services.Models;
 
 namespace LanterneRouge.Fresno.Services.Interfaces
 {
@@ -6,35 +7,35 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
     public interface IDataService
     {
-        IEnumerable<IUserEntity> GetAllUsers();
+        IEnumerable<UserModel> GetAllUsers();
 
         IUserEntity GetUser(int id);
 
-        IUserEntity GetUserByStepTest(IStepTestEntity stepTest);
+        UserModel GetUserByStepTest(StepTestModel stepTest);
 
-        void SaveUser(IUserEntity entity);
+        void SaveUser(UserModel entity);
 
-        void RemoveUser(IUserEntity entity);
+        void RemoveUser(UserModel entity);
 
-        IEnumerable<IStepTestEntity> GetAllStepTests();
+        IList<StepTestModel> GetAllStepTests();
 
-        IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity entity);
+        IEnumerable<StepTestModel> GetAllStepTestsByUser(UserModel entity);
 
-        int StepTestCountByUser(IUserEntity entity, bool onlyInCalculation = false);
+        int StepTestCountByUser(UserModel entity, bool onlyInCalculation = false);
 
-        void SaveStepTest(IStepTestEntity entity);
+        void SaveStepTest(StepTestModel entity);
 
-        void RemoveStepTest(IStepTestEntity entity);
+        void RemoveStepTest(StepTestModel entity);
 
-        IEnumerable<IMeasurementEntity> GetAllMeasurements();
+        IEnumerable<MeasurementModel> GetAllMeasurements();
 
-        IEnumerable<IMeasurementEntity> GetAllMeasurementsByStepTest(IStepTestEntity entity);
+        IEnumerable<MeasurementModel> GetAllMeasurementsByStepTest(StepTestModel entity);
 
-        int MeasurementsCountByStepTest(IStepTestEntity entity, bool onlyInCalculation = false);
+        int MeasurementsCountByStepTest(StepTestModel entity, bool onlyInCalculation = false);
 
-        void SaveMeasurement(IMeasurementEntity entity);
+        void SaveMeasurement(MeasurementModel entity);
 
-        void RemoveMeasurement(IMeasurementEntity entity);
+        void RemoveMeasurement(MeasurementModel entity);
 
         bool LoadDatabase(string filename);
 

@@ -37,13 +37,13 @@ namespace LanterneRouge.Fresno.Repository.Managers
             Logger.Info("Db connection closed");
         }
 
-        public List<IStepTestEntity> GetAllStepTests() => StepTestRepository.All().ToList();
+        public IList<IStepTestEntity> GetAllStepTests() => StepTestRepository.All().ToList();
 
-        public List<IStepTestEntity> GetStepTestsByUser(IUserEntity parent) => StepTestRepository.FindByParentId(parent).ToList();
+        public IList<IStepTestEntity> GetStepTestsByUser(IUserEntity parent) => StepTestRepository.FindByParentId(parent).ToList();
 
         public int StepTestCountByUser(IUserEntity parent, bool onlyInCalculation) => StepTestRepository.GetCountByParentId(parent, onlyInCalculation);
 
-        public IStepTestEntity GetStepTestById(int id) => StepTestRepository.FindSingle(id);
+        public IStepTestEntity? GetStepTestById(int id) => StepTestRepository.FindSingle(id);
 
         public void UpsertStepTest(IStepTestEntity entity)
         {

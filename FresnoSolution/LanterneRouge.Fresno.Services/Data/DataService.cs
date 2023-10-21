@@ -3,6 +3,7 @@ using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Infrastructure;
 using LanterneRouge.Fresno.Repository.Managers;
 using LanterneRouge.Fresno.Services.Interfaces;
+using LanterneRouge.Fresno.Services.Models;
 using log4net;
 
 namespace LanterneRouge.Fresno.Services.Data
@@ -84,7 +85,7 @@ namespace LanterneRouge.Fresno.Services.Data
             return response;
         }
 
-        public IEnumerable<IUserEntity> GetAllUsers() => _userManager.GetAllUsers();
+        public IEnumerable<UserModel> GetAllUsers() => _userManager.GetAllUsers();
 
         public IUserEntity GetUser(int id) => _userManager.GetUserById(id);
 
@@ -94,7 +95,7 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public void RemoveUser(IUserEntity entity) => _userManager.RemoveUser(entity);
 
-        public IEnumerable<IStepTestEntity> GetAllStepTests() => _stepTestManager.GetAllStepTests();
+        public IList<IStepTestEntity> GetAllStepTests() => _stepTestManager.GetAllStepTests();
 
         public IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity parent) => _stepTestManager.GetStepTestsByUser(parent);
 

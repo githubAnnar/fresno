@@ -18,4 +18,8 @@
     <ProjectReference Include="..\LanterneRouge.Fresno.Utils\LanterneRouge.Fresno.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MapperProfiles\" />
+  </ItemGroup>
+
 </Project>
