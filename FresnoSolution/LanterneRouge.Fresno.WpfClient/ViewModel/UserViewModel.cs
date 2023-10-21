@@ -1,4 +1,5 @@
 ﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Entity.Extentions;
 using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
@@ -55,11 +56,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         internal IUserEntity Source
         {
-            get => _source.IsLoaded ? _source : DataManager.GetUser(_source.Id);
+            get => DataManager.GetUser(_source.Id);
             private set => _source = value;
         }
 
-        public int UserId => Source.Id;
+        public Guid UserId => Source.Id;
 
         public string FirstName
         {
@@ -128,7 +129,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public DateTime BirthDate
         {
-            get => Source.BirthDate;
+            get => Source.BirthDate ?? DateTime.Now;
             set
             {
                 if (!value.Equals(Source.BirthDate))
@@ -141,7 +142,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public int Height
         {
-            get => Source.Height;
+            get => Source.Height ?? default;
             set
             {
                 if (!value.Equals(Source.Height))
@@ -180,7 +181,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public int MaxHr
         {
-            get => Source.MaxHr;
+            get => Source.MaxHr ?? default;
             set
             {
                 if (!value.Equals(Source.MaxHr))
@@ -195,7 +196,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Display Properties
 
-        public override string DisplayName => Source.Id == 0 ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
+        public override string DisplayName => Source.Id == Guid.Empty ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
 
         public bool IsSelected
         {
@@ -220,7 +221,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (Source.IsChanged)
+            if (DataManager.IsChanged(Source))
             {
                 DataManager.SaveUser(Source);
                 SaveToAllUsers();
@@ -262,7 +263,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => Source.IsValid && Source.IsChanged;
+        private bool CanSave => Source.IsValid() && DataManager.IsChanged(Source);
 
         #endregion
 
@@ -402,7 +403,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public static UserViewModel Create(MainWindowViewModel rootViewModel)
         {
-            var newUser = User.Create(string.Empty, string.Empty, null, null, null, DateTime.Now, 0, 0, "M", null);
+            var newUser = User.Create();
             Logger.Info("Created new Empty user");
             var workspace = new UserViewModel(newUser, rootViewModel);
             workspace.Show();

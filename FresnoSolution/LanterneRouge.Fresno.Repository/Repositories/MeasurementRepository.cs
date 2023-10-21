@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using log4net;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
@@ -21,7 +22,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return measurements.ToList();
         }
 
-        public IMeasurementEntity? FindSingle(int id)
+        public IMeasurementEntity? FindSingle(Guid id)
         {
             Logger.Debug($"FindSingle({id})");
             var measurement = Context.Measurements.SingleOrDefault(x => x.Id == id);
@@ -60,36 +61,12 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             try
             {
-                var measurement = Context.Measurements.Single(m => m.Id == entity.Id);
-                if (measurement.Sequence != entity.Sequence)
+                if (entity is Measurement entityObject)
                 {
-                    measurement.Sequence = entity.Sequence;
+                    Context.Measurements.Update(entityObject);
+                    Context.SaveChanges();
+                    Logger.Info($"Updated {entity.Id}"); 
                 }
-
-                if (measurement.InCalculation != entity.InCalculation)
-                {
-                    measurement.InCalculation = entity.InCalculation;
-                }
-
-                if (measurement.Lactate != entity.Lactate)
-                {
-                    measurement.Lactate = entity.Lactate;
-                }
-
-                if (measurement.HeartRate != entity.HeartRate)
-                {
-                    measurement.HeartRate = entity.HeartRate;
-                }
-
-                if (measurement.Load != entity.Load)
-                {
-                    measurement.Load = entity.Load;
-                }
-
-                Context.SaveChanges();
-
-
-                Logger.Info($"Updated {entity.Id}");
             }
 
             catch (Exception ex)
@@ -108,7 +85,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             Remove(entity.Id);
         }
 
-        public void Remove(int id)
+        public void Remove(Guid id)
         {
             try
             {
@@ -138,5 +115,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             return result;
         }
+
+        public bool IsChanged(IMeasurementEntity entity) => entity is Measurement measurementsEntity && Context.Entry(measurementsEntity).State != EntityState.Unchanged;
     }
 }

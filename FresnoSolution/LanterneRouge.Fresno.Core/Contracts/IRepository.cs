@@ -12,10 +12,12 @@
 
         int GetCountByParentId(TParentEntity parent, bool onlyInCalculation);
 
-        void Remove(int id);
+        void Remove(Guid id);
 
         void Remove(TEntity entity);
 
         void Update(TEntity entity);
+
+        bool IsChanged(TEntity entity);
     }
 }

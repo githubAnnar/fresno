@@ -43,12 +43,13 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public int StepTestCountByUser(IUserEntity parent, bool onlyInCalculation) => StepTestRepository.GetCountByParentId(parent, onlyInCalculation);
 
-        public IStepTestEntity? GetStepTestById(int id) => StepTestRepository.FindSingle(id);
+        public IStepTestEntity GetStepTestById(Guid id) => StepTestRepository.FindSingle(id);
 
         public void UpsertStepTest(IStepTestEntity entity)
         {
-            if (entity.Id == 0)
+            if (entity.Id == Guid.Empty)
             {
+                entity.Id = Guid.NewGuid();
                 StepTestRepository.Add(entity);
             }
 
@@ -59,6 +60,8 @@ namespace LanterneRouge.Fresno.Repository.Managers
         }
 
         public void RemoveStepTest(IStepTestEntity entity) => StepTestRepository.Remove(entity);
+
+        public bool IsChanged(IStepTestEntity entity) => StepTestRepository.IsChanged(entity);
 
         #endregion
 

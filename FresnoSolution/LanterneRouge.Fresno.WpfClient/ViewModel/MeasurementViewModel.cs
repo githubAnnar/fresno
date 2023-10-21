@@ -54,7 +54,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         internal IMeasurementEntity Source { get; private set; }
 
-        public int MeasurementId => Source.Id;
+        public Guid MeasurementId => Source.Id;
 
         public int HeartRate
         {
@@ -125,7 +125,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Presentation Properties
 
-        public override string DisplayName => Source.Id == 0 ? "New Measurement" /*KayakStrings.Person_New_Singular*/ : ToString();
+        public override string DisplayName => Source.Id == Guid.Empty ? "New Measurement" /*KayakStrings.Person_New_Singular*/ : ToString();
 
         public bool IsSelected
         {
@@ -152,7 +152,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (Source.IsChanged)
+            if (DataManager.IsChanged(Source))
             {
                 DataManager.SaveMeasurement(Source);
                 if (Parent is StepTestViewModel stvm)
@@ -179,7 +179,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => IsValid && Source.IsChanged;
+        private bool CanSave => IsValid && DataManager.IsChanged(Source);
 
         #endregion
 
@@ -305,9 +305,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var newSequence = measurements.Count == 0 ? 1 : measurements.Max(m => m.Sequence) + 1;
             var newLoad = measurements.Count == 0 ? parentStepTest.Source.LoadPreset : measurements.Last().Load + parentStepTest.Source.Increase;
 
-            var newMeasurement = Measurement.Create(newSequence, parentStepTest.StepTestId, 0, 0, newLoad);
-            newMeasurement.InCalculation = true;
-            newMeasurement.AcceptChanges();
+            var newMeasurement = Measurement.Create(newSequence, parentStepTest.StepTestId, newLoad);
             Logger.Info("New empty measurement created");
             var workspace = new MeasurementViewModel(newMeasurement, parentStepTest, rootViewModel);
             workspace.Show();

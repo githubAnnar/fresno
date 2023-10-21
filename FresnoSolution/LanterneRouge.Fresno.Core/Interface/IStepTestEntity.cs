@@ -2,9 +2,9 @@
 {
     public interface IStepTestEntity
     {
-        int Id { get; set; }
+         Guid Id { get; set; }
 
-        int UserId { get; set; }
+        Guid UserId { get; set; }
 
         string TestType { get; set; }
 

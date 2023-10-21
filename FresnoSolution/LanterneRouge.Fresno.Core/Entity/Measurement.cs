@@ -7,7 +7,10 @@ namespace LanterneRouge.Fresno.Core.Entity
     [EntityTypeConfiguration(typeof(MeasurementConfig))]
     public class Measurement : IMeasurementEntity
     {
-        public required int Id { get; set; }
+        public Measurement()
+        { }
+
+        public required Guid Id { get; set; }
 
         public required int HeartRate { get; set; }
 
@@ -15,7 +18,7 @@ namespace LanterneRouge.Fresno.Core.Entity
 
         public required float Load { get; set; }
 
-        public required int StepTestId { get; set; }
+        public required Guid StepTestId { get; set; }
 
         public required int Sequence { get; set; }
 

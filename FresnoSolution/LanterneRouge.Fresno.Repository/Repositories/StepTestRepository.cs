@@ -2,6 +2,7 @@
 using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using log4net;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
@@ -43,14 +44,14 @@ namespace LanterneRouge.Fresno.Repository.Repositories
             return stepTests.ToList();
         }
 
-        public IStepTestEntity? FindSingle(int id)
+        public IStepTestEntity? FindSingle(Guid id)
         {
             Logger.Debug($"FindSingle({id})");
             var stepTest = Context.StepTests.SingleOrDefault(x => x.Id == id);
             return stepTest;
         }
 
-        public void Remove(int id)
+        public void Remove(Guid id)
         {
             try
             {
@@ -84,51 +85,13 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             try
             {
-                var stepTest = Context.StepTests.Single(m => m.Id == entity.Id);
-                if (stepTest.TestType != entity.TestType)
+                if (entity is StepTest entityObject)
                 {
-                    stepTest.TestType = entity.TestType;
+                    Context.StepTests.Update(entityObject);
+                    Context.SaveChanges();
+
+                    Logger.Info($"Updated {entity.Id}");
                 }
-
-                if (stepTest.EffortUnit != entity.EffortUnit)
-                {
-                    stepTest.EffortUnit = entity.EffortUnit;
-                }
-
-                if (stepTest.StepDuration != entity.StepDuration)
-                {
-                    stepTest.StepDuration = entity.StepDuration;
-                }
-
-                if (stepTest.LoadPreset != entity.LoadPreset)
-                {
-                    stepTest.LoadPreset = entity.LoadPreset;
-                }
-
-                if (stepTest.Increase != entity.Increase)
-                {
-                    stepTest.Increase = entity.Increase;
-                }
-
-                if (stepTest.Temperature != entity.Temperature)
-                {
-                    stepTest.Temperature = entity.Temperature;
-                }
-
-                if (stepTest.Weight != entity.Weight)
-                {
-                    stepTest.Weight = entity.Weight;
-                }
-
-                if (stepTest.TestDate != entity.TestDate)
-                {
-                    stepTest.TestDate = entity.TestDate;
-                }
-
-                Context.SaveChanges();
-
-
-                Logger.Info($"Updated {entity.Id}");
             }
 
             catch (Exception ex)
@@ -152,5 +115,7 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
             return result;
         }
+
+        public bool IsChanged(IStepTestEntity entity) => entity is StepTest stepTestEntity && Context.Entry(stepTestEntity).State != EntityState.Unchanged;
     }
 }

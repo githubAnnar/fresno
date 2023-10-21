@@ -7,15 +7,17 @@ namespace LanterneRouge.Fresno.Core.Entity
     [EntityTypeConfiguration(typeof(UserConfig))]
     public class User : IUserEntity
     {
-        public required int Id { get; set; }
+        private User() { }
 
-        public required string FirstName { get; set; } 
+        public required Guid Id { get; set; }
 
-        public required string LastName { get; set; } 
+        public required string FirstName { get; set; }
 
-        public string? Street { get; set; } 
+        public required string LastName { get; set; }
 
-        public string? PostCode { get; set; } 
+        public string? Street { get; set; }
+
+        public string? PostCode { get; set; }
 
         public string? PostCity { get; set; } = string.Empty;
 
@@ -23,12 +25,27 @@ namespace LanterneRouge.Fresno.Core.Entity
 
         public int? Height { get; set; }
 
-        public required string Sex { get; set; } 
+        public required string Sex { get; set; }
 
-        public required string Email { get; set; } 
+        public required string Email { get; set; }
 
-        public int?  MaxHr { get; set; }
+        public int? MaxHr { get; set; }
 
         public ICollection<StepTest>? StepTests { get; set; }
+
+        public static User Create() => new()
+        {
+            Email = string.Empty,
+            BirthDate = DateTime.Now,
+            FirstName = string.Empty,
+            Height = 0,
+            Sex = "M",
+            Id = Guid.Empty,
+            LastName = string.Empty,
+            MaxHr = null,
+            PostCity = null,
+            PostCode = null,
+            Street = null,
+        };
     }
 }

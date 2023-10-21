@@ -9,7 +9,7 @@ namespace LanterneRouge.Fresno.Services.Interfaces
     {
         IEnumerable<UserModel> GetAllUsers();
 
-        IUserEntity GetUser(int id);
+        IUserEntity GetUser(Guid id);
 
         UserModel GetUserByStepTest(StepTestModel stepTest);
 
@@ -17,7 +17,13 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
         void RemoveUser(UserModel entity);
 
-        IList<StepTestModel> GetAllStepTests();
+        bool IsChanged(IUserEntity entity);
+
+        bool IsChanged(IStepTestEntity entity);
+
+        bool IsChanged(IMeasurementEntity entity);
+
+        IEnumerable<IStepTestEntity> GetAllStepTests();
 
         IEnumerable<StepTestModel> GetAllStepTestsByUser(UserModel entity);
 

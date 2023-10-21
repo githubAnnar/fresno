@@ -1,5 +1,6 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Entity.Extentions;
 using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.Utils.Helpers;
@@ -80,7 +81,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         internal IStepTestEntity Source { get; private set; }
 
-        public int StepTestId => Source.Id;
+        public Guid StepTestId => Source.Id;
 
         public string TestType
         {
@@ -217,7 +218,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Display Properties
 
-        public override string DisplayName => Source.Id == 0 ? "New Step Test"/*KayakStrings.Category_New_Singular*/ : ToString();
+        public override string DisplayName => Source.Id == Guid.Empty ? "New Step Test"/*KayakStrings.Category_New_Singular*/ : ToString();
 
         public bool IsSelected
         {
@@ -240,7 +241,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (Source.IsChanged)
+            if (DataManager.IsChanged(Source))
             {
                 DataManager.SaveStepTest(Source);
                 if (Parent is UserViewModel uvm)
@@ -273,7 +274,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => IsValid && Source.IsChanged;
+        private bool CanSave => IsValid && DataManager.IsChanged(Source);
 
         #endregion
 
@@ -489,7 +490,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowPdfCommand
 
-        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => GenerateStepTestPdf(), param => Source.IsValid);
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => GenerateStepTestPdf(), param => Source.IsValid());
 
         public void GenerateStepTestPdf()
         {
@@ -529,20 +530,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public static void Create(UserViewModel parentUser, MainWindowViewModel rootViewModel)
         {
-            var newStepTest = new StepTest
-            {
-                Id = 0,
-                UserId = parentUser.UserId,
-                TestType = "Bike",
-                EffortUnit = "W",
-                StepDuration = TimeSpan.FromMinutes(4d).Ticks,
-                Increase = 0,
-                LoadPreset = 0,
-                Weight = 0,
-                Temperature = 0,
-                TestDate = DateTime.Now
-            };
-            newStepTest.AcceptChanges();
+            var newStepTest = StepTest.Create(parentUser.UserId);
             Logger.Info("Created new empty step test entity");
             var workspace = new StepTestViewModel(newStepTest, parentUser, rootViewModel);
             workspace.Show();

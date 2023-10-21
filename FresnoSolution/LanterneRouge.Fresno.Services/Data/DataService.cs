@@ -87,7 +87,7 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public IEnumerable<UserModel> GetAllUsers() => _userManager.GetAllUsers();
 
-        public IUserEntity GetUser(int id) => _userManager.GetUserById(id);
+        public IUserEntity GetUser(Guid id) => _userManager.GetUserById(id);
 
         public IUserEntity GetUserByStepTest(IStepTestEntity stepTest) => _userManager.GetUserByStepTest(stepTest);
 
@@ -95,7 +95,13 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public void RemoveUser(IUserEntity entity) => _userManager.RemoveUser(entity);
 
-        public IList<IStepTestEntity> GetAllStepTests() => _stepTestManager.GetAllStepTests();
+        public bool IsChanged(IUserEntity entity) => _userManager.IsChanged(entity);
+
+        public bool IsChanged(IStepTestEntity entity) => _stepTestManager.IsChanged(entity);
+
+        public bool IsChanged(IMeasurementEntity entity) => _measurementManager.IsChanged(entity);
+
+        public IEnumerable<IStepTestEntity> GetAllStepTests() => _stepTestManager.GetAllStepTests();
 
         public IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity parent) => _stepTestManager.GetStepTestsByUser(parent);
 

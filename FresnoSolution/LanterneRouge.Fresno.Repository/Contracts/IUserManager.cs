@@ -6,12 +6,14 @@ namespace LanterneRouge.Fresno.Repository.Contracts
     {
         IList<IUserEntity> GetAllUsers();
 
-        IUserEntity GetUserById(int id);
+        IUserEntity GetUserById(Guid id);
 
         IUserEntity GetUserByStepTest(IStepTestEntity stepTest);
 
         void UpsertUser(IUserEntity entity);
 
         void RemoveUser(IUserEntity entity);
+
+        bool IsChanged(IUserEntity entity);
     }
 }

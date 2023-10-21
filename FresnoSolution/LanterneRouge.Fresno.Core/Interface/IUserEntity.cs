@@ -2,7 +2,7 @@
 {
     public interface IUserEntity
     {
-        int Id { get; set; }
+        Guid Id { get; set; }
 
         string FirstName { get; set; }
 
