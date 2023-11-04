@@ -1,121 +1,146 @@
-﻿using LanterneRouge.Fresno.Core.Contracts;
-using LanterneRouge.Fresno.Core.Entity;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Entity.Extentions;
 using LanterneRouge.Fresno.Core.Interface;
+using LanterneRouge.Fresno.Repository.Contracts;
 using log4net;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
 {
-    public class MeasurementRepository : RepositoryBase, IRepository<IMeasurementEntity, IStepTestEntity>
+    public class MeasurementRepository : RepositoryBase, IMeasurementRepository
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(MeasurementRepository));
 
         public MeasurementRepository(IDbConnection connection) : base(connection)
         { }
 
-        public IEnumerable<IMeasurementEntity> All()
+        public async Task<IList<Measurement>> GetAllMeasurements(CancellationToken cancellationToken = default)
         {
-            var measurements = Context.Measurements;
+            var measurements = Context.Measurements
+                .AsNoTracking();
 
             Logger.Debug("Return all measurements");
-            return measurements.ToList();
+            return await measurements.ToListAsync(cancellationToken);
         }
 
-        public IMeasurementEntity? FindSingle(Guid id)
+        public async Task<Measurement?> GetMeasurementById(Guid id, CancellationToken cancellationToken = default)
         {
-            Logger.Debug($"FindSingle({id})");
-            var measurement = Context.Measurements.SingleOrDefault(x => x.Id == id);
+            Logger.Debug($"{nameof(GetMeasurementById)}({id})");
+            var measurement = await Context.Measurements
+                .AsNoTracking()
+                .SingleOrDefaultAsync(measurement => measurement.Id == id, cancellationToken);
             return measurement;
         }
 
-        public void Add(IMeasurementEntity entity)
+        public async Task<Measurement?> InsertMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
         {
-            if (entity == null)
+            if (measurementEntity == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                Logger.Error($"ArgumentNullException, {nameof(measurementEntity)} is null");
+                throw new ArgumentNullException(nameof(measurementEntity));
             }
 
-            if (entity is Measurement measurement)
+            var newId = Guid.NewGuid();
+
+            if (measurementEntity is Measurement measurement)
             {
                 try
                 {
-                    var newId = Context.Measurements.Add(measurement);
-                    Context.SaveChanges();
-                    Logger.Info($"Added {newId.Entity.Id}");
+                    measurement.Id = newId;
+                    var newEntity = Context.Measurements.Add(measurement);
+                    await Context.SaveChangesAsync(cancellationToken);
+                    Logger.Info($"Added Measurement {newEntity.Entity.Id}");
                 }
 
                 catch (Exception ex)
                 {
-                    Logger.Error($"Commit error for adding measurement '{entity.StepTestId}, {entity.Sequence}'", ex);
+                    Logger.Error($"Commit error for adding measurement '{measurementEntity.StepTestId}, {measurementEntity.Sequence}'", ex);
                 }
             }
+
+            var response = await Context.Measurements.AsNoTracking().SingleOrDefaultAsync(measurement => measurement.Id == newId, cancellationToken);
+
+            return response;
         }
 
-        public void Update(IMeasurementEntity entity)
+        public async Task<Measurement?> UpdateMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
         {
-            if (entity == null)
+            if (measurementEntity == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                Logger.Error($"ArgumentNullException, {nameof(measurementEntity)} is null");
+                throw new ArgumentNullException(nameof(measurementEntity));
             }
 
+            Measurement? response = null;
             try
             {
-                if (entity is Measurement entityObject)
+                var updateObject = await Context.Measurements.SingleOrDefaultAsync(measurement => measurement.Id == measurementEntity.Id, cancellationToken);
+                if (updateObject != null)
                 {
-                    Context.Measurements.Update(entityObject);
-                    Context.SaveChanges();
-                    Logger.Info($"Updated {entity.Id}"); 
+                    updateObject.CopyFrom(measurementEntity);
+                    var updateEntity = Context.Measurements.Update(updateObject);
+                    await Context.SaveChangesAsync(cancellationToken);
+                    response = updateEntity.Entity;
+                    Logger.Info($"Updated {measurementEntity.Id}");
+                }
+
+                else
+                {
+                    Logger.Warn($"{measurementEntity.Id} was not updated");
                 }
             }
 
             catch (Exception ex)
             {
-                Logger.Error($"Commit error for updating measurement {entity.Id}", ex);
-            }
-        }
-
-        public void Remove(IMeasurementEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
+                Logger.Error($"Commit error for updating measurement {measurementEntity.Id}", ex);
             }
 
-            Remove(entity.Id);
+            return response;
         }
 
-        public void Remove(Guid id)
+        public async Task DeleteMeasurement(Guid id, CancellationToken cancellationToken = default)
         {
             try
             {
-                var measurement = Context.Measurements.Single(m => m.Id == id);
-                Context.Measurements.Remove(measurement);
-                Logger.Info($"Removed measurement {id}");
+                var measurement = await Context.Measurements.SingleOrDefaultAsync(m => m.Id == id, cancellationToken);
+                if (measurement != null)
+                {
+                    Context.Measurements.Remove(measurement);
+                    await Context.SaveChangesAsync(cancellationToken);
+                    Logger.Info($"Deleted measurement {id}");
+                }
+
+                else
+                {
+                    Logger.Warn($"Delete. Measurement {id} was not found");
+                }
             }
 
             catch (Exception ex)
             {
-                Logger.Error($"Commit error for removing measurement {id}", ex);
+                Logger.Error($"Commit error for deleting measurement {id}", ex);
             }
         }
 
-        public IEnumerable<IMeasurementEntity> FindByParentId(IStepTestEntity parent)
+        public async Task<IList<Measurement>> GetMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
         {
-            Logger.Debug($"FindByParentId {parent.Id}");
-            var measurements = Context.Measurements.Where(m => m.StepTestId == parent.Id);
+            Logger.Debug($"{nameof(GetMeasurementsByStepTest)} {stepTestEntity.Id}");
+            var measurementQuery = Context.Measurements
+                .Where(m => m.StepTestId == stepTestEntity.Id)
+                .AsNoTracking();
 
-            return measurements.ToList();
+            return await measurementQuery.ToListAsync(cancellationToken);
         }
 
-        public int GetCountByParentId(IStepTestEntity parent, bool onlyInCalculation)
+        public async Task<int> GetCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation, CancellationToken cancellationToken = default)
         {
-            var result = Context.Measurements.Where(m => m.StepTestId == parent.Id && m.InCalculation == onlyInCalculation).Count();
-            Logger.Debug($"{nameof(GetCountByParentId)} {parent.Id} = {result}");
+            var result = await Context.Measurements.Where(m => m.StepTestId == stepTestEntity.Id && m.InCalculation == onlyInCalculation).CountAsync(cancellationToken);
+            Logger.Debug($"{nameof(GetCountByStepTest)} {stepTestEntity.Id} = {result}");
 
             return result;
         }
 
-        public bool IsChanged(IMeasurementEntity entity) => entity is Measurement measurementsEntity && Context.Entry(measurementsEntity).State != EntityState.Unchanged;
+        public async Task<bool> IsChanged(IMeasurementEntity entity, CancellationToken cancellationToken = default) => await Task.Run(() => entity is Measurement measurementsEntity && Context.Entry(measurementsEntity).State != EntityState.Unchanged);
     }
 }

@@ -8,6 +8,8 @@ namespace LanterneRouge.Fresno.Core.Configuration
     {
         public void Configure(EntityTypeBuilder<StepTest> entity)
         {
+            var orderCounter = 0;
+
             entity.ToTable("StepTest", b => b.HasCheckConstraint("CK_TESTTYPE", "[TestType] = 'Bike' OR [TestType] = 'Run'"))
                 .HasKey(t => t.Id);
 
@@ -15,27 +17,34 @@ namespace LanterneRouge.Fresno.Core.Configuration
 
             entity.Property(t => t.Id)
                 .IsRequired()
-                .ValueGeneratedNever();
+                .ValueGeneratedNever()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.UserId)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.TestType)
                 .HasDefaultValue("Bike")
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.EffortUnit)
                 .HasDefaultValue("W")
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.StepDuration)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.LoadPreset)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.Increase)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.HasMany(e => e.Measurements)
                 .WithOne(e => e.StepTest)

@@ -8,30 +8,38 @@ namespace LanterneRouge.Fresno.Core.Configuration
     {
         public void Configure(EntityTypeBuilder<Measurement> entity)
         {
+            int orderCounter = 0;
             entity.ToTable("Measurement")
                 .HasKey(e => e.Id);
 
             entity.Property(e => e.Id)
                 .IsRequired()
-                .ValueGeneratedNever();
+                .ValueGeneratedNever()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.Sequence)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.StepTestId)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.HeartRate)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.Lactate)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.Load)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnOrder(orderCounter++);
 
             entity.Property(e => e.InCalculation)
-                .HasDefaultValue(true);
+                .HasDefaultValue(true)
+                .HasColumnOrder(orderCounter++);
         }
     }
 }

@@ -1,121 +1,145 @@
-﻿using LanterneRouge.Fresno.Core.Contracts;
-using LanterneRouge.Fresno.Core.Entity;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Entity.Extentions;
 using LanterneRouge.Fresno.Core.Interface;
+using LanterneRouge.Fresno.Repository.Contracts;
 using log4net;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
 {
-    public class StepTestRepository : RepositoryBase, IRepository<IStepTestEntity, IUserEntity>
+    public class StepTestRepository : RepositoryBase, IStepTestRepository
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(StepTestRepository));
 
         public StepTestRepository(IDbConnection connection) : base(connection)
         { }
 
-        public void Add(IStepTestEntity entity)
+        public async Task<IList<StepTest>> GetAllStepTests(CancellationToken cancellationToken = default)
         {
-            if (entity == null)
+            var stepTests = Context.StepTests
+                .AsNoTracking();
+            Logger.Debug("Return all step tests");
+            return await stepTests.ToListAsync(cancellationToken);
+        }
+
+        public async Task<StepTest?> GetStepTestById(Guid id, CancellationToken cancellationToken = default)
+        {
+            Logger.Debug($"{nameof(GetStepTestById)}({id})");
+            var stepTest = await Context.StepTests
+                .AsNoTracking()
+                .SingleOrDefaultAsync(s => s.Id == id, cancellationToken);
+            return stepTest;
+        }
+
+        public async Task<StepTest?> InsertStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
+        {
+            if (stepTestEntity == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                Logger.Error($"ArgumentNullException, {nameof(stepTestEntity)} is null");
+                throw new ArgumentNullException(nameof(stepTestEntity));
             }
 
-            if (entity is StepTest stepTest)
+            var newId = Guid.NewGuid();
+
+            if (stepTestEntity is StepTest stepTest)
             {
                 try
                 {
-                    var newId = Context.StepTests.Add(stepTest);
-                    Context.SaveChanges();
-                    Logger.Info($"Added {newId.Entity.Id}");
+                    stepTest.Id = newId;
+                    var newEntity = Context.StepTests.Add(stepTest);
+                    await Context.SaveChangesAsync(cancellationToken);
+                    Logger.Info($"Added StepTest {newEntity.Entity.Id}");
                 }
 
                 catch (Exception ex)
                 {
-                    Logger.Error($"Commit error for adding step test for user '{entity.UserId}'", ex);
+                    Logger.Error($"Commit error for adding step test '{stepTestEntity.Id}", ex);
                 }
             }
+
+            var response = await Context.StepTests.AsNoTracking().SingleOrDefaultAsync(s => s.Id == newId, cancellationToken);
+
+            return response;
         }
 
-        public IEnumerable<IStepTestEntity> All()
+        public async Task<StepTest?> UpdateStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
         {
-            var stepTests = Context.StepTests;
-            Logger.Debug("Return all steptests");
-            return stepTests.ToList();
-        }
+            if (stepTestEntity == null)
+            {
+                Logger.Error($"ArgumentNullException, {nameof(stepTestEntity)} is null");
+                throw new ArgumentNullException(nameof(stepTestEntity));
+            }
 
-        public IStepTestEntity? FindSingle(Guid id)
-        {
-            Logger.Debug($"FindSingle({id})");
-            var stepTest = Context.StepTests.SingleOrDefault(x => x.Id == id);
-            return stepTest;
-        }
-
-        public void Remove(Guid id)
-        {
+            StepTest? response = null;
             try
             {
-                var stepTest = Context.StepTests.Single(m => m.Id == id);
-                Context.StepTests.Remove(stepTest);
-                Logger.Info($"Removed step test {id}");
-            }
-
-            catch (Exception ex)
-            {
-                Logger.Error($"Commit error for removing step test {id}", ex);
-            }
-        }
-
-        public void Remove(IStepTestEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            Remove(entity.Id);
-        }
-
-        public void Update(IStepTestEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            try
-            {
-                if (entity is StepTest entityObject)
+                var updateObject = await Context.StepTests.SingleOrDefaultAsync(s => s.Id == stepTestEntity.Id, cancellationToken);
+                if (updateObject != null)
                 {
-                    Context.StepTests.Update(entityObject);
-                    Context.SaveChanges();
+                    updateObject.CopyFrom(stepTestEntity);
+                    var updateEntity = Context.StepTests.Update(updateObject);
+                    await Context.SaveChangesAsync(cancellationToken);
+                    response = updateEntity.Entity;
+                    Logger.Info($"Updated {stepTestEntity.Id}");
+                }
 
-                    Logger.Info($"Updated {entity.Id}");
+                else
+                {
+                    Logger.Warn($"{stepTestEntity.Id} was not updated");
                 }
             }
 
             catch (Exception ex)
             {
-                Logger.Error($"Commit error for updating step test {entity.Id}", ex);
+                Logger.Error($"Commit error for updating step test {stepTestEntity.Id}", ex);
+            }
+
+            return response;
+        }
+
+        public async Task DeleteStepTest(Guid id, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var stepTest = await Context.StepTests.SingleOrDefaultAsync(m => m.Id == id, cancellationToken);
+                if (stepTest != null)
+                {
+                    Context.StepTests.Remove(stepTest);
+                    await Context.SaveChangesAsync(cancellationToken);
+                    Logger.Info($"Deleted step test {id}");
+                }
+
+                else
+                {
+                    Logger.Warn($"Delete. Step Test {id} was not found");
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Logger.Error($"Commit error for deleting step test {id}", ex);
             }
         }
 
-        public IEnumerable<IStepTestEntity> FindByParentId(IUserEntity parent)
+        public async Task<IList<StepTest>> GetStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
-            Logger.Debug($"FindByParentId {parent.Id}");
-            var stepTests = Context.StepTests.Where(m => m.UserId == parent.Id);
+            Logger.Debug($"{nameof(GetStepTestsByUser)} {userEntity.Id}");
+            var query = Context.StepTests
+                .Where(m => m.UserId == userEntity.Id)
+                .AsNoTracking();
 
-            return stepTests.ToList();
+            return await query.ToListAsync(cancellationToken);
         }
 
-        public int GetCountByParentId(IUserEntity parent, bool onlyInCalculation)
+        public async Task<int> GetCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
-            var result = Context.StepTests.Where(m => m.UserId == parent.Id).Count();
-            Logger.Debug($"{nameof(GetCountByParentId)} {parent.Id} = {result}");
+            var result = await Context.StepTests.Where(s => s.UserId == userEntity.Id).CountAsync(cancellationToken);
+            Logger.Debug($"{nameof(GetCountByUser)} {userEntity.Id} = {result}");
 
             return result;
         }
 
-        public bool IsChanged(IStepTestEntity entity) => entity is StepTest stepTestEntity && Context.Entry(stepTestEntity).State != EntityState.Unchanged;
+        public async Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => await Task.Run(() => stepTestEntity is StepTest stepTest && Context.Entry(stepTestEntity).State != EntityState.Unchanged);
     }
 }

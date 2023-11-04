@@ -38,5 +38,14 @@ namespace LanterneRouge.Fresno.Core.Entity.Extentions
 
             return true;
         }
+
+        public static void CopyFrom(this Measurement measurement, IMeasurementEntity measurementEntity)
+        {
+            measurement.HeartRate = measurementEntity.HeartRate;
+            measurement.InCalculation = measurementEntity.InCalculation;
+            measurement.Lactate = measurementEntity.Lactate;
+            measurement.Load = measurementEntity.Load;
+            measurement.Sequence = measurementEntity.Sequence;
+        }
     }
 }

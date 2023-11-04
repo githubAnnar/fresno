@@ -31,7 +31,7 @@ namespace LanterneRouge.Fresno.Core.Entity.Extentions
                 return false;
             }
 
-            if (stepTestEntity.Increase== 0f)
+            if (stepTestEntity.Increase == 0f)
             {
                 return false;
             }
@@ -42,6 +42,18 @@ namespace LanterneRouge.Fresno.Core.Entity.Extentions
             }
 
             return true;
+        }
+
+        public static void CopyFrom(this StepTest stepTest, IStepTestEntity stepTestEntity)
+        {
+            stepTest.EffortUnit = stepTestEntity.EffortUnit;
+            stepTest.Increase = stepTestEntity.Increase;
+            stepTest.LoadPreset = stepTestEntity.LoadPreset;
+            stepTest.StepDuration = stepTestEntity.StepDuration;
+            stepTest.Temperature = stepTestEntity.Temperature;
+            stepTest.TestDate = stepTestEntity.TestDate;
+            stepTest.TestType = stepTestEntity.TestType;
+            stepTest.Weight = stepTestEntity.Weight;
         }
     }
 }
