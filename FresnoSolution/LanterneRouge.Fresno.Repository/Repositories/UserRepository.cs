@@ -1,114 +1,127 @@
-﻿using LanterneRouge.Fresno.Core.Contracts;
-using LanterneRouge.Fresno.Core.Entity;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Entity.Extentions;
 using LanterneRouge.Fresno.Core.Interface;
+using LanterneRouge.Fresno.Repository.Contracts;
 using log4net;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace LanterneRouge.Fresno.Repository.Repositories
 {
-    public class UserRepository : RepositoryBase, IRepository<IUserEntity, IUserEntity>
+    public class UserRepository : RepositoryBase, IUserRepository
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UserRepository));
 
         public UserRepository(IDbConnection connection) : base(connection)
         { }
 
-        public void Add(IUserEntity entity)
+        public async Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default)
         {
-            if (entity == null)
+            var users = Context.Users
+                .AsNoTracking();
+            Logger.Debug("Return all users");
+            return await users.ToListAsync(cancellationToken);
+        }
+
+        public async Task<User?> GetUserById(Guid id, CancellationToken cancellationToken = default)
+        {
+            Logger.Debug($"{nameof(GetUserById)}({id})");
+            var user = await Context.Users
+                .AsNoTracking()
+                .SingleOrDefaultAsync(s => s.Id == id, cancellationToken);
+            return user;
+        }
+
+        public async Task<User?> InsertUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
+        {
+            if (userEntity == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                Logger.Error($"ArgumentNullException, {nameof(userEntity)} is null");
+                throw new ArgumentNullException(nameof(userEntity));
             }
 
-            if (entity is User user)
+            var newId = Guid.NewGuid();
+
+            if (userEntity is User user)
             {
                 try
                 {
-                    var newId = Context.Users.Add(user);
-                    Context.SaveChanges();
-                    Logger.Info($"Added {newId.Entity.Id}");
+                    user.Id = newId;
+                    var newEntity = Context.Users.Add(user);
+                    await Context.SaveChangesAsync(cancellationToken);
+                    Logger.Info($"Added User {newEntity.Entity.Id}");
                 }
 
                 catch (Exception ex)
                 {
-                    Logger.Error($"Commit error for adding user '{entity.LastName}, {entity.FirstName}'", ex);
+                    Logger.Error($"Commit error for adding user '{userEntity.Id}", ex);
                 }
             }
+
+            var response = await Context.Users.AsNoTracking().SingleOrDefaultAsync(s => s.Id == newId, cancellationToken);
+
+            return response;
         }
 
-        public IEnumerable<IUserEntity> All()
+        public async Task<User?> UpdateUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
-            var users = Context.Users;
+            if (userEntity == null)
+            {
+                Logger.Error($"ArgumentNullException, {nameof(userEntity)} is null");
+                throw new ArgumentNullException(nameof(userEntity));
+            }
 
-            Logger.Debug("Return all users");
-            return users.ToList();
-        }
-
-        public IUserEntity? FindSingle(Guid id)
-        {
-            Logger.Debug($"FindSingle({id})");
-            var user = Context.Users.SingleOrDefault(x => x.Id == id);
-            return user;
-        }
-
-        public IEnumerable<IUserEntity> FindByParentId(IUserEntity user)
-        {
-            Logger.Debug($"{nameof(FindByParentId)} is NULL");
-            return new List<IUserEntity>();
-        }
-
-        public int GetCountByParentId(IUserEntity parent, bool onlyInCalculation) => 0;
-
-        public void Remove(Guid id)
-        {
+            User? response = null;
             try
             {
-                var user = Context.Users.Single(m => m.Id == id);
-                Context.Users.Remove(user);
-                Logger.Info($"Removed user {id}");
-            }
-
-            catch (Exception ex)
-            {
-                Logger.Error($"Commit error for removing user {id}", ex);
-            }
-        }
-
-        public void Remove(IUserEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            Remove(entity.Id);
-        }
-
-        public void Update(IUserEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            try
-            {
-                if (entity is User entityObect)
+                var updateObject = await Context.Users.SingleOrDefaultAsync(s => s.Id == userEntity.Id, cancellationToken);
+                if (updateObject != null)
                 {
-                    Context.Users.Update(entityObect);
-                    Context.SaveChanges();
+                    updateObject.CopyFrom(userEntity);
+                    var updateEntity = Context.Users.Update(updateObject);
+                    await Context.SaveChangesAsync(cancellationToken);
+                    response = updateEntity.Entity;
+                    Logger.Info($"Updated {userEntity.Id}");
+                }
 
-                    Logger.Info($"Updated {entity.Id}"); 
+                else
+                {
+                    Logger.Warn($"{userEntity.Id} was not updated");
                 }
             }
 
             catch (Exception ex)
             {
-                Logger.Error($"Commit error for updating user {entity.Id}", ex);
+                Logger.Error($"Commit error for updating user {userEntity.Id}", ex);
+            }
+
+            return response;
+        }
+
+        public async Task DeleteUser(Guid id, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var user = await Context.Users.SingleOrDefaultAsync(m => m.Id == id, cancellationToken);
+                if (user != null)
+                {
+                    Context.Users.Remove(user);
+                    await Context.SaveChangesAsync(cancellationToken);
+                    Logger.Info($"Deleted user {id}");
+                }
+
+                else
+                {
+                    Logger.Warn($"Delete. User {id} was not found");
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Logger.Error($"Commit error for deleting user {id}", ex);
             }
         }
 
-        public bool IsChanged(IUserEntity entity) => entity is User userEntity && Context.Entry(userEntity).State != EntityState.Unchanged;
+        public async Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default) => await Task.Run(() => userEntity is User user && Context.Entry(userEntity).State != EntityState.Unchanged);
     }
 }

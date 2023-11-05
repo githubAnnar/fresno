@@ -7,11 +7,11 @@ namespace LanterneRouge.Fresno.Repository.Contracts
     {
         Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default);
 
-        Task<User> GetUserById(Guid id, CancellationToken cancellationToken = default);
+        Task<User?> GetUserById(Guid id, CancellationToken cancellationToken = default);
 
-        Task<User> InsertUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<User?> InsertUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        Task<User> UpdateUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<User?> UpdateUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
         Task DeleteUser(Guid id, CancellationToken cancellationToken = default);
 
