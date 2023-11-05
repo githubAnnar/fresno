@@ -58,6 +58,8 @@ namespace LanterneRouge.Fresno.Repository.Managers
 
         public async Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default) => await Repository.IsChanged(userEntity, cancellationToken);
 
+        public async Task<User> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => await Repository.GetUserByStepTest(stepTestEntity, cancellationToken);
+
         #endregion
 
         #region IDisposable Support

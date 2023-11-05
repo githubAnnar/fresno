@@ -123,5 +123,12 @@ namespace LanterneRouge.Fresno.Repository.Repositories
         }
 
         public async Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default) => await Task.Run(() => userEntity is User user && Context.Entry(userEntity).State != EntityState.Unchanged);
+
+        public async Task<User> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
+        {
+            Logger.Debug($"{nameof(GetUserByStepTest)}({stepTestEntity.Id})");
+            var user = await Context.Users.AsNoTracking().SingleAsync(u => u.Id == stepTestEntity.UserId, cancellationToken);
+            return user;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using LanterneRouge.Fresno.Core.Interface;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Infrastructure;
 using LanterneRouge.Fresno.Repository.Managers;
@@ -88,40 +89,58 @@ namespace LanterneRouge.Fresno.Services.Data
             return response;
         }
 
-        public IEnumerable<IUserEntity> GetAllUsers() => _userManager != null ? _userManager.GetAllUsers() : new List<IUserEntity>();
+        public async Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default) => _userManager != null ? await _userManager.GetAllUsers(cancellationToken) : new List<User>();
 
-        public IUserEntity? GetUser(Guid id) => _userManager?.GetUserById(id);
+        public async Task<User?> GetUser(Guid id, CancellationToken cancellationToken = default) => _userManager != null ? await _userManager.GetUserById(id, cancellationToken) : null;
 
-        public IUserEntity? GetUserByStepTest(IStepTestEntity stepTest) => _userManager?.GetUserByStepTest(stepTest);
+        public async Task<User?> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => _userManager != null ? await _userManager.GetUserByStepTest(stepTestEntity, cancellationToken) : null;
 
-        public void SaveUser(IUserEntity entity) => _userManager?.UpsertUser(entity);
+        public async Task<User?> SaveUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => _userManager != null ? await _userManager.UpsertUser(userEntity, cancellationToken) : null;
 
-        public void RemoveUser(IUserEntity entity) => _userManager?.RemoveUser(entity);
+        public async Task DeleteUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
+        {
+            if (_userManager != null)
+            {
+                await _userManager.DeleteUser(userEntity.Id, cancellationToken);
+            }
+        }
 
-        public bool IsChanged(IUserEntity entity) => _userManager != null && _userManager.IsChanged(entity);
+        public async Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default) => _userManager != null && await _userManager.IsChanged(userEntity, cancellationToken);
 
-        public bool IsChanged(IStepTestEntity entity) => _stepTestManager != null && _stepTestManager.IsChanged(entity);
+        public async Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => _stepTestManager != null && await _stepTestManager.IsChanged(stepTestEntity, cancellationToken);
 
-        public bool IsChanged(IMeasurementEntity entity) => _measurementManager != null && _measurementManager.IsChanged(entity);
+        public async Task<bool> IsChanged(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default) => _measurementManager != null && await _measurementManager.IsChanged(measurementEntity, cancellationToken);
 
-        public IEnumerable<IStepTestEntity> GetAllStepTests() => _stepTestManager != null ? _stepTestManager.GetAllStepTests() : new List<IStepTestEntity>();
+        public async Task<IList<StepTest>> GetAllStepTests(CancellationToken cancellationToken = default) => _stepTestManager != null ? await _stepTestManager.GetAllStepTests(cancellationToken) : new List<StepTest>();
 
-        public IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity parent) => _stepTestManager != null ? _stepTestManager.GetStepTestsByUser(parent) : new List<IStepTestEntity>();
+        public async Task<IList<StepTest>> GetAllStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => _stepTestManager != null ? await _stepTestManager.GetStepTestsByUser(userEntity, cancellationToken) : new List<StepTest>();
 
-        public int StepTestCountByUser(IUserEntity entity, bool onlyInCalculation = false) => _stepTestManager != null ? _stepTestManager.StepTestCountByUser(entity, onlyInCalculation) : 0;
+        public async Task<int> GetStepTestCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => _stepTestManager != null ? await _stepTestManager.GetCountByUser(userEntity, cancellationToken) : 0;
 
-        public void SaveStepTest(IStepTestEntity entity) => _stepTestManager?.UpsertStepTest(entity);
+        public async Task<StepTest?> SaveStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => _stepTestManager != null ? await _stepTestManager.UpsertStepTest(stepTestEntity, cancellationToken) : null;
 
-        public void RemoveStepTest(IStepTestEntity entity) => _stepTestManager?.RemoveStepTest(entity);
+        public async Task DeleteStepTest(IStepTestEntity entity, CancellationToken cancellationToken = default)
+        {
+            if (_stepTestManager != null)
+            {
+                await _stepTestManager.DeleteStepTest(entity.Id, cancellationToken);
+            }
+        }
 
-        public IEnumerable<IMeasurementEntity> GetAllMeasurements() => _measurementManager != null ? _measurementManager.GetAllMeasurements() : new List<IMeasurementEntity>();
+        public async Task<IList<Measurement>> GetAllMeasurements(CancellationToken cancellationToken = default) => _measurementManager != null ? await _measurementManager.GetAllMeasurements(cancellationToken) : new List<Measurement>();
 
-        public IEnumerable<IMeasurementEntity> GetAllMeasurementsByStepTest(IStepTestEntity entity) => _measurementManager != null ? _measurementManager.GetMeasurementsByStepTest(entity) : new List<IMeasurementEntity>();
+        public async Task<IList<Measurement>> GetAllMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken) => _measurementManager != null ? await _measurementManager.GetMeasurementsByStepTest(stepTestEntity, cancellationToken) : new List<Measurement>();
 
-        public int MeasurementsCountByStepTest(IStepTestEntity entity, bool onlyInCalculation = false) => _measurementManager != null ? _measurementManager.MeasurementsCountByStepTest(entity, onlyInCalculation) : 0;
+        public async Task<int> GetMeasurementCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation = false, CancellationToken cancellationToken = default) => _measurementManager != null ? await _measurementManager.GetCountByStepTest(stepTestEntity, onlyInCalculation, cancellationToken) : 0;
 
-        public void SaveMeasurement(IMeasurementEntity entity) => _measurementManager?.UpsertMeasurement(entity);
+        public async Task<Measurement?> SaveMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default) => _measurementManager != null ? await _measurementManager.UpsertMeasurement(measurementEntity, cancellationToken) : null;
 
-        public void RemoveMeasurement(IMeasurementEntity entity) => _measurementManager?.RemoveMeasurement(entity);
+        public async Task DeleteMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
+        {
+            if (_measurementManager != null)
+            {
+                await _measurementManager.DeleteMeasurement(measurementEntity.Id, cancellationToken);
+            }
+        }
     }
 }

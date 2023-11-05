@@ -9,6 +9,8 @@ namespace LanterneRouge.Fresno.Repository.Contracts
 
         Task<User?> GetUserById(Guid id, CancellationToken cancellationToken = default);
 
+        Task<User> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+
         Task<User?> UpsertUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
         Task DeleteUser(Guid id, CancellationToken cancellationToken = default);

@@ -16,5 +16,7 @@ namespace LanterneRouge.Fresno.Repository.Contracts
         Task DeleteUser(Guid id, CancellationToken cancellationToken = default);
 
         Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default);
+
+        Task<User> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
     }
 }

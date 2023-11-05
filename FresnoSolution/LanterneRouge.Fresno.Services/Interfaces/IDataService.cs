@@ -1,5 +1,5 @@
-﻿using LanterneRouge.Fresno.Core.Interface;
-using LanterneRouge.Fresno.Services.Models;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 
 namespace LanterneRouge.Fresno.Services.Interfaces
 {
@@ -7,41 +7,41 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
     public interface IDataService
     {
-        IEnumerable<IUserEntity> GetAllUsers();
+        Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default);
 
-        IUserEntity? GetUser(Guid id);
+        Task<User?> GetUser(Guid id, CancellationToken cancellationToken = default);
 
-        IUserEntity? GetUserByStepTest(IStepTestEntity stepTest);
+        Task<User?> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        void SaveUser(IUserEntity entity);
+        Task<User?> SaveUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        void RemoveUser(IUserEntity entity);
+        Task DeleteUser(IUserEntity userEntity, CancellationToken cancellation = default);
 
-        bool IsChanged(IUserEntity entity);
+        Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        bool IsChanged(IStepTestEntity entity);
+        Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        bool IsChanged(IMeasurementEntity entity);
+        Task<bool> IsChanged(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
 
-        IEnumerable<IStepTestEntity> GetAllStepTests();
+        Task<IList<StepTest>> GetAllStepTests(CancellationToken cancellationToken = default);
 
-        IEnumerable<IStepTestEntity> GetAllStepTestsByUser(IUserEntity entity);
+        Task<IList<StepTest>> GetAllStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        int StepTestCountByUser(IUserEntity entity, bool onlyInCalculation = false);
+        Task<int> GetStepTestCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        void SaveStepTest(IStepTestEntity entity);
+        Task<StepTest?> SaveStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        void RemoveStepTest(IStepTestEntity entity);
+        Task DeleteStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        IEnumerable<IMeasurementEntity> GetAllMeasurements();
+        Task<IList<Measurement>> GetAllMeasurements(CancellationToken cancellationToken = default);
 
-        IEnumerable<IMeasurementEntity> GetAllMeasurementsByStepTest(IStepTestEntity entity);
+        Task<IList<Measurement>> GetAllMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        int MeasurementsCountByStepTest(IStepTestEntity entity, bool onlyInCalculation = false);
+        Task<int> GetMeasurementCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation = false, CancellationToken cancellationToken = default);
 
-        void SaveMeasurement(IMeasurementEntity entity);
+        Task<Measurement?> SaveMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
 
-        void RemoveMeasurement(IMeasurementEntity entity);
+        Task DeleteMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
 
         bool LoadDatabase(string filename);
 
