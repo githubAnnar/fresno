@@ -1,5 +1,5 @@
 ﻿using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.Core.Interface;
+using LanterneRouge.Fresno.Core.Entity;
 using System.Collections.Generic;
 
 namespace LanterneRouge.Fresno.Calculations
@@ -15,7 +15,7 @@ namespace LanterneRouge.Fresno.Calculations
 
         #region Constructors
 
-        public FblcCalculation(IEnumerable<IMeasurementEntity> measurements, double marker) : base(measurements)
+        public FblcCalculation(List<Measurement> measurements, double marker) : base(measurements)
         {
             Marker = marker;
         }

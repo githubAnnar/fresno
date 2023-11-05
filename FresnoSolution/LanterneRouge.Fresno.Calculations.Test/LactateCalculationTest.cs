@@ -1,5 +1,4 @@
 ﻿using LanterneRouge.Fresno.Core.Entity;
-using LanterneRouge.Fresno.Core.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +8,11 @@ namespace LanterneRouge.Fresno.Calculations
 {
     public class LactateCalculationTest
     {
-        private readonly List<IMeasurementEntity> TestMeasurementData;
+        private readonly List<Measurement> TestMeasurementData;
 
         public LactateCalculationTest()
         {
-            TestMeasurementData = new List<IMeasurementEntity>
+            TestMeasurementData = new List<Measurement>
             {
                 new Measurement {Id = Guid.NewGuid(),Sequence = 1,Load = 120f, HeartRate = 104, Lactate = 1.4f, StepTestId = Guid.NewGuid(), InCalculation = true},
                 new Measurement {Id = Guid.NewGuid(),Sequence = 2,Load = 140f, HeartRate = 110, Lactate = 1.7f, StepTestId = Guid.NewGuid(), InCalculation = true},

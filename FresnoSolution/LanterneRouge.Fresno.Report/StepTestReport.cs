@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Calculations.Base;
+using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Report.Helpers;
 using LanterneRouge.Fresno.Report.PlotModels;
@@ -36,7 +37,7 @@ namespace LanterneRouge.Fresno.Report
 
         #region Constructor
 
-        public StepTestReport(IStepTestEntity stepTest, IEnumerable<IStepTestEntity> additionalStepTests)
+        public StepTestReport(StepTest stepTest, List<StepTest> additionalStepTests)
         {
             ReportStepTest = stepTest ?? throw new ArgumentNullException(nameof(stepTest));
             AdditionalStepTests = additionalStepTests;
@@ -60,13 +61,13 @@ namespace LanterneRouge.Fresno.Report
             }
         }
 
-        public IStepTestEntity ReportStepTest { get; }
+        public StepTest ReportStepTest { get; }
 
-        public IEnumerable<IStepTestEntity> AdditionalStepTests { get; set; }
+        public List<StepTest> AdditionalStepTests { get; set; }
 
-        private FblcCalculation LactateCalculation(IStepTestEntity data) => new FblcCalculation(DataManager.GetAllMeasurementsByStepTest(data), MARKER);
+        private static FblcCalculation LactateCalculation(StepTest data) => new(data.Measurements.ToList(), MARKER);
 
-        private List<Zone> LactateZones(IStepTestEntity data) => new LactateBasedZones(LactateCalculation(data), ZONES).Zones.ToList();
+        private List<Zone> LactateZones(StepTest data) => new LactateBasedZones(LactateCalculation(data), ZONES).Zones.ToList();
 
         #endregion
 
@@ -87,11 +88,11 @@ namespace LanterneRouge.Fresno.Report
                 }
             }
 
-            Logger.Info($"Report for Steptest {(DataManager.GetUserByStepTest(ReportStepTest)).LastName} / {ReportStepTest.Id} is created");
+            Logger.Info($"Report for Steptest {ReportStepTest.User.LastName} / {ReportStepTest.Id} is created");
             return document;
         }
 
-        private void CreatePage(Document document, IStepTestEntity data)
+        private void CreatePage(Document document, StepTest data)
         {
             var dataSection = document.AddSection();
             dataSection.PageSetup = document.DefaultPageSetup.Clone();
@@ -104,10 +105,9 @@ namespace LanterneRouge.Fresno.Report
             }
 
             var firstMetaDataRow = metaDataTable.AddRow();
-            var parentUser = DataManager.GetUserByStepTest(data);
             firstMetaDataRow.Format.Font.Size = Unit.FromPoint(12d);
             firstMetaDataRow[0].AddParagraph("Navn:").Format.Font.Bold = true;
-            firstMetaDataRow[1].AddParagraph($"{parentUser.FirstName} {parentUser.LastName}");
+            firstMetaDataRow[1].AddParagraph($"{data.User.FirstName} {data.User.LastName}");
             firstMetaDataRow[1].MergeRight = 2;
             var secondMetatDataRow = metaDataTable.AddRow();
             secondMetatDataRow.Format.Font.Size = Unit.FromPoint(12d);
@@ -141,7 +141,7 @@ namespace LanterneRouge.Fresno.Report
             measurementHeaderRow[3].AddParagraph($"Laktat [mmol/L]");
 
             // Add measurements
-            foreach (var measurement in DataManager.GetAllMeasurementsByStepTest(data))
+            foreach (var measurement in data.Measurements)
             {
                 var dataRow = measurementsTable.AddRow();
                 dataRow.Borders = new Borders { Width = 0.1, Color = Colors.Black };
@@ -204,16 +204,16 @@ namespace LanterneRouge.Fresno.Report
             }
 
             // Add Threshold string
-            p = dataSection.AddParagraph($"Belastning Terskel: {LactateCalculation(data).LoadThreshold.ToString("0.0")} {data.EffortUnit}\tHjertefrekvens Terskel: {LactateCalculation(data).HeartRateThreshold.ToString("0")} BPM");
+            p = dataSection.AddParagraph($"Belastning Terskel: {LactateCalculation(data).LoadThreshold:0.0} {data.EffortUnit}\tHjertefrekvens Terskel: {LactateCalculation(data).HeartRateThreshold:0} BPM");
             p.Format.SpaceAfter = Unit.FromMillimeter(10d);
             p.Format.SpaceBefore = Unit.FromMillimeter(10d);
 
             Logger.Debug("Data page created");
         }
 
-        public byte[] GetStepTestPlotXImage(IEnumerable<IStepTestEntity> additionalStepTests)
+        public byte[] GetStepTestPlotXImage(List<StepTest> additionalStepTests)
         {
-            var list = new List<IStepTestEntity> { ReportStepTest };
+            var list = new List<StepTest> { ReportStepTest };
             if (additionalStepTests != null && additionalStepTests.Any())
             {
                 list.AddRange(additionalStepTests);
