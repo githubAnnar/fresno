@@ -1,21 +1,22 @@
-﻿using LanterneRouge.Fresno.Core.Interface;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 
 namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IStepTestManager : IManagerBase, IDisposable
     {
-        IList<IStepTestEntity> GetAllStepTests();
+        Task<IList<StepTest>> GetAllStepTests(CancellationToken cancellationToken = default);
 
-        IList<IStepTestEntity> GetStepTestsByUser(IUserEntity parent);
+        Task<IList<StepTest>> GetStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        int StepTestCountByUser(IUserEntity parent, bool onlyInCalculation);
+        Task<int> GetCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        IStepTestEntity? GetStepTestById(Guid id);
+        Task<StepTest?> GetStepTestById(Guid id, CancellationToken cancellationToken = default);
 
-        void UpsertStepTest(IStepTestEntity entity);
+        Task<StepTest?> UpsertStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        void RemoveStepTest(IStepTestEntity entity);
+        Task DeleteStepTest(Guid id, CancellationToken cancellationToken = default);
 
-        bool IsChanged(IStepTestEntity entity);
+        Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
     }
 }

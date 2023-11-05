@@ -1,21 +1,22 @@
-﻿using LanterneRouge.Fresno.Core.Interface;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 
 namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IMeasurementManager : IManagerBase, IDisposable
     {
-        List<IMeasurementEntity> GetAllMeasurements();
+        Task<IList<Measurement>> GetAllMeasurements(CancellationToken cancellationToken = default);
 
-        List<IMeasurementEntity> GetMeasurementsByStepTest(IStepTestEntity parent);
+        Task<IList<Measurement>> GetMeasurementsByStepTest(IStepTestEntity parent, CancellationToken cancellationToken = default);
 
-        int MeasurementsCountByStepTest(IStepTestEntity parent, bool onlyInCalculation);
+        Task<int> GetCountByStepTest(IStepTestEntity parent, bool onlyInCalculation, CancellationToken cancellationToken = default);
 
-        IMeasurementEntity? GetMeasurementById(Guid id);
+        Task<Measurement?> GetMeasurementById(Guid id, CancellationToken cancellationToken = default);
 
-        void UpsertMeasurement(IMeasurementEntity entity);
+        Task<Measurement?> UpsertMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
 
-        void RemoveMeasurement(IMeasurementEntity entity);
+        Task DeleteMeasurement(Guid id, CancellationToken cancellationToken = default);
 
-        bool IsChanged(IMeasurementEntity entity);
+        Task<bool> IsChanged(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
     }
 }

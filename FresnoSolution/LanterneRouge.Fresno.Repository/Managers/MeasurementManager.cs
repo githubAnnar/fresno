@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Core.Contracts;
+﻿using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Repositories;
@@ -11,14 +11,14 @@ namespace LanterneRouge.Fresno.Repository.Managers
         #region Constructors
         public MeasurementManager(IConnectionFactory connectionFactory) : base(connectionFactory)
         {
-            MeasurementRepository = new MeasurementRepository(_connection);
+            Repository = new MeasurementRepository(_connection);
         }
 
         #endregion
 
         #region Properties
 
-        private IRepository<IMeasurementEntity, IStepTestEntity> MeasurementRepository { get; }
+        private IMeasurementRepository Repository { get; }
 
         #endregion
 
@@ -37,31 +37,35 @@ namespace LanterneRouge.Fresno.Repository.Managers
             Logger.Info("Db connection closed");
         }
 
-        public List<IMeasurementEntity> GetAllMeasurements() => MeasurementRepository.All().ToList();
+        public async Task<IList<Measurement>> GetAllMeasurements(CancellationToken cancellationToken = default) => await Repository.GetAllMeasurements(cancellationToken);
 
-        public List<IMeasurementEntity> GetMeasurementsByStepTest(IStepTestEntity parent) => MeasurementRepository.FindByParentId(parent).ToList();
+        public async Task<IList<Measurement>> GetMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => await Repository.GetMeasurementsByStepTest(stepTestEntity, cancellationToken);
 
-        public int MeasurementsCountByStepTest(IStepTestEntity parent, bool onlyInCalculation) => MeasurementRepository.GetCountByParentId(parent, onlyInCalculation);
+        public async Task<int> MeasurementsCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation, CancellationToken cancellationToken = default) => await Repository.GetCountByStepTest(stepTestEntity, onlyInCalculation, cancellationToken);
 
-        public IMeasurementEntity? GetMeasurementById(Guid id) => MeasurementRepository.FindSingle(id);
+        public async Task<Measurement?> GetMeasurementById(Guid id, CancellationToken cancellationToken = default) => await Repository.GetMeasurementById(id, cancellationToken);
 
-        public void UpsertMeasurement(IMeasurementEntity entity)
+        public async Task<Measurement?> UpsertMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
         {
-            if (entity.Id == Guid.Empty)
+            Measurement? response;
+            if (measurementEntity.Id == Guid.Empty)
             {
-                entity.Id = Guid.NewGuid();
-                MeasurementRepository.Add(entity);
+                response = await Repository.InsertMeasurement(measurementEntity, cancellationToken);
             }
 
             else
             {
-                MeasurementRepository.Update(entity);
+                response = await Repository.UpdateMeasurement(measurementEntity, cancellationToken);
             }
+
+            return response;
         }
 
-        public void RemoveMeasurement(IMeasurementEntity entity) => MeasurementRepository.Remove(entity);
+        public async Task DeleteMeasurement(Guid id, CancellationToken cancellationToken) => await Repository.DeleteMeasurement(id, cancellationToken);
 
-        public bool IsChanged(IMeasurementEntity entity) => MeasurementRepository.IsChanged(entity);
+        public async Task<int> GetCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation, CancellationToken cancellationToken = default) => await Repository.GetCountByStepTest(stepTestEntity, onlyInCalculation, cancellationToken);
+
+        public async Task<bool> IsChanged(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default) => await Repository.IsChanged(measurementEntity, cancellationToken);
 
         #endregion
 

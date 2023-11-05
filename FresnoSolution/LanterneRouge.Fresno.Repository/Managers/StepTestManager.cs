@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Core.Contracts;
+﻿using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Repositories;
@@ -11,14 +11,14 @@ namespace LanterneRouge.Fresno.Repository.Managers
         #region Constructors
         public StepTestManager(IConnectionFactory connectionFactory) : base(connectionFactory)
         {
-            StepTestRepository = new StepTestRepository(_connection);
+            Repository = new StepTestRepository(_connection);
         }
 
         #endregion
 
         #region Properties
 
-        private IRepository<IStepTestEntity, IUserEntity> StepTestRepository { get; }
+        private IStepTestRepository Repository { get; }
 
         #endregion
 
@@ -37,31 +37,33 @@ namespace LanterneRouge.Fresno.Repository.Managers
             Logger.Info("Db connection closed");
         }
 
-        public IList<IStepTestEntity> GetAllStepTests() => StepTestRepository.All().ToList();
+        public async Task<IList<StepTest>> GetAllStepTests(CancellationToken cancellationToken = default) => await Repository.GetAllStepTests(cancellationToken);
 
-        public IList<IStepTestEntity> GetStepTestsByUser(IUserEntity parent) => StepTestRepository.FindByParentId(parent).ToList();
+        public async Task<IList<StepTest>> GetStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => await Repository.GetStepTestsByUser(userEntity, cancellationToken);
 
-        public int StepTestCountByUser(IUserEntity parent, bool onlyInCalculation) => StepTestRepository.GetCountByParentId(parent, onlyInCalculation);
+        public async Task<int> GetCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => await Repository.GetCountByUser(userEntity, cancellationToken);
 
-        public IStepTestEntity? GetStepTestById(Guid id) => StepTestRepository.FindSingle(id);
+        public async Task<StepTest?> GetStepTestById(Guid id, CancellationToken cancellationToken = default) => await Repository.GetStepTestById(id, cancellationToken);
 
-        public void UpsertStepTest(IStepTestEntity entity)
+        public async Task<StepTest?> UpsertStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
         {
-            if (entity.Id == Guid.Empty)
+            StepTest? response;
+            if (stepTestEntity.Id == Guid.Empty)
             {
-                entity.Id = Guid.NewGuid();
-                StepTestRepository.Add(entity);
+                response = await Repository.InsertStepTest(stepTestEntity, cancellationToken);
             }
 
             else
             {
-                StepTestRepository.Update(entity);
+                response = await Repository.UpdateStepTest(stepTestEntity, cancellationToken);
             }
+
+            return response;
         }
 
-        public void RemoveStepTest(IStepTestEntity entity) => StepTestRepository.Remove(entity);
+        public async Task DeleteStepTest(Guid id, CancellationToken cancellationToken = default) => await Repository.DeleteStepTest(id, cancellationToken);
 
-        public bool IsChanged(IStepTestEntity entity) => StepTestRepository.IsChanged(entity);
+        public async Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => await Repository.IsChanged(stepTestEntity, cancellationToken);
 
         #endregion
 

@@ -1,19 +1,18 @@
-﻿using LanterneRouge.Fresno.Core.Interface;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Interface;
 
 namespace LanterneRouge.Fresno.Repository.Contracts
 {
     public interface IUserManager : IManagerBase, IDisposable
     {
-        IList<IUserEntity> GetAllUsers();
+        Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default);
 
-        IUserEntity? GetUserById(Guid id);
+        Task<User?> GetUserById(Guid id, CancellationToken cancellationToken = default);
 
-        IUserEntity? GetUserByStepTest(IStepTestEntity stepTest);
+        Task<User?> UpsertUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        void UpsertUser(IUserEntity entity);
+        Task DeleteUser(Guid id, CancellationToken cancellationToken = default);
 
-        void RemoveUser(IUserEntity entity);
-
-        bool IsChanged(IUserEntity entity);
+        Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default);
     }
 }

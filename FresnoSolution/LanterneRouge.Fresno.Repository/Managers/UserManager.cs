@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Core.Contracts;
+﻿using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Repositories;
@@ -10,12 +10,12 @@ namespace LanterneRouge.Fresno.Repository.Managers
     {
         public UserManager(IConnectionFactory connectionFactory) : base(connectionFactory)
         {
-            UserRepository = new UserRepository(_connection);
+            Repository = new UserRepository(_connection);
         }
 
         #region Properties
 
-        private IRepository<IUserEntity, IUserEntity> UserRepository { get; }
+        private IUserRepository Repository { get; }
 
         #endregion
 
@@ -34,29 +34,29 @@ namespace LanterneRouge.Fresno.Repository.Managers
             Logger.Info("Db connection closed");
         }
 
-        public IList<IUserEntity> GetAllUsers() => UserRepository.All().ToList();
+        public async Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default) => await Repository.GetAllUsers(cancellationToken);
 
-        public IUserEntity? GetUserById(Guid id) => UserRepository.FindSingle(id);
+        public async Task<User?> GetUserById(Guid id, CancellationToken cancellationToken = default) => await Repository.GetUserById(id, cancellationToken);
 
-        public IUserEntity? GetUserByStepTest(IStepTestEntity stepTest) => UserRepository.FindSingle(stepTest.UserId);
-
-        public void UpsertUser(IUserEntity entity)
+        public async Task<User?> UpsertUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
-            if (entity.Id == Guid.Empty)
+            User? response;
+            if (userEntity.Id == Guid.Empty)
             {
-                entity.Id = Guid.NewGuid();
-                UserRepository.Add(entity);
+                response = await Repository.InsertUser(userEntity, cancellationToken);
             }
 
             else
             {
-                UserRepository.Update(entity);
+                response = await Repository.UpdateUser(userEntity, cancellationToken);
             }
+
+            return response;
         }
 
-        public void RemoveUser(IUserEntity entity) => UserRepository.Remove(entity);
+        public async Task DeleteUser(Guid id, CancellationToken cancellationToken = default) => await Repository.DeleteUser(id, cancellationToken);
 
-        public bool IsChanged(IUserEntity entity) => UserRepository.IsChanged(entity);
+        public async Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default) => await Repository.IsChanged(userEntity, cancellationToken);
 
         #endregion
 
