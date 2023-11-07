@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="7.1.0" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LanterneRouge.Fresno.Calculations\LanterneRouge.Fresno.Calculations.csproj" />
     <ProjectReference Include="..\LanterneRouge.Fresno.Repository\LanterneRouge.Fresno.Repository.csproj" />
     <ProjectReference Include="..\LanterneRouge.Fresno.Utils\LanterneRouge.Fresno.Utils.csproj" />
   </ItemGroup>

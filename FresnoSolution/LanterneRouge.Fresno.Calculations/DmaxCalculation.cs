@@ -1,5 +1,5 @@
 ﻿using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Services.Models;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +17,7 @@ namespace LanterneRouge.Fresno.Calculations
 
         #region Constructors
 
-        public DmaxCalculation(List<Measurement> measurements, bool useOnlyEndpoints) : base(measurements)
+        public DmaxCalculation(List<MeasurementModel> measurements, bool useOnlyEndpoints) : base(measurements)
         {
             UseOnlyEndpoints = useOnlyEndpoints;
         }

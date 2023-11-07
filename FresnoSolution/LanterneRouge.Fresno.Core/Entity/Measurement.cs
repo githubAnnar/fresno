@@ -25,16 +25,5 @@ namespace LanterneRouge.Fresno.Core.Entity
         public required bool InCalculation { get; set; }
 
         public StepTest? StepTest { get; set; }
-
-        public static Measurement Create(int newSequence, Guid stepTestId, float newLoad) => new()
-        {
-            Id = Guid.NewGuid(),
-            HeartRate = 0,
-            Load = newLoad,
-            InCalculation = true,
-            Lactate = 0,
-            Sequence = newSequence,
-            StepTestId = stepTestId
-        };
     }
 }

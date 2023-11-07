@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace LanterneRouge.Fresno.Calculations
+﻿namespace LanterneRouge.Fresno.WpfClient.Services.Settings
 {
     [Serializable]
     public class ZoneSetting
@@ -24,27 +20,27 @@ namespace LanterneRouge.Fresno.Calculations
                 var defaultSettings = new ZoneSettings
                 {
                     new ZoneSetting {
-                        Name = nameof(DmaxCalculation),
+                        Name = "DmaxCalculation",
                         Limits = new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 }
                     },
                     new ZoneSetting
                     {
-                        Name = nameof(FblcCalculation),
+                        Name = "FblcCalculation",
                         Limits= new[] { 0.8, 1.5, 2.5, 4.0, 6.0, 10.0 }
                     },
                     new ZoneSetting
                     {
-                        Name = nameof(FrpbCalculation),
+                        Name = "FrpbCalculation",
                         Limits= new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 }
                     },
                     new ZoneSetting
                     {
-                        Name=nameof(LTCalculation),
+                        Name="LTCalculation",
                         Limits= new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 }
                     },
                     new ZoneSetting
                     {
-                        Name=nameof(LTLogCalculation),
+                        Name="LTLogCalculation",
                         Limits= new[] { 0.4, 0.55, 0.75, 0.90, 1.05, 1.2 }
                     }
                 };

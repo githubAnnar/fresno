@@ -1,5 +1,5 @@
-﻿using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.WpfClient.MVVM;
+﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Fresno.WpfClient.Services.Settings;
 using System.Collections.ObjectModel;
 using System.Linq;
 

@@ -26,5 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LanterneRouge.Fresno.Core\LanterneRouge.Fresno.Core.csproj" />
+    <ProjectReference Include="..\LanterneRouge.Fresno.Services\LanterneRouge.Fresno.Services.csproj" />
   </ItemGroup>
 </Project>

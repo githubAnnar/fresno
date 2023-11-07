@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Calculations;
+﻿using LanterneRouge.Fresno.WpfClient.Services.Settings;
 
 namespace LanterneRouge.Fresno.Services.Interfaces
 {

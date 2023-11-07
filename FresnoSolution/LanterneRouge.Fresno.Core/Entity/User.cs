@@ -32,20 +32,5 @@ namespace LanterneRouge.Fresno.Core.Entity
         public int? MaxHr { get; set; }
 
         public ICollection<StepTest>? StepTests { get; set; }
-
-        public static User Create() => new()
-        {
-            Email = string.Empty,
-            BirthDate = DateTime.Now,
-            FirstName = string.Empty,
-            Height = 0,
-            Sex = "M",
-            Id = Guid.Empty,
-            LastName = string.Empty,
-            MaxHr = null,
-            PostCity = null,
-            PostCode = null,
-            Street = null,
-        };
     }
 }

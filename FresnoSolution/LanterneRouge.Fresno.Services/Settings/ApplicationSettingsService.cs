@@ -1,11 +1,10 @@
-﻿using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.Services.Interfaces;
+﻿using LanterneRouge.Fresno.Services.Interfaces;
 using LanterneRouge.Fresno.Utils.Converters;
 using log4net;
 using Newtonsoft.Json;
 using System.Configuration;
 
-namespace LanterneRouge.Fresno.WpfClient.Services.Interfaces
+namespace LanterneRouge.Fresno.WpfClient.Services.Settings
 {
     public class ApplicationSettingsService : IApplicationSettingsService
     {

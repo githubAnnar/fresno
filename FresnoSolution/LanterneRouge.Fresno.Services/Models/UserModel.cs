@@ -17,5 +17,20 @@ namespace LanterneRouge.Fresno.Services.Models
         public int? MaxHr { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public ICollection<StepTestModel>? StepTestModels { get => throw new NotImplementedException(); set { throw new NotImplementedException(); } }
+
+        public static UserModel Create() => new()
+        {
+            Email = string.Empty,
+            BirthDate = DateTime.Now,
+            FirstName = string.Empty,
+            Height = 0,
+            Sex = "M",
+            Id = Guid.Empty,
+            LastName = string.Empty,
+            MaxHr = null,
+            PostCity = null,
+            PostCode = null,
+            Street = null,
+        };
     }
 }

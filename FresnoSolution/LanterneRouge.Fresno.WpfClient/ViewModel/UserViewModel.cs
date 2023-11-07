@@ -1,6 +1,7 @@
 ﻿using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Entity.Extentions;
 using LanterneRouge.Fresno.Core.Interface;
+using LanterneRouge.Fresno.Services.Models;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
 using log4net;
@@ -31,7 +32,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public UserViewModel(IUserEntity user, MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
+        public UserViewModel(UserModel user, MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             Source = user ?? throw new ArgumentNullException(nameof(user));
 
@@ -54,9 +55,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
-        internal IUserEntity Source
+        internal UserModel Source
         {
-            get => DataManager.GetUser(_source.Id);
+            get => DataManager.GetUser(_source.Id).Result;
             private set => _source = value;
         }
 
@@ -221,7 +222,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (DataManager.IsChanged(Source))
+            if (DataManager.IsChanged(Source).Result)
             {
                 DataManager.SaveUser(Source);
                 SaveToAllUsers();
@@ -263,7 +264,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => Source.IsValid() && DataManager.IsChanged(Source);
+        private bool CanSave => Source.IsValid() && DataManager.IsChanged(Source).Result;
 
         #endregion
 
@@ -373,7 +374,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             workspace.Show();
             Logger.Debug($"Show All StepTests for {DisplayName}");
         }
-        public Predicate<object> CanShowAllStepTests => (object o) => DataManager.GetAllStepTestsByUser(Source).Any();
+        public Predicate<object> CanShowAllStepTests => (object o) => DataManager.GetAllStepTestsByUser(Source).Result.Any();
 
         #endregion
 
@@ -403,7 +404,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public static UserViewModel Create(MainWindowViewModel rootViewModel)
         {
-            var newUser = User.Create();
+            var newUser = UserModel.Create();
             Logger.Info("Created new Empty user");
             var workspace = new UserViewModel(newUser, rootViewModel);
             workspace.Show();

@@ -1,12 +1,11 @@
 ﻿using Autofac;
 using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.Core.Entity;
-using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Report.Helpers;
 using LanterneRouge.Fresno.Report.PlotModels;
 using LanterneRouge.Fresno.Services;
 using LanterneRouge.Fresno.Services.Interfaces;
+using LanterneRouge.Fresno.Services.Models;
 using log4net;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
@@ -37,7 +36,7 @@ namespace LanterneRouge.Fresno.Report
 
         #region Constructor
 
-        public StepTestReport(StepTest stepTest, List<StepTest> additionalStepTests)
+        public StepTestReport(StepTestModel stepTest, List<StepTestModel> additionalStepTests)
         {
             ReportStepTest = stepTest ?? throw new ArgumentNullException(nameof(stepTest));
             AdditionalStepTests = additionalStepTests;
@@ -61,13 +60,13 @@ namespace LanterneRouge.Fresno.Report
             }
         }
 
-        public StepTest ReportStepTest { get; }
+        public StepTestModel ReportStepTest { get; }
 
-        public List<StepTest> AdditionalStepTests { get; set; }
+        public List<StepTestModel> AdditionalStepTests { get; set; }
 
-        private static FblcCalculation LactateCalculation(StepTest data) => new(data.Measurements.ToList(), MARKER);
+        private static FblcCalculation LactateCalculation(StepTestModel data) => new(data.Measurements.ToList(), MARKER);
 
-        private List<Zone> LactateZones(StepTest data) => new LactateBasedZones(LactateCalculation(data), ZONES).Zones.ToList();
+        private List<Zone> LactateZones(StepTestModel data) => new LactateBasedZones(LactateCalculation(data), ZONES).Zones.ToList();
 
         #endregion
 
@@ -92,7 +91,7 @@ namespace LanterneRouge.Fresno.Report
             return document;
         }
 
-        private void CreatePage(Document document, StepTest data)
+        private void CreatePage(Document document, StepTestModel data)
         {
             var dataSection = document.AddSection();
             dataSection.PageSetup = document.DefaultPageSetup.Clone();
@@ -211,9 +210,9 @@ namespace LanterneRouge.Fresno.Report
             Logger.Debug("Data page created");
         }
 
-        public byte[] GetStepTestPlotXImage(List<StepTest> additionalStepTests)
+        public byte[] GetStepTestPlotXImage(List<StepTestModel> additionalStepTests)
         {
-            var list = new List<StepTest> { ReportStepTest };
+            var list = new List<StepTestModel> { ReportStepTest };
             if (additionalStepTests != null && additionalStepTests.Any())
             {
                 list.AddRange(additionalStepTests);

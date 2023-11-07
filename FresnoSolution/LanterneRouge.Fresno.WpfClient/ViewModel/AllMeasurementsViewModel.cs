@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
@@ -26,7 +27,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public AllMeasurementsViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
         {
-            CreateAllMeasurements();
+            Task.Run(CreateAllMeasurements).Wait();
 
             // Set up subcommands
             SubCommands = new ObservableCollection<CommandViewModel>
@@ -41,15 +42,16 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private void DataManager_Committed()
         {
             OnDispose();
-            CreateAllMeasurements();
+            Task.Run(CreateAllMeasurements).Wait();
         }
 
-        private void CreateAllMeasurements()
+        private async Task CreateAllMeasurements()
         {
             if (Parent is StepTestViewModel parent)
             {
                 DisplayName = $"Measurements: {parent.DisplayName}";
-                var all = (from measurement in DataManager.GetAllMeasurementsByStepTest(parent.Source) select new MeasurementViewModel(measurement, parent, RootViewModel)).ToList();
+                var allMeasurements = await DataManager.GetAllMeasurementsByStepTest(parent.Source);
+                var all = (from measurement in allMeasurements select new MeasurementViewModel(measurement, parent, RootViewModel)).ToList();
                 all.ForEach(a => a.PropertyChanged += OnMeasurementViewModelPropertyChanged);
                 AllMeasurements = new ObservableCollection<MeasurementViewModel>(all);
                 OnPropertyChanged(nameof(AllMeasurements));
@@ -153,7 +155,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddMeasurementCommand => _addMeasurementCommand ??= new RelayCommand(param => CreateChild());
 
-        public override void CreateChild() => MeasurementViewModel.Create(Parent as StepTestViewModel, DataManager.GetAllMeasurementsByStepTest((Parent as StepTestViewModel).Source).ToList(), RootViewModel);
+        public override void CreateChild() => MeasurementViewModel.Create(Parent as StepTestViewModel, DataManager.GetAllMeasurementsByStepTest((Parent as StepTestViewModel).Source).Result.ToList(), RootViewModel);
 
         public ICommand ShowStepTestCommand => _showStepTestCommand ??= new RelayCommand(param => Selected.Parent.Show(), param => Selected != null && Selected.IsValid);
 

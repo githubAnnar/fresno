@@ -1,5 +1,6 @@
 ﻿using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
+using LanterneRouge.Fresno.Services.Models;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
 using log4net;
@@ -29,7 +30,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public MeasurementViewModel(IMeasurementEntity measurement, StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
+        public MeasurementViewModel(MeasurementModel measurement, StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
         {
             Source = measurement ?? throw new ArgumentNullException(nameof(measurement));
 
@@ -52,7 +53,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
-        internal IMeasurementEntity Source { get; private set; }
+        internal MeasurementModel Source { get; private set; }
 
         public Guid MeasurementId => Source.Id;
 
@@ -152,7 +153,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (DataManager.IsChanged(Source))
+            if (DataManager.IsChanged(Source).Result)
             {
                 DataManager.SaveMeasurement(Source);
                 if (Parent is StepTestViewModel stvm)
@@ -179,7 +180,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => IsValid && DataManager.IsChanged(Source);
+        private bool CanSave => IsValid && DataManager.IsChanged(Source).Result;
 
         #endregion
 
@@ -300,12 +301,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #endregion
 
-        public static void Create(StepTestViewModel parentStepTest, List<IMeasurementEntity> measurements, MainWindowViewModel rootViewModel)
+        public static void Create(StepTestViewModel parentStepTest, List<MeasurementModel> measurements, MainWindowViewModel rootViewModel)
         {
             var newSequence = measurements.Count == 0 ? 1 : measurements.Max(m => m.Sequence) + 1;
             var newLoad = measurements.Count == 0 ? parentStepTest.Source.LoadPreset : measurements.Last().Load + parentStepTest.Source.Increase;
 
-            var newMeasurement = Measurement.Create(newSequence, parentStepTest.StepTestId, newLoad);
+            var newMeasurement = MeasurementModel.Create(newSequence, parentStepTest.StepTestId, newLoad);
             Logger.Info("New empty measurement created");
             var workspace = new MeasurementViewModel(newMeasurement, parentStepTest, rootViewModel);
             workspace.Show();

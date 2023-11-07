@@ -1,6 +1,5 @@
 ﻿using LanterneRouge.Fresno.Report.PlotModels;
 using LanterneRouge.Fresno.Utils.Extensions;
-using LanterneRouge.Fresno.WpfClient.Utils;
 using OxyPlot;
 using System;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public StepTestsPlotViewModel(IEnumerable<StepTestViewModel> parentStepTests, MainWindowViewModel rootViewModel) : base(null, rootViewModel, null)
         {
             StepTestData = parentStepTests.ToList();
-            StepTestsModel = StepTests.StepTestPlotModel(StepTestData.Select(st => st.Source));
+            StepTestsModel = StepTests.StepTestPlotModel(StepTestData.Select(st => st.Source).ToList());
         }
 
         #endregion

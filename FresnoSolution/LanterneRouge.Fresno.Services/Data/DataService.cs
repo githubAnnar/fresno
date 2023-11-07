@@ -1,9 +1,11 @@
-﻿using LanterneRouge.Fresno.Core.Entity;
+﻿using Autofac;
+using AutoMapper;
 using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Repository.Contracts;
 using LanterneRouge.Fresno.Repository.Infrastructure;
 using LanterneRouge.Fresno.Repository.Managers;
 using LanterneRouge.Fresno.Services.Interfaces;
+using LanterneRouge.Fresno.Services.Models;
 using log4net;
 
 namespace LanterneRouge.Fresno.Services.Data
@@ -16,7 +18,15 @@ namespace LanterneRouge.Fresno.Services.Data
         private IMeasurementManager? _measurementManager;
         private ConnectionFactory? _connectionFactory;
 
+        private IMapper Mapper { get; }
+
         private string? Filename { get; set; }
+
+        public DataService()
+        {
+            var scope = ServiceLocator.Instance.BeginLifetimeScope();
+            Mapper = scope.Resolve<IMapper>();
+        }
 
         public bool LoadDatabase(string filename)
         {
@@ -89,13 +99,49 @@ namespace LanterneRouge.Fresno.Services.Data
             return response;
         }
 
-        public async Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default) => _userManager != null ? await _userManager.GetAllUsers(cancellationToken) : new List<User>();
+        public async Task<IList<UserModel>> GetAllUsers(CancellationToken cancellationToken = default)
+        {
+            if (_userManager != null)
+            {
+                var users = await _userManager.GetAllUsers(cancellationToken);
+                return users.Select(Mapper.Map<UserModel>).ToList();
+            }
 
-        public async Task<User?> GetUser(Guid id, CancellationToken cancellationToken = default) => _userManager != null ? await _userManager.GetUserById(id, cancellationToken) : null;
+            return new List<UserModel>();
+        }
 
-        public async Task<User?> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => _userManager != null ? await _userManager.GetUserByStepTest(stepTestEntity, cancellationToken) : null;
+        public async Task<UserModel?> GetUser(Guid id, CancellationToken cancellationToken = default)
+        {
+            if (_userManager != null)
+            {
+                var user = await _userManager.GetUserById(id, cancellationToken);
+                return Mapper.Map<UserModel>(user);
+            }
 
-        public async Task<User?> SaveUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => _userManager != null ? await _userManager.UpsertUser(userEntity, cancellationToken) : null;
+            return null;
+        }
+
+        public async Task<UserModel?> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
+        {
+            if (_userManager != null)
+            {
+                var user = await _userManager.GetUserByStepTest(stepTestEntity, cancellationToken);
+                return Mapper.Map<UserModel>(user);
+            }
+
+            return null;
+        }
+
+        public async Task<UserModel?> SaveUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
+        {
+            if (_userManager != null)
+            {
+                var user = await _userManager.UpsertUser(userEntity, cancellationToken);
+                return Mapper.Map<UserModel>(user);
+            }
+
+            return null;
+        }
 
         public async Task DeleteUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
@@ -111,13 +157,40 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public async Task<bool> IsChanged(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default) => _measurementManager != null && await _measurementManager.IsChanged(measurementEntity, cancellationToken);
 
-        public async Task<IList<StepTest>> GetAllStepTests(CancellationToken cancellationToken = default) => _stepTestManager != null ? await _stepTestManager.GetAllStepTests(cancellationToken) : new List<StepTest>();
+        public async Task<IList<StepTestModel>> GetAllStepTests(CancellationToken cancellationToken = default)
+        {
+            if (_stepTestManager != null)
+            {
+                var stepTests = await _stepTestManager.GetAllStepTests(cancellationToken);
+                return stepTests.Select(Mapper.Map<StepTestModel>).ToList();
+            }
 
-        public async Task<IList<StepTest>> GetAllStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => _stepTestManager != null ? await _stepTestManager.GetStepTestsByUser(userEntity, cancellationToken) : new List<StepTest>();
+            return new List<StepTestModel>();
+        }
+
+        public async Task<IList<StepTestModel>> GetAllStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
+        {
+            if (_stepTestManager != null)
+            {
+                var stepTests = await _stepTestManager.GetStepTestsByUser(userEntity, cancellationToken);
+                return stepTests.Select(Mapper.Map<StepTestModel>).ToList();
+            }
+
+            return new List<StepTestModel>();
+        }
 
         public async Task<int> GetStepTestCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => _stepTestManager != null ? await _stepTestManager.GetCountByUser(userEntity, cancellationToken) : 0;
 
-        public async Task<StepTest?> SaveStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => _stepTestManager != null ? await _stepTestManager.UpsertStepTest(stepTestEntity, cancellationToken) : null;
+        public async Task<StepTestModel?> SaveStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
+        {
+            if (_stepTestManager != null)
+            {
+                var stepTest = await _stepTestManager.UpsertStepTest(stepTestEntity, cancellationToken);
+                return Mapper.Map<StepTestModel>(stepTest);
+            }
+
+            return null;
+        }
 
         public async Task DeleteStepTest(IStepTestEntity entity, CancellationToken cancellationToken = default)
         {
@@ -127,13 +200,39 @@ namespace LanterneRouge.Fresno.Services.Data
             }
         }
 
-        public async Task<IList<Measurement>> GetAllMeasurements(CancellationToken cancellationToken = default) => _measurementManager != null ? await _measurementManager.GetAllMeasurements(cancellationToken) : new List<Measurement>();
+        public async Task<IList<MeasurementModel>> GetAllMeasurements(CancellationToken cancellationToken = default)
+        {
+            if (_measurementManager != null)
+            {
+                var measurements = await _measurementManager.GetAllMeasurements(cancellationToken);
+                return measurements.Select(Mapper.Map<MeasurementModel>).ToList();
+            }
 
-        public async Task<IList<Measurement>> GetAllMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken) => _measurementManager != null ? await _measurementManager.GetMeasurementsByStepTest(stepTestEntity, cancellationToken) : new List<Measurement>();
+            return new List<MeasurementModel>();
+        }
+
+        public async Task<IList<MeasurementModel>> GetAllMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken)
+        {
+            if (_measurementManager != null)
+            {
+                var measurements = await _measurementManager.GetMeasurementsByStepTest(stepTestEntity, cancellationToken);
+                return measurements.Select(Mapper.Map<MeasurementModel>).ToList();
+            }
+
+            return new List<MeasurementModel>();
+        }
 
         public async Task<int> GetMeasurementCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation = false, CancellationToken cancellationToken = default) => _measurementManager != null ? await _measurementManager.GetCountByStepTest(stepTestEntity, onlyInCalculation, cancellationToken) : 0;
 
-        public async Task<Measurement?> SaveMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default) => _measurementManager != null ? await _measurementManager.UpsertMeasurement(measurementEntity, cancellationToken) : null;
+        public async Task<MeasurementModel?> SaveMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
+        {
+            if (_measurementManager != null)
+            {
+                var measurement = await _measurementManager.UpsertMeasurement(measurementEntity, cancellationToken);
+                return Mapper.Map<MeasurementModel>(measurement);
+            }
+            return null;
+        }
 
         public async Task DeleteMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
         {

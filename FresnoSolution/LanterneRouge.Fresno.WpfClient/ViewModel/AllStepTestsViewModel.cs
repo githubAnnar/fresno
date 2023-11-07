@@ -74,11 +74,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             CreateAllStepTests();
         }
 
-        private void CreateAllStepTests()
+        private async void CreateAllStepTests()
         {
             if (Parent is UserViewModel parent)
             {
-                var all = DataManager.GetAllStepTestsByUser(parent.Source).Select(s => new StepTestViewModel(s, parent, RootViewModel)).ToList();
+                var stepTests = await DataManager.GetAllStepTestsByUser(parent.Source);
+                var all = stepTests.Select(s => new StepTestViewModel(s, parent, RootViewModel)).ToList();
                 all.ForEach(cvm => cvm.PropertyChanged += OnStepTestViewModelPropertyChanged);
                 AllStepTests = new ObservableCollection<StepTestViewModel>(all);
                 OnPropertyChanged(nameof(AllStepTests));
@@ -93,7 +94,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public StepTestViewModel Selected => SelectedObject as StepTestViewModel;
 
-        public int SelectedMeasurementCount => Selected != null ? DataManager.MeasurementsCountByStepTest(Selected.Source, true) : 0;
+        public int SelectedMeasurementCount => Selected != null ? DataManager.GetMeasurementCountByStepTest(Selected.Source, true).Result : 0;
 
         public ObservableCollection<StepTestViewModel> AllStepTests { get; private set; }
 
@@ -172,7 +173,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region ShowDiagram Command
 
-        public ICommand ShowDiagramCommand => _showDiagramCommand ??= new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected) && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.MeasurementsCountByStepTest(s.Source, true) > 3));
+        public ICommand ShowDiagramCommand => _showDiagramCommand ??= new RelayCommand(ShowDiagram, param => AllStepTests.Any(at => at.IsSelected) && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.GetMeasurementCountByStepTest(s.Source, true).Result > 3));
 
         private void ShowDiagram(object obj) => new StepTestsPlotViewModel(AllStepTests.Where(st => st.IsSelected), RootViewModel).Show();
 
@@ -271,7 +272,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ??= new RelayCommand(param => ShowAllMeasurements(), param => Selected != null && Selected.IsValid);
 
-        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => CreateStepTestPdf(), param => AllSelected.Any() && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.MeasurementsCountByStepTest(s.Source, true) > 3));
+        public ICommand CreateStepTestPdfCommand => _createStepTestPdfCommand ??= new RelayCommand(param => CreateStepTestPdf(), param => AllSelected.Any() && AllSelected.Cast<StepTestViewModel>().All(s => DataManager.GetMeasurementCountByStepTest(s.Source, true).Result > 3));
 
         private void CreateStepTestPdf()
         {
@@ -290,7 +291,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             // Find the rest selected ones
             var rest = AllSelected.Cast<StepTestViewModel>().Where(item => !item.Source.TestDate.Equals(newestDate)).ToList();
             var parent = Parent as UserViewModel;
-            var generator = new StepTestReport(main.Source, rest.Select(item => item.Source));
+            var generator = new StepTestReport(main.Source, rest.Select(item => item.Source).ToList());
             var pdfDocument = generator.CreateReport();
             var filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"{parent.FirstName} {parent.LastName} ({main.Source.Id}).pdf");
             generator.PdfRender(filename, pdfDocument);
