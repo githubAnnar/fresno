@@ -10,7 +10,16 @@ namespace LanterneRouge.Fresno.Repository.Repositories
 
         public RepositoryBase(IDbConnection connection)
         {
-            Context = connection!=null ? new StepTestContext(connection) : throw new ArgumentNullException(nameof(connection));
+            if (connection != null)
+            {
+                Context = new StepTestContext(connection);
+                Context.Database.EnsureCreated();
+            }
+
+            else
+            {
+                throw new ArgumentNullException(nameof(connection));
+            }
         }
     }
 }
