@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace LanterneRouge.Fresno.Calculations
 {
+    /// <summary>
+    /// Represents a class for calculating the maximum value using the Dmax method.
+    /// </summary>
     public class DmaxCalculation : BaseCalculation
     {
         #region Fields

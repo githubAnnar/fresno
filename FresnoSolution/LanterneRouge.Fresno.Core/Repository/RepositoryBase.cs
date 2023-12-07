@@ -1,7 +1,7 @@
-﻿using LanterneRouge.Fresno.Repository.Infrastructure;
+﻿using LanterneRouge.Fresno.Core.Infrastructure;
 using System.Data;
 
-namespace LanterneRouge.Fresno.Repository.Repositories
+namespace LanterneRouge.Fresno.Core.Repository
 {
     public abstract class RepositoryBase
     {
