@@ -16,7 +16,7 @@ namespace LanterneRouge.Fresno.Core.Infrastructure
 
         public DbSet<Measurement> Measurements { get; set; }
 
-        public DbConnection? Connection { get; set; }
+        public IDbConnection? Connection { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
