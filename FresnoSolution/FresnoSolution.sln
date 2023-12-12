@@ -28,13 +28,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Core", "LanterneRouge.Fresno.Core\LanterneRouge.Fresno.Core.csproj", "{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Repository", "LanterneRouge.Fresno.Repository\LanterneRouge.Fresno.Repository.csproj", "{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Services", "LanterneRouge.Fresno.Services\LanterneRouge.Fresno.Services.csproj", "{E1B61183-643F-41F7-A331-226A97FBA52C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Utils", "LanterneRouge.Fresno.Utils\LanterneRouge.Fresno.Utils.csproj", "{229BF89D-DABD-49CC-A82D-A508871DF64F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanterneRouge.Fresno.Core.Test", "LanterneRouge.Fresno.Core.Entities.Test\LanterneRouge.Fresno.Core.Test.csproj", "{4B1D098B-819C-41D5-8C41-50A4385AF473}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanterneRouge.Fresno.Core.Test", "LanterneRouge.Fresno.Core.Entities.Test\LanterneRouge.Fresno.Core.Test.csproj", "{4B1D098B-819C-41D5-8C41-50A4385AF473}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,10 +72,6 @@ Global
 		{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A2E24F2-E36D-40B0-9EB3-F6ED1774181C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C01B455A-E4B4-49F9-8295-AA26CD5E2DE1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E1B61183-643F-41F7-A331-226A97FBA52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E1B61183-643F-41F7-A331-226A97FBA52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1B61183-643F-41F7-A331-226A97FBA52C}.Release|Any CPU.ActiveCfg = Release|Any CPU

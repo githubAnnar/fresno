@@ -1,24 +1,30 @@
-﻿using LanterneRouge.Fresno.Database.SQLite.Tool;
-using LanterneRouge.Fresno.Repository.Contracts;
+﻿using LanterneRouge.Fresno.Core.Contracts;
 using log4net;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Data.SQLite;
 
-namespace LanterneRouge.Fresno.Repository.Infrastructure
+namespace LanterneRouge.Fresno.Core.Infrastructure
 {
     public class ConnectionFactory : IConnectionFactory
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ConnectionFactory));
         private readonly string _connectionString;
         private IDbConnection? _connection = null;
+        private StepTestContext? _stepTestContext = null;
 
-        public ConnectionFactory(SQLiteConnectionStringBuilder connectionStringBuilder)
+        public ConnectionFactory(SqliteConnectionStringBuilder connectionStringBuilder)
         {
             _connectionString = connectionStringBuilder.ToString();
             Logger.Debug($"Connectionstring: {_connectionString}");
         }
 
-        public ConnectionFactory(string filename) : this(new SQLiteConnectionStringBuilder { DataSource = filename, ForeignKeys = true, Version = 3 })
+        public ConnectionFactory(string filename) : this(new SqliteConnectionStringBuilder
+        {
+            DataSource = filename,
+            ForeignKeys = true
+        })
         { }
 
         /// <summary>
@@ -33,9 +39,6 @@ namespace LanterneRouge.Fresno.Repository.Infrastructure
             {
                 if (_connection == null)
                 {
-                    CheckExistingFile();
-                    //var table = DbProviderFactories.GetFactoryClasses();
-                    //var factory = DbProviderFactories.GetFactory("System.Data.SQLite");
                     SQLiteFactory factory = SQLiteFactory.Instance;
                     _connection = factory.CreateConnection();
                     _connection.ConnectionString = _connectionString;
@@ -47,16 +50,28 @@ namespace LanterneRouge.Fresno.Repository.Infrastructure
             }
         }
 
-        private void CheckExistingFile()
+        public StepTestContext GetStepTestContext
         {
-            var builder = new SQLiteConnectionStringBuilder(_connectionString);
+            get
+            {
+                if (_stepTestContext == null)
+                {
+                    _stepTestContext = new StepTestContext(GetConnection);
+                    CheckExistingFile(_stepTestContext);
+                }
+
+                return _stepTestContext;
+            }
+        }
+
+        private void CheckExistingFile(StepTestContext stepTestContext)
+        {
+            var builder = new SqliteConnectionStringBuilder(_connectionString);
 
             if (!File.Exists(builder.DataSource))
             {
                 Logger.Debug($"{builder.DataSource} is not open, creating new and creating database and tables!");
-                var generator = new Generator(builder.DataSource);
-                generator.CreateDatabase();
-                generator.CreateTables();
+                stepTestContext.Database.Migrate();
             }
         }
 

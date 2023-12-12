@@ -1,5 +1,4 @@
 ﻿using LanterneRouge.Fresno.Core.Infrastructure;
-using System.Data;
 
 namespace LanterneRouge.Fresno.Core.Repository
 {
@@ -8,18 +7,18 @@ namespace LanterneRouge.Fresno.Core.Repository
         //protected IDbTransaction Transaction { get; private set; }
         protected StepTestContext Context { get; private set; }
 
-        public RepositoryBase(IDbConnection connection)
+        public RepositoryBase(StepTestContext context)
         {
-            if (connection != null)
+            if (context != null)
             {
-                Context = new StepTestContext(connection);
+                Context = context;
                 if (Context.Database.EnsureCreated())
                     Console.WriteLine("Database is there!");
             }
 
             else
             {
-                throw new ArgumentNullException(nameof(connection));
+                throw new ArgumentNullException(nameof(context));
             }
         }
     }

@@ -1,9 +1,10 @@
 ﻿using Autofac;
 using AutoMapper;
+using LanterneRouge.Fresno.Core.Contracts;
+using LanterneRouge.Fresno.Core.Infrastructure;
 using LanterneRouge.Fresno.Core.Interface;
-using LanterneRouge.Fresno.Repository.Contracts;
-using LanterneRouge.Fresno.Repository.Infrastructure;
-using LanterneRouge.Fresno.Repository.Managers;
+using LanterneRouge.Fresno.Core.Repositories;
+using LanterneRouge.Fresno.Core.Repository;
 using LanterneRouge.Fresno.Services.Interfaces;
 using LanterneRouge.Fresno.Services.Models;
 using log4net;
@@ -13,9 +14,9 @@ namespace LanterneRouge.Fresno.Services.Data
     public class DataService : IDataService
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(DataService));
-        private IUserManager? _userManager;
-        private IStepTestManager? _stepTestManager;
-        private IMeasurementManager? _measurementManager;
+        private IUserRepository? _userRepository;
+        private IStepTestRepository? _stepTestRepository;
+        private IMeasurementRepository? _measurementRepository;
         private ConnectionFactory? _connectionFactory;
 
         private IMapper Mapper { get; }
@@ -40,9 +41,9 @@ namespace LanterneRouge.Fresno.Services.Data
             {
                 Filename = filename;
                 var localConnectionFactory = _connectionFactory ??= new ConnectionFactory(Filename);
-                _userManager = new UserManager(localConnectionFactory);
-                _stepTestManager = new StepTestManager(localConnectionFactory);
-                _measurementManager = new MeasurementManager(localConnectionFactory);
+                _userRepository = new UserRepository(localConnectionFactory.GetStepTestContext);
+                _stepTestRepository = new StepTestRepository(localConnectionFactory.GetStepTestContext);
+                _measurementRepository = new MeasurementRepository(localConnectionFactory.GetStepTestContext);
                 response = true;
             }
 
@@ -70,12 +71,6 @@ namespace LanterneRouge.Fresno.Services.Data
             bool response;
             try
             {
-                _userManager?.Close();
-
-                _stepTestManager?.Close();
-
-                _measurementManager?.Close();
-
                 _connectionFactory = null;
                 response = true;
             }
@@ -101,20 +96,15 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public async Task<IList<UserModel>> GetAllUsers(CancellationToken cancellationToken = default)
         {
-            if (_userManager != null)
-            {
-                var users = await _userManager.GetAllUsers(cancellationToken);
-                return users.Select(Mapper.Map<UserModel>).ToList();
-            }
-
-            return new List<UserModel>();
+            var users = await _userRepository.GetAllUsers(cancellationToken);
+            return users.Select(Mapper.Map<UserModel>).ToList();
         }
 
         public async Task<UserModel?> GetUser(Guid id, CancellationToken cancellationToken = default)
         {
-            if (_userManager != null)
+            if (_userRepository != null)
             {
-                var user = await _userManager.GetUserById(id, cancellationToken);
+                var user = await _userRepository.GetUserById(id, cancellationToken);
                 return Mapper.Map<UserModel>(user);
             }
 
@@ -123,9 +113,9 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public async Task<UserModel?> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
         {
-            if (_userManager != null)
+            if (_userRepository != null)
             {
-                var user = await _userManager.GetUserByStepTest(stepTestEntity, cancellationToken);
+                var user = await _userRepository.GetUserByStepTest(stepTestEntity, cancellationToken);
                 return Mapper.Map<UserModel>(user);
             }
 
@@ -134,9 +124,9 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public async Task<UserModel?> SaveUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
-            if (_userManager != null)
+            if (_userRepository != null)
             {
-                var user = await _userManager.UpsertUser(userEntity, cancellationToken);
+                var user = userEntity.Id.Equals(Guid.Empty) ? await _userRepository.InsertUser(userEntity, cancellationToken) : await _userRepository.UpdateUser(userEntity, cancellationToken);
                 return Mapper.Map<UserModel>(user);
             }
 
@@ -145,23 +135,23 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public async Task DeleteUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
-            if (_userManager != null)
+            if (_userRepository != null)
             {
-                await _userManager.DeleteUser(userEntity.Id, cancellationToken);
+                await _userRepository.DeleteUser(userEntity.Id, cancellationToken);
             }
         }
 
-        public async Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default) => _userManager != null && await _userManager.IsChanged(userEntity, cancellationToken);
+        public async Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default) => _userRepository != null && await _userRepository.IsChanged(userEntity, cancellationToken);
 
-        public async Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => _stepTestManager != null && await _stepTestManager.IsChanged(stepTestEntity, cancellationToken);
+        public async Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => _stepTestRepository != null && await _stepTestRepository.IsChanged(stepTestEntity, cancellationToken);
 
-        public async Task<bool> IsChanged(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default) => _measurementManager != null && await _measurementManager.IsChanged(measurementEntity, cancellationToken);
+        public async Task<bool> IsChanged(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default) => _measurementRepository != null && await _measurementRepository.IsChanged(measurementEntity, cancellationToken);
 
         public async Task<IList<StepTestModel>> GetAllStepTests(CancellationToken cancellationToken = default)
         {
-            if (_stepTestManager != null)
+            if (_stepTestRepository != null)
             {
-                var stepTests = await _stepTestManager.GetAllStepTests(cancellationToken);
+                var stepTests = await _stepTestRepository.GetAllStepTests(cancellationToken);
                 return stepTests.Select(Mapper.Map<StepTestModel>).ToList();
             }
 
@@ -170,22 +160,22 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public async Task<IList<StepTestModel>> GetAllStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
-            if (_stepTestManager != null)
+            if (_stepTestRepository != null)
             {
-                var stepTests = await _stepTestManager.GetStepTestsByUser(userEntity, cancellationToken);
+                var stepTests = await _stepTestRepository.GetStepTestsByUser(userEntity, cancellationToken);
                 return stepTests.Select(Mapper.Map<StepTestModel>).ToList();
             }
 
             return new List<StepTestModel>();
         }
 
-        public async Task<int> GetStepTestCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => _stepTestManager != null ? await _stepTestManager.GetCountByUser(userEntity, cancellationToken) : 0;
+        public async Task<int> GetStepTestCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default) => _stepTestRepository != null ? await _stepTestRepository.GetCountByUser(userEntity, cancellationToken) : 0;
 
         public async Task<StepTestModel?> SaveStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
         {
-            if (_stepTestManager != null)
+            if (_stepTestRepository != null)
             {
-                var stepTest = await _stepTestManager.UpsertStepTest(stepTestEntity, cancellationToken);
+                var stepTest = stepTestEntity.Id.Equals(Guid.Empty) ? await _stepTestRepository.InsertStepTest(stepTestEntity, cancellationToken) : await _stepTestRepository.UpdateStepTest(stepTestEntity, cancellationToken);
                 return Mapper.Map<StepTestModel>(stepTest);
             }
 
@@ -194,17 +184,17 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public async Task DeleteStepTest(IStepTestEntity entity, CancellationToken cancellationToken = default)
         {
-            if (_stepTestManager != null)
+            if (_stepTestRepository != null)
             {
-                await _stepTestManager.DeleteStepTest(entity.Id, cancellationToken);
+                await _stepTestRepository.DeleteStepTest(entity.Id, cancellationToken);
             }
         }
 
         public async Task<IList<MeasurementModel>> GetAllMeasurements(CancellationToken cancellationToken = default)
         {
-            if (_measurementManager != null)
+            if (_measurementRepository != null)
             {
-                var measurements = await _measurementManager.GetAllMeasurements(cancellationToken);
+                var measurements = await _measurementRepository.GetAllMeasurements(cancellationToken);
                 return measurements.Select(Mapper.Map<MeasurementModel>).ToList();
             }
 
@@ -213,32 +203,33 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public async Task<IList<MeasurementModel>> GetAllMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken)
         {
-            if (_measurementManager != null)
+            if (_measurementRepository != null)
             {
-                var measurements = await _measurementManager.GetMeasurementsByStepTest(stepTestEntity, cancellationToken);
+                var measurements = await _measurementRepository.GetMeasurementsByStepTest(stepTestEntity, cancellationToken);
                 return measurements.Select(Mapper.Map<MeasurementModel>).ToList();
             }
 
             return new List<MeasurementModel>();
         }
 
-        public async Task<int> GetMeasurementCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation = false, CancellationToken cancellationToken = default) => _measurementManager != null ? await _measurementManager.GetCountByStepTest(stepTestEntity, onlyInCalculation, cancellationToken) : 0;
+        public async Task<int> GetMeasurementCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation = false, CancellationToken cancellationToken = default) => _measurementRepository != null ? await _measurementRepository.GetCountByStepTest(stepTestEntity, onlyInCalculation, cancellationToken) : 0;
 
         public async Task<MeasurementModel?> SaveMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
         {
-            if (_measurementManager != null)
+            if (_measurementRepository != null)
             {
-                var measurement = await _measurementManager.UpsertMeasurement(measurementEntity, cancellationToken);
+                var measurement = measurementEntity.Id.Equals(Guid.Empty) ? await _measurementRepository.InsertMeasurement(measurementEntity, cancellationToken) : await _measurementRepository.UpdateMeasurement(measurementEntity, cancellationToken);
                 return Mapper.Map<MeasurementModel>(measurement);
             }
+
             return null;
         }
 
         public async Task DeleteMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
         {
-            if (_measurementManager != null)
+            if (_measurementRepository != null)
             {
-                await _measurementManager.DeleteMeasurement(measurementEntity.Id, cancellationToken);
+                await _measurementRepository.DeleteMeasurement(measurementEntity.Id, cancellationToken);
             }
         }
     }

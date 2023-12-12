@@ -1,7 +1,7 @@
 ﻿using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Interface;
 
-namespace LanterneRouge.Fresno.Repository.Contracts
+namespace LanterneRouge.Fresno.Core.Contracts
 {
     public interface IMeasurementRepository
     {

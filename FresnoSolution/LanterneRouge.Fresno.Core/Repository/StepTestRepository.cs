@@ -1,18 +1,20 @@
-﻿using LanterneRouge.Fresno.Core.Entity;
+﻿using LanterneRouge.Fresno.Core.Contracts;
+using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Entity.Extentions;
+using LanterneRouge.Fresno.Core.Infrastructure;
 using LanterneRouge.Fresno.Core.Interface;
-using LanterneRouge.Fresno.Repository.Contracts;
+using LanterneRouge.Fresno.Core.Repository;
 using log4net;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
-namespace LanterneRouge.Fresno.Repository.Repositories
+namespace LanterneRouge.Fresno.Core.Repositories
 {
     public class StepTestRepository : RepositoryBase, IStepTestRepository
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(StepTestRepository));
 
-        public StepTestRepository(IDbConnection connection) : base(connection)
+        public StepTestRepository(StepTestContext context) : base(context)
         { }
 
         public async Task<IList<StepTest>> GetAllStepTests(CancellationToken cancellationToken = default)

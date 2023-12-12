@@ -1,10 +1,10 @@
 ﻿using LanterneRouge.Fresno.Core.Contracts;
 using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Entity.Extentions;
+using LanterneRouge.Fresno.Core.Infrastructure;
 using LanterneRouge.Fresno.Core.Interface;
 using log4net;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 
 namespace LanterneRouge.Fresno.Core.Repository
 {
@@ -12,7 +12,7 @@ namespace LanterneRouge.Fresno.Core.Repository
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UserRepository));
 
-        public UserRepository(IDbConnection connection) : base(connection)
+        public UserRepository(StepTestContext context) : base(context)
         { }
 
         public async Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default)
