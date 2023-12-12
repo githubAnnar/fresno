@@ -26,7 +26,6 @@
   <ItemGroup>
     <ProjectReference Include="..\LanterneRouge.Fresno.Calculations\LanterneRouge.Fresno.Calculations.csproj" />
     <ProjectReference Include="..\LanterneRouge.Fresno.Report\LanterneRouge.Fresno.Report.csproj" />
-    <ProjectReference Include="..\LanterneRouge.Fresno.Repository\LanterneRouge.Fresno.Repository.csproj" />
     <ProjectReference Include="..\LanterneRouge.Fresno.Services\LanterneRouge.Fresno.Services.csproj" />
     <ProjectReference Include="..\LanterneRouge.Wpf\LanterneRouge.Wpf.csproj" />
   </ItemGroup>

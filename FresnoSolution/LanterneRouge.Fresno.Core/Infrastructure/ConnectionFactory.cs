@@ -50,20 +50,6 @@ namespace LanterneRouge.Fresno.Core.Infrastructure
             }
         }
 
-        public StepTestContext GetStepTestContext
-        {
-            get
-            {
-                if (_stepTestContext == null)
-                {
-                    _stepTestContext = new StepTestContext(GetConnection);
-                    CheckExistingFile(_stepTestContext);
-                }
-
-                return _stepTestContext;
-            }
-        }
-
         private void CheckExistingFile(StepTestContext stepTestContext)
         {
             var builder = new SqliteConnectionStringBuilder(_connectionString);

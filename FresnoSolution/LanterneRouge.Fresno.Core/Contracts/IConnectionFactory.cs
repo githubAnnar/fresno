@@ -6,7 +6,5 @@ namespace LanterneRouge.Fresno.Core.Contracts
     public interface IConnectionFactory
     {
         IDbConnection GetConnection { get; }
-
-        StepTestContext GetStepTestContext { get; }
     }
 }

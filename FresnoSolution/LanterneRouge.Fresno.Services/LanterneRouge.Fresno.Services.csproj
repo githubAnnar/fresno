@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LanterneRouge.Fresno.Repository\LanterneRouge.Fresno.Repository.csproj" />
+    <ProjectReference Include="..\LanterneRouge.Fresno.Core\LanterneRouge.Fresno.Core.csproj" />
     <ProjectReference Include="..\LanterneRouge.Fresno.Utils\LanterneRouge.Fresno.Utils.csproj" />
   </ItemGroup>
 

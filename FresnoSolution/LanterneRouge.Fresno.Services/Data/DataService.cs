@@ -41,9 +41,10 @@ namespace LanterneRouge.Fresno.Services.Data
             {
                 Filename = filename;
                 var localConnectionFactory = _connectionFactory ??= new ConnectionFactory(Filename);
-                _userRepository = new UserRepository(localConnectionFactory.GetStepTestContext);
-                _stepTestRepository = new StepTestRepository(localConnectionFactory.GetStepTestContext);
-                _measurementRepository = new MeasurementRepository(localConnectionFactory.GetStepTestContext);
+                var context = new StepTestContext();
+                _userRepository = new UserRepository(context);
+                _stepTestRepository = new StepTestRepository(context);
+                _measurementRepository = new MeasurementRepository(context);
                 response = true;
             }
 

@@ -7,12 +7,8 @@ namespace LanterneRouge.Fresno.Core.Infrastructure
 {
     public class StepTestContext : DbContext
     {
-        public StepTestContext(IDbConnection connection)
-        {
-            Connection = connection;
-        }
-
-        private IDbConnection Connection { get; }
+        public StepTestContext()
+        { }
 
         public DbSet<User> Users { get; set; }
 
@@ -20,12 +16,19 @@ namespace LanterneRouge.Fresno.Core.Infrastructure
 
         public DbSet<Measurement> Measurements { get; set; }
 
+        public DbConnection? Connection { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (Connection is DbConnection newConnection)
             {
                 optionsBuilder.UseSqlite(newConnection);
+            }
+
+            else
+            {
+                optionsBuilder.UseSqlite();
             }
         }
     }
