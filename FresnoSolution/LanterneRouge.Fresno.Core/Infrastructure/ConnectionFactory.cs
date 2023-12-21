@@ -1,7 +1,6 @@
 ﻿using LanterneRouge.Fresno.Core.Contracts;
 using log4net;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Data.SQLite;
 
@@ -47,17 +46,6 @@ namespace LanterneRouge.Fresno.Core.Infrastructure
                 }
 
                 return _connection;
-            }
-        }
-
-        private void CheckExistingFile(StepTestContext stepTestContext)
-        {
-            var builder = new SqliteConnectionStringBuilder(_connectionString);
-
-            if (!File.Exists(builder.DataSource))
-            {
-                Logger.Debug($"{builder.DataSource} is not open, creating new and creating database and tables!");
-                stepTestContext.Database.Migrate();
             }
         }
 

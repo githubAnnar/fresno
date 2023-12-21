@@ -105,8 +105,10 @@ namespace LanterneRouge.Fresno.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CK_EFFORTUNIT", "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'", t =>
+                    b.ToTable("StepTest", null, t =>
                         {
+                            t.HasCheckConstraint("CK_EFFORTUNIT", "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'");
+
                             t.HasCheckConstraint("CK_TESTTYPE", "[TestType] = 'Bike' OR [TestType] = 'Run'");
                         });
                 });

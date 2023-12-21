@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LanterneRouge.Fresno.Core.Migrations
 {
     [DbContext(typeof(StepTestContext))]
-    [Migration("20231212232829_InitialCreate")]
+    [Migration("20231221234742_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -108,8 +108,10 @@ namespace LanterneRouge.Fresno.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CK_EFFORTUNIT", "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'", t =>
+                    b.ToTable("StepTest", null, t =>
                         {
+                            t.HasCheckConstraint("CK_EFFORTUNIT", "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'");
+
                             t.HasCheckConstraint("CK_TESTTYPE", "[TestType] = 'Bike' OR [TestType] = 'Run'");
                         });
                 });

@@ -11,9 +11,6 @@ namespace LanterneRouge.Fresno.Core.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'");
-
             migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
@@ -37,8 +34,7 @@ namespace LanterneRouge.Fresno.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CK_EFFORTUNIT",
-                schema: "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'",
+                name: "StepTest",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -54,10 +50,11 @@ namespace LanterneRouge.Fresno.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CK_EFFORTUNIT", x => x.Id);
+                    table.PrimaryKey("PK_StepTest", x => x.Id);
+                    table.CheckConstraint("CK_EFFORTUNIT", "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'");
                     table.CheckConstraint("CK_TESTTYPE", "[TestType] = 'Bike' OR [TestType] = 'Run'");
                     table.ForeignKey(
-                        name: "FK_CK_EFFORTUNIT_User_UserId",
+                        name: "FK_StepTest_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -80,24 +77,22 @@ namespace LanterneRouge.Fresno.Core.Migrations
                 {
                     table.PrimaryKey("PK_Measurement", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Measurement_CK_EFFORTUNIT_StepTestId",
+                        name: "FK_Measurement_StepTest_StepTestId",
                         column: x => x.StepTestId,
-                        principalSchema: "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'",
-                        principalTable: "CK_EFFORTUNIT",
+                        principalTable: "StepTest",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CK_EFFORTUNIT_UserId",
-                schema: "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'",
-                table: "CK_EFFORTUNIT",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Measurement_StepTestId",
                 table: "Measurement",
                 column: "StepTestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StepTest_UserId",
+                table: "StepTest",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -107,8 +102,7 @@ namespace LanterneRouge.Fresno.Core.Migrations
                 name: "Measurement");
 
             migrationBuilder.DropTable(
-                name: "CK_EFFORTUNIT",
-                schema: "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'");
+                name: "StepTest");
 
             migrationBuilder.DropTable(
                 name: "User");

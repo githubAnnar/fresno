@@ -10,10 +10,12 @@ namespace LanterneRouge.Fresno.Core.Configuration
         {
             var orderCounter = 0;
 
-            entity.ToTable("StepTest", b => b.HasCheckConstraint("CK_TESTTYPE", "[TestType] = 'Bike' OR [TestType] = 'Run'"))
-                .HasKey(t => t.Id);
-
-            entity.ToTable("CK_EFFORTUNIT", "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'");
+            entity.ToTable("StepTest", b =>
+            {
+                b.HasCheckConstraint("CK_TESTTYPE", "[TestType] = 'Bike' OR [TestType] = 'Run'");
+                b.HasCheckConstraint("CK_EFFORTUNIT", "[EffortUnit] = 'W' OR [EffortUnit] = 'm-s'");
+            })
+              .HasKey(t => t.Id);
 
             entity.Property(t => t.Id)
                 .IsRequired()

@@ -8,6 +8,8 @@ using LanterneRouge.Fresno.Core.Repository;
 using LanterneRouge.Fresno.Services.Interfaces;
 using LanterneRouge.Fresno.Services.Models;
 using log4net;
+using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 
 namespace LanterneRouge.Fresno.Services.Data
 {
@@ -41,7 +43,20 @@ namespace LanterneRouge.Fresno.Services.Data
             {
                 Filename = filename;
                 var localConnectionFactory = _connectionFactory ??= new ConnectionFactory(Filename);
-                var context = new StepTestContext();
+                var context = new StepTestContext
+                {
+                    Connection = localConnectionFactory.GetConnection
+                };
+
+                if (context.Connection is DbConnection newConnection)
+                {
+                    if (!File.Exists(newConnection.DataSource))
+                    {
+                        Logger.Debug($"{newConnection.DataSource} is not open, creating new and creating database and tables!");
+                        context.Database.Migrate();
+                    }
+                }
+
                 _userRepository = new UserRepository(context);
                 _stepTestRepository = new StepTestRepository(context);
                 _measurementRepository = new MeasurementRepository(context);
