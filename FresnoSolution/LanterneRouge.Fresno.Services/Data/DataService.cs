@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using AutoMapper;
-using LanterneRouge.Fresno.Core.Contracts;
 using LanterneRouge.Fresno.Core.Infrastructure;
 using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Core.Repositories;
@@ -16,9 +15,9 @@ namespace LanterneRouge.Fresno.Services.Data
     public class DataService : IDataService
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(DataService));
-        private IUserRepository? _userRepository;
-        private IStepTestRepository? _stepTestRepository;
-        private IMeasurementRepository? _measurementRepository;
+        private UserRepository? _userRepository;
+        private StepTestRepository? _stepTestRepository;
+        private MeasurementRepository? _measurementRepository;
         private ConnectionFactory? _connectionFactory;
 
         private IMapper Mapper { get; }
@@ -31,12 +30,16 @@ namespace LanterneRouge.Fresno.Services.Data
             Mapper = scope.Resolve<IMapper>();
         }
 
+        // Loads a database from the specified filename.
+        //
+        // Parameters:
+        //   filename: The name of the file to load the database from.
+        //
+        // Returns:
+        //   True if the database is loaded successfully, false otherwise.
         public bool LoadDatabase(string filename)
         {
-            if (filename is null)
-            {
-                throw new ArgumentNullException(nameof(filename));
-            }
+            ArgumentNullException.ThrowIfNull(filename);
 
             bool response;
             try
@@ -112,8 +115,13 @@ namespace LanterneRouge.Fresno.Services.Data
 
         public async Task<IList<UserModel>> GetAllUsers(CancellationToken cancellationToken = default)
         {
-            var users = await _userRepository.GetAllUsers(cancellationToken);
-            return users.Select(Mapper.Map<UserModel>).ToList();
+            if (_userRepository != null)
+            {
+                var users = await _userRepository.GetAllUsers(cancellationToken);
+                return users.Select(Mapper.Map<UserModel>).ToList();
+            }
+
+            return new List<UserModel>();
         }
 
         public async Task<UserModel?> GetUser(Guid id, CancellationToken cancellationToken = default)

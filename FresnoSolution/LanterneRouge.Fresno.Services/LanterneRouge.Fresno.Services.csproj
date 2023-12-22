@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MapperProfiles\**" />
+    <EmbeddedResource Remove="MapperProfiles\**" />
+    <None Remove="MapperProfiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="7.1.0" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -15,10 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\LanterneRouge.Fresno.Core\LanterneRouge.Fresno.Core.csproj" />
     <ProjectReference Include="..\LanterneRouge.Fresno.Utils\LanterneRouge.Fresno.Utils.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MapperProfiles\" />
   </ItemGroup>
 
 </Project>
