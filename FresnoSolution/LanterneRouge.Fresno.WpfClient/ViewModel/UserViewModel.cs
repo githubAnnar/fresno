@@ -6,7 +6,6 @@ using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -22,7 +21,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UserViewModel));
         private static readonly string _name = typeof(UserViewModel).Name;
         private bool _isSelected = false;
-        private IUserEntity _source;
+        private UserModel _source;
         private ICommand _saveCommand = null;
         private ICommand _editSelectedCommand;
         private ICommand _showAllStepTestsCommand;
@@ -37,18 +36,18 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             Source = user ?? throw new ArgumentNullException(nameof(user));
 
             // Set up commands for this viewmodel
-            SubCommands = new ObservableCollection<CommandViewModel>
-            {
+            SubCommands =
+            [
                 new CommandViewModel("Add Steptest", AddStepTestCommand),
                 new CommandViewModel("Show all Steptests", ShowAllStepTestsCommand)
-            };
+            ];
 
-            ContextMenuItemCommands = new ObservableCollection<CommandViewModel>
-            {
+            ContextMenuItemCommands =
+            [
                 new CommandViewModel("Edit User", EditSelectedCommand),
                 new CommandViewModel("Add Steptest", AddStepTestCommand),
                 new CommandViewModel("Show all Steptests", ShowAllStepTestsCommand)
-            };
+            ];
         }
 
         #endregion
@@ -57,7 +56,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         internal UserModel Source
         {
-            get => DataManager.GetUser(_source.Id).Result;
+
+            get => _source;
             private set => _source = value;
         }
 

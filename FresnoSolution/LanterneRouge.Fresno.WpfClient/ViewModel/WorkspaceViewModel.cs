@@ -96,11 +96,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region IWorkspaceCommands2 Methods
 
-        public ObservableCollection<CommandViewModel> SubCommands
-        {
-            get => _subCommands ??= new ObservableCollection<CommandViewModel>();
-            set => _subCommands = value;
-        }
+        public ObservableCollection<CommandViewModel> SubCommands { get; set; } = [];
 
         public ObservableCollection<CommandViewModel> ContextMenuItemCommands
         {

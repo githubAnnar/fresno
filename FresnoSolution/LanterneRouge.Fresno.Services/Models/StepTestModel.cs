@@ -5,25 +5,25 @@ namespace LanterneRouge.Fresno.Services.Models
 {
     public class StepTestModel : IStepTestEntity
     {
-        public Guid Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public required Guid Id { get; set; }
 
-        public Guid UserId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public required Guid UserId { get; set; }
 
-        public string TestType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public required string TestType { get; set; }
 
-        public string EffortUnit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public required string EffortUnit { get; set; }
 
-        public long StepDuration { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public long StepDuration { get; set; }
 
-        public float LoadPreset { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float LoadPreset { get; set; }
 
-        public float Increase { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float Increase { get; set; }
 
-        public float Temperature { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float Temperature { get; set; }
 
-        public float Weight { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float Weight { get; set; }
 
-        public DateTime TestDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DateTime TestDate { get; set; }
 
         public User? User { get; set; }
 
