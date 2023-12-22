@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class LtCalculationViewModel : WorkspaceViewModel, IEquatable<LtCalculationViewModel>
+    public class LtCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : WorkspaceViewModel(parentStepTest, rootViewModel, null), IEquatable<LtCalculationViewModel>
     {
         #region Fields
 
@@ -14,14 +14,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ObservableCollection<Zone> _lTZones = null;
 
         #endregion
-
-        #region Constructors
-
-        public LtCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
-        { }
-
-        #endregion
-
+        
         #region Properties
 
         private StepTestViewModel StepTestParent => Parent as StepTestViewModel;
@@ -30,7 +23,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string LTLactateThresholdText => LtCalculation != null ? $"Load Th.: {LtCalculation.LoadThreshold:0.0} Heartrate Th.: {LtCalculation.HeartRateThreshold:0}" : "No Calculation";
 
-        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0 ? new LTCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Result.ToList()) : null;
+        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0 ? new LTCalculation([.. DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Result]) : null;
 
         public ObservableCollection<Zone> LTZones
         {

@@ -1,12 +1,10 @@
 ﻿using LanterneRouge.Fresno.Core.Entity;
-using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Services.Models;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -35,18 +33,18 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             Source = measurement ?? throw new ArgumentNullException(nameof(measurement));
 
             // Set up commands
-            SubCommands = new ObservableCollection<CommandViewModel>
-            {
+            SubCommands =
+            [
                 new CommandViewModel("Show User", ShowUserCommand),
                 new CommandViewModel("Show Steptest", ShowStepTestCommand)
-            };
+            ];
 
-            ContextMenuItemCommands = new ObservableCollection<CommandViewModel>
-            {
+            ContextMenuItemCommands =
+            [
                 new CommandViewModel("Edit Measurement", EditSelectedCommand),
-                new CommandViewModel("Show User",ShowUserCommand),
-                new CommandViewModel("Show Steptest" ,ShowStepTestCommand)
-            };
+                new CommandViewModel("Show User", ShowUserCommand),
+                new CommandViewModel("Show Steptest", ShowStepTestCommand)
+            ];
         }
 
         #endregion
@@ -204,12 +202,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public bool IsValid => ValidatedProperties.All(p => GetValidationError(p) == null);
 
         private static readonly string[] ValidatedProperties =
-        {
+        [
             nameof(Sequence),
             nameof(HeartRate),
             nameof(Lactate),
             nameof(Load)
-        };
+        ];
 
         private string GetValidationError(string propertyName)
         {

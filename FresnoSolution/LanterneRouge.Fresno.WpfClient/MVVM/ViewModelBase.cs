@@ -89,7 +89,7 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
         /// Raises this object's PropertyChanged event.
         /// </summary>
         /// <param name="propertyName">The property that has a new value.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = default(string))
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = default)
         {
             VerifyPropertyName(propertyName);
 
@@ -109,7 +109,11 @@ namespace LanterneRouge.Fresno.WpfClient.MVVM
         /// Invoked when this object is being removed from the application
         /// and will be subject to garbage collection.
         /// </summary>
-        public void Dispose() => OnDispose();
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            OnDispose();
+        }
 
         /// <summary>
         /// Child classes can override this method to perform 

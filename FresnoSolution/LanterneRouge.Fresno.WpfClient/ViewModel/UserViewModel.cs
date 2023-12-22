@@ -1,6 +1,5 @@
 ﻿using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Entity.Extentions;
-using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Services.Models;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
@@ -288,12 +287,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public bool IsValid => !ValidatedProperties.Any(vp => GetValidationError(vp) != null);
 
         private static readonly string[] ValidatedProperties =
-        {
+        [
             nameof(FirstName),
             nameof(LastName),
             nameof(Email),
             nameof(Sex)
-        };
+        ];
 
         /// <summary>
         /// Gets the validation error.
@@ -388,7 +387,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public void SaveToAllStepTests(StepTestViewModel newStepTest)
         {
             // find AllSteptests for this user if shown
-            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllStepTestsViewModel)) && w is AllStepTestsViewModel allStepTestsForUser && ((UserViewModel)allStepTestsForUser.Parent).UserId == this.UserId);
+            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllStepTestsViewModel)) && w is AllStepTestsViewModel allStepTestsForUser && ((UserViewModel)allStepTestsForUser.Parent).UserId == UserId);
             if (workSpace != null && workSpace is AllStepTestsViewModel stepTests)
             {
                 if (!stepTests.AllStepTests.Contains(newStepTest))

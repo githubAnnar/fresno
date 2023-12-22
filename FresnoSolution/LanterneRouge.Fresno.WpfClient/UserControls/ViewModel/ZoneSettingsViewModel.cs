@@ -11,7 +11,7 @@ namespace LanterneRouge.Fresno.WpfClient.UserControls.ViewModel
 
         public ZoneSettingsViewModel(ZoneSetting setting)
         {
-            ZoneSettings = new ObservableCollection<ZoneSettingViewModel>();
+            ZoneSettings = [];
             var limits = setting.Limits.ToList();
             for (int i = 0; i < limits.Count; i++)
             {

@@ -1,7 +1,6 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Entity.Extentions;
-using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.Services.Models;
 using LanterneRouge.Fresno.Utils.Helpers;
@@ -10,7 +9,6 @@ using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -48,8 +46,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             Source = stepTest ?? throw new ArgumentNullException(nameof(stepTest));
 
             // Set up commands
-            SubCommands = new ObservableCollection<CommandViewModel>
-            {
+            SubCommands =
+            [
                 new CommandViewModel("Show User", ShowUserCommand),
                 new CommandViewModel("Add Measurement", AddMeasurementCommand),
                 new CommandViewModel("Show all Measurements", ShowAllMeasurementsCommand),
@@ -59,10 +57,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("LT Calculation", ShowLtCalculationCommand),
                 new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand),
                 new CommandViewModel("DMax Calculation", ShowDMaxCalculationCommand)
-            };
+            ];
 
-            ContextMenuItemCommands = new ObservableCollection<CommandViewModel>
-            {
+            ContextMenuItemCommands =
+            [
                 new CommandViewModel("Edit Steptest", EditSelectedCommand),
                 new CommandViewModel("Show User", ShowUserCommand),
                 new CommandViewModel("Add Measurement", AddMeasurementCommand),
@@ -73,7 +71,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("LT Calculation", ShowLtCalculationCommand),
                 new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand),
                 new CommandViewModel("DMax Calculation", ShowDMaxCalculationCommand)
-            };
+            ];
         }
 
         #endregion
@@ -199,21 +197,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public double DMaxValue => DmaxCalculation != null ? DmaxCalculation.LoadThreshold : 0d;
 
         private FblcCalculation _fblcCalculation = null;
-        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new FblcCalculation(DataManager.GetAllMeasurementsByStepTest(Source).Result.ToList(), 4.0) : null;
+        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new FblcCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result], 4.0) : null;
 
         private FrpbCalculation _frpbCalculation = null;
-        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new FrpbCalculation(DataManager.GetAllMeasurementsByStepTest(Source).Result.ToList(), 1.0) : null;
+        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new FrpbCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result], 1.0) : null;
 
         private LTCalculation _ltCalculation = null;
-        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new LTCalculation(DataManager.GetAllMeasurementsByStepTest(Source).Result.ToList()) : null;
+        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new LTCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result]) : null;
 
         private LTLogCalculation _ltLogCalculation = null;
 
-        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new LTLogCalculation(DataManager.GetAllMeasurementsByStepTest(Source).Result.ToList()) : null;
+        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new LTLogCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result]) : null;
 
         private DmaxCalculation _dmaxCalculation;
 
-        private DmaxCalculation DmaxCalculation => _dmaxCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new DmaxCalculation(DataManager.GetAllMeasurementsByStepTest(Source).Result.ToList(), false) : null;
+        private DmaxCalculation DmaxCalculation => _dmaxCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new DmaxCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result], false) : null;
 
         #endregion
 
@@ -298,7 +296,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public bool IsValid => ValidatedProperties.All(p => GetValidationError(p) == null);
 
-        private static readonly string[] ValidatedProperties = { nameof(TestType), nameof(EffortUnit), nameof(StepDurationTimespan), nameof(LoadPreset), nameof(Increase) };
+        private static readonly string[] ValidatedProperties = [nameof(TestType), nameof(EffortUnit), nameof(StepDurationTimespan), nameof(LoadPreset), nameof(Increase)];
 
         private string GetValidationError(string propertyName)
         {
@@ -406,7 +404,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public override void CreateChild()
         {
             Logger.Debug($"Add Measurement on {DisplayName}");
-            MeasurementViewModel.Create(this, DataManager.GetAllMeasurementsByStepTest(Source).Result.ToList(), RootViewModel);
+            MeasurementViewModel.Create(this, [.. DataManager.GetAllMeasurementsByStepTest(Source).Result], RootViewModel);
         }
 
         public void SaveToAllMeasurements(MeasurementViewModel newMeasurement)

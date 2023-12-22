@@ -30,13 +30,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             Task.Run(CreateAllMeasurements).Wait();
 
             // Set up subcommands
-            SubCommands = new ObservableCollection<CommandViewModel>
-            {
+            SubCommands =
+            [
                 new CommandViewModel("Edit Measurement", ShowMeasurementCommand),
                 new CommandViewModel("Add Measurement", AddMeasurementCommand),
                 new CommandViewModel("Show Steptest", ShowStepTestCommand),
                 new CommandViewModel("Show User", ShowUserCommand)
-            };
+            ];
         }
 
         private void DataManager_Committed()
@@ -155,7 +155,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddMeasurementCommand => _addMeasurementCommand ??= new RelayCommand(param => CreateChild());
 
-        public override void CreateChild() => MeasurementViewModel.Create(Parent as StepTestViewModel, DataManager.GetAllMeasurementsByStepTest((Parent as StepTestViewModel).Source).Result.ToList(), RootViewModel);
+        public override void CreateChild() => MeasurementViewModel.Create(Parent as StepTestViewModel, [.. DataManager.GetAllMeasurementsByStepTest((Parent as StepTestViewModel).Source).Result], RootViewModel);
 
         public ICommand ShowStepTestCommand => _showStepTestCommand ??= new RelayCommand(param => Selected.Parent.Show(), param => Selected != null && Selected.IsValid);
 

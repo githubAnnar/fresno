@@ -33,13 +33,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             Logger.Debug($"AllUsers loaded");
 
             // Set up commands
-            SubCommands = new ObservableCollection<CommandViewModel>
-            {
+            SubCommands =
+            [
                 new CommandViewModel("Edit User", ShowUserCommand),
                 new CommandViewModel("Show all Steptests", ShowAllStepTestsCommand),
                 new CommandViewModel("Add User", AddUserCommand),
                 new CommandViewModel("Add Steptest", AddStepTestCommand)
-            };
+            ];
         }
 
         private async Task CreateAllUsers()

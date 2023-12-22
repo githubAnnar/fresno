@@ -6,21 +6,14 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class FrpbCalculationViewModel : WorkspaceViewModel, IEquatable<FrpbCalculationViewModel>
+    public class FrpbCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : WorkspaceViewModel(parentStepTest, rootViewModel, null), IEquatable<FrpbCalculationViewModel>
     {
         #region Fields
 
         private double _frpbCalculationThreshold = 1d;
 
         #endregion
-
-        #region Constructors
-
-        public FrpbCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
-        { }
-
-        #endregion
-
+        
         #region Properties
 
         private StepTestViewModel StepTestParent => Parent as StepTestViewModel;
@@ -47,7 +40,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public string FRPBLactateThresholdText => FrpbCalculation != null ? $"Load Th.: {FrpbCalculation.LoadThreshold:0.0} Heartrate Th.: {FrpbCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private FrpbCalculation _frpbCalculation = null;
-        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0 ? new FrpbCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Result.ToList(), FrpbCalculationThreshold) : null;
+        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0 ? new FrpbCalculation([.. DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Result], FrpbCalculationThreshold) : null;
 
         private ObservableCollection<Zone> _FRPBZones = null;
         public ObservableCollection<Zone> FRPBZones

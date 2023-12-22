@@ -9,21 +9,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     /// <summary>
     /// Fixed Blood Lactate Consentration calculation
     /// </summary>
-    public class FblcCalculationViewModel : WorkspaceViewModel, IEquatable<FblcCalculationViewModel>
+    public class FblcCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : WorkspaceViewModel(parentStepTest, rootViewModel, null), IEquatable<FblcCalculationViewModel>
     {
         #region Fields
 
         private double _fblcCalculationThreshold = 4d;
 
         #endregion
-
-        #region Constructors
-
-        public FblcCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
-        { }
-
-        #endregion
-
+       
         #region Properties
 
         public StepTestViewModel StepTestParent => Parent as StepTestViewModel;
@@ -49,7 +42,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public string FBLCLactateThresholdText => FblcCalculation != null ? $"Load Th.: {FblcCalculation.LoadThreshold:0.0} Heartrate Th.: {FblcCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private FblcCalculation _fblcCalculation = null;
-        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0 ? new FblcCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Result.ToList(), FblcCalculationThreshold) : null;
+        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0 ? new FblcCalculation([.. DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Result], FblcCalculationThreshold) : null;
 
         private ObservableCollection<Zone> _FBLCZones = null;
         public ObservableCollection<Zone> FBLCZones

@@ -6,25 +6,15 @@ using System.Windows.Input;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class UserStepTestListViewModel : WorkspaceViewModel
+    public class UserStepTestListViewModel(UserViewModel user, StepTestViewModel baseStepTestViewModel, Action<IEnumerable<StepTestViewModel>, bool> closeAction, MainWindowViewModel rootViewModel) : WorkspaceViewModel(user, rootViewModel, null)
     {
-        #region Constructors
-
-        public UserStepTestListViewModel(UserViewModel user, StepTestViewModel baseStepTestViewModel, Action<IEnumerable<StepTestViewModel>, bool> closeAction, MainWindowViewModel rootViewModel) : base(user, rootViewModel, null)
-        {
-            BaseStepTestViewModel = baseStepTestViewModel ?? throw new ArgumentNullException(nameof(baseStepTestViewModel));
-            CloseAction = closeAction ?? throw new ArgumentNullException(nameof(closeAction));
-        }
-
-        #endregion
-
         #region Properties
 
         private UserViewModel UserParent => Parent as UserViewModel;
 
-        private Action<IEnumerable<StepTestViewModel>, bool> CloseAction { get; }
+        private Action<IEnumerable<StepTestViewModel>, bool> CloseAction { get; } = closeAction ?? throw new ArgumentNullException(nameof(closeAction));
 
-        public StepTestViewModel BaseStepTestViewModel { get; }
+        public StepTestViewModel BaseStepTestViewModel { get; } = baseStepTestViewModel ?? throw new ArgumentNullException(nameof(baseStepTestViewModel));
 
         public List<StepTestViewModel> AdditionalStepTestCandidates => (from st in DataManager.GetAllStepTestsByUser(DataManager.GetUserByStepTest(BaseStepTestViewModel.Source).Result).Result.Where(st => st.Id != BaseStepTestViewModel.Source.Id) select new StepTestViewModel(st, UserParent, RootViewModel)).ToList();
 

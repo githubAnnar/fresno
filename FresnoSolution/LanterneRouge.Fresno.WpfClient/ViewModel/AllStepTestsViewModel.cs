@@ -52,8 +52,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             Logger.Debug($"AllStepests for user {parentUser.LastName} loaded");
 
             // Set up sub commands
-            SubCommands = new ObservableCollection<CommandViewModel>
-            {
+            SubCommands =
+            [
                 new CommandViewModel("Add Steptest", AddStepTestCommand),
                 new CommandViewModel("Show User", ShowUserCommand),
                 new CommandViewModel("Show all Measurements", ShowAllMeasurementsCommand),
@@ -65,7 +65,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 new CommandViewModel("LT Calculation", ShowLtCalculationCommand,"Lactate Threshold Calculation"),
                 new CommandViewModel("LT Log Calculation", ShowLtLogCalculationCommand),
                 new CommandViewModel("DMax Calculation", ShowDMaxCalculationCommand),
-            };
+            ];
         }
 
         private void DataManager_Committed()
