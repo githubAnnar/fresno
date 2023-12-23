@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class DMaxCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : WorkspaceViewModel(parentStepTest, rootViewModel, null), IEquatable<DMaxCalculationViewModel>
+    public class DMaxCalculationViewModel(StepTestViewModel parentStepTest) : WorkspaceViewModel(parentStepTest, null), IEquatable<DMaxCalculationViewModel>
     {
         #region Fields
 

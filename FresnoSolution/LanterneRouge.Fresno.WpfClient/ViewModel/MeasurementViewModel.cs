@@ -28,7 +28,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public MeasurementViewModel(MeasurementModel measurement, StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
+        public MeasurementViewModel(MeasurementModel measurement, StepTestViewModel parentStepTest) : base(parentStepTest, null)
         {
             Source = measurement ?? throw new ArgumentNullException(nameof(measurement));
 
@@ -306,7 +306,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             var newMeasurement = MeasurementModel.Create(newSequence, parentStepTest.StepTestId, newLoad);
             Logger.Info("New empty measurement created");
-            var workspace = new MeasurementViewModel(newMeasurement, parentStepTest, rootViewModel);
+            var workspace = new MeasurementViewModel(newMeasurement, parentStepTest);
             workspace.Show();
         }
 

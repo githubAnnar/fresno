@@ -9,7 +9,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     /// <summary>
     /// Fixed Blood Lactate Consentration calculation
     /// </summary>
-    public class FblcCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : WorkspaceViewModel(parentStepTest, rootViewModel, null), IEquatable<FblcCalculationViewModel>
+    public class FblcCalculationViewModel(StepTestViewModel parentStepTest) : WorkspaceViewModel(parentStepTest, null), IEquatable<FblcCalculationViewModel>
     {
         #region Fields
 

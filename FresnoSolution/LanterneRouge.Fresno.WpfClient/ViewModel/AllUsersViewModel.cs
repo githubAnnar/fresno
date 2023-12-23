@@ -26,7 +26,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public AllUsersViewModel(MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
+        public AllUsersViewModel() : base(null, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             DisplayName = "All Users"; /*KayakStrings.Race_All_Races;*/
             Task.Run(CreateAllUsers).Wait();
@@ -45,7 +45,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private async Task CreateAllUsers()
         {
             var allUsers = await DataManager.GetAllUsers();
-            var all = (from user in allUsers select new UserViewModel(user, RootViewModel)).ToList();
+            var all = (from user in allUsers select new UserViewModel(user)).ToList();
             all.ForEach(a => a.PropertyChanged += OnUserViewModelPropertyChanged);
             AllUsers = new ObservableCollection<UserViewModel>(all);
             OnPropertyChanged(nameof(AllUsers));
@@ -99,7 +99,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowAllStepTests()
         {
-            var workspace = new AllStepTestsViewModel(Selected, RootViewModel);
+            var workspace = new AllStepTestsViewModel(Selected);
             workspace.Show();
         }
 

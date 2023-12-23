@@ -30,7 +30,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public UserViewModel(UserModel user, MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
+        public UserViewModel(UserModel user) : base(null, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             Source = user ?? throw new ArgumentNullException(nameof(user));
 
@@ -369,7 +369,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void ShowAllStepTests()
         {
-            var workspace = new AllStepTestsViewModel(this, RootViewModel);
+            var workspace = new AllStepTestsViewModel(this);
             workspace.Show();
             Logger.Debug($"Show All StepTests for {DisplayName}");
         }
@@ -405,7 +405,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             var newUser = UserModel.Create();
             Logger.Info("Created new Empty user");
-            var workspace = new UserViewModel(newUser, rootViewModel);
+            var workspace = new UserViewModel(newUser)
+            {
+                RootViewModel = rootViewModel
+            };
             workspace.Show();
             return workspace;
         }

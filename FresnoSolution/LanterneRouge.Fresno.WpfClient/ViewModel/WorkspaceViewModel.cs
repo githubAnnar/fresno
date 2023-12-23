@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public abstract class WorkspaceViewModel(WorkspaceViewModel parent, MainWindowViewModel rootViewModel, BitmapImage icon) : ViewModelBase, IWorkspaceCommands
+    public abstract class WorkspaceViewModel(WorkspaceViewModel parent, BitmapImage icon) : ViewModelBase, IWorkspaceCommands
     {
         #region Fields
 
@@ -79,7 +79,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public WorkspaceViewModel Parent { get; } = parent;
 
-        public MainWindowViewModel RootViewModel { get; } = rootViewModel ?? throw new ArgumentNullException(nameof(rootViewModel));
+        internal MainWindowViewModel RootViewModel { get; set; }
 
         #endregion
 

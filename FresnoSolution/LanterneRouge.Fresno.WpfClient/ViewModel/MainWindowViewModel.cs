@@ -279,7 +279,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var dataContext = new FresnoToolWindowViewModel
             {
                 TabItems = [
-                    new CustomTabItem {IsSelected = true, Header = "Email", Content = new EmailPreferencesView { DataContext = new EmailPreferencesViewModel(contentWindow.Close) } },
+                    new CustomTabItem { IsSelected = true, Header = "Email", Content = new EmailPreferencesView { DataContext = new EmailPreferencesViewModel(contentWindow.Close) } },
                     new CustomTabItem { Header = "Lactate Zones", Content = new LactateZonePreferencesView { DataContext = new LactateZonePreferencesViewModel(contentWindow.Close) } }
                 ]
             };
@@ -385,7 +385,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (Workspaces.FirstOrDefault(vm => vm is AllUsersViewModel) is not AllUsersViewModel workspace)
             {
-                workspace = new AllUsersViewModel(this);
+                workspace = new AllUsersViewModel();
             }
 
             ShowWorkspace(workspace);
@@ -543,6 +543,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (!Workspaces.Contains(view))
             {
                 Workspaces.Add(view);
+                view.RootViewModel = this;
             }
 
             SetActiveWorkspace(view);

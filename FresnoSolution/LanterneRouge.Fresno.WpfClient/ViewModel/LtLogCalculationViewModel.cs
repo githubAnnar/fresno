@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class LtLogCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : WorkspaceViewModel(parentStepTest, rootViewModel, null), IEquatable<LtLogCalculationViewModel>
+    public class LtLogCalculationViewModel(StepTestViewModel parentStepTest) : WorkspaceViewModel(parentStepTest, null), IEquatable<LtLogCalculationViewModel>
     {
         #region Properties
 

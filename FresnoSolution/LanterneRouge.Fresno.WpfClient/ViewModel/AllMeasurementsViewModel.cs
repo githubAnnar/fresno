@@ -25,7 +25,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public AllMeasurementsViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
+        public AllMeasurementsViewModel(StepTestViewModel parentStepTest) : base(parentStepTest, null)
         {
             Task.Run(CreateAllMeasurements).Wait();
 
@@ -51,7 +51,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             {
                 DisplayName = $"Measurements: {parent.DisplayName}";
                 var allMeasurements = await DataManager.GetAllMeasurementsByStepTest(parent.Source);
-                var all = (from measurement in allMeasurements select new MeasurementViewModel(measurement, parent, RootViewModel)).ToList();
+                var all = (from measurement in allMeasurements select new MeasurementViewModel(measurement, parent)).ToList();
                 all.ForEach(a => a.PropertyChanged += OnMeasurementViewModelPropertyChanged);
                 AllMeasurements = new ObservableCollection<MeasurementViewModel>(all);
                 OnPropertyChanged(nameof(AllMeasurements));
