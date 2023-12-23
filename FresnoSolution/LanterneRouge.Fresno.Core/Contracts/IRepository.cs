@@ -1,23 +1,23 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
-
-namespace LanterneRouge.Fresno.Core.Contracts
+﻿namespace LanterneRouge.Fresno.Core.Contracts
 {
-    public interface IRepository<TEntity> where TEntity : BaseEntity<TEntity>
+    public interface IRepository<TEntity, TParentEntity>
     {
         void Add(TEntity entity);
 
         IEnumerable<TEntity> All();
 
-        TEntity FindSingle(int id);
+        TEntity? FindSingle(Guid id);
 
-        IEnumerable<TEntity> FindByParentId<TParentEntity>(TParentEntity parent) where TParentEntity : BaseEntity<TParentEntity>;
+        IEnumerable<TEntity> FindByParentId(TParentEntity parent);
 
-        int GetCountByParentId<TParentEntity>(TParentEntity parent, bool onlyInCalculation) where TParentEntity : BaseEntity<TParentEntity>;
+        int GetCountByParentId(TParentEntity parent, bool onlyInCalculation);
 
-        void Remove(int id);
+        void Remove(Guid id);
 
         void Remove(TEntity entity);
 
         void Update(TEntity entity);
+
+        bool IsChanged(TEntity entity);
     }
 }

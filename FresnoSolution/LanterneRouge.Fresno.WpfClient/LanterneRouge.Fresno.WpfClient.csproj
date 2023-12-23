@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <AssemblyName>StepTestAssistant</AssemblyName>
     <Deterministic>false</Deterministic>
@@ -26,7 +26,6 @@
   <ItemGroup>
     <ProjectReference Include="..\LanterneRouge.Fresno.Calculations\LanterneRouge.Fresno.Calculations.csproj" />
     <ProjectReference Include="..\LanterneRouge.Fresno.Report\LanterneRouge.Fresno.Report.csproj" />
-    <ProjectReference Include="..\LanterneRouge.Fresno.Repository\LanterneRouge.Fresno.Repository.csproj" />
     <ProjectReference Include="..\LanterneRouge.Fresno.Services\LanterneRouge.Fresno.Services.csproj" />
     <ProjectReference Include="..\LanterneRouge.Wpf\LanterneRouge.Wpf.csproj" />
   </ItemGroup>
@@ -47,14 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dirkster.MRULib" Version="1.3.0" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
-    <PackageReference Include="PortableJsonSettingsProvider" Version="0.2.1" />
+    <PackageReference Include="PortableJsonSettingsProvider" Version="0.2.2" />
     <PackageReference Include="System.Memory" Version="4.5.5" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.410601">
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>

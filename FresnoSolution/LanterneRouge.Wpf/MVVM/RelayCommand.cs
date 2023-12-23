@@ -4,27 +4,21 @@ using System.Windows.Input;
 
 namespace LanterneRouge.Wpf.MVVM
 {
-    public class RelayCommand : ICommand
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RelayCommand"/> class.
+    /// </summary>
+    /// <param name="execute">The execute.</param>
+    /// <param name="canExecute">The can execute.</param>
+    public class RelayCommand(Action<object> execute, Predicate<object> canExecute) : ICommand
     {
         #region Fields
 
-        private readonly Action<object> _execute;
-        private readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        private readonly Predicate<object> _canExecute = canExecute;
 
         #endregion
 
         #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand"/> class.
-        /// </summary>
-        /// <param name="execute">The execute.</param>
-        /// <param name="canExecute">The can execute.</param>
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.

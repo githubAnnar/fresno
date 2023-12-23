@@ -10,27 +10,16 @@ using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public abstract class WorkspaceViewModel : ViewModelBase, IWorkspaceCommands
+    public abstract class WorkspaceViewModel(WorkspaceViewModel parent, BitmapImage icon) : ViewModelBase, IWorkspaceCommands
     {
         #region Fields
 
         private ICommand _closeCommand;
-        private ObservableCollection<CommandViewModel> _subCommands;
+        private readonly ObservableCollection<CommandViewModel> _subCommands;
         private ObservableCollection<CommandViewModel> _contextMenuItemCommands;
         private IDataService _manager;
 
         #endregion // Fields
-
-        #region Constructors
-
-        public WorkspaceViewModel(WorkspaceViewModel parent, MainWindowViewModel rootViewModel, BitmapImage icon)
-        {
-            Parent = parent;
-            RootViewModel = rootViewModel ?? throw new ArgumentNullException(nameof(rootViewModel));
-            ItemIcon = icon ?? new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-report-card-100.png"));
-        }
-
-        #endregion
 
         #region CloseCommand
 
@@ -86,21 +75,17 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
-        public BitmapImage ItemIcon { get; protected set; }
+        public BitmapImage ItemIcon { get; protected set; } = icon ?? new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-report-card-100.png"));
 
-        public WorkspaceViewModel Parent { get; }
+        public WorkspaceViewModel Parent { get; } = parent;
 
-        public MainWindowViewModel RootViewModel { get; }
+        internal MainWindowViewModel RootViewModel { get; set; }
 
         #endregion
 
         #region IWorkspaceCommands2 Methods
 
-        public ObservableCollection<CommandViewModel> SubCommands
-        {
-            get => _subCommands ??= new ObservableCollection<CommandViewModel>();
-            set => _subCommands = value;
-        }
+        public ObservableCollection<CommandViewModel> SubCommands { get; set; } = [];
 
         public ObservableCollection<CommandViewModel> ContextMenuItemCommands
         {

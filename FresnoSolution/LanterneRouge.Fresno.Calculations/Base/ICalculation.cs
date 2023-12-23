@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Services.Models;
 using System;
 using System.Collections.Generic;
 
@@ -6,7 +6,7 @@ namespace LanterneRouge.Fresno.Calculations.Base
 {
     public interface ICalculation
     {
-        List<Measurement> Measurements { get; }
+        List<MeasurementModel> Measurements { get; }
 
         List<double> Loads { get; }
 

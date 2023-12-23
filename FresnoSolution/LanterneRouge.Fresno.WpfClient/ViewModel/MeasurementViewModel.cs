@@ -1,10 +1,10 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Services.Models;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -28,32 +28,32 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public MeasurementViewModel(Measurement measurement, StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
+        public MeasurementViewModel(MeasurementModel measurement, StepTestViewModel parentStepTest) : base(parentStepTest, null)
         {
             Source = measurement ?? throw new ArgumentNullException(nameof(measurement));
 
             // Set up commands
-            SubCommands = new ObservableCollection<CommandViewModel>
-            {
+            SubCommands =
+            [
                 new CommandViewModel("Show User", ShowUserCommand),
                 new CommandViewModel("Show Steptest", ShowStepTestCommand)
-            };
+            ];
 
-            ContextMenuItemCommands = new ObservableCollection<CommandViewModel>
-            {
+            ContextMenuItemCommands =
+            [
                 new CommandViewModel("Edit Measurement", EditSelectedCommand),
-                new CommandViewModel("Show User",ShowUserCommand),
-                new CommandViewModel("Show Steptest" ,ShowStepTestCommand)
-            };
+                new CommandViewModel("Show User", ShowUserCommand),
+                new CommandViewModel("Show Steptest", ShowStepTestCommand)
+            ];
         }
 
         #endregion
 
         #region Properties
 
-        internal Measurement Source { get; private set; }
+        internal MeasurementModel Source { get; private set; }
 
-        public int MeasurementId => Source.Id;
+        public Guid MeasurementId => Source.Id;
 
         public int HeartRate
         {
@@ -124,7 +124,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Presentation Properties
 
-        public override string DisplayName => Source.Id == 0 ? "New Measurement" /*KayakStrings.Person_New_Singular*/ : ToString();
+        public override string DisplayName => Source.Id == Guid.Empty ? "New Measurement" /*KayakStrings.Person_New_Singular*/ : ToString();
 
         public bool IsSelected
         {
@@ -151,7 +151,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (Source.IsChanged)
+            if (DataManager.IsChanged(Source).Result)
             {
                 DataManager.SaveMeasurement(Source);
                 if (Parent is StepTestViewModel stvm)
@@ -178,7 +178,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => IsValid && Source.IsChanged;
+        private bool CanSave => IsValid && DataManager.IsChanged(Source).Result;
 
         #endregion
 
@@ -202,12 +202,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public bool IsValid => ValidatedProperties.All(p => GetValidationError(p) == null);
 
         private static readonly string[] ValidatedProperties =
-        {
+        [
             nameof(Sequence),
             nameof(HeartRate),
             nameof(Lactate),
             nameof(Load)
-        };
+        ];
 
         private string GetValidationError(string propertyName)
         {
@@ -299,16 +299,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #endregion
 
-        public static void Create(StepTestViewModel parentStepTest, List<Measurement> measurements, MainWindowViewModel rootViewModel)
+        public static void Create(StepTestViewModel parentStepTest, List<MeasurementModel> measurements, MainWindowViewModel rootViewModel)
         {
             var newSequence = measurements.Count == 0 ? 1 : measurements.Max(m => m.Sequence) + 1;
             var newLoad = measurements.Count == 0 ? parentStepTest.Source.LoadPreset : measurements.Last().Load + parentStepTest.Source.Increase;
 
-            var newMeasurement = Measurement.Create(newSequence, parentStepTest.StepTestId, 0, 0, newLoad);
-            newMeasurement.InCalculation = true;
-            newMeasurement.AcceptChanges();
+            var newMeasurement = MeasurementModel.Create(newSequence, parentStepTest.StepTestId, newLoad);
             Logger.Info("New empty measurement created");
-            var workspace = new MeasurementViewModel(newMeasurement, parentStepTest, rootViewModel);
+            var workspace = new MeasurementViewModel(newMeasurement, parentStepTest);
             workspace.Show();
         }
 

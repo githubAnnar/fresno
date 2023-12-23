@@ -1,13 +1,14 @@
 ﻿using LanterneRouge.Fresno.WpfClient.ViewModel;
 using log4net;
 using System.ComponentModel;
+using System.Windows;
 
 namespace LanterneRouge.Fresno.WpfClient
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : Window
     {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(MainWindow));
 

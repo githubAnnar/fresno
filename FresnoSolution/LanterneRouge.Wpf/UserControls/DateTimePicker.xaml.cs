@@ -519,7 +519,7 @@ namespace LanterneRouge.Wpf.UserControls
                 }
             }
 
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
                 //Catch dates with year over 9999 etc, dont throw
             }

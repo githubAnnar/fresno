@@ -1,4 +1,4 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Services.Models;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearRegression;
 using System;
@@ -11,7 +11,7 @@ namespace LanterneRouge.Fresno.Calculations.Base
     {
         #region Constructor
 
-        public BaseCalculation(IEnumerable<Measurement> measurements)
+        public BaseCalculation(List<MeasurementModel> measurements)
         {
             Measurements = measurements.Where(m => m.InCalculation).ToList();
             Measurements.Sort();
@@ -21,7 +21,7 @@ namespace LanterneRouge.Fresno.Calculations.Base
 
         #region Properties
 
-        public List<Measurement> Measurements { get; }
+        public List<MeasurementModel> Measurements { get; }
 
         public List<double> Loads => Measurements.Select(m => (double)m.Load).ToList();
 

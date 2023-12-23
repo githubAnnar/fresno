@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -25,25 +26,26 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public AllUsersViewModel(MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
+        public AllUsersViewModel() : base(null, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             DisplayName = "All Users"; /*KayakStrings.Race_All_Races;*/
-            CreateAllUsers();
+            Task.Run(CreateAllUsers).Wait();
             Logger.Debug($"AllUsers loaded");
 
             // Set up commands
-            SubCommands = new ObservableCollection<CommandViewModel>
-            {
+            SubCommands =
+            [
                 new CommandViewModel("Edit User", ShowUserCommand),
                 new CommandViewModel("Show all Steptests", ShowAllStepTestsCommand),
                 new CommandViewModel("Add User", AddUserCommand),
                 new CommandViewModel("Add Steptest", AddStepTestCommand)
-            };
+            ];
         }
-        
-        private void CreateAllUsers()
+
+        private async Task CreateAllUsers()
         {
-            var all = (from user in DataManager.GetAllUsers() select new UserViewModel(user, RootViewModel)).ToList();
+            var allUsers = await DataManager.GetAllUsers();
+            var all = (from user in allUsers select new UserViewModel(user)).ToList();
             all.ForEach(a => a.PropertyChanged += OnUserViewModelPropertyChanged);
             AllUsers = new ObservableCollection<UserViewModel>(all);
             OnPropertyChanged(nameof(AllUsers));
@@ -97,7 +99,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void ShowAllStepTests()
         {
-            var workspace = new AllStepTestsViewModel(Selected, RootViewModel);
+            var workspace = new AllStepTestsViewModel(Selected);
             workspace.Show();
         }
 

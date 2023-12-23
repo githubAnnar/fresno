@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class LtCalculationViewModel : WorkspaceViewModel, IEquatable<LtCalculationViewModel>
+    public class LtCalculationViewModel(StepTestViewModel parentStepTest) : WorkspaceViewModel(parentStepTest, null), IEquatable<LtCalculationViewModel>
     {
         #region Fields
 
@@ -14,29 +14,22 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ObservableCollection<Zone> _lTZones = null;
 
         #endregion
-
-        #region Constructors
-
-        public LtCalculationViewModel(StepTestViewModel parentStepTest, MainWindowViewModel rootViewModel) : base(parentStepTest, rootViewModel, null)
-        { }
-
-        #endregion
-
+        
         #region Properties
 
         private StepTestViewModel StepTestParent => Parent as StepTestViewModel;
 
-        public int StepTestId => StepTestParent.Source.Id;
+        public Guid StepTestId => StepTestParent.Source.Id;
 
         public string LTLactateThresholdText => LtCalculation != null ? $"Load Th.: {LtCalculation.LoadThreshold:0.0} Heartrate Th.: {LtCalculation.HeartRateThreshold:0}" : "No Calculation";
 
-        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.MeasurementsCountByStepTest(StepTestParent.Source) > 0 ? new LTCalculation(DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source)) : null;
+        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0 ? new LTCalculation([.. DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Result]) : null;
 
         public ObservableCollection<Zone> LTZones
         {
             get
             {
-                if (_lTZones == null && DataManager.MeasurementsCountByStepTest(StepTestParent.Source) > 0)
+                if (_lTZones == null && DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0)
                 {
                     if (LtCalculation != null)
                     {

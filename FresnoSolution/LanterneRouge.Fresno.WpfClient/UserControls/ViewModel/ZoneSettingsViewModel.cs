@@ -1,5 +1,5 @@
-﻿using LanterneRouge.Fresno.Calculations;
-using LanterneRouge.Fresno.WpfClient.MVVM;
+﻿using LanterneRouge.Fresno.WpfClient.MVVM;
+using LanterneRouge.Fresno.WpfClient.Services.Settings;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -11,7 +11,7 @@ namespace LanterneRouge.Fresno.WpfClient.UserControls.ViewModel
 
         public ZoneSettingsViewModel(ZoneSetting setting)
         {
-            ZoneSettings = new ObservableCollection<ZoneSettingViewModel>();
+            ZoneSettings = [];
             var limits = setting.Limits.ToList();
             for (int i = 0; i < limits.Count; i++)
             {

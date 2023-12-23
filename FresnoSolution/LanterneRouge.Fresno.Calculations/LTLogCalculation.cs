@@ -1,5 +1,5 @@
 ﻿using LanterneRouge.Fresno.Calculations.Base;
-using LanterneRouge.Fresno.Core.Entities;
+using LanterneRouge.Fresno.Services.Models;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
 using System;
@@ -19,7 +19,7 @@ namespace LanterneRouge.Fresno.Calculations
 
         #region Constructors
 
-        public LTLogCalculation(IEnumerable<Measurement> measurements) : base(measurements)
+        public LTLogCalculation(List<MeasurementModel> measurements) : base(measurements)
         { }
 
         #endregion

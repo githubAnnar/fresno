@@ -18,7 +18,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Caching;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -172,20 +171,18 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var openFileResult = openFileDialog.ShowDialog();
             if (openFileResult.HasValue && openFileResult.Value)
             {
-                using (var scope = ServiceLocator.Instance.BeginLifetimeScope())
-                {
-                    var service = scope.Resolve<IDataService>();
-                    IsDatabaseOpen = !service.CloseDatabase();
+                using var scope = ServiceLocator.Instance.BeginLifetimeScope();
+                var service = scope.Resolve<IDataService>();
+                IsDatabaseOpen = !service.CloseDatabase();
 
-                    if (!IsDatabaseOpen)
-                    {
-                        CurrentDatabaseFilename = openFileDialog.FileName;
-                        IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
-                        Logger.Debug($"Opened database '{CurrentDatabaseFilename}'");
-                        MRUFileList.UpdateEntry(CurrentDatabaseFilename);
-                        CloseAllWorkspaces();
-                        ShowAllUsers();
-                    }
+                if (!IsDatabaseOpen)
+                {
+                    CurrentDatabaseFilename = openFileDialog.FileName;
+                    IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
+                    Logger.Debug($"Opened database '{CurrentDatabaseFilename}'");
+                    MRUFileList.UpdateEntry(CurrentDatabaseFilename);
+                    CloseAllWorkspaces();
+                    ShowAllUsers();
                 }
             }
         }
@@ -211,23 +208,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             var openFileResult = openFileDialog.ShowDialog();
             if (openFileResult.HasValue && openFileResult.Value)
             {
-                using (var scope = ServiceLocator.Instance.BeginLifetimeScope())
+                using var scope = ServiceLocator.Instance.BeginLifetimeScope();
+                var service = scope.Resolve<IDataService>();
+                if (IsDatabaseOpen)
                 {
-                    var service = scope.Resolve<IDataService>();
-                    if (IsDatabaseOpen)
-                    {
-                        IsDatabaseOpen = !service.CloseDatabase();
-                    }
+                    IsDatabaseOpen = !service.CloseDatabase();
+                }
 
-                    if (!IsDatabaseOpen)
-                    {
-                        CurrentDatabaseFilename = openFileDialog.FileName;
-                        IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
-                        Logger.Debug($"Created new database '{CurrentDatabaseFilename}'");
-                        MRUFileList.UpdateEntry(CurrentDatabaseFilename);
-                        CloseAllWorkspaces();
-                        ShowAllUsers();
-                    }
+                if (!IsDatabaseOpen)
+                {
+                    CurrentDatabaseFilename = openFileDialog.FileName;
+                    IsDatabaseOpen = service.LoadDatabase(CurrentDatabaseFilename);
+                    Logger.Debug($"Created new database '{CurrentDatabaseFilename}'");
+                    MRUFileList.UpdateEntry(CurrentDatabaseFilename);
+                    CloseAllWorkspaces();
+                    ShowAllUsers();
                 }
             }
         }
@@ -251,20 +246,18 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
                 return;
             }
 
-            using (var scope = ServiceLocator.Instance.BeginLifetimeScope())
-            {
-                var service = scope.Resolve<IDataService>();
-                IsDatabaseOpen = !service.CloseDatabase();
+            using var scope = ServiceLocator.Instance.BeginLifetimeScope();
+            var service = scope.Resolve<IDataService>();
+            IsDatabaseOpen = !service.CloseDatabase();
 
-                if (!IsDatabaseOpen)
-                {
-                    CurrentDatabaseFilename = path;
-                    IsDatabaseOpen = service.LoadDatabase(path);
-                    Logger.Debug($"Opened database from MRU '{path}'");
-                    MRUFileList.UpdateEntry(path);
-                    CloseAllWorkspaces();
-                    ShowAllUsers();
-                }
+            if (!IsDatabaseOpen)
+            {
+                CurrentDatabaseFilename = path;
+                IsDatabaseOpen = service.LoadDatabase(path);
+                Logger.Debug($"Opened database from MRU '{path}'");
+                MRUFileList.UpdateEntry(path);
+                CloseAllWorkspaces();
+                ShowAllUsers();
             }
         });
 
@@ -285,10 +278,10 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
             var dataContext = new FresnoToolWindowViewModel
             {
-                TabItems = new ObservableCollection<CustomTabItem> {
-                    new CustomTabItem {IsSelected = true, Header = "Email", Content = new EmailPreferencesView { DataContext = new EmailPreferencesViewModel(contentWindow.Close) } },
+                TabItems = [
+                    new CustomTabItem { IsSelected = true, Header = "Email", Content = new EmailPreferencesView { DataContext = new EmailPreferencesViewModel(contentWindow.Close) } },
                     new CustomTabItem { Header = "Lactate Zones", Content = new LactateZonePreferencesView { DataContext = new LactateZonePreferencesViewModel(contentWindow.Close) } }
-                }
+                ]
             };
 
             contentWindow.DataContext = dataContext;
@@ -311,7 +304,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             {
                 if (_workspaces == null)
                 {
-                    _workspaces = new ObservableCollection<WorkspaceViewModel>();
+                    _workspaces = [];
                     _workspaces.CollectionChanged += OnWorkspacesChanged;
                 }
 
@@ -392,7 +385,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         {
             if (Workspaces.FirstOrDefault(vm => vm is AllUsersViewModel) is not AllUsersViewModel workspace)
             {
-                workspace = new AllUsersViewModel(this);
+                workspace = new AllUsersViewModel();
             }
 
             ShowWorkspace(workspace);
@@ -550,6 +543,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (!Workspaces.Contains(view))
             {
                 Workspaces.Add(view);
+                view.RootViewModel = this;
             }
 
             SetActiveWorkspace(view);

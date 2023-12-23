@@ -1,9 +1,10 @@
-﻿using LanterneRouge.Fresno.Core.Entities;
+﻿using LanterneRouge.Fresno.Core.Entity;
+using LanterneRouge.Fresno.Core.Entity.Extentions;
+using LanterneRouge.Fresno.Services.Models;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
 using log4net;
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -19,7 +20,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UserViewModel));
         private static readonly string _name = typeof(UserViewModel).Name;
         private bool _isSelected = false;
-        private User _source;
+        private UserModel _source;
         private ICommand _saveCommand = null;
         private ICommand _editSelectedCommand;
         private ICommand _showAllStepTestsCommand;
@@ -29,36 +30,37 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Constructors
 
-        public UserViewModel(User user, MainWindowViewModel rootViewModel) : base(null, rootViewModel, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
+        public UserViewModel(UserModel user) : base(null, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
             Source = user ?? throw new ArgumentNullException(nameof(user));
 
             // Set up commands for this viewmodel
-            SubCommands = new ObservableCollection<CommandViewModel>
-            {
+            SubCommands =
+            [
                 new CommandViewModel("Add Steptest", AddStepTestCommand),
                 new CommandViewModel("Show all Steptests", ShowAllStepTestsCommand)
-            };
+            ];
 
-            ContextMenuItemCommands = new ObservableCollection<CommandViewModel>
-            {
+            ContextMenuItemCommands =
+            [
                 new CommandViewModel("Edit User", EditSelectedCommand),
                 new CommandViewModel("Add Steptest", AddStepTestCommand),
                 new CommandViewModel("Show all Steptests", ShowAllStepTestsCommand)
-            };
+            ];
         }
 
         #endregion
 
         #region Properties
 
-        internal User Source
+        internal UserModel Source
         {
-            get => _source.IsLoaded ? _source : DataManager.GetUser(_source.Id);
+
+            get => _source;
             private set => _source = value;
         }
 
-        public int UserId => Source.Id;
+        public Guid UserId => Source.Id;
 
         public string FirstName
         {
@@ -127,7 +129,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public DateTime BirthDate
         {
-            get => Source.BirthDate;
+            get => Source.BirthDate ?? DateTime.Now;
             set
             {
                 if (!value.Equals(Source.BirthDate))
@@ -140,7 +142,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public int Height
         {
-            get => Source.Height;
+            get => Source.Height ?? default;
             set
             {
                 if (!value.Equals(Source.Height))
@@ -179,7 +181,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public int MaxHr
         {
-            get => Source.MaxHr;
+            get => Source.MaxHr ?? default;
             set
             {
                 if (!value.Equals(Source.MaxHr))
@@ -194,7 +196,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Display Properties
 
-        public override string DisplayName => Source.Id == 0 ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
+        public override string DisplayName => Source.Id == Guid.Empty ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
 
         public bool IsSelected
         {
@@ -219,7 +221,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (Source.IsChanged)
+            if (DataManager.IsChanged(Source).Result)
             {
                 DataManager.SaveUser(Source);
                 SaveToAllUsers();
@@ -261,7 +263,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => Source.IsValid && Source.IsChanged;
+        private bool CanSave => Source.IsValid() && DataManager.IsChanged(Source).Result;
 
         #endregion
 
@@ -285,12 +287,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public bool IsValid => !ValidatedProperties.Any(vp => GetValidationError(vp) != null);
 
         private static readonly string[] ValidatedProperties =
-        {
+        [
             nameof(FirstName),
             nameof(LastName),
             nameof(Email),
             nameof(Sex)
-        };
+        ];
 
         /// <summary>
         /// Gets the validation error.
@@ -367,11 +369,11 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void ShowAllStepTests()
         {
-            var workspace = new AllStepTestsViewModel(this, RootViewModel);
+            var workspace = new AllStepTestsViewModel(this);
             workspace.Show();
             Logger.Debug($"Show All StepTests for {DisplayName}");
         }
-        public Predicate<object> CanShowAllStepTests => (object o) => DataManager.GetAllStepTestsByUser(Source).Any();
+        public Predicate<object> CanShowAllStepTests => (object o) => DataManager.GetAllStepTestsByUser(Source).Result.Any();
 
         #endregion
 
@@ -385,7 +387,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public void SaveToAllStepTests(StepTestViewModel newStepTest)
         {
             // find AllSteptests for this user if shown
-            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllStepTestsViewModel)) && w is AllStepTestsViewModel allStepTestsForUser && ((UserViewModel)allStepTestsForUser.Parent).UserId == this.UserId);
+            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllStepTestsViewModel)) && w is AllStepTestsViewModel allStepTestsForUser && ((UserViewModel)allStepTestsForUser.Parent).UserId == UserId);
             if (workSpace != null && workSpace is AllStepTestsViewModel stepTests)
             {
                 if (!stepTests.AllStepTests.Contains(newStepTest))
@@ -401,9 +403,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public static UserViewModel Create(MainWindowViewModel rootViewModel)
         {
-            var newUser = User.Create(string.Empty, string.Empty, null, null, null, DateTime.Now, 0, 0, "M", null);
+            var newUser = UserModel.Create();
             Logger.Info("Created new Empty user");
-            var workspace = new UserViewModel(newUser, rootViewModel);
+            var workspace = new UserViewModel(newUser)
+            {
+                RootViewModel = rootViewModel
+            };
             workspace.Show();
             return workspace;
         }
