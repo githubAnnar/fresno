@@ -50,7 +50,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             if (Parent is StepTestViewModel parent)
             {
                 DisplayName = $"Measurements: {parent.DisplayName}";
-                var allMeasurements = await DataManager.GetAllMeasurementsByStepTest(parent.Source);
+                var allMeasurements = await DataManager.GetAllMeasurementsByStepTestIdAsync(parent.Id);
                 var all = (from measurement in allMeasurements select new MeasurementViewModel(measurement, parent)).ToList();
                 all.ForEach(a => a.PropertyChanged += OnMeasurementViewModelPropertyChanged);
                 AllMeasurements = new ObservableCollection<MeasurementViewModel>(all);
@@ -155,7 +155,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddMeasurementCommand => _addMeasurementCommand ??= new RelayCommand(param => CreateChild());
 
-        public override void CreateChild() => MeasurementViewModel.Create(Parent as StepTestViewModel, [.. DataManager.GetAllMeasurementsByStepTest((Parent as StepTestViewModel).Source).Result], RootViewModel);
+        public override void CreateChild() => MeasurementViewModel.Create(Parent as StepTestViewModel, [.. DataManager.GetAllMeasurementsByStepTestIdAsync((Parent as StepTestViewModel).Id).Result], RootViewModel);
 
         public ICommand ShowStepTestCommand => _showStepTestCommand ??= new RelayCommand(param => Selected.Parent.Show(), param => Selected != null && Selected.IsValid);
 

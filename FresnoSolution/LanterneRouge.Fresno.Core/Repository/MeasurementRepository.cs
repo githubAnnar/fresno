@@ -17,7 +17,7 @@ namespace LanterneRouge.Fresno.Core.Repositories
         public MeasurementRepository(StepTestContext context) : base(context)
         { }
 
-        public async Task<IList<Measurement>> GetAllMeasurements(CancellationToken cancellationToken = default)
+        public async Task<IList<Measurement>> GetAllMeasurementsAsync(CancellationToken cancellationToken = default)
         {
             var measurements = Context.Measurements
                 .AsNoTracking();
@@ -26,16 +26,16 @@ namespace LanterneRouge.Fresno.Core.Repositories
             return await measurements.ToListAsync(cancellationToken);
         }
 
-        public async Task<Measurement?> GetMeasurementById(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Measurement?> GetMeasurementByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            Logger.Debug($"{nameof(GetMeasurementById)}({id})");
+            Logger.Debug($"{nameof(GetMeasurementByIdAsync)}({id})");
             var measurement = await Context.Measurements
                 .AsNoTracking()
                 .SingleOrDefaultAsync(measurement => measurement.Id == id, cancellationToken);
             return measurement;
         }
 
-        public async Task<Measurement?> InsertMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
+        public async Task<Measurement?> InsertMeasurementAsync(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
         {
             if (measurementEntity == null)
             {
@@ -66,7 +66,7 @@ namespace LanterneRouge.Fresno.Core.Repositories
             return response;
         }
 
-        public async Task<Measurement?> UpdateMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
+        public async Task<Measurement?> UpdateMeasurementAsync(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default)
         {
             if (measurementEntity == null)
             {
@@ -101,7 +101,7 @@ namespace LanterneRouge.Fresno.Core.Repositories
             return response;
         }
 
-        public async Task DeleteMeasurement(Guid id, CancellationToken cancellationToken = default)
+        public async Task DeleteMeasurementAsync(Guid id, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -125,24 +125,24 @@ namespace LanterneRouge.Fresno.Core.Repositories
             }
         }
 
-        public async Task<IList<Measurement>> GetMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
+        public async Task<IList<Measurement>> GetMeasurementsByStepTestIdAsync(Guid stepTestId, CancellationToken cancellationToken = default)
         {
-            Logger.Debug($"{nameof(GetMeasurementsByStepTest)} {stepTestEntity.Id}");
+            Logger.Debug($"{nameof(GetMeasurementsByStepTestIdAsync)} {stepTestId}");
             var measurementQuery = Context.Measurements
-                .Where(m => m.StepTestId == stepTestEntity.Id)
+                .Where(m => m.StepTestId == stepTestId)
                 .AsNoTracking();
 
             return await measurementQuery.ToListAsync(cancellationToken);
         }
 
-        public async Task<int> GetCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation, CancellationToken cancellationToken = default)
+        public async Task<int> GetCountByStepTestIdAsync(Guid stepTestId, bool onlyInCalculation, CancellationToken cancellationToken = default)
         {
-            var result = await Context.Measurements.Where(m => m.StepTestId == stepTestEntity.Id && m.InCalculation == onlyInCalculation).CountAsync(cancellationToken);
-            Logger.Debug($"{nameof(GetCountByStepTest)} {stepTestEntity.Id} = {result}");
+            var result = await Context.Measurements.Where(m => m.StepTestId == stepTestId && m.InCalculation == onlyInCalculation).CountAsync(cancellationToken);
+            Logger.Debug($"{nameof(GetCountByStepTestIdAsync)} {stepTestId} = {result}");
 
             return result;
         }
 
-        public async Task<bool> IsChanged(IMeasurementEntity entity, CancellationToken cancellationToken = default) => await Task.Run(() => entity is Measurement measurementsEntity && Context.Entry(measurementsEntity).State != EntityState.Unchanged);
+        public async Task<bool> IsChangedAsync(IMeasurementEntity entity, CancellationToken cancellationToken = default) => await Task.Run(() => entity is Measurement measurementsEntity && Context.Entry(measurementsEntity).State != EntityState.Unchanged);
     }
 }

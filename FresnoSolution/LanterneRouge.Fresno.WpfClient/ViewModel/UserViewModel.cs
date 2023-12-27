@@ -1,5 +1,6 @@
 ﻿using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Entity.Extentions;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Services.Models;
 using LanterneRouge.Fresno.Utils.Helpers;
 using LanterneRouge.Wpf.MVVM;
@@ -13,7 +14,7 @@ using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class UserViewModel : WorkspaceViewModel, IDataErrorInfo, IEquatable<UserViewModel>
+    public class UserViewModel : WorkspaceViewModel, IUserEntity, IDataErrorInfo, IEquatable<UserViewModel>
     {
         #region Fields
 
@@ -32,7 +33,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public UserViewModel(UserModel user) : base(null, new BitmapImage(new Uri(@"pack://application:,,,/Resources/icons8-user-100.png")))
         {
-            Source = user ?? throw new ArgumentNullException(nameof(user));
+            _source = user ?? throw new ArgumentNullException(nameof(user));
 
             // Set up commands for this viewmodel
             SubCommands =
@@ -53,23 +54,26 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
-        internal UserModel Source
+        //internal UserModel Source
+        //{
+        //    get => _source;
+        //    private set => _source = value;
+        //}
+
+        public Guid Id
         {
-
-            get => _source;
-            private set => _source = value;
+            get => _source.Id;
+            set { }
         }
-
-        public Guid UserId => Source.Id;
 
         public string FirstName
         {
-            get => Source.FirstName;
+            get => _source.FirstName;
             set
             {
-                if (!value.Equals(Source.FirstName))
+                if (!value.Equals(_source.FirstName))
                 {
-                    Source.FirstName = value;
+                    _source.FirstName = value;
                     OnPropertyChanged();
                 }
             }
@@ -77,12 +81,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string LastName
         {
-            get => Source.LastName;
+            get => _source.LastName;
             set
             {
-                if (!value.Equals(Source.LastName))
+                if (!value.Equals(_source.LastName))
                 {
-                    Source.LastName = value;
+                    _source.LastName = value;
                     OnPropertyChanged();
                 }
             }
@@ -90,12 +94,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string Street
         {
-            get => Source.Street;
+            get => _source.Street;
             set
             {
-                if (!value.Equals(Source.Street))
+                if (!value.Equals(_source.Street))
                 {
-                    Source.Street = value;
+                    _source.Street = value;
                     OnPropertyChanged();
                 }
             }
@@ -103,12 +107,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string PostCode
         {
-            get => Source.PostCode;
+            get => _source.PostCode;
             set
             {
-                if (!value.Equals(Source.PostCode))
+                if (!value.Equals(_source.PostCode))
                 {
-                    Source.PostCode = value;
+                    _source.PostCode = value;
                     OnPropertyChanged();
                 }
             }
@@ -116,38 +120,38 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string PostCity
         {
-            get => Source.PostCity;
+            get => _source.PostCity;
             set
             {
-                if (!value.Equals(Source.PostCity))
+                if (!value.Equals(_source.PostCity))
                 {
-                    Source.PostCity = value;
+                    _source.PostCity = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public DateTime BirthDate
+        public DateTime? BirthDate
         {
-            get => Source.BirthDate ?? DateTime.Now;
+            get => _source.BirthDate ?? DateTime.Now;
             set
             {
-                if (!value.Equals(Source.BirthDate))
+                if (!value.Equals(_source.BirthDate))
                 {
-                    Source.BirthDate = value;
+                    _source.BirthDate = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public int Height
+        public int? Height
         {
-            get => Source.Height ?? default;
+            get => _source.Height ?? default;
             set
             {
-                if (!value.Equals(Source.Height))
+                if (!value.Equals(_source.Height))
                 {
-                    Source.Height = value;
+                    _source.Height = value;
                     OnPropertyChanged();
                 }
             }
@@ -155,12 +159,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string Sex
         {
-            get => Source.Sex;
+            get => _source.Sex;
             set
             {
-                if (!value.Equals(Source.Sex))
+                if (!value.Equals(_source.Sex))
                 {
-                    Source.Sex = value;
+                    _source.Sex = value;
                     OnPropertyChanged();
                 }
             }
@@ -168,25 +172,25 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public string Email
         {
-            get => Source.Email;
+            get => _source.Email;
             set
             {
-                if (!value.Equals(Source.Email))
+                if (!value.Equals(_source.Email))
                 {
-                    Source.Email = value;
+                    _source.Email = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public int MaxHr
+        public int? MaxHr
         {
-            get => Source.MaxHr ?? default;
+            get => _source.MaxHr ?? default;
             set
             {
-                if (!value.Equals(Source.MaxHr))
+                if (!value.Equals(_source.MaxHr))
                 {
-                    Source.MaxHr = value;
+                    _source.MaxHr = value;
                     OnPropertyChanged();
                 }
             }
@@ -196,7 +200,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Display Properties
 
-        public override string DisplayName => Source.Id == Guid.Empty ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
+        public override string DisplayName => Id == Guid.Empty ? "New User" /*KayakStrings.Race_New_Singular*/ : ToString();
 
         public bool IsSelected
         {
@@ -217,13 +221,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Methods
 
-        public override string ToString() => $"{LastName ?? "User" /*KayakStrings.Race_Singular*/} ({UserId})";
+        public override string ToString() => $"{LastName ?? "User" /*KayakStrings.Race_Singular*/} ({Id})";
 
         public void Save(object param)
         {
-            if (DataManager.IsChanged(Source).Result)
+            if (DataManager.IsChangedAsync(this).Result)
             {
-                DataManager.SaveUser(Source);
+                DataManager.SaveUserAsync(this);
                 SaveToAllUsers();
                 OnPropertyChanged(nameof(DisplayName));
 
@@ -263,7 +267,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => Source.IsValid() && DataManager.IsChanged(Source).Result;
+        private bool CanSave => this.IsValid() && DataManager.IsChangedAsync(this).Result;
 
         #endregion
 
@@ -373,7 +377,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             workspace.Show();
             Logger.Debug($"Show All StepTests for {DisplayName}");
         }
-        public Predicate<object> CanShowAllStepTests => (object o) => DataManager.GetAllStepTestsByUser(Source).Result.Any();
+        public Predicate<object> CanShowAllStepTests => (object o) => DataManager.GetAllStepTestsByUserIdAsync(Id).Result.Any();
 
         #endregion
 
@@ -381,13 +385,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddStepTestCommand => _addStepTestCommand ??= new RelayCommand(param => CreateChild());
 
-
-        public override void CreateChild() => StepTestViewModel.Create(this, RootViewModel);
+        public override void CreateChild() => StepTestViewModel.Create(this);
 
         public void SaveToAllStepTests(StepTestViewModel newStepTest)
         {
             // find AllSteptests for this user if shown
-            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllStepTestsViewModel)) && w is AllStepTestsViewModel allStepTestsForUser && ((UserViewModel)allStepTestsForUser.Parent).UserId == UserId);
+            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllStepTestsViewModel)) && w is AllStepTestsViewModel allStepTestsForUser && ((UserViewModel)allStepTestsForUser.Parent).Id == Id);
             if (workSpace != null && workSpace is AllStepTestsViewModel stepTests)
             {
                 if (!stepTests.AllStepTests.Contains(newStepTest))
@@ -421,6 +424,6 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public override bool Equals(object obj) => obj is UserViewModel viewModel && GetHashCode().Equals(viewModel.GetHashCode());
 
-        public override int GetHashCode() => Source.GetHashCode();
+        public override int GetHashCode() => Id.GetHashCode();
     }
 }

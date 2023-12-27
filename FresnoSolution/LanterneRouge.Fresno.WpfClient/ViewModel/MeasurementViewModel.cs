@@ -151,7 +151,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public void Save(object param)
         {
-            if (DataManager.IsChanged(Source).Result)
+            if (DataManager.IsChangedAsync(Source).Result)
             {
                 DataManager.SaveMeasurement(Source);
                 if (Parent is StepTestViewModel stvm)
@@ -178,7 +178,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => IsValid && DataManager.IsChanged(Source).Result;
+        private bool CanSave => IsValid && DataManager.IsChangedAsync(Source).Result;
 
         #endregion
 
@@ -302,9 +302,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public static void Create(StepTestViewModel parentStepTest, List<MeasurementModel> measurements, MainWindowViewModel rootViewModel)
         {
             var newSequence = measurements.Count == 0 ? 1 : measurements.Max(m => m.Sequence) + 1;
-            var newLoad = measurements.Count == 0 ? parentStepTest.Source.LoadPreset : measurements.Last().Load + parentStepTest.Source.Increase;
+            var newLoad = measurements.Count == 0 ? parentStepTest.LoadPreset : measurements.Last().Load + parentStepTest.Increase;
 
-            var newMeasurement = MeasurementModel.Create(newSequence, parentStepTest.StepTestId, newLoad);
+            var newMeasurement = MeasurementModel.Create(newSequence, parentStepTest.Id, newLoad);
             Logger.Info("New empty measurement created");
             var workspace = new MeasurementViewModel(newMeasurement, parentStepTest);
             workspace.Show();

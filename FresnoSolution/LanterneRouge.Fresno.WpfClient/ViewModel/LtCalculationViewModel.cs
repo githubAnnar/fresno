@@ -14,22 +14,22 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private ObservableCollection<Zone> _lTZones = null;
 
         #endregion
-        
+
         #region Properties
 
         private StepTestViewModel StepTestParent => Parent as StepTestViewModel;
 
-        public Guid StepTestId => StepTestParent.Source.Id;
+        public Guid StepTestId => StepTestParent.Id;
 
         public string LTLactateThresholdText => LtCalculation != null ? $"Load Th.: {LtCalculation.LoadThreshold:0.0} Heartrate Th.: {LtCalculation.HeartRateThreshold:0}" : "No Calculation";
 
-        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0 ? new LTCalculation([.. DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Result]) : null;
+        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetMeasurementCountByStepTestIdAsync(StepTestId).Result > 0 ? new LTCalculation([.. DataManager.GetAllMeasurementsByStepTestIdAsync(StepTestId).Result]) : null;
 
         public ObservableCollection<Zone> LTZones
         {
             get
             {
-                if (_lTZones == null && DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0)
+                if (_lTZones == null && DataManager.GetMeasurementCountByStepTestIdAsync(StepTestId).Result > 0)
                 {
                     if (LtCalculation != null)
                     {

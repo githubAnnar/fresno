@@ -16,12 +16,12 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         private double _fblcCalculationThreshold = 4d;
 
         #endregion
-       
+
         #region Properties
 
         public StepTestViewModel StepTestParent => Parent as StepTestViewModel;
 
-        public Guid StepTestId => StepTestParent.Source.Id;
+        public Guid StepTestId => StepTestParent.Id;
 
         public double FblcCalculationThreshold
         {
@@ -42,14 +42,14 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public string FBLCLactateThresholdText => FblcCalculation != null ? $"Load Th.: {FblcCalculation.LoadThreshold:0.0} Heartrate Th.: {FblcCalculation.HeartRateThreshold:0}" : "No Calculation";
 
         private FblcCalculation _fblcCalculation = null;
-        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0 ? new FblcCalculation([.. DataManager.GetAllMeasurementsByStepTest(StepTestParent.Source).Result], FblcCalculationThreshold) : null;
+        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetMeasurementCountByStepTestIdAsync(StepTestParent.Id).Result > 0 ? new FblcCalculation([.. DataManager.GetAllMeasurementsByStepTestIdAsync(StepTestParent.Id).Result], FblcCalculationThreshold) : null;
 
         private ObservableCollection<Zone> _FBLCZones = null;
         public ObservableCollection<Zone> FBLCZones
         {
             get
             {
-                if (_FBLCZones == null && DataManager.GetMeasurementCountByStepTest(StepTestParent.Source).Result > 0)
+                if (_FBLCZones == null && DataManager.GetMeasurementCountByStepTestIdAsync(StepTestParent.Id).Result > 0)
                 {
                     if (FblcCalculation != null)
                     {

@@ -17,7 +17,7 @@ namespace LanterneRouge.Fresno.Core.Repositories
         public StepTestRepository(StepTestContext context) : base(context)
         { }
 
-        public async Task<IList<StepTest>> GetAllStepTests(CancellationToken cancellationToken = default)
+        public async Task<IList<StepTest>> GetAllStepTestsAsync(CancellationToken cancellationToken = default)
         {
             var stepTests = Context.StepTests
                 .AsNoTracking();
@@ -25,16 +25,16 @@ namespace LanterneRouge.Fresno.Core.Repositories
             return await stepTests.ToListAsync(cancellationToken);
         }
 
-        public async Task<StepTest?> GetStepTestById(Guid id, CancellationToken cancellationToken = default)
+        public async Task<StepTest?> GetStepTestByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            Logger.Debug($"{nameof(GetStepTestById)}({id})");
+            Logger.Debug($"{nameof(GetStepTestByIdAsync)}({id})");
             var stepTest = await Context.StepTests
                 .AsNoTracking()
                 .SingleOrDefaultAsync(s => s.Id == id, cancellationToken);
             return stepTest;
         }
 
-        public async Task<StepTest?> InsertStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
+        public async Task<StepTest?> InsertStepTestAsync(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
         {
             if (stepTestEntity == null)
             {
@@ -65,7 +65,7 @@ namespace LanterneRouge.Fresno.Core.Repositories
             return response;
         }
 
-        public async Task<StepTest?> UpdateStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
+        public async Task<StepTest?> UpdateStepTestAsync(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
         {
             if (stepTestEntity == null)
             {
@@ -100,7 +100,7 @@ namespace LanterneRouge.Fresno.Core.Repositories
             return response;
         }
 
-        public async Task DeleteStepTest(Guid id, CancellationToken cancellationToken = default)
+        public async Task DeleteStepTestAsync(Guid id, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -124,24 +124,24 @@ namespace LanterneRouge.Fresno.Core.Repositories
             }
         }
 
-        public async Task<IList<StepTest>> GetStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
+        public async Task<IList<StepTest>> GetStepTestsByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
-            Logger.Debug($"{nameof(GetStepTestsByUser)} {userEntity.Id}");
+            Logger.Debug($"{nameof(GetStepTestsByUserIdAsync)} {userId}");
             var query = Context.StepTests
-                .Where(m => m.UserId == userEntity.Id)
+                .Where(m => m.UserId == userId)
                 .AsNoTracking();
 
             return await query.ToListAsync(cancellationToken);
         }
 
-        public async Task<int> GetCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
+        public async Task<int> GetCountByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
-            var result = await Context.StepTests.Where(s => s.UserId == userEntity.Id).CountAsync(cancellationToken);
-            Logger.Debug($"{nameof(GetCountByUser)} {userEntity.Id} = {result}");
+            var result = await Context.StepTests.Where(s => s.UserId == userId).CountAsync(cancellationToken);
+            Logger.Debug($"{nameof(GetCountByUserIdAsync)} {userId} = {result}");
 
             return result;
         }
 
-        public async Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => await Task.Run(() => stepTestEntity is StepTest stepTest && Context.Entry(stepTestEntity).State != EntityState.Unchanged);
+        public async Task<bool> IsChangedAsync(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default) => await Task.Run(() => stepTestEntity is StepTest stepTest && Context.Entry(stepTestEntity).State != EntityState.Unchanged);
     }
 }

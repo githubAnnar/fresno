@@ -2,7 +2,7 @@
 {
     public interface IStepTestEntity
     {
-         Guid Id { get; set; }
+        Guid Id { get; set; }
 
         Guid UserId { get; set; }
 
@@ -16,7 +16,7 @@
 
         float Increase { get; set; }
 
-        float Temperature { get; set; }
+        float? Temperature { get; set; }
 
         float Weight { get; set; }
 

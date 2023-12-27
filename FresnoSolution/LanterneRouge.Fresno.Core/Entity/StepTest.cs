@@ -24,7 +24,7 @@ namespace LanterneRouge.Fresno.Core.Entity
 
         public required float Increase { get; set; }
 
-        public float Temperature { get; set; }
+        public float? Temperature { get; set; }
 
         public float Weight { get; set; }
 

@@ -7,41 +7,41 @@ namespace LanterneRouge.Fresno.Services.Interfaces
 
     public interface IDataService
     {
-        Task<IList<UserModel>> GetAllUsers(CancellationToken cancellationToken = default);
+        Task<IList<UserModel>> GetAllUsersAsync(CancellationToken cancellationToken = default);
 
-        Task<UserModel?> GetUser(Guid id, CancellationToken cancellationToken = default);
+        Task<UserModel?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<UserModel?> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task<UserModel?> GetUserByStepTestIdAsync(Guid stepTestId, CancellationToken cancellationToken = default);
 
-        Task<UserModel?> SaveUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<UserModel?> SaveUserAsync(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        Task DeleteUser(IUserEntity userEntity, CancellationToken cancellation = default);
+        Task DeleteUserAsync(IUserEntity userEntity, CancellationToken cancellation = default);
 
-        Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<bool> IsChangedAsync(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task<bool> IsChangedAsync(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        Task<bool> IsChanged(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
+        Task<bool> IsChangedAsync(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
 
-        Task<IList<StepTestModel>> GetAllStepTests(CancellationToken cancellationToken = default);
+        Task<IList<StepTestModel>> GetAllStepTestsAsync(CancellationToken cancellationToken = default);
 
-        Task<IList<StepTestModel>> GetAllStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<IList<StepTestModel>> GetAllStepTestsByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
-        Task<int> GetStepTestCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<int> GetStepTestCountByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
-        Task<StepTestModel?> SaveStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task<StepTestModel?> SaveStepTestAsync(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        Task DeleteStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task DeleteStepTestAsync(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        Task<IList<MeasurementModel>> GetAllMeasurements(CancellationToken cancellationToken = default);
+        Task<IList<MeasurementModel>> GetAllMeasurementsAsync(CancellationToken cancellationToken = default);
 
-        Task<IList<MeasurementModel>> GetAllMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task<IList<MeasurementModel>> GetAllMeasurementsByStepTestIdAsync(Guid stepTestId, CancellationToken cancellationToken = default);
 
-        Task<int> GetMeasurementCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation = false, CancellationToken cancellationToken = default);
+        Task<int> GetMeasurementCountByStepTestIdAsync(Guid stepTestId, bool onlyInCalculation = false, CancellationToken cancellationToken = default);
 
         Task<MeasurementModel?> SaveMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
 
-        Task DeleteMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
+        Task DeleteMeasurementAsync(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
 
         bool LoadDatabase(string filename);
 

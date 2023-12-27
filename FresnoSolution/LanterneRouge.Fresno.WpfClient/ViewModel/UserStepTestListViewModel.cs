@@ -1,5 +1,6 @@
 ﻿using LanterneRouge.Wpf.MVVM;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
@@ -16,7 +17,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public StepTestViewModel BaseStepTestViewModel { get; } = baseStepTestViewModel ?? throw new ArgumentNullException(nameof(baseStepTestViewModel));
 
-        public List<StepTestViewModel> AdditionalStepTestCandidates => (from st in DataManager.GetAllStepTestsByUser(DataManager.GetUserByStepTest(BaseStepTestViewModel.Source).Result).Result.Where(st => st.Id != BaseStepTestViewModel.Source.Id) select new StepTestViewModel(st, UserParent)).ToList();
+        public List<StepTestViewModel> AdditionalStepTestCandidates => (from st in DataManager.GetAllStepTestsByUserIdAsync(DataManager.GetUserByStepTestIdAsync(BaseStepTestViewModel.Id).Result.Id).Result.Where(st => st.Id != BaseStepTestViewModel.Id) select new StepTestViewModel(st, UserParent)).ToList();
 
         public List<StepTestViewModel> SelectedStepTests { get; set; }
         public override WorkspaceViewModel SelectedObject => this;
@@ -27,7 +28,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private void Ok(object p)
         {
-            System.Collections.IList items = (System.Collections.IList)p;
+            var items = (IList)p;
             var selection = items?.Cast<StepTestViewModel>();
             CloseAction(selection, true);
         }

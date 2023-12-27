@@ -5,18 +5,18 @@ namespace LanterneRouge.Fresno.Core.Contracts
 {
     public interface IUserRepository
     {
-        Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default);
+        Task<IList<User>> GetAllUsersAsync(CancellationToken cancellationToken = default);
 
-        Task<User?> GetUserById(Guid id, CancellationToken cancellationToken = default);
+        Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<User?> InsertUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<User?> InsertUserAsync(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        Task<User?> UpdateUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<User?> UpdateUserAsync(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        Task DeleteUser(Guid id, CancellationToken cancellationToken = default);
+        Task DeleteUserAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<bool> IsChangedAsync(IUserEntity userEntity, CancellationToken cancellationToken = default);
 
-        Task<User> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task<User> GetUserByStepTestIdAsync(Guid stepTestId, CancellationToken cancellationToken = default);
     }
 }

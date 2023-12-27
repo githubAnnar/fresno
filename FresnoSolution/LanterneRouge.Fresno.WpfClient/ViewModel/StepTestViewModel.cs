@@ -1,6 +1,7 @@
 ﻿using LanterneRouge.Fresno.Calculations;
 using LanterneRouge.Fresno.Core.Entity;
 using LanterneRouge.Fresno.Core.Entity.Extentions;
+using LanterneRouge.Fresno.Core.Interface;
 using LanterneRouge.Fresno.Report;
 using LanterneRouge.Fresno.Services.Models;
 using LanterneRouge.Fresno.Utils.Helpers;
@@ -18,7 +19,7 @@ using System.Windows.Media.Imaging;
 
 namespace LanterneRouge.Fresno.WpfClient.ViewModel
 {
-    public class StepTestViewModel : WorkspaceViewModel, IDataErrorInfo, IEquatable<StepTestViewModel>
+    public class StepTestViewModel : WorkspaceViewModel, IStepTestEntity, IDataErrorInfo, IEquatable<StepTestViewModel>
     {
         #region Fields
 
@@ -78,9 +79,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Properties
 
-        internal StepTestModel Source { get; private set; }
+        private StepTestModel Source { get; set; }
 
-        public Guid StepTestId => Source.Id;
+        public Guid Id { get => Source.Id; set { } }
+
+        public Guid UserId
+        {
+            get => Source.UserId; set
+            {
+                if (!value.Equals(Source.UserId))
+                {
+                    Source.UserId = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public string TestType
         {
@@ -108,14 +121,27 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
-        public TimeSpan StepDurationTimespan
+        public long StepDuration
         {
-            get => TimeSpan.FromTicks(Source.StepDuration);
+            get => Source.StepDuration;
             set
             {
-                if (!value.Ticks.Equals(Source.StepDuration))
+                if (!value.Equals(Source.StepDuration))
                 {
-                    Source.StepDuration = value.Ticks;
+                    Source.StepDuration = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public TimeSpan StepDurationTimespan
+        {
+            get => TimeSpan.FromTicks(StepDuration);
+            set
+            {
+                if (!value.Ticks.Equals(StepDuration))
+                {
+                    StepDuration = value.Ticks;
                     OnPropertyChanged();
                 }
             }
@@ -147,7 +173,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
             }
         }
 
-        public float Temperature
+        public float? Temperature
         {
             get => Source.Temperature;
             set
@@ -197,21 +223,21 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public double DMaxValue => DmaxCalculation != null ? DmaxCalculation.LoadThreshold : 0d;
 
         private FblcCalculation _fblcCalculation = null;
-        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new FblcCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result], 4.0) : null;
+        private FblcCalculation FblcCalculation => _fblcCalculation ??= DataManager.GetMeasurementCountByStepTestIdAsync(Id).Result > 0 ? new FblcCalculation([.. DataManager.GetAllMeasurementsByStepTestIdAsync(Id).Result], 4.0) : null;
 
         private FrpbCalculation _frpbCalculation = null;
-        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new FrpbCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result], 1.0) : null;
+        private FrpbCalculation FrpbCalculation => _frpbCalculation ??= DataManager.GetMeasurementCountByStepTestIdAsync(Id).Result > 0 ? new FrpbCalculation([.. DataManager.GetAllMeasurementsByStepTestIdAsync(Id).Result], 1.0) : null;
 
         private LTCalculation _ltCalculation = null;
-        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new LTCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result]) : null;
+        private LTCalculation LtCalculation => _ltCalculation ??= DataManager.GetMeasurementCountByStepTestIdAsync(Id).Result > 0 ? new LTCalculation([.. DataManager.GetAllMeasurementsByStepTestIdAsync(Id).Result]) : null;
 
         private LTLogCalculation _ltLogCalculation = null;
 
-        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new LTLogCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result]) : null;
+        private LTLogCalculation LtLogCalculation => _ltLogCalculation ??= DataManager.GetMeasurementCountByStepTestIdAsync(Id).Result > 0 ? new LTLogCalculation([.. DataManager.GetAllMeasurementsByStepTestIdAsync(Id).Result]) : null;
 
         private DmaxCalculation _dmaxCalculation;
 
-        private DmaxCalculation DmaxCalculation => _dmaxCalculation ??= DataManager.GetMeasurementCountByStepTest(Source).Result > 0 ? new DmaxCalculation([.. DataManager.GetAllMeasurementsByStepTest(Source).Result], false) : null;
+        private DmaxCalculation DmaxCalculation => _dmaxCalculation ??= DataManager.GetMeasurementCountByStepTestIdAsync(Id).Result > 0 ? new DmaxCalculation([.. DataManager.GetAllMeasurementsByStepTestIdAsync(Id).Result], false) : null;
 
         #endregion
 
@@ -236,13 +262,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Public Methods
 
-        public override string ToString() => $"StepTest ({StepTestId})";
+        public override string ToString() => $"StepTest ({Id})";
 
         public void Save(object param)
         {
-            if (DataManager.IsChanged(Source).Result)
+            if (DataManager.IsChangedAsync(Source).Result)
             {
-                DataManager.SaveStepTest(Source);
+                DataManager.SaveStepTestAsync(Source);
                 if (Parent is UserViewModel uvm)
                 {
                     uvm.SaveToAllStepTests(this);
@@ -250,8 +276,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
                 OnPropertyChanged(nameof(DisplayName));
 
-                MessageBox.Show($"Step Test: {StepTestId} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
-                Logger.Info($"Step Test: {StepTestId} saved OK");
+                MessageBox.Show($"Step Test: {Id} saved", "Saving OK", MessageBoxButton.OK, MessageBoxImage.Information);
+                Logger.Info($"Step Test: {Id} saved OK");
             }
 
             if (param is string)
@@ -273,7 +299,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #region Private Helpers
 
-        private bool CanSave => IsValid && DataManager.IsChanged(Source).Result;
+        private bool CanSave => IsValid && DataManager.IsChangedAsync(Source).Result;
 
         #endregion
 
@@ -386,7 +412,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand ShowAllMeasurementsCommand => _showAllMeasurementsCommand ??= new RelayCommand(param => ShowAllMeasurements(), CanShowAllMeasurements);
 
-        public Predicate<object> CanShowAllMeasurements => (object o) => DataManager.GetAllMeasurementsByStepTest(Source).Result.Any();
+        public Predicate<object> CanShowAllMeasurements => (object o) => DataManager.GetAllMeasurementsByStepTestIdAsync(Id).Result.Any();
 
         private void ShowAllMeasurements()
         {
@@ -404,13 +430,13 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
         public override void CreateChild()
         {
             Logger.Debug($"Add Measurement on {DisplayName}");
-            MeasurementViewModel.Create(this, [.. DataManager.GetAllMeasurementsByStepTest(Source).Result], RootViewModel);
+            MeasurementViewModel.Create(this, [.. DataManager.GetAllMeasurementsByStepTestIdAsync(Id).Result], RootViewModel);
         }
 
         public void SaveToAllMeasurements(MeasurementViewModel newMeasurement)
         {
             // find AllMeasurements for this steptest if shown
-            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllMeasurementsViewModel)) && w is AllMeasurementsViewModel allMeasurementsForStepTest && ((StepTestViewModel)allMeasurementsForStepTest.Parent).StepTestId == StepTestId);
+            var workSpace = RootViewModel.Workspaces.FirstOrDefault(w => w.GetType().Equals(typeof(AllMeasurementsViewModel)) && w is AllMeasurementsViewModel allMeasurementsForStepTest && ((StepTestViewModel)allMeasurementsForStepTest.Parent).Id == Id);
             if (workSpace != null && workSpace is AllMeasurementsViewModel measurements)
             {
                 if (!measurements.AllMeasurements.Contains(newMeasurement))
@@ -527,9 +553,9 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         #endregion
 
-        public static void Create(UserViewModel parentUser, MainWindowViewModel rootViewModel)
+        public static void Create(UserViewModel parentUser)
         {
-            var newStepTest = StepTestModel.Create(parentUser.UserId);
+            var newStepTest = StepTestModel.Create(parentUser.Id);
             Logger.Info("Created new empty step test entity");
             var workspace = new StepTestViewModel(newStepTest, parentUser);
             workspace.Show();

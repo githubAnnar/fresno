@@ -5,20 +5,20 @@ namespace LanterneRouge.Fresno.Core.Contracts
 {
     public interface IMeasurementRepository
     {
-        Task<IList<Measurement>> GetAllMeasurements(CancellationToken cancellationToken = default);
+        Task<IList<Measurement>> GetAllMeasurementsAsync(CancellationToken cancellationToken = default);
 
-        Task<Measurement?> GetMeasurementById(Guid id, CancellationToken cancellationToken = default);
+        Task<Measurement?> GetMeasurementByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<Measurement?> InsertMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
+        Task<Measurement?> InsertMeasurementAsync(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
 
-        Task<Measurement?> UpdateMeasurement(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
+        Task<Measurement?> UpdateMeasurementAsync(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
 
-        Task DeleteMeasurement(Guid id, CancellationToken cancellationToken = default);
+        Task DeleteMeasurementAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<IList<Measurement>> GetMeasurementsByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task<IList<Measurement>> GetMeasurementsByStepTestIdAsync(Guid stepTestId, CancellationToken cancellationToken = default);
 
-        Task<int> GetCountByStepTest(IStepTestEntity stepTestEntity, bool onlyInCalculation, CancellationToken cancellationToken = default);
+        Task<int> GetCountByStepTestIdAsync(Guid stepTestId, bool onlyInCalculation, CancellationToken cancellationToken = default);
 
-        Task<bool> IsChanged(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
+        Task<bool> IsChangedAsync(IMeasurementEntity measurementEntity, CancellationToken cancellationToken = default);
     }
 }

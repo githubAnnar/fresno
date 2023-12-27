@@ -15,7 +15,7 @@ namespace LanterneRouge.Fresno.Core.Repository
         public UserRepository(StepTestContext context) : base(context)
         { }
 
-        public async Task<IList<User>> GetAllUsers(CancellationToken cancellationToken = default)
+        public async Task<IList<User>> GetAllUsersAsync(CancellationToken cancellationToken = default)
         {
             var users = Context.Users
                 .AsNoTracking();
@@ -23,16 +23,16 @@ namespace LanterneRouge.Fresno.Core.Repository
             return await users.ToListAsync(cancellationToken);
         }
 
-        public async Task<User?> GetUserById(Guid id, CancellationToken cancellationToken = default)
+        public async Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            Logger.Debug($"{nameof(GetUserById)}({id})");
+            Logger.Debug($"{nameof(GetUserByIdAsync)}({id})");
             var user = await Context.Users
                 .AsNoTracking()
                 .SingleOrDefaultAsync(s => s.Id == id, cancellationToken);
             return user;
         }
 
-        public async Task<User?> InsertUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
+        public async Task<User?> InsertUserAsync(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
             if (userEntity == null)
             {
@@ -63,7 +63,7 @@ namespace LanterneRouge.Fresno.Core.Repository
             return response;
         }
 
-        public async Task<User?> UpdateUser(IUserEntity userEntity, CancellationToken cancellationToken = default)
+        public async Task<User?> UpdateUserAsync(IUserEntity userEntity, CancellationToken cancellationToken = default)
         {
             if (userEntity == null)
             {
@@ -98,7 +98,7 @@ namespace LanterneRouge.Fresno.Core.Repository
             return response;
         }
 
-        public async Task DeleteUser(Guid id, CancellationToken cancellationToken = default)
+        public async Task DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -122,12 +122,12 @@ namespace LanterneRouge.Fresno.Core.Repository
             }
         }
 
-        public async Task<bool> IsChanged(IUserEntity userEntity, CancellationToken cancellationToken = default) => await Task.Run(() => userEntity is User user && Context.Entry(userEntity).State != EntityState.Unchanged);
+        public async Task<bool> IsChangedAsync(IUserEntity userEntity, CancellationToken cancellationToken = default) => await Task.Run(() => userEntity is User user && Context.Entry(userEntity).State != EntityState.Unchanged);
 
-        public async Task<User> GetUserByStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default)
+        public async Task<User> GetUserByStepTestIdAsync(Guid stepTestId, CancellationToken cancellationToken = default)
         {
-            Logger.Debug($"{nameof(GetUserByStepTest)}({stepTestEntity.Id})");
-            var user = await Context.Users.AsNoTracking().SingleAsync(u => u.Id == stepTestEntity.UserId, cancellationToken);
+            Logger.Debug($"{nameof(GetUserByStepTestIdAsync)}({stepTestId})");
+            var user = await Context.Users.AsNoTracking().SingleAsync(u => u.Id == stepTestId, cancellationToken);
             return user;
         }
     }

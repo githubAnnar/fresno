@@ -5,20 +5,20 @@ namespace LanterneRouge.Fresno.Core.Contracts
 {
     public interface IStepTestRepository
     {
-        Task<IList<StepTest>> GetAllStepTests(CancellationToken cancellationToken = default);
+        Task<IList<StepTest>> GetAllStepTestsAsync(CancellationToken cancellationToken = default);
 
-        Task<StepTest?> GetStepTestById(Guid id, CancellationToken cancellationToken = default);
+        Task<StepTest?> GetStepTestByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<StepTest?> InsertStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task<StepTest?> InsertStepTestAsync(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        Task<StepTest?> UpdateStepTest(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task<StepTest?> UpdateStepTestAsync(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
 
-        Task DeleteStepTest(Guid id, CancellationToken cancellationToken = default);
+        Task DeleteStepTestAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<IList<StepTest>> GetStepTestsByUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<IList<StepTest>> GetStepTestsByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
-        Task<int> GetCountByUser(IUserEntity userEntity, CancellationToken cancellationToken = default);
+        Task<int> GetCountByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
-        Task<bool> IsChanged(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
+        Task<bool> IsChangedAsync(IStepTestEntity stepTestEntity, CancellationToken cancellationToken = default);
     }
 }

@@ -1,4 +1,7 @@
-﻿using LanterneRouge.Fresno.Report.PlotModels;
+﻿using Autofac;
+using AutoMapper;
+using LanterneRouge.Fresno.Report.PlotModels;
+using LanterneRouge.Fresno.Services;
 using LanterneRouge.Fresno.Utils.Extensions;
 using OxyPlot;
 using System;
@@ -10,6 +13,8 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
     public class StepTestsPlotViewModel : WorkspaceViewModel, IEquatable<StepTestsPlotViewModel>
     {
         #region Fields
+
+        IMapper _mapper;
 
         #endregion
 

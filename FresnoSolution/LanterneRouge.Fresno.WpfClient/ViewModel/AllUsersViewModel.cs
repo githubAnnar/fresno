@@ -44,7 +44,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         private async Task CreateAllUsers()
         {
-            var allUsers = await DataManager.GetAllUsers();
+            var allUsers = await DataManager.GetAllUsersAsync();
             var all = (from user in allUsers select new UserViewModel(user)).ToList();
             all.ForEach(a => a.PropertyChanged += OnUserViewModelPropertyChanged);
             AllUsers = new ObservableCollection<UserViewModel>(all);
@@ -89,7 +89,7 @@ namespace LanterneRouge.Fresno.WpfClient.ViewModel
 
         public ICommand AddStepTestCommand => _addSteptestCommand ??= new RelayCommand(param => CreateStepTest(), param => Selected != null && Selected.IsValid);
 
-        public void CreateStepTest() => StepTestViewModel.Create(Selected, RootViewModel);
+        public void CreateStepTest() => StepTestViewModel.Create(Selected);
 
         public ICommand ShowUserCommand => _showUserCommand ??= new RelayCommand(param => ShowUser(), param => Selected != null && Selected.IsValid);
 
